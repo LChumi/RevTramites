@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {Button} from 'primeng/button';
 
 @Component({
-  imports: [],
+  imports: [
+    FormsModule,
+    Button,
+  ],
   templateUrl: './login.component.html',
   styles: ``
 })
 export default class LoginComponent {
-
 }

@@ -1,20 +1,15 @@
-import {ApplicationConfig, provideZoneChangeDetection} from '@angular/core';
+import {ApplicationConfig, importProvidersFrom, provideZoneChangeDetection} from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import {providePrimeNG} from 'primeng/config';
-import Aura from '@primeng/themes/lara';
 import {provideHttpClient, withFetch, withInterceptors} from '@angular/common/http';
+import {ButtonModule} from 'primeng/button';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(withFetch(), withInterceptors([])),
-    providePrimeNG({
-      theme: {
-        preset: Aura
-      }
-    })
+    importProvidersFrom(ButtonModule)
   ]
 };

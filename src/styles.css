@@ -1,2 +1,7 @@
 @import "primeicons/primeicons.css";
 @import "primeflex/primeflex.css";
+
+/* Demos */
+@import "../public/styles/flags/flags.css";
+@import "../public/styles/badges.css";
+@import "../public/styles/code.css";
