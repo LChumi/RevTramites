@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import * as path from 'node:path';
+import {importacionesRoutes} from '@features/importaciones/importacionesRoutes';
 
 export const routes: Routes = [
   {
@@ -11,6 +11,12 @@ export const routes: Routes = [
           {path: 'login', loadComponent: () => import('@features/auth/login/login.component')}
         ]
       },
+      {
+        path: 'bodega-recepcion',
+        children: importacionesRoutes
+      }
     ]
-  }
+  },
+  {path: '', redirectTo: 'icep', pathMatch: "full"},
+  {path: '**', redirectTo: 'icep', pathMatch: "full"}
 ];
