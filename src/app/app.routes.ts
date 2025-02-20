@@ -8,7 +8,9 @@ export const routes: Routes = [
       {
         path: 'auth',
         children: [
-          {path: 'login', loadComponent: () => import('@features/auth/login/login.component')}
+          {path: 'login', loadComponent: () => import('@features/auth/login/login.component')},
+          {path: '', redirectTo: 'login', pathMatch: 'full'},
+          {path: '**', redirectTo: 'login', pathMatch:'full'}
         ]
       },
       {
@@ -17,6 +19,6 @@ export const routes: Routes = [
       }
     ]
   },
-  {path: '', redirectTo: 'icep', pathMatch: "full"},
-  {path: '**', redirectTo: 'icep', pathMatch: "full"}
+  {path: '', redirectTo: 'icep/auth', pathMatch: "full"},
+  {path: '**', redirectTo: 'icep/auth', pathMatch: "full"}
 ];
