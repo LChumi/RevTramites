@@ -8,6 +8,7 @@ import {Button} from 'primeng/button';
     Button,
   ],
   templateUrl: './login.component.html',
+  standalone: true,
   styles: ``
 })
 export default class LoginComponent {
