@@ -15,28 +15,104 @@
         <li class="flex align-items-center text-500 mr-2">Lista productos</li>
       </ul>
 
-      <div class="col-12">
+      @if (productos.length ===0){
+        <div class="col-12">
+          <div class="grid p-fluid mt-3">
+            <div class="field mb-2 lg:col-6 lg:mb-0">
             <span class="p-float-label">
-              <input type="text" id="observacion" pInputText [(ngModel)]="observacion">
-              <label for="observacion">Numero de tramite</label>
+              <input type="text" id="tramite" pInputText [(ngModel)]="tramiteId">
+              <label for="tramite">Numero de tramite</label>
             </span>
-      </div>
+              <span class="p-float-label mt-4">
+              <input type="text" id="observacion" pInputText [(ngModel)]="observacion">
+              <label for="observacion">Ingrese la observacion</label>
+            </span>
+            </div>
+          </div>
+        </div>
 
-      <p-fileUpload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($event)"
-                    [multiple]="false" accept=".xlsx" [maxFileSize]="1000000"
-                    mode="advanced" chooseLabel="Seleccionar Archivo" uploadLabel="Subir">
-        <ng-template pTemplate="content">
-          @if (uploadedFiles.length) {
-            <ul class="list-none p-0 m-0">
-              @for (file of uploadedFiles; track $index){
-                <li class="py-2 border-bottom-1 border-gray-300">
-                  📄 {{ file.name }} - {{ file.size }} bytes
-                </li>
+        @if (observacion && tramiteId){
+          <p-fileUpload
+            name="demo[]"
+            url="https://www.primefaces.org/cdn/api/upload.php"
+            (onUpload)="onUpload($event)"
+            [multiple]="false"
+            accept=".xlsx"
+            [maxFileSize]="20971520"
+            mode="advanced" chooseLabel="Seleccionar Archivo" uploadLabel="Subir">
+            <ng-template pTemplate="content">
+              @if (uploadedFiles.length) {
+                <ul class="list-none p-0 m-0">
+                  @for (file of uploadedFiles; track $index){
+                    <li class="py-2 border-bottom-1 border-gray-300">
+                      📄 {{ file.name }} - {{ file.size }} bytes
+                    </li>
+                  }
+                </ul>
               }
-            </ul>
-          }
-        </ng-template>
-      </p-fileUpload>
+            </ng-template>
+          </p-fileUpload>
+        }
+      } @else if (productos.length > 0) {
+        <div class="mt-1">
+          <div class="card">
+            <p-toolbar styleClass="mb-4">
+              <ng-template pTemplate="left">
+                <div class="my-2">
+                  <button pButton pRipple label="Seleccionar Nuevo Archivo" icon="pi pi-check"
+                          class="p-button-outlined" (click)="cargarNuevo()"></button>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="right">
+                <button pButton pRipple label="Descargar Csv" icon="pi pi-upload" class="p-button-outlined" (click)="dt.exportCSV()"></button>
+              </ng-template>
+            </p-toolbar>
+            <p-table
+              #dt
+              [value]="productos"
+              [responsiveLayout]="'scroll'"
+              [paginator]="true"
+              [globalFilterFields]="['','barra', 'item', 'nombre', 'cxb', 'cantidadBultos', 'total', 'pvp']"
+              [rows]="10"
+              dataKey="secuencia"
+              class="my-3 p-p-3"
+              styleClass="p-datatable-gridlines"
+              [rowsPerPageOptions]="[10,20,30]">
+              <ng-template pTemplate="caption">
+                <h4>Lista de Productos a llegar</h4>
+              </ng-template>
+
+              <ng-template pTemplate="header">
+                <tr>
+                  <th></th>
+                  <th pSortableColumn="id">Barra</th>
+                  <th pSortableColumn="id1">Item</th>
+                  <th pSortableColumn="nombre">Nombre</th>
+                  <th pSortableColumn="cxb">CXB</th>
+                  <th pSortableColumn="bultos">Cantidad Bultos</th>
+                  <th pSortableColumn="total">Total</th>
+                  <th pSortableColumn="pvp">PVP</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-producto >
+                <tr>
+                  <td></td>
+                  <td class="text-right">{{producto.id}}</td>
+                  <td class="text-right">{{producto.id1}}</td>
+                  <td style="white-space: nowrap; min-width: 12rem" class="text-right">{{producto.nombre}}</td>
+                  <td class="text-right">{{producto.cxb}}</td>
+                  <td class="text-right">{{producto.bultos}}</td>
+                  <td class="text-right">{{producto.total}}</td>
+                  <td class="text-right">{{producto.pvp}}</td>
+                </tr>
+              </ng-template>
+
+            </p-table>
+          </div>
+        </div>
+      }
+
     </div>
   </div>
 </div>

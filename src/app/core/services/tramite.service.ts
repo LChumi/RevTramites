@@ -27,6 +27,6 @@ export class TramiteService {
   }
 
   productos(tramiteId: string): Observable<Producto[]> {
-    return this.http.get<Producto[]>(`${this.baseUrl}/${tramiteId}/Productos`);
+    return this.http.get<Producto[]>(`${this.baseUrl}/${tramiteId}/products`);
   }
 }
