@@ -57,7 +57,7 @@ export default class CargaTramiteComponent {
         }
       })
     })
-    this.messageService.add({ severity: 'info', summary: 'Exito', detail: 'Archivo registrado y guardado con exito' });
+    this.message('info', 'Exito', 'Archivo registrado y guardado con exito');
   }
 
 

@@ -3,10 +3,10 @@
     <div class="col-12">
       <span class="text-900 font-bold text-4xl">Trámites</span>
     </div>
-    <div class="col-12">
+    <div class="col-12 mt-4">
       <span class="text-900 block font-bold text-xl">Carga de archivo productos por llegar a Bodega </span>
     </div>
-    <div class="col-12">
+    <div class="col-12 mt-4">
       <ul class="flex list-none flex-wrap">
         <li class="flex align-items-center text-primary mr-2">Carga Tramite<i
           class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
@@ -72,7 +72,6 @@
               [value]="productos"
               [responsiveLayout]="'scroll'"
               [paginator]="true"
-              [globalFilterFields]="['','barra', 'item', 'nombre', 'cxb', 'cantidadBultos', 'total', 'pvp']"
               [rows]="10"
               dataKey="secuencia"
               class="my-3 p-p-3"

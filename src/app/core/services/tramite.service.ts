@@ -18,6 +18,10 @@ export class TramiteService {
     return this.http.get<Tramite[]>(`${this.baseUrl}/All`);
   }
 
+  findById(tramiteId: string): Observable<Tramite> {
+    return this.http.get<Tramite>(`${this.baseUrl}/findId/${tramiteId}`);
+  }
+
   update(tramiteId: string, tramite:Tramite): Observable<Tramite> {
     return this.http.put<Tramite>(`${this.baseUrl}/update/${tramiteId}`, JSON.stringify(tramite));
   }
