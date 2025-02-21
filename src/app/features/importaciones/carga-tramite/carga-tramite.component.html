@@ -1,1 +1,42 @@
-<p>carga-tramite works!</p>
+<div class="card">
+  <div class="grid grid-nogutter">
+    <div class="col-12">
+      <span class="text-900 font-bold text-4xl">Trámites</span>
+    </div>
+    <div class="col-12">
+      <span class="text-900 block font-bold text-xl">Carga de archivo productos por llegar a Bodega </span>
+    </div>
+    <div class="col-12">
+      <ul class="flex list-none flex-wrap">
+        <li class="flex align-items-center text-primary mr-2">Carga Tramite<i
+          class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
+        <li class="flex align-items-center text-500 mr-2">Información<i
+          class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
+        <li class="flex align-items-center text-500 mr-2">Lista productos</li>
+      </ul>
+
+      <div class="col-12">
+            <span class="p-float-label">
+              <input type="text" id="observacion" pInputText [(ngModel)]="observacion">
+              <label for="observacion">Numero de tramite</label>
+            </span>
+      </div>
+
+      <p-fileUpload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($event)"
+                    [multiple]="false" accept=".xlsx" [maxFileSize]="1000000"
+                    mode="advanced" chooseLabel="Seleccionar Archivo" uploadLabel="Subir">
+        <ng-template pTemplate="content">
+          @if (uploadedFiles.length) {
+            <ul class="list-none p-0 m-0">
+              @for (file of uploadedFiles; track $index){
+                <li class="py-2 border-bottom-1 border-gray-300">
+                  📄 {{ file.name }} - {{ file.size }} bytes
+                </li>
+              }
+            </ul>
+          }
+        </ng-template>
+      </p-fileUpload>
+    </div>
+  </div>
+</div>
