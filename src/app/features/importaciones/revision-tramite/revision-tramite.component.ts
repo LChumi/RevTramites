@@ -10,6 +10,7 @@ import {Revision} from '@models/revision';
 import {TableModule} from 'primeng/table';
 import {Ripple} from 'primeng/ripple';
 import {NgStyle} from '@angular/common';
+import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
 
 @Component({
   imports: [
@@ -19,7 +20,8 @@ import {NgStyle} from '@angular/common';
     ButtonDirective,
     TableModule,
     Ripple,
-    NgStyle
+    NgStyle,
+    EstadoColorPipe
   ],
   templateUrl: './revision-tramite.component.html',
   standalone: true,
