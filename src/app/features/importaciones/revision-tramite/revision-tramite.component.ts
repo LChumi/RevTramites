@@ -5,9 +5,10 @@ import {InputGroupModule} from 'primeng/inputgroup';
 import {ButtonDirective} from 'primeng/button';
 import {TramiteService} from '../../../core/services/tramite.service';
 import {RevisionService} from '../../../core/services/revision.service';
-import {MessageService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {Revision} from '@models/revision';
 import {TableModule} from 'primeng/table';
+import {Ripple} from 'primeng/ripple';
 
 @Component({
   imports: [
@@ -15,7 +16,8 @@ import {TableModule} from 'primeng/table';
     InputTextModule,
     InputGroupModule,
     ButtonDirective,
-    TableModule
+    TableModule,
+    Ripple
   ],
   templateUrl: './revision-tramite.component.html',
   standalone: true,
@@ -26,6 +28,7 @@ export default class RevisionTramiteComponent {
   private tramiteService = inject(TramiteService)
   private revisionService = inject(RevisionService)
   private messageService = inject(MessageService)
+  private confirmationService = inject(ConfirmationService)
 
   protected tramiteId: any
   protected barra: any
@@ -39,6 +42,13 @@ export default class RevisionTramiteComponent {
         next: response=> {
           if (response){
             this.tramiteExist = true;
+            this.revisionService.findByTramite(this.tramiteId).subscribe({
+              next: response=> {
+                if (response){
+                  this.revisiones = response;
+                }
+              }
+            })
             this.message('info','Tramite existe', 'Se encontro el registro de tramite');
           }else {
             this.tramiteExist = false;
@@ -64,7 +74,26 @@ export default class RevisionTramiteComponent {
         }
       })
     }
+  }
 
+  validarTramite(){
+    this.confirmationService.confirm({
+      message: 'Productos escaneados ¿Validar Tramite?',
+      header: 'Confirmacion',
+      icon: 'pi pi-check',
+      accept: () => {
+        this.revisionService.updateQuantities(this.tramiteId).subscribe({
+          next: response=> {
+            if (response){
+              this.revisiones = response;
+            }
+          }
+        })
+      },
+      reject: () => {
+        return
+      }
+    })
   }
 
   message(severity: string, summary: string, detail: string) {

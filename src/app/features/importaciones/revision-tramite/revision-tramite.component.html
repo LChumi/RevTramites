@@ -52,7 +52,7 @@
                 dataKey="secuencia"
                 class="my-3 p-p-3"
                 styleClass="p-datatable-gridlines"
-                [rowsPerPageOptions]="[10,20,30]">
+                [rowsPerPageOptions]="[10,20,30,50]">
                 <ng-template pTemplate="caption">
                   <h4>Lista de Productos pitados</h4>
                 </ng-template>
@@ -83,6 +83,14 @@
             </div>
           </div>
 
+          <button
+            pButton
+            pRipple
+            (click)="validarTramite()"
+            type="button"
+            label="Verificar Tramite"
+            class="p-button-rounded">
+          </button>
         }
       }
     </div>
