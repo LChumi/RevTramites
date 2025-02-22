@@ -55,15 +55,16 @@
                 [rowsPerPageOptions]="[10,20,30,50]">
                 <ng-template pTemplate="caption">
                   <h4>Lista de Productos pitados</h4>
+                  <small>Productos pitados: {{revisiones.length}} </small>
                 </ng-template>
 
                 <ng-template pTemplate="header">
                   <tr>
                     <th></th>
                     <th pSortableColumn="barra">Barra</th>
-                    <th pSortableColumn="cantidad">Cantidad Escaneada</th>
-                    <th pSortableColumn="cantidadPedida">Cantidad Pedida</th>
-                    <th pSortableColumn="cantidadDiferencia">cantidad Diferencia</th>
+                    <th pSortableColumn="cantidad">Cant. Escaneada</th>
+                    <th pSortableColumn="cantidadPedida">Cant. Pedida</th>
+                    <th pSortableColumn="cantidadDiferencia">cant. Diferencia</th>
                     <th pSortableColumn="estado">Estado</th>
                     <th pSortableColumn="fecha">fecha</th>
                   </tr>
@@ -72,9 +73,9 @@
                   <tr>
                     <td></td>
                     <td class="p-text-center p-col-1 p-col-fixed">{{producto.barra}}</td>
-                    <td class="p-text-center p-col-1 p-col-fixed">{{producto.cantidad}}</td>
-                    <td class="p-text-center p-col-1 p-col-fixed">{{producto.cantidadPedida}}</td>
-                    <td class="p-text-center p-col-1 p-col-fixed">{{producto.cantidadDiferencia}}</td>
+                    <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{producto.cantidad}}</td>
+                    <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{producto.cantidadPedida}}</td>
+                    <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{producto.cantidadDiferencia}}</td>
                     <td class="p-text-center p-col-1 p-col-fixed">{{producto.estado}}</td>
                     <td class="p-text-center p-col-1 p-col-fixed">{{producto.fecha}}</td>
                   </tr>

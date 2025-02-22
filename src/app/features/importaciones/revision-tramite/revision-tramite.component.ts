@@ -9,6 +9,7 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 import {Revision} from '@models/revision';
 import {TableModule} from 'primeng/table';
 import {Ripple} from 'primeng/ripple';
+import {NgStyle} from '@angular/common';
 
 @Component({
   imports: [
@@ -17,7 +18,8 @@ import {Ripple} from 'primeng/ripple';
     InputGroupModule,
     ButtonDirective,
     TableModule,
-    Ripple
+    Ripple,
+    NgStyle
   ],
   templateUrl: './revision-tramite.component.html',
   standalone: true,
