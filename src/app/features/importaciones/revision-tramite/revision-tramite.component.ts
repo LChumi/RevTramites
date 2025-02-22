@@ -65,6 +65,7 @@ export default class RevisionTramiteComponent {
         next: response=> {
           if (response){
             this.revision = response;
+            this.barra=''
             this.revisionService.findByTramite(this.tramiteId).subscribe({
               next: response=> {
                 this.revisiones = response;

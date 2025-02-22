@@ -61,22 +61,22 @@
                   <tr>
                     <th></th>
                     <th pSortableColumn="barra">Barra</th>
-                    <th pSortableColumn="cantidad">Cantidad</th>
-                    <th pSortableColumn="fecha">fecha</th>
+                    <th pSortableColumn="cantidad">Cantidad Escaneada</th>
                     <th pSortableColumn="cantidadPedida">Cantidad Pedida</th>
                     <th pSortableColumn="cantidadDiferencia">cantidad Diferencia</th>
                     <th pSortableColumn="estado">Estado</th>
+                    <th pSortableColumn="fecha">fecha</th>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-producto >
                   <tr>
                     <td></td>
-                    <td class="text-right">{{producto.barra}}</td>
-                    <td class="text-right">{{producto.cantidad}}</td>
-                    <td class="text-right">{{producto.fecha}}</td>
-                    <td class="text-right">{{producto.cantidadPedida}}</td>
-                    <td class="text-right">{{producto.cantidadDiferencia}}</td>
-                    <td class="text-right">{{producto.estado}}</td>
+                    <td class="p-text-center p-col-1 p-col-fixed">{{producto.barra}}</td>
+                    <td class="p-text-center p-col-1 p-col-fixed">{{producto.cantidad}}</td>
+                    <td class="p-text-center p-col-1 p-col-fixed">{{producto.cantidadPedida}}</td>
+                    <td class="p-text-center p-col-1 p-col-fixed">{{producto.cantidadDiferencia}}</td>
+                    <td class="p-text-center p-col-1 p-col-fixed">{{producto.estado}}</td>
+                    <td class="p-text-center p-col-1 p-col-fixed">{{producto.fecha}}</td>
                   </tr>
                 </ng-template>
               </p-table>
