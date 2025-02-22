@@ -1,5 +1,113 @@
-.customer-badge,
-.product-badge,
+.product-badge {
+    border-radius: var(--border-radius);
+    padding: .25em .5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+
+    &.status-instock {
+        background: var(--green-200);
+        color: var(--green-800);
+    }
+
+    &.status-outofstock {
+        background: var(--pink-200);
+        color: var(--pink-800);
+    }
+
+    &.status-lowstock {
+        background: var(--yellow-200);
+        color: var(--yellow-800);
+    }
+}
+
+.product-badge-text {
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+
+    &.status-instock {
+        color: var(--green-500);
+    }
+
+    &.status-outofstock {
+        color: var(--pink-500);
+    }
+
+    &.status-lowstock {
+        color: var(--yellow-500);
+    }
+}
+
+.item-badge {
+  border-radius: var(--borde-radius);
+  padding: .25em .5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .3px;
+
+  &.status-complete {
+    background: var(--green-200);
+    color: var(--green-800);
+  }
+
+  &.status-reposicion {
+    background: var(--yellow-200);
+    color: var(--yellow-800);
+  }
+
+  &.status-registrado {
+    background: var(--blue-200);
+    color: var(--blue-800);
+  }
+
+  &.status-proceso {
+    background: var(--orange-200);
+    color: var(--orange-800);
+  }
+}
+
+.customer-badge {
+    border-radius: var(--border-radius);
+    padding: .25em .5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+
+    &.status-complete {
+        background: var(--green-200);
+        color: var(--green-800);
+    }
+
+    &.status-unqualified {
+        background: var(--pink-200);
+        color: var(--pink-800);
+    }
+
+    &.status-novedad {
+        background: var(--yellow-200);
+        color: var(--yellow-800);
+    }
+
+    &.status-new {
+        background: var(--blue-200);
+        color: var(--blue-800);
+    }
+
+    &.status-faltante {
+        background: var(--purple-200);
+        color: var(--purple-800);
+    }
+
+    &.status-sobrante {
+        background: var(--orange-200);
+        color: var(--orange-800);
+    }
+}
+
 .order-badge {
     border-radius: var(--border-radius);
     padding: .25em .5rem;
@@ -7,58 +115,7 @@
     font-weight: 700;
     font-size: 12px;
     letter-spacing: .3px;
-}
 
-.product-badge {
-    &.status-instock {
-        background: #C8E6C9;
-        color: #256029;
-    }
-
-    &.status-outofstock {
-        background: #FFCDD2;
-        color: #C63737;
-    }
-
-    &.status-lowstock {
-        background: #FEEDAF;
-        color: #8A5340;
-    }
-}
-
-.customer-badge {
-    &.status-qualified {
-        background: #C8E6C9;
-        color: #256029;
-    }
-
-    &.status-unqualified {
-        background: #FFCDD2;
-        color: #C63737;
-    }
-
-    &.status-negotiation {
-        background: #FEEDAF;
-        color: #8A5340;
-    }
-
-    &.status-new {
-        background: #B3E5FC;
-        color: #23547B;
-    }
-
-    &.status-renewal {
-        background: #ECCFFF;
-        color: #694382;
-    }
-
-    &.status-proposal {
-        background: #FFD8B2;
-        color: #805B36;
-    }
-}
-
-.order-badge {
     &.order-delivered {
         background: #C8E6C9;
         color: #256029;

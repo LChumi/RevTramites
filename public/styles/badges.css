@@ -1,6 +1,40 @@
-.customer-badge,
-.product-badge,
-.order-badge {
+.product-badge {
+  border-radius: var(--border-radius);
+  padding: 0.25em 0.5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
+.product-badge.status-instock {
+  background: var(--green-200);
+  color: var(--green-800);
+}
+.product-badge.status-outofstock {
+  background: var(--pink-200);
+  color: var(--pink-800);
+}
+.product-badge.status-lowstock {
+  background: var(--yellow-200);
+  color: var(--yellow-800);
+}
+
+.product-badge-text {
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
+.product-badge-text.status-instock {
+  color: var(--green-500);
+}
+.product-badge-text.status-outofstock {
+  color: var(--pink-500);
+}
+.product-badge-text.status-lowstock {
+  color: var(--yellow-500);
+}
+
+.item-badge {
   border-radius: var(--border-radius);
   padding: 0.25em 0.5rem;
   text-transform: uppercase;
@@ -9,44 +43,72 @@
   letter-spacing: 0.3px;
 }
 
-.product-badge.status-instock {
-  background: #C8E6C9;
-  color: #256029;
-}
-.product-badge.status-outofstock {
-  background: #FFCDD2;
-  color: #C63737;
-}
-.product-badge.status-lowstock {
-  background: #FEEDAF;
-  color: #8A5340;
+.item-badge.status-complete {
+  background: var(--green-200);
+  color: var(--green-800);
 }
 
-.customer-badge.status-qualified {
-  background: #C8E6C9;
-  color: #256029;
+.item-badge.status-novedad {
+  background: var(--yellow-200);
+  color: var(--yellow-800);
+}
+
+.item-badge.status-registrado {
+  background: var(--blue-200);
+  color: var(--blue-800);
+}
+
+.item-badge.status-faltante {
+  background: var(--purple-200);
+  color: var(--purple-800);
+}
+
+.item-badge.status-sobrante {
+  background: var(--orange-200);
+  color: var(--orange-800);
+}
+
+.customer-badge {
+  border-radius: var(--border-radius);
+  padding: 0.25em 0.5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
+.customer-badge.status-complete {
+  background: var(--green-200);
+  color: var(--green-800);
 }
 .customer-badge.status-unqualified {
-  background: #FFCDD2;
-  color: #C63737;
+  background: var(--pink-200);
+  color: var(--pink-800);
 }
-.customer-badge.status-negotiation {
-  background: #FEEDAF;
-  color: #8A5340;
+.customer-badge.status-novedad {
+  background: var(--yellow-200);
+  color: var(--yellow-800);
 }
 .customer-badge.status-new {
-  background: #B3E5FC;
-  color: #23547B;
+  background: var(--blue-200);
+  color: var(--blue-800);
 }
-.customer-badge.status-renewal {
-  background: #ECCFFF;
-  color: #694382;
+.customer-badge.status-faltante {
+  background: var(--purple-200);
+  color: var(--purple-800);
 }
-.customer-badge.status-proposal {
-  background: #FFD8B2;
-  color: #805B36;
+.customer-badge.status-sobrante {
+  background: var(--orange-200);
+  color: var(--orange-800);
 }
 
+.order-badge {
+  border-radius: var(--border-radius);
+  padding: 0.25em 0.5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
 .order-badge.order-delivered {
   background: #C8E6C9;
   color: #256029;
