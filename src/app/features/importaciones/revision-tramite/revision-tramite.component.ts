@@ -47,6 +47,7 @@ export default class RevisionTramiteComponent implements OnInit {
   tramites: Tramite[] = [];
   revision: Revision | null = null;
   tramite: Tramite | null = null;
+  loading: boolean = false;
 
   buscarTramite(tramiteId: string) {
     console.log(tramiteId);

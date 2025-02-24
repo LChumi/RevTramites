@@ -17,127 +17,133 @@
         <li class="flex align-items-center text-500 mr-2">Verificación de productos</li>
       </ul>
 
-      @if (!tramiteExist){
-        <div class="mt-2">
-          <div class="card">
-            <p-table
-              #tr
-              [value]="tramites"
-              [responsiveLayout]="'scroll'"
-              [paginator]="true"
-              [rows]="5"
-              dataKey="id"
-              class="my-3 p-p-3"
-              styleClass="p-datatable-gridlines">
-              <ng-template pTemplate="caption">
-                <h3>Tramites pendientes de validacion</h3>
-                <small>Tramites pendientes: {{tramites.length}}</small>
-              </ng-template>
-
-              <ng-template pTemplate="header">
-                <tr>
-                  <th></th>
-                  <th pSortableColumn="id">Tramite</th>
-                  <th pSortableColumn="fechaCarga">Fecha Carga</th>
-                  <th pSortableColumn="observacion">Observación</th>
-                </tr>
-              </ng-template>
-
-              <ng-template pTemplate="body" let-tramite>
-                <tr>
-                  <td [ngStyle]="{'width': '50px'}">
-                    <button type="button" pButton pRipple class="p-button-text p-button-rounded p-button-plain" icon="pi pi-chevron-right" (click)="buscarTramite(tramite.id)"></button>
-                  </td>
-                  <td class="p-text-center p-col-1 p-col-fixed">{{tramite.id}}</td>
-                  <td class="p-text-center p-col-1">{{tramite.fechaCarga}}</td>
-                  <td class="p-text-center p-col-1">{{tramite.observacion }}</td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </div>
+      @if (loading) {
+        <div class="flex align-items-center justify-content-center" style="height: 100%;">
+          <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: blue;"></i>
         </div>
       } @else {
-        <div class="col-12">
-          <span>Tramite: {{tramiteId}}</span>
-          <p-toolbar styleClass="mb-4">
-            <ng-template pTemplate="left">
-              <div class="my-2">
-                <button pButton pRipple label="Seleccionar otro Tramite" icon="pi pi-chevron-left"
-                        class="p-button-outlined" (click)="nuevoEscaneo()"></button>
-              </div>
-            </ng-template>
-            <ng-template pTemplate="right">
-              <button pButton pRipple label="Descargar Csv" icon="pi pi-download" class="p-button-outlined" (click)="exportToExcel()"></button>
-            </ng-template>
-          </p-toolbar>
-          <div class="grid p-fluid mt-3">
-            <div class="field mb-2 lg:col-6 lg:mb-0">
-            <span class="p-float-label">
-              <input type="text" id="barra" pInputText [(ngModel)]="barra" (keydown.enter)="escaneo()">
-              <label for="barra">Barra</label>
-            </span>
-            </div>
-          </div>
-        </div>
-
-        @if (revisiones.length > 0) {
+        @if (!tramiteExist){
           <div class="mt-2">
             <div class="card">
               <p-table
-                #dt
-                [value]="revisiones"
+                #tr
+                [value]="tramites"
                 [responsiveLayout]="'scroll'"
                 [paginator]="true"
-                [rows]="10"
-                dataKey="secuencia"
+                [rows]="5"
+                dataKey="id"
                 class="my-3 p-p-3"
-                styleClass="p-datatable-gridlines"
-                [rowsPerPageOptions]="[10,20,30,50]">
+                styleClass="p-datatable-gridlines">
                 <ng-template pTemplate="caption">
-                  <h4>Lista de Productos pitados</h4>
-                  <small>Productos pitados: {{revisiones.length}} </small>
+                  <h3>Tramites pendientes de validacion</h3>
+                  <small>Tramites pendientes: {{tramites.length}}</small>
                 </ng-template>
 
                 <ng-template pTemplate="header">
                   <tr>
                     <th></th>
-                    <th pSortableColumn="barra">Barra</th>
-                    <th pSortableColumn="cantidad">Cant. Escaneada</th>
-                    <th pSortableColumn="cantidadPedida">Cant. Pedida</th>
-                    <th pSortableColumn="cantidadDiferencia">cant. Diferencia</th>
-                    <th pSortableColumn="estado">Estado</th>
-                    <th pSortableColumn="fecha">fecha</th>
+                    <th pSortableColumn="id">Tramite</th>
+                    <th pSortableColumn="fechaCarga">Fecha Carga</th>
+                    <th pSortableColumn="observacion">Observación</th>
                   </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-producto >
-                  <tr>
-                    <td></td>
-                    <td class="p-text-center p-col-1 p-col-fixed">{{producto.barra}}</td>
-                    <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{producto.cantidad}}</td>
-                    <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{producto.cantidadPedida}}</td>
-                    <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{producto.cantidadDiferencia}}</td>
-                    <td class="p-text-center p-col-1 p-col-fixed">
-                      <span [ngStyle]="producto.estado | estadoColor">
-                        {{producto.estado}}
-                      </span>
-                    </td>
-                    <td class="p-text-center p-col-1 p-col-fixed">{{producto.fecha}}</td>
 
+                <ng-template pTemplate="body" let-tramite>
+                  <tr>
+                    <td [ngStyle]="{'width': '50px'}">
+                      <button type="button" pButton pRipple class="p-button-text p-button-rounded p-button-plain" icon="pi pi-chevron-right" (click)="buscarTramite(tramite.id)"></button>
+                    </td>
+                    <td class="p-text-center p-col-1 p-col-fixed">{{tramite.id}}</td>
+                    <td class="p-text-center p-col-1">{{tramite.fechaCarga}}</td>
+                    <td class="p-text-center p-col-1">{{tramite.observacion }}</td>
                   </tr>
                 </ng-template>
               </p-table>
             </div>
           </div>
+        } @else {
+          <div class="col-12">
+            <span>Tramite: {{tramiteId}}</span>
+            <p-toolbar styleClass="mb-4">
+              <ng-template pTemplate="left">
+                <div class="my-2">
+                  <button pButton pRipple label="Seleccionar otro Tramite" icon="pi pi-chevron-left"
+                          class="p-button-outlined" (click)="nuevoEscaneo()"></button>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="right">
+                <button pButton pRipple label="Descargar Csv" icon="pi pi-download" class="p-button-outlined" (click)="exportToExcel()"></button>
+              </ng-template>
+            </p-toolbar>
+            <div class="grid p-fluid mt-3">
+              <div class="field mb-2 lg:col-6 lg:mb-0">
+            <span class="p-float-label">
+              <input type="text" id="barra" pInputText [(ngModel)]="barra" (keydown.enter)="escaneo()">
+              <label for="barra">Barra</label>
+            </span>
+              </div>
+            </div>
+          </div>
 
-          <button
-            pButton
-            pRipple
-            (click)="validarTramite()"
-            type="button"
-            label="Verificar Tramite"
-            class="p-button-rounded">
-          </button>
+          @if (revisiones.length > 0) {
+            <div class="mt-2">
+              <div class="card">
+                <p-table
+                  #dt
+                  [value]="revisiones"
+                  [responsiveLayout]="'scroll'"
+                  [paginator]="true"
+                  [rows]="10"
+                  dataKey="secuencia"
+                  class="my-3 p-p-3"
+                  styleClass="p-datatable-gridlines"
+                  [rowsPerPageOptions]="[10,20,30,50]">
+                  <ng-template pTemplate="caption">
+                    <h4>Lista de Productos pitados</h4>
+                    <small>Productos pitados: {{revisiones.length}} </small>
+                  </ng-template>
 
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th></th>
+                      <th pSortableColumn="barra">Barra</th>
+                      <th pSortableColumn="cantidad">Cant. Escaneada</th>
+                      <th pSortableColumn="cantidadPedida">Cant. Pedida</th>
+                      <th pSortableColumn="cantidadDiferencia">cant. Diferencia</th>
+                      <th pSortableColumn="estado">Estado</th>
+                      <th pSortableColumn="fecha">fecha</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-producto >
+                    <tr>
+                      <td></td>
+                      <td class="p-text-center p-col-1 p-col-fixed">{{producto.barra}}</td>
+                      <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{producto.cantidad}}</td>
+                      <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{producto.cantidadPedida}}</td>
+                      <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{producto.cantidadDiferencia}}</td>
+                      <td class="p-text-center p-col-1 p-col-fixed">
+                      <span [ngStyle]="producto.estado | estadoColor">
+                        {{producto.estado}}
+                      </span>
+                      </td>
+                      <td class="p-text-center p-col-1 p-col-fixed">{{producto.fecha}}</td>
+
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </div>
+
+            <button
+              pButton
+              pRipple
+              (click)="validarTramite()"
+              type="button"
+              label="Verificar Tramite"
+              class="p-button-rounded">
+            </button>
+
+          }
         }
       }
     </div>
