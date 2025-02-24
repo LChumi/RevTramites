@@ -10,6 +10,8 @@ import {Ripple} from 'primeng/ripple';
 import {TramiteService} from '../../../core/services/tramite.service';
 import {ToolbarModule} from 'primeng/toolbar';
 import {converToExcel} from '@utils/excel-utils';
+import {CalendarModule} from 'primeng/calendar';
+import {getCurrentDate} from '@utils/date-utils';
 
 @Component({
   imports: [
@@ -18,7 +20,8 @@ import {converToExcel} from '@utils/excel-utils';
     InputTextModule,
     TableModule,
     Ripple,
-    ToolbarModule
+    ToolbarModule,
+    CalendarModule
   ],
   templateUrl: './carga-tramite.component.html',
   standalone: true,
@@ -35,6 +38,7 @@ export default class CargaTramiteComponent {
   protected observacion: any;
   protected productos: Producto[] = [];
   protected loading = false;
+  fecha: any
 
   onUpload(event: any) {
     this.loading = true;
@@ -45,8 +49,14 @@ export default class CargaTramiteComponent {
       return;
     }
 
+    if (!this.fecha) {
+      this.message('warn', 'Datos vacios', 'Ingrese la fecha')
+      return;
+    }
+    const fecha = getCurrentDate(this.fecha);
+
     files.forEach((file: File) => {
-      this.fileService.sendExcel(file, this.tramiteId, this.observacion).subscribe({
+      this.fileService.sendExcel(file, fecha, this.tramiteId, this.observacion).subscribe({
         next: response => {
           if (response == null) {
             this.message('warn', 'Advertencia', 'El archivo esta vacio')

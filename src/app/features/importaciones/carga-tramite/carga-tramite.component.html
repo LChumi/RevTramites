@@ -27,6 +27,10 @@
               <input type="text" id="observacion" pInputText [(ngModel)]="observacion">
               <label for="observacion">Ingrese la observacion</label>
             </span>
+              <div class="mt-4">
+                <p-calendar dateFormat="dd-mm-yy" placeholder="Fecha" [required]="true" inputId="fecha"
+                            [(ngModel)]="fecha" showIcon></p-calendar>
+              </div>
             </div>
           </div>
         </div>
