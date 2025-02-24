@@ -5,6 +5,8 @@ import {InputTextModule} from 'primeng/inputtext';
 import {PasswordModule} from 'primeng/password';
 import {Ripple} from 'primeng/ripple';
 import {Router} from '@angular/router';
+import {LoginRequest} from '../../../core/dto/login-request';
+import {AuthService} from '../../../core/services/auth.service';
 
 @Component({
   imports: [
@@ -25,6 +27,8 @@ export default class LoginComponent implements OnInit {
   loginForm!: FormGroup
   private fb = inject(FormBuilder)
   private router = inject(Router)
+  private autService = inject(AuthService)
+  submitted = false;
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -33,6 +37,29 @@ export default class LoginComponent implements OnInit {
     })
   }
 
-  onSubmit() {}
+  onSubmit() {
+    this.submitted = true;
+    if (this.loginForm.invalid) return
+
+    const usuario = this.loginForm.get('usuario')?.value;
+    const password = this.loginForm.get('password')?.value;
+
+    const user: LoginRequest = {
+      username: usuario,
+      password: password,
+    }
+
+    this.autService.login(user).subscribe({
+      next: usuario => {
+        console.log(usuario);
+        const nombres = usuario.usr_nombre.split(' ');
+        const nombre = nombres[0]; // Primer nombre
+        const segundoNombre = nombres.length > 2 ? nombres[2] : nombres.length > 1 ? nombres[1] : ''; // Segundo nombre, si existe
+        sessionStorage.setItem("usuario", nombre + (segundoNombre ? ' ' + segundoNombre : ''));
+        this.loginForm.reset();
+      }
+    })
+
+  }
 
 }
