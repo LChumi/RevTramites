@@ -13,6 +13,9 @@ import {NgStyle} from '@angular/common';
 import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
 import {Observable, switchMap} from 'rxjs';
 import {Tramite} from '@models/tramite';
+import {ToolbarModule} from 'primeng/toolbar';
+import * as XLSX from 'xlsx';
+
 
 @Component({
   imports: [
@@ -23,7 +26,8 @@ import {Tramite} from '@models/tramite';
     TableModule,
     Ripple,
     NgStyle,
-    EstadoColorPipe
+    EstadoColorPipe,
+    ToolbarModule
   ],
   templateUrl: './revision-tramite.component.html',
   standalone: true,
@@ -114,5 +118,11 @@ export default class RevisionTramiteComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarPendientes()
+  }
+
+  exportToExcel(){
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.revisiones)
+    const workbook: XLSX.WorkBook = {Sheets: {'data': worksheet}, SheetNames:['data']}
+    XLSX.writeFile(workbook, this.tramiteId+'.xlsx')
   }
 }

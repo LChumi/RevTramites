@@ -59,22 +59,23 @@
       } @else {
         <div class="col-12">
           <span>Tramite: {{tramiteId}}</span>
+          <p-toolbar styleClass="mb-4">
+            <ng-template pTemplate="left">
+              <div class="my-2">
+                <button pButton pRipple label="Seleccionar otro Tramite" icon="pi pi-chevron-left"
+                        class="p-button-outlined" (click)="nuevoEscaneo()"></button>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="right">
+              <button pButton pRipple label="Descargar Csv" icon="pi pi-download" class="p-button-outlined" (click)="exportToExcel()"></button>
+            </ng-template>
+          </p-toolbar>
           <div class="grid p-fluid mt-3">
             <div class="field mb-2 lg:col-6 lg:mb-0">
             <span class="p-float-label">
               <input type="text" id="barra" pInputText [(ngModel)]="barra" (keydown.enter)="escaneo()">
               <label for="barra">Barra</label>
             </span>
-            </div>
-            <div class=" mb-2 lg:col-2 lg:mb-0">
-              <button
-                pButton
-                pRipple
-                (click)="nuevoEscaneo()"
-                type="button"
-                label="Escoger otro Tramite"
-                class="p-button-rounded p-button-secondary">
-              </button>
             </div>
           </div>
         </div>
