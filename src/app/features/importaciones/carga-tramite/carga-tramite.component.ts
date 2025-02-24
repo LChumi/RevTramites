@@ -9,6 +9,7 @@ import {TableModule} from 'primeng/table';
 import {Ripple} from 'primeng/ripple';
 import {TramiteService} from '../../../core/services/tramite.service';
 import {ToolbarModule} from 'primeng/toolbar';
+import * as XLSX from 'xlsx';
 
 @Component({
   imports: [
@@ -84,5 +85,11 @@ export default class CargaTramiteComponent {
       summary: summary,
       detail: detail
     });
+  }
+
+  exportToExcel() {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.productos)
+    const workbook: XLSX.WorkBook = {Sheets: {'data': worksheet}, SheetNames: ['data']};
+    XLSX.writeFile(workbook, this.tramiteId+'.xlsx');
   }
 }
