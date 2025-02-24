@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import {importacionesRoutes} from '@features/importaciones/importacionesRoutes';
+import {authGuard} from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,7 @@ export const routes: Routes = [
       },
       {
         path: 'bodega-recepcion',
+        canActivate:[authGuard],
         children: importacionesRoutes
       }
     ]

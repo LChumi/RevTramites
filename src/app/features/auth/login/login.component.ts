@@ -55,7 +55,7 @@ export default class LoginComponent implements OnInit {
         const nombres = usuario.usr_nombre.split(' ');
         const nombre = nombres[0]; // Primer nombre
         const segundoNombre = nombres.length > 2 ? nombres[2] : nombres.length > 1 ? nombres[1] : ''; // Segundo nombre, si existe
-        sessionStorage.setItem("usuario", nombre + (segundoNombre ? ' ' + segundoNombre : ''));
+        sessionStorage.setItem("username", nombre + (segundoNombre ? ' ' + segundoNombre : ''));
         this.loginForm.reset();
       }
     })
