@@ -14,7 +14,7 @@ import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
 import {Observable, switchMap} from 'rxjs';
 import {Tramite} from '@models/tramite';
 import {ToolbarModule} from 'primeng/toolbar';
-import * as XLSX from 'xlsx';
+import {converToExcel} from '@utils/excel-utils';
 
 
 @Component({
@@ -121,8 +121,6 @@ export default class RevisionTramiteComponent implements OnInit {
   }
 
   exportToExcel(){
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.revisiones)
-    const workbook: XLSX.WorkBook = {Sheets: {'data': worksheet}, SheetNames:['data']}
-    XLSX.writeFile(workbook, this.tramiteId+'.xlsx')
+    converToExcel(this.revisiones, this.tramiteId)
   }
 }
