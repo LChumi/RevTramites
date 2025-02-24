@@ -6,21 +6,18 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class EstadoColorPipe implements PipeTransform {
 
+  private estados: { [key: string]: any } = {
+    'completo': { 'background-color': 'green', 'color': 'white' },
+    'sin registro': { 'background-color': 'tomato', 'color': 'black' },
+    'no llego': { 'background-color': 'yellow', 'color': 'black' },
+    'sobrante': { 'background-color': 'purple', 'color': 'white' },
+    'faltante': { 'background-color': 'orange', 'color': 'black' },
+  };
+
   transform(value: string): any {
-    switch (value.toLowerCase()) {
-      case 'completo':
-        return { 'background-color': 'green', 'color': 'white' };
-      case 'sin registro':
-        return { 'background-color': 'tomato', 'color': 'white' };
-      case 'no llego':
-        return { 'background-color': 'yellow', 'color': 'black' };
-      case 'sobrante':
-        return { 'background-color': 'purple', 'color': 'white' };
-      case 'faltante':
-        return { 'background-color': 'orange', 'color': 'white' };
-      default:
-        return { 'background-color': 'yellow', 'color': 'black' };
-    }
+    const baseStyle = { 'border-radius': '15px', 'padding': '10px' };
+    const estado = this.estados[value.toLowerCase()] || this.estados['no llego'];
+    return { ...baseStyle, ...estado };
   }
 
 }
