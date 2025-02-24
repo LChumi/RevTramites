@@ -33,4 +33,8 @@ export class TramiteService {
   productos(tramiteId: string): Observable<Producto[]> {
     return this.http.get<Producto[]>(`${this.baseUrl}/${tramiteId}/products`);
   }
+
+  pending(): Observable<Tramite[]> {
+    return this.http.get<Tramite[]>(`${this.baseUrl}/pending`);
+  }
 }

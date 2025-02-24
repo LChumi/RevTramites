@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {InputTextModule} from 'primeng/inputtext';
 import {InputGroupModule} from 'primeng/inputgroup';
@@ -12,6 +12,7 @@ import {Ripple} from 'primeng/ripple';
 import {NgStyle} from '@angular/common';
 import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
 import {Observable, switchMap} from 'rxjs';
+import {Tramite} from '@models/tramite';
 
 @Component({
   imports: [
@@ -28,7 +29,7 @@ import {Observable, switchMap} from 'rxjs';
   standalone: true,
   styles: ``
 })
-export default class RevisionTramiteComponent {
+export default class RevisionTramiteComponent implements OnInit {
 
   private tramiteService = inject(TramiteService)
   private revisionService = inject(RevisionService)
@@ -39,10 +40,14 @@ export default class RevisionTramiteComponent {
   barra: string = '';
   tramiteExist: boolean = false;
   revisiones: Revision[] = [];
+  tramites: Tramite[] = [];
   revision: Revision | null = null;
+  tramite: Tramite | null = null;
 
-  buscarTramite() {
-    if (!this.tramiteId) return;
+  buscarTramite(tramiteId: string) {
+    console.log(tramiteId);
+    if (!tramiteId) return;
+    this.tramiteId = tramiteId;
 
     this.tramiteService.findById(this.tramiteId).pipe(
       switchMap(tramite => {
@@ -59,6 +64,20 @@ export default class RevisionTramiteComponent {
     ).subscribe(revisiones => {
       this.revisiones = revisiones;
     });
+  }
+
+  listarPendientes() {
+    this.tramiteService.pending().subscribe({
+      next: (tramites) => {
+        if (tramites.length > 0) {
+          this.tramites = tramites
+        }
+      },
+      error: (err) => {
+        this.messageService.add({ severity: 'warn', summary: 'No existen Tramites ', detail: 'No se encontraron Tramites Pendientes de verificar ' });
+
+      }
+    })
   }
 
   escaneo() {
@@ -86,5 +105,13 @@ export default class RevisionTramiteComponent {
         });
       }
     });
+  }
+
+  nuevoEscaneo() {
+    this.tramiteExist = false;
+  }
+
+  ngOnInit(): void {
+    this.listarPendientes()
   }
 }

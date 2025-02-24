@@ -8,24 +8,52 @@
     </div>
     <div class="col-12 mt-4">
       <ul class="flex list-none flex-wrap">
-        <li class="flex align-items-center text-primary mr-2">Numero de Tramite<i
+        <li class="flex align-items-center text-primary mr-2">Tramites Pendientes<i
+          class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
+        <li class="flex align-items-center text-primary mr-2">Tramite a verificar<i
           class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
         <li class="flex align-items-center text-500 mr-2">Escaneo<i
           class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
-        <li class="flex align-items-center text-500 mr-2">Verificacion de productos</li>
+        <li class="flex align-items-center text-500 mr-2">Verificación de productos</li>
       </ul>
 
       @if (!tramiteExist){
-        <div class="col-12">
-          <div class="grid p-fluid mt-3">
-            <div class="field mb-2 lg:col-6 lg:mb-0">
-            <span class="p-float-label">
-              <p-inputGroup>
-                <button type="button" pButton label="Buscar" (click)="buscarTramite()"></button>
-                <input type="text" pInputText placeholder="Buscar Numero Tramite" [(ngModel)]="tramiteId" (keydown.enter)="buscarTramite()"  />
-              </p-inputGroup>
-            </span>
-            </div>
+        <div class="mt-2">
+          <div class="card">
+            <p-table
+              #tr
+              [value]="tramites"
+              [responsiveLayout]="'scroll'"
+              [paginator]="true"
+              [rows]="5"
+              dataKey="id"
+              class="my-3 p-p-3"
+              styleClass="p-datatable-gridlines">
+              <ng-template pTemplate="caption">
+                <h3>Tramites pendientes de validacion</h3>
+                <small>Tramites pendientes: {{tramites.length}}</small>
+              </ng-template>
+
+              <ng-template pTemplate="header">
+                <tr>
+                  <th></th>
+                  <th pSortableColumn="id">Tramite</th>
+                  <th pSortableColumn="fechaCarga">Fecha Carga</th>
+                  <th pSortableColumn="observacion">Observación</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-tramite>
+                <tr>
+                  <td [ngStyle]="{'width': '50px'}">
+                    <button type="button" pButton pRipple class="p-button-text p-button-rounded p-button-plain" icon="pi pi-chevron-right" (click)="buscarTramite(tramite.id)"></button>
+                  </td>
+                  <td class="p-text-center p-col-1 p-col-fixed">{{tramite.id}}</td>
+                  <td class="p-text-center p-col-1">{{tramite.fechaCarga}}</td>
+                  <td class="p-text-center p-col-1">{{tramite.observacion }}</td>
+                </tr>
+              </ng-template>
+            </p-table>
           </div>
         </div>
       } @else {
@@ -37,11 +65,21 @@
               <label for="barra">Barra</label>
             </span>
             </div>
+            <div class=" mb-2 lg:col-2 lg:mb-0">
+              <button
+                pButton
+                pRipple
+                (click)="nuevoEscaneo()"
+                type="button"
+                label="Escoger otro Tramite"
+                class="p-button-rounded p-button-secondary">
+              </button>
+            </div>
           </div>
         </div>
 
         @if (revisiones.length > 0) {
-          <div class="mt-1">
+          <div class="mt-2">
             <div class="card">
               <p-table
                 #dt
@@ -97,6 +135,7 @@
             label="Verificar Tramite"
             class="p-button-rounded">
           </button>
+
         }
       }
     </div>
