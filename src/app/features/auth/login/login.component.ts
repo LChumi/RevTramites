@@ -31,6 +31,7 @@ export default class LoginComponent implements OnInit {
   submitted = false;
 
   ngOnInit(): void {
+    this.getSession()
     this.loginForm = this.fb.group({
       usuario: ['', Validators.required],
       password: ['', Validators.required]
@@ -38,7 +39,6 @@ export default class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitted = true;
     if (this.loginForm.invalid) return
 
     const usuario = this.loginForm.get('usuario')?.value;
@@ -57,9 +57,26 @@ export default class LoginComponent implements OnInit {
         const segundoNombre = nombres.length > 2 ? nombres[2] : nombres.length > 1 ? nombres[1] : ''; // Segundo nombre, si existe
         sessionStorage.setItem("username", nombre + (segundoNombre ? ' ' + segundoNombre : ''));
         this.loginForm.reset();
+        this.submitted = true;
       }
     })
+  }
 
+  private getSession(){
+    setTimeout(() => {
+      const username = sessionStorage.getItem("username");
+      if (username) {
+        this.submitted = true;
+      }
+    }, 1000);
+  }
+
+  goToCarga(){
+    this.router.navigate(['icep', 'bodega-recepcion', 'carga-bultos']).then(r => {});
+  }
+
+  goToRevision(){
+    this.router.navigate(['icep', 'bodega-recepcion', 'revision-bultos']).then(r => {});
   }
 
 }
