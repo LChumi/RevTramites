@@ -113,6 +113,7 @@ export default class RevisionTramiteComponent implements OnInit {
   }
 
   nuevoEscaneo() {
+    this.listarPendientes();
     this.tramiteExist = false;
     this.tramiteId = ''
 

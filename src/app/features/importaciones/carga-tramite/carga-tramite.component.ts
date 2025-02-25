@@ -79,6 +79,11 @@ export default class CargaTramiteComponent {
     this.fecha = null
   }
 
+  agregarContenedor(){
+    this.contenedor = null
+    this.productos = []
+  }
+
   listProductos(tramiteId: any){
     this.tramiteService.productos(tramiteId).subscribe({
       next: response => {
