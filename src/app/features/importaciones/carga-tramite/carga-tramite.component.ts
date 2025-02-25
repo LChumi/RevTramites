@@ -35,7 +35,7 @@ export default class CargaTramiteComponent {
 
   protected uploadedFiles: any[] = [] ;
   protected tramiteId: any;
-  protected observacion: any;
+  protected contenedor: any;
   protected productos: Producto[] = [];
   protected loading = false;
   fecha: any
@@ -56,7 +56,7 @@ export default class CargaTramiteComponent {
     const fecha = getCurrentDate(this.fecha);
 
     files.forEach((file: File) => {
-      this.fileService.sendExcel(file, fecha, this.tramiteId, this.observacion).subscribe({
+      this.fileService.sendExcel(file, fecha, this.tramiteId, this.contenedor).subscribe({
         next: response => {
           if (response == null) {
             this.message('warn', 'Advertencia', 'El archivo esta vacio')
@@ -74,8 +74,9 @@ export default class CargaTramiteComponent {
 
   cargarNuevo(){
     this.tramiteId = null
-    this.observacion = null
+    this.contenedor = null
     this.productos = []
+    this.fecha = null
   }
 
   listProductos(tramiteId: any){

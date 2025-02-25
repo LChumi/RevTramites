@@ -115,6 +115,7 @@ export default class RevisionTramiteComponent implements OnInit {
   nuevoEscaneo() {
     this.tramiteExist = false;
     this.tramiteId = ''
+
   }
 
   ngOnInit(): void {

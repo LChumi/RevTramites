@@ -14,11 +14,11 @@ export class FileService {
 
   constructor() { }
 
-  sendExcel(file: File, fechaLlega: any,  tramiteId: string, observacion: any): Observable<Tramite> {
+  sendExcel(file: File, fechaLlega: any,  tramiteId: string, contenedorId: any): Observable<Tramite> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('tramiteId', tramiteId);
-    formData.append('observacion', observacion);
+    formData.append('contenedorId', contenedorId);
     formData.append('fechaLlegada', fechaLlega);
 
     return this.http.post<Tramite>(`${this.baseUrl}/excel/tramite`, formData, {})
