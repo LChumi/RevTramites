@@ -48,9 +48,14 @@
                   </tr>
                 </ng-template>
 
-                <ng-template pTemplate="body" let-tramite>
+                <ng-template pTemplate="body" let-tramite let-expanded="expanded">
                   <tr>
                     <td [ngStyle]="{'width': '50px'}">
+                      @if (tramite.contenedores){
+                        <button type="button" pButton pRipple [pRowToggler]="tramite"
+                                class="p-button-text p-button-rounded p-button-plain"
+                                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                      }
                       <button type="button" pButton pRipple class="p-button-text p-button-rounded p-button-plain" icon="pi pi-chevron-right" (click)="buscarTramite(tramite.id)"></button>
                     </td>
                     <td class="p-text-center p-col-1 p-col-fixed">{{tramite.id}}</td>
