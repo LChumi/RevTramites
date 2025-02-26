@@ -56,11 +56,58 @@
                                 class="p-button-text p-button-rounded p-button-plain"
                                 [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                       }
-                      <button type="button" pButton pRipple class="p-button-text p-button-rounded p-button-plain" icon="pi pi-chevron-right" (click)="buscarTramite(tramite.id)"></button>
                     </td>
                     <td class="p-text-center p-col-1 p-col-fixed">{{tramite.id}}</td>
                     <td class="p-text-center p-col-1">{{tramite.fechaCarga}}</td>
                     <td class="p-text-center p-col-1">{{tramite.observacion }}</td>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="rowexpansion" let-tramite>
+                  <tr>
+                    <td colspan="13">
+                      <div class="p-3">
+                        <p-table
+                          [value]="tramite.contenedores"
+                          dataKey="id"
+                          responsiveLayout="scroll">
+                          <ng-template pTemplate="header">
+                            <tr>
+                              <th></th>
+                              <th>N contenedor</th>
+                              <th>Cont Bloqueado</th>
+                              <th>Usuario Bloquea</th>
+                              <th>Cont finalizado</th>
+                              <th></th>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="body" let-contenedor>
+                            <tr>
+                              <td>
+                                <button type="button" pButton pRipple class="p-button-text p-button-rounded p-button-plain" icon="pi pi-chevron-right" (click)="buscarTramite(tramite.id)"></button>
+                              </td>
+                              <td>{{contenedor.id}}</td>
+                              <td>{{contenedor.bloqueado}}</td>
+                              <td>{{contenedor.usrBloquea}}</td>
+                              <td>{{contenedor.finalizado}}</td>
+                              <td>
+                                <span class="flex">
+                                  <button
+                                    pButton
+                                    pRipple
+                                    [hidden]="contenedor.finalizado"
+                                    [disabled]="contenedor.finalizado"
+                                    [icon]="getIcon(contenedor)"
+                                    class="p-button-rounded p-button-info mr-2">
+
+                                  </button>
+                                </span>
+                              </td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                      </div>
+                    </td>
                   </tr>
                 </ng-template>
               </p-table>

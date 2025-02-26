@@ -15,6 +15,7 @@ import {Observable, switchMap} from 'rxjs';
 import {Tramite} from '@models/tramite';
 import {ToolbarModule} from 'primeng/toolbar';
 import {converToExcel} from '@utils/excel-utils';
+import {Contenedor} from '@models/contenedor';
 
 
 @Component({
@@ -76,6 +77,7 @@ export default class RevisionTramiteComponent implements OnInit {
       next: (tramites) => {
         if (tramites.length > 0) {
           this.tramites = tramites
+          console.log(tramites)
         }
       },
       error: (err) => {
@@ -126,4 +128,13 @@ export default class RevisionTramiteComponent implements OnInit {
   exportToExcel(){
     converToExcel(this.revisiones, this.tramiteId)
   }
+
+  public getIcon(contenedor: Contenedor): string {
+    if (contenedor.finalizado) {
+      return 'pi pi-check';
+    } else {
+      return contenedor.bloqueado ? 'pi pi-lock' : 'pi pi-lock-open';
+    }
+  }
+
 }

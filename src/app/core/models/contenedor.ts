@@ -1,5 +1,6 @@
 export interface Contenedor {
   id:         string;
-  usrBloquea: null;
-  bloqueado:  null;
+  usrBloquea: string;
+  bloqueado:  boolean;
+  finalizado: boolean;
 }
