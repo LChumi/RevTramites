@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Tramite} from '@models/tramite';
 import {Producto} from '@models/producto';
+import {StatusResponse} from '../dto/status-response';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,7 @@ export class TramiteService {
     return this.http.get<Tramite[]>(`${this.baseUrl}/pending`);
   }
 
-  lockUnlockContainer(tramite:string, contenedor:string, usr:string): Observable<Tramite> {
-    return this.http.get<Tramite>(`${this.baseUrl}/lock-unlock/container/${tramite}/${contenedor}/${usr}`)
+  lockUnlockContainer(tramite:string, contenedor:string, usr:string): Observable<StatusResponse> {
+    return this.http.get<StatusResponse>(`${this.baseUrl}/lock-unlock/container/${tramite}/${contenedor}/${usr}`)
   }
 }

@@ -52,21 +52,26 @@ export default class RevisionTramiteComponent implements OnInit {
   loading: boolean = false;
 
   blockUnlockContainer(tramiteId: string, conatainerId: string){
-    console.log(tramiteId, ' Contenedor  ', conatainerId)
     if (!tramiteId) return;
     this.tramiteId = tramiteId;
 
     this.tramiteService.lockUnlockContainer(tramiteId, conatainerId, this.user).subscribe({
       next: response => {
-        if (response){
-          this.messageService.add({ severity: 'info', summary: 'exito', detail: 'Contenedor Bloqueado/Desbloqueado' });
-          this.listarPendientes()
+        if (!response.status && response.info === 'error') {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Contenedor Bloqueado por otro usuario' });
+        } else if (response.status && response.info === 'bloqueado') {
+          this.messageService.add({ severity: 'info', summary: 'Éxito', detail: 'Contenedor Bloqueado' });
+        } else if (response.status && response.info === 'desbloqueado') {
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Contenedor Desbloqueado' });
+        } else {
+          this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'Respuesta inesperada del servidor' });
         }
+        this.listarPendientes();
       }
     })
   }
-  buscarTramite(tramiteId: string) {
-    if (!tramiteId) return;
+  buscarTramite(tramiteId: string, containerId: string) {
+    if (!tramiteId || !containerId) return;
     this.tramiteId = tramiteId;
 
     this.tramiteService.findById(this.tramiteId).pipe(
@@ -74,7 +79,20 @@ export default class RevisionTramiteComponent implements OnInit {
         if (tramite) {
           this.tramiteExist = true;
           this.messageService.add({ severity: 'info', summary: 'Trámite existe', detail: 'Se encontró el registro de trámite' });
-          return this.revisionService.findByTramite(this.tramiteId);
+
+          const container = tramite.contenedores.find(c => c.id === containerId);
+          if (container) {
+            if (container.bloqueado) {
+              this.messageService.add({ severity: 'warn', summary: 'Contenedor Bloqueado', detail: 'El contenedor está bloqueado' });
+              return new Observable<Revision[]>(observer => observer.next([]));
+            } else {
+              this.blockUnlockContainer(tramiteId, containerId);
+              return this.revisionService.findByTramite(this.tramiteId);
+            }
+          } else {
+            this.messageService.add({ severity: 'warn', summary: 'Contenedor no encontrado', detail: 'No se encontró el contenedor especificado' });
+            return new Observable<Revision[]>(observer => observer.next([]));
+          }
         } else {
           this.tramiteExist = false;
           this.messageService.add({ severity: 'warn', summary: 'Trámite no existe', detail: 'No se encontró registro de trámite' });
@@ -82,16 +100,16 @@ export default class RevisionTramiteComponent implements OnInit {
         }
       })
     ).subscribe(revisiones => {
-      this.revisiones = revisiones;
-    });
+        this.revisiones = revisiones;
+      });
   }
+
 
   listarPendientes() {
     this.tramiteService.pending().subscribe({
       next: (tramites) => {
         if (tramites.length > 0) {
           this.tramites = tramites
-          console.log(tramites)
         }
       },
       error: (err) => {
@@ -137,7 +155,7 @@ export default class RevisionTramiteComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarPendientes()
-    this.user =sessionStorage.getItem("usuario")
+    this.user =sessionStorage.getItem("username")
 
   }
 

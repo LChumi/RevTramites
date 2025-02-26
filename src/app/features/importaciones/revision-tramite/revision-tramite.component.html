@@ -44,7 +44,7 @@
                     <th></th>
                     <th pSortableColumn="id">Tramite</th>
                     <th pSortableColumn="fechaCarga">Fecha Carga</th>
-                    <th pSortableColumn="observacion">Observación</th>
+                    <th pSortableColumn="observacion">Fecha Llegada</th>
                   </tr>
                 </ng-template>
 
@@ -59,7 +59,7 @@
                     </td>
                     <td class="p-text-center p-col-1 p-col-fixed">{{tramite.id}}</td>
                     <td class="p-text-center p-col-1">{{tramite.fechaCarga}}</td>
-                    <td class="p-text-center p-col-1">{{tramite.observacion }}</td>
+                    <td class="p-text-center p-col-1">{{tramite.fechaLlegada }}</td>
                   </tr>
                 </ng-template>
 
@@ -84,7 +84,15 @@
                           <ng-template pTemplate="body" let-contenedor>
                             <tr>
                               <td>
-                                <button type="button" pButton pRipple class="p-button-text p-button-rounded p-button-plain" icon="pi pi-chevron-right" ></button>
+                                <button
+                                  type="button"
+                                  pButton
+                                  pRipple
+                                  (click)="buscarTramite(tramite.id, contenedor.id)"
+                                  [hidden]="contenedor.finalizado || contenedor.bloqueado"
+                                  [disabled]="contenedor.finalizado || contenedor.bloqueado"
+                                  class="p-button-text p-button-rounded p-button-plain"
+                                  icon="pi pi-chevron-right" ></button>
                               </td>
                               <td>{{contenedor.id}}</td>
                               <td>{{contenedor.bloqueado}}</td>
