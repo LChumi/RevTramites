@@ -37,4 +37,8 @@ export class TramiteService {
   pending(): Observable<Tramite[]> {
     return this.http.get<Tramite[]>(`${this.baseUrl}/pending`);
   }
+
+  lockUnlockContainer(tramite:string, contenedor:string, usr:string): Observable<Tramite> {
+    return this.http.get<Tramite>(`${this.baseUrl}/lock-unlock/container/${tramite}/${contenedor}/${usr}`)
+  }
 }

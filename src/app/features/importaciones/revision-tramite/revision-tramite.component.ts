@@ -41,6 +41,7 @@ export default class RevisionTramiteComponent implements OnInit {
   private messageService = inject(MessageService)
   private confirmationService = inject(ConfirmationService)
 
+  user: any;
   tramiteId: string = '';
   barra: string = '';
   tramiteExist: boolean = false;
@@ -50,8 +51,21 @@ export default class RevisionTramiteComponent implements OnInit {
   tramite: Tramite | null = null;
   loading: boolean = false;
 
+  blockUnlockContainer(tramiteId: string, conatainerId: string){
+    console.log(tramiteId, ' Contenedor  ', conatainerId)
+    if (!tramiteId) return;
+    this.tramiteId = tramiteId;
+
+    this.tramiteService.lockUnlockContainer(tramiteId, conatainerId, this.user).subscribe({
+      next: response => {
+        if (response){
+          this.messageService.add({ severity: 'info', summary: 'exito', detail: 'Contenedor Bloqueado/Desbloqueado' });
+          this.listarPendientes()
+        }
+      }
+    })
+  }
   buscarTramite(tramiteId: string) {
-    console.log(tramiteId);
     if (!tramiteId) return;
     this.tramiteId = tramiteId;
 
@@ -88,9 +102,9 @@ export default class RevisionTramiteComponent implements OnInit {
   }
 
   escaneo() {
-    if (!this.tramiteId || !this.barra) return;
+    if (!this.tramiteId || !this.barra || !this.user) return;
 
-    this.revisionService.updateQuantity(this.tramiteId, this.barra, 'Prueba').pipe(
+    this.revisionService.updateQuantity(this.tramiteId, this.barra, this.user).pipe(
       switchMap(revision => {
         this.revision = revision;
         this.barra = '';
@@ -123,6 +137,8 @@ export default class RevisionTramiteComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarPendientes()
+    this.user =sessionStorage.getItem("usuario")
+
   }
 
   exportToExcel(){

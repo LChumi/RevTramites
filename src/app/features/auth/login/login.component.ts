@@ -68,7 +68,7 @@ export default class LoginComponent implements OnInit {
       if (username) {
         this.submitted = true;
       }
-    }, 1000);
+    }, 500);
   }
 
   goToCarga(){

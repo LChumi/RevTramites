@@ -84,7 +84,7 @@
                           <ng-template pTemplate="body" let-contenedor>
                             <tr>
                               <td>
-                                <button type="button" pButton pRipple class="p-button-text p-button-rounded p-button-plain" icon="pi pi-chevron-right" (click)="buscarTramite(tramite.id)"></button>
+                                <button type="button" pButton pRipple class="p-button-text p-button-rounded p-button-plain" icon="pi pi-chevron-right" ></button>
                               </td>
                               <td>{{contenedor.id}}</td>
                               <td>{{contenedor.bloqueado}}</td>
@@ -93,13 +93,13 @@
                               <td>
                                 <span class="flex">
                                   <button
+                                    (click)="blockUnlockContainer(tramite.id,contenedor.id)"
                                     pButton
                                     pRipple
                                     [hidden]="contenedor.finalizado"
                                     [disabled]="contenedor.finalizado"
                                     [icon]="getIcon(contenedor)"
                                     class="p-button-rounded p-button-info mr-2">
-
                                   </button>
                                 </span>
                               </td>
