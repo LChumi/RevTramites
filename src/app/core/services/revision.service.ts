@@ -30,8 +30,8 @@ export class RevisionService {
     return this.http.delete<void>(`${this.baseUrl}/delete/${id}`);
   }
 
-  updateQuantities(tramiteId: string): Observable<Revision[]> {
-    return this.http.put<Revision[]>(`${this.baseUrl}/updateQuantities/${tramiteId}`, {});
+  updateQuantities(tramiteId: string, containerId: string): Observable<Revision[]> {
+    return this.http.put<Revision[]>(`${this.baseUrl}/updateQuantities/${tramiteId}/${containerId}`, {});
   }
 
   updateQuantity(tramiteId: string, barra:string, usuario:string): Observable<Revision> {

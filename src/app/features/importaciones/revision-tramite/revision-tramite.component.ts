@@ -43,6 +43,7 @@ export default class RevisionTramiteComponent implements OnInit {
 
   user: any;
   tramiteId: string = '';
+  containerId: string = '';
   barra: string = '';
   tramiteExist: boolean = false;
   revisiones: Revision[] = [];
@@ -73,12 +74,13 @@ export default class RevisionTramiteComponent implements OnInit {
   buscarTramite(tramiteId: string, containerId: string) {
     if (!tramiteId || !containerId) return;
     this.tramiteId = tramiteId;
+    this.containerId = containerId;
 
     this.tramiteService.findById(this.tramiteId).pipe(
       switchMap(tramite => {
         if (tramite) {
           this.tramiteExist = true;
-          this.messageService.add({ severity: 'info', summary: 'Trámite existe', detail: 'Se encontró el registro de trámite' });
+          this.messageService.add({ severity: 'success', summary: 'Trámite existe', detail: 'Se encontró el registro de trámite' });
 
           const container = tramite.contenedores.find(c => c.id === containerId);
           if (container) {
@@ -134,13 +136,17 @@ export default class RevisionTramiteComponent implements OnInit {
   }
 
   validarTramite() {
+    if (!this.containerId) return
     this.confirmationService.confirm({
       message: 'Productos escaneados ¿Validar Trámite?',
       header: 'Confirmación',
       icon: 'pi pi-check',
       accept: () => {
-        this.revisionService.updateQuantities(this.tramiteId!).subscribe(revisiones => {
+        this.revisionService.updateQuantities(this.tramiteId, this.containerId).subscribe(revisiones => {
           this.revisiones = revisiones;
+          if (this.revisiones.every(revision => revision.estado === 'SN')) {
+            this.nuevoEscaneo();
+          }
         });
       }
     });
