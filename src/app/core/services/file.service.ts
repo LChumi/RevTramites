@@ -9,12 +9,13 @@ import {Tramite} from '@models/tramite';
 })
 export class FileService {
 
-  private baseUrl = environment.apiUrlBase+ 'file';
+  private baseUrl = environment.apiUrlBase + 'file';
   private http = inject(HttpClient)
 
-  constructor() { }
+  constructor() {
+  }
 
-  sendExcel(file: File, fechaLlega: any,  tramiteId: string, contenedorId: any): Observable<Tramite> {
+  sendExcel(file: File, fechaLlega: any, tramiteId: string, contenedorId: any): Observable<Tramite> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('tramiteId', tramiteId);

@@ -9,10 +9,11 @@ import {Revision} from '@models/revision';
 })
 export class RevisionService {
 
-  private baseUrl = environment.apiUrlBase+ 'revision';
+  private baseUrl = environment.apiUrlBase + 'revision';
   private http = inject(HttpClient)
 
-  constructor() { }
+  constructor() {
+  }
 
   findByTramite(tramiteId: string): Observable<Revision[]> {
     return this.http.get<Revision[]>(`${this.baseUrl}/tramiteId/${tramiteId}`);
@@ -34,7 +35,7 @@ export class RevisionService {
     return this.http.put<Revision[]>(`${this.baseUrl}/updateQuantities/${tramiteId}/${containerId}`, {});
   }
 
-  updateQuantity(tramiteId: string, barra:string, usuario:string): Observable<Revision> {
+  updateQuantity(tramiteId: string, barra: string, usuario: string): Observable<Revision> {
     return this.http.put<Revision>(`${this.baseUrl}/updateQuantity/${tramiteId}/${barra}/${usuario}`, {});
   }
 }

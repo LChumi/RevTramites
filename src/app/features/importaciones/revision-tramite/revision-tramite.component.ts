@@ -52,25 +52,34 @@ export default class RevisionTramiteComponent implements OnInit {
   tramite: Tramite | null = null;
   loading: boolean = false;
 
-  blockUnlockContainer(tramiteId: string, conatainerId: string){
+  blockUnlockContainer(tramiteId: string, conatainerId: string) {
     if (!tramiteId) return;
     this.tramiteId = tramiteId;
 
     this.tramiteService.lockUnlockContainer(tramiteId, conatainerId, this.user).subscribe({
       next: response => {
         if (!response.status && response.info === 'error') {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Contenedor Bloqueado por otro usuario' });
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Contenedor Bloqueado por otro usuario'
+          });
         } else if (response.status && response.info === 'bloqueado') {
-          this.messageService.add({ severity: 'info', summary: 'Éxito', detail: 'Contenedor Bloqueado' });
+          this.messageService.add({severity: 'info', summary: 'Éxito', detail: 'Contenedor Bloqueado'});
         } else if (response.status && response.info === 'desbloqueado') {
-          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Contenedor Desbloqueado' });
+          this.messageService.add({severity: 'success', summary: 'Éxito', detail: 'Contenedor Desbloqueado'});
         } else {
-          this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'Respuesta inesperada del servidor' });
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Advertencia',
+            detail: 'Respuesta inesperada del servidor'
+          });
         }
         this.listarPendientes();
       }
     })
   }
+
   buscarTramite(tramiteId: string, containerId: string) {
     if (!tramiteId || !containerId) return;
     this.tramiteId = tramiteId;
@@ -80,30 +89,46 @@ export default class RevisionTramiteComponent implements OnInit {
       switchMap(tramite => {
         if (tramite) {
           this.tramiteExist = true;
-          this.messageService.add({ severity: 'success', summary: 'Trámite existe', detail: 'Se encontró el registro de trámite' });
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Trámite existe',
+            detail: 'Se encontró el registro de trámite'
+          });
 
           const container = tramite.contenedores.find(c => c.id === containerId);
           if (container) {
             if (container.bloqueado) {
-              this.messageService.add({ severity: 'warn', summary: 'Contenedor Bloqueado', detail: 'El contenedor está bloqueado' });
+              this.messageService.add({
+                severity: 'warn',
+                summary: 'Contenedor Bloqueado',
+                detail: 'El contenedor está bloqueado'
+              });
               return new Observable<Revision[]>(observer => observer.next([]));
             } else {
               this.blockUnlockContainer(tramiteId, containerId);
               return this.revisionService.findByTramite(this.tramiteId);
             }
           } else {
-            this.messageService.add({ severity: 'warn', summary: 'Contenedor no encontrado', detail: 'No se encontró el contenedor especificado' });
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Contenedor no encontrado',
+              detail: 'No se encontró el contenedor especificado'
+            });
             return new Observable<Revision[]>(observer => observer.next([]));
           }
         } else {
           this.tramiteExist = false;
-          this.messageService.add({ severity: 'warn', summary: 'Trámite no existe', detail: 'No se encontró registro de trámite' });
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Trámite no existe',
+            detail: 'No se encontró registro de trámite'
+          });
           return new Observable<Revision[]>(observer => observer.next([]));
         }
       })
     ).subscribe(revisiones => {
-        this.revisiones = revisiones;
-      });
+      this.revisiones = revisiones;
+    });
   }
 
 
@@ -115,7 +140,11 @@ export default class RevisionTramiteComponent implements OnInit {
         }
       },
       error: (err) => {
-        this.messageService.add({ severity: 'warn', summary: 'No existen Tramites ', detail: 'No se encontraron Tramites Pendientes de verificar ' });
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'No existen Tramites ',
+          detail: 'No se encontraron Tramites Pendientes de verificar '
+        });
 
       }
     })
@@ -161,11 +190,11 @@ export default class RevisionTramiteComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarPendientes()
-    this.user =sessionStorage.getItem("username")
+    this.user = sessionStorage.getItem("username")
 
   }
 
-  exportToExcel(){
+  exportToExcel() {
     converToExcel(this.revisiones, this.tramiteId)
   }
 

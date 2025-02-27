@@ -11,9 +11,10 @@ export class AuthService {
   private baseUrl = 'http://192.168.112.36:7569/usuarios'
   private http = inject(HttpClient)
 
-  constructor() { }
+  constructor() {
+  }
 
-  login(user: LoginRequest):Observable<any>{
+  login(user: LoginRequest): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/login`, user)
   }
 }

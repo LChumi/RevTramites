@@ -62,7 +62,7 @@ export default class LoginComponent implements OnInit {
     })
   }
 
-  private getSession(){
+  private getSession() {
     setTimeout(() => {
       const username = sessionStorage.getItem("username");
       if (username) {
@@ -71,12 +71,14 @@ export default class LoginComponent implements OnInit {
     }, 500);
   }
 
-  goToCarga(){
-    this.router.navigate(['icep', 'bodega-recepcion', 'carga-bultos']).then(r => {});
+  goToCarga() {
+    this.router.navigate(['icep', 'bodega-recepcion', 'carga-bultos']).then(r => {
+    });
   }
 
-  goToRevision(){
-    this.router.navigate(['icep', 'bodega-recepcion', 'revision-bultos']).then(r => {});
+  goToRevision() {
+    this.router.navigate(['icep', 'bodega-recepcion', 'revision-bultos']).then(r => {
+    });
   }
 
 }

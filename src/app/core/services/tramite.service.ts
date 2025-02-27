@@ -10,12 +10,13 @@ import {StatusResponse} from '../dto/status-response';
   providedIn: 'root'
 })
 export class TramiteService {
-  private baseUrl = environment.apiUrlBase+ 'tramite';
+  private baseUrl = environment.apiUrlBase + 'tramite';
   private http = inject(HttpClient)
 
-  constructor() { }
+  constructor() {
+  }
 
-  getAll(): Observable<Tramite[]>{
+  getAll(): Observable<Tramite[]> {
     return this.http.get<Tramite[]>(`${this.baseUrl}/All`);
   }
 
@@ -23,7 +24,7 @@ export class TramiteService {
     return this.http.get<Tramite>(`${this.baseUrl}/findId/${tramiteId}`);
   }
 
-  update(tramiteId: string, tramite:Tramite): Observable<Tramite> {
+  update(tramiteId: string, tramite: Tramite): Observable<Tramite> {
     return this.http.put<Tramite>(`${this.baseUrl}/update/${tramiteId}`, JSON.stringify(tramite));
   }
 
@@ -39,7 +40,7 @@ export class TramiteService {
     return this.http.get<Tramite[]>(`${this.baseUrl}/pending`);
   }
 
-  lockUnlockContainer(tramite:string, contenedor:string, usr:string): Observable<StatusResponse> {
+  lockUnlockContainer(tramite: string, contenedor: string, usr: string): Observable<StatusResponse> {
     return this.http.get<StatusResponse>(`${this.baseUrl}/lock-unlock/container/${tramite}/${contenedor}/${usr}`)
   }
 }

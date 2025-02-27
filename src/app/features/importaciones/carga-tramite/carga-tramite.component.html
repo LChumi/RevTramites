@@ -15,13 +15,13 @@
         <li class="flex align-items-center text-500 mr-2">Lista productos</li>
       </ul>
 
-      @if (loading){
+      @if (loading) {
         <div class="flex align-items-center justify-content-center" style="height: 100%;">
           <i class="pi pi-spin pi-spinner" style="font-size: 4rem; color: blue;"></i>
         </div>
 
       } @else {
-        @if (productos.length ===0){
+        @if (productos.length === 0) {
           <div class="col-12">
             <div class="grid p-fluid mt-3">
               <div class="field mb-2 lg:col-6 lg:mb-0">
@@ -35,24 +35,24 @@
             </span>
                 <div class="mt-4">
                   <p-calendar
-                              dateFormat="dd-mm-yy"
-                              placeholder="Fecha"
-                              [required]="true"
-                              inputId="fecha"
-                              [(ngModel)]="fecha"
-                              [readonlyInput]="true"
-                              showButtonBar
-                              showIcon
-                              [minDate]="minDate"
-                              [style]="{ width: '250px' }"
-                              [inputStyle]="{ width: '100%', maxWidth: '150px' }">
+                    dateFormat="dd-mm-yy"
+                    placeholder="Fecha"
+                    [required]="true"
+                    inputId="fecha"
+                    [(ngModel)]="fecha"
+                    [readonlyInput]="true"
+                    showButtonBar
+                    showIcon
+                    [minDate]="minDate"
+                    [style]="{ width: '250px' }"
+                    [inputStyle]="{ width: '100%', maxWidth: '150px' }">
                   </p-calendar>
                 </div>
               </div>
             </div>
           </div>
 
-          @if (contenedor && tramiteId){
+          @if (contenedor && tramiteId) {
             <p-fileUpload
               name="demo[]"
               url="https://www.primefaces.org/cdn/api/upload.php"
@@ -64,7 +64,7 @@
               <ng-template pTemplate="content">
                 @if (uploadedFiles.length) {
                   <ul class="list-none p-0 m-0">
-                    @for (file of uploadedFiles; track $index){
+                    @for (file of uploadedFiles; track $index) {
                       <li class="py-2 border-bottom-1 border-gray-300">
                         📄 {{ file.name }} - {{ file.size }} bytes
                       </li>
@@ -89,7 +89,8 @@
                   </div>
                 </ng-template>
                 <ng-template pTemplate="right">
-                  <button pButton pRipple label="Descargar Csv" icon="pi pi-upload" class="p-button-outlined" (click)="exportToExcel()"></button>
+                  <button pButton pRipple label="Descargar Csv" icon="pi pi-upload" class="p-button-outlined"
+                          (click)="exportToExcel()"></button>
                 </ng-template>
               </p-toolbar>
               <p-table
@@ -119,16 +120,16 @@
                   </tr>
                 </ng-template>
 
-                <ng-template pTemplate="body" let-producto >
+                <ng-template pTemplate="body" let-producto>
                   <tr>
                     <td></td>
-                    <td class="text-right">{{producto.id}}</td>
-                    <td class="text-right">{{producto.id1}}</td>
-                    <td style="white-space: nowrap; min-width: 12rem" class="text-right">{{producto.nombre}}</td>
-                    <td class="text-right">{{producto.cxb}}</td>
-                    <td class="text-right">{{producto.bultos}}</td>
-                    <td class="text-right">{{producto.total}}</td>
-                    <td class="text-right">{{producto.pvp}}</td>
+                    <td class="text-right">{{ producto.id }}</td>
+                    <td class="text-right">{{ producto.id1 }}</td>
+                    <td style="white-space: nowrap; min-width: 12rem" class="text-right">{{ producto.nombre }}</td>
+                    <td class="text-right">{{ producto.cxb }}</td>
+                    <td class="text-right">{{ producto.bultos }}</td>
+                    <td class="text-right">{{ producto.total }}</td>
+                    <td class="text-right">{{ producto.pvp }}</td>
                   </tr>
                 </ng-template>
 

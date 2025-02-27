@@ -22,7 +22,7 @@
           <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: blue;"></i>
         </div>
       } @else {
-        @if (!tramiteExist){
+        @if (!tramiteExist) {
           <div class="mt-2">
             <div class="card">
               <p-table
@@ -36,7 +36,7 @@
                 styleClass="p-datatable-gridlines">
                 <ng-template pTemplate="caption">
                   <h3>Tramites pendientes de validacion</h3>
-                  <small>Tramites pendientes: {{tramites.length}}</small>
+                  <small>Tramites pendientes: {{ tramites.length }}</small>
                 </ng-template>
 
                 <ng-template pTemplate="header">
@@ -51,15 +51,15 @@
                 <ng-template pTemplate="body" let-tramite let-expanded="expanded">
                   <tr>
                     <td [ngStyle]="{'width': '50px'}">
-                      @if (tramite.contenedores){
+                      @if (tramite.contenedores) {
                         <button type="button" pButton pRipple [pRowToggler]="tramite"
                                 class="p-button-text p-button-rounded p-button-plain"
                                 [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                       }
                     </td>
-                    <td class="p-text-center p-col-1 p-col-fixed">{{tramite.id}}</td>
-                    <td class="p-text-center p-col-1">{{tramite.fechaCarga}}</td>
-                    <td class="p-text-center p-col-1">{{tramite.fechaLlegada }}</td>
+                    <td class="p-text-center p-col-1 p-col-fixed">{{ tramite.id }}</td>
+                    <td class="p-text-center p-col-1">{{ tramite.fechaCarga }}</td>
+                    <td class="p-text-center p-col-1">{{ tramite.fechaLlegada }}</td>
                   </tr>
                 </ng-template>
 
@@ -92,12 +92,12 @@
                                   [hidden]="contenedor.finalizado || contenedor.bloqueado"
                                   [disabled]="contenedor.finalizado || contenedor.bloqueado"
                                   class="p-button-text p-button-rounded p-button-plain"
-                                  icon="pi pi-chevron-right" ></button>
+                                  icon="pi pi-chevron-right"></button>
                               </td>
-                              <td>{{contenedor.id}}</td>
-                              <td>{{contenedor.bloqueado}}</td>
-                              <td>{{contenedor.usrBloquea}}</td>
-                              <td>{{contenedor.finalizado}}</td>
+                              <td>{{ contenedor.id }}</td>
+                              <td>{{ contenedor.bloqueado }}</td>
+                              <td>{{ contenedor.usrBloquea }}</td>
+                              <td>{{ contenedor.finalizado }}</td>
                               <td>
                                 <span class="flex">
                                   <button
@@ -123,8 +123,8 @@
           </div>
         } @else {
           <div class="col-12">
-            <span>Tramite: {{tramiteId}}</span>
-            <span>Contenedor: {{containerId}}</span>
+            <span>Tramite: {{ tramiteId }}</span>
+            <span>Contenedor: {{ containerId }}</span>
             <p-toolbar styleClass="mb-4">
               <ng-template pTemplate="left">
                 <div class="my-2">
@@ -133,7 +133,8 @@
                 </div>
               </ng-template>
               <ng-template pTemplate="right">
-                <button pButton pRipple label="Descargar Csv" icon="pi pi-download" class="p-button-outlined" (click)="exportToExcel()"></button>
+                <button pButton pRipple label="Descargar Csv" icon="pi pi-download" class="p-button-outlined"
+                        (click)="exportToExcel()"></button>
               </ng-template>
             </p-toolbar>
             <div class="grid p-fluid mt-3">
@@ -161,7 +162,7 @@
                   [rowsPerPageOptions]="[10,20,30,50]">
                   <ng-template pTemplate="caption">
                     <h4>Lista de Productos pitados</h4>
-                    <small>Productos pitados: {{revisiones.length}} </small>
+                    <small>Productos pitados: {{ revisiones.length }} </small>
                   </ng-template>
 
                   <ng-template pTemplate="header">
@@ -175,19 +176,21 @@
                       <th pSortableColumn="fecha">fecha</th>
                     </tr>
                   </ng-template>
-                  <ng-template pTemplate="body" let-producto >
+                  <ng-template pTemplate="body" let-producto>
                     <tr>
                       <td></td>
-                      <td class="p-text-center p-col-1 p-col-fixed">{{producto.barra}}</td>
-                      <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{producto.cantidad}}</td>
-                      <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{producto.cantidadPedida}}</td>
-                      <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{producto.cantidadDiferencia}}</td>
+                      <td class="p-text-center p-col-1 p-col-fixed">{{ producto.barra }}</td>
+                      <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{ producto.cantidad }}</td>
+                      <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{ producto.cantidadPedida }}</td>
+                      <td class="p-text-center p-col-1"
+                          [ngStyle]="{'width': '50px'}">{{ producto.cantidadDiferencia }}
+                      </td>
                       <td class="p-text-center p-col-1 p-col-fixed">
                       <span [ngStyle]="producto.estado | estadoColor">
-                        {{producto.estado}}
+                        {{ producto.estado }}
                       </span>
                       </td>
-                      <td class="p-text-center p-col-1 p-col-fixed">{{producto.fecha}}</td>
+                      <td class="p-text-center p-col-1 p-col-fixed">{{ producto.fecha }}</td>
 
                     </tr>
                   </ng-template>

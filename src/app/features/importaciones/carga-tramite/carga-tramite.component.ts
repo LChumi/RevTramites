@@ -33,7 +33,7 @@ export default class CargaTramiteComponent implements OnInit {
   private fileService = inject(FileService)
   private tramiteService = inject(TramiteService)
 
-  protected uploadedFiles: any[] = [] ;
+  protected uploadedFiles: any[] = [];
   protected tramiteId: any;
   protected contenedor: any;
   protected productos: Producto[] = [];
@@ -73,19 +73,19 @@ export default class CargaTramiteComponent implements OnInit {
   }
 
 
-  cargarNuevo(){
+  cargarNuevo() {
     this.tramiteId = null
     this.contenedor = null
     this.productos = []
     this.fecha = null
   }
 
-  agregarContenedor(){
+  agregarContenedor() {
     this.contenedor = null
     this.productos = []
   }
 
-  listProductos(tramiteId: any){
+  listProductos(tramiteId: any) {
     this.tramiteService.productos(tramiteId).subscribe({
       next: response => {
         if (response == null) {
