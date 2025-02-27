@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FileUploadModule} from 'primeng/fileupload';
 import {MessageService} from 'primeng/api';
 import {FormsModule} from '@angular/forms';
@@ -21,13 +21,13 @@ import {getCurrentDate} from '@utils/date-utils';
     TableModule,
     Ripple,
     ToolbarModule,
-    CalendarModule
+    CalendarModule,
   ],
   templateUrl: './carga-tramite.component.html',
   standalone: true,
   styles: ``
 })
-export default class CargaTramiteComponent {
+export default class CargaTramiteComponent implements OnInit {
 
   private messageService = inject(MessageService)
   private fileService = inject(FileService)
@@ -39,6 +39,7 @@ export default class CargaTramiteComponent {
   protected productos: Producto[] = [];
   protected loading = false;
   fecha: any
+  minDate: Date | undefined
 
   onUpload(event: any) {
     this.loading = true;
@@ -105,5 +106,9 @@ export default class CargaTramiteComponent {
 
   exportToExcel() {
     converToExcel(this.productos, this.tramiteId)
+  }
+
+  ngOnInit(): void {
+    this.minDate = new Date();
   }
 }

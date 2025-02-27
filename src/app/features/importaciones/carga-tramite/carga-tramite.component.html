@@ -34,8 +34,19 @@
               <label for="contenedor">Ingrese el numero de contenedor</label>
             </span>
                 <div class="mt-4">
-                  <p-calendar dateFormat="dd-mm-yy" placeholder="Fecha" [required]="true" inputId="fecha"
-                              [(ngModel)]="fecha" showIcon></p-calendar>
+                  <p-calendar
+                              dateFormat="dd-mm-yy"
+                              placeholder="Fecha"
+                              [required]="true"
+                              inputId="fecha"
+                              [(ngModel)]="fecha"
+                              [readonlyInput]="true"
+                              showButtonBar
+                              showIcon
+                              [minDate]="minDate"
+                              [style]="{ width: '250px' }"
+                              [inputStyle]="{ width: '100%', maxWidth: '150px' }">
+                  </p-calendar>
                 </div>
               </div>
             </div>
