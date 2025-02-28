@@ -40,6 +40,10 @@ export class TramiteService {
     return this.http.get<Tramite[]>(`${this.baseUrl}/pending`);
   }
 
+  complete(): Observable<Tramite[]> {
+    return this.http.get<Tramite[]>(`${this.baseUrl}/completed`);
+  }
+
   lockUnlockContainer(tramite: string, contenedor: string, usr: string): Observable<StatusResponse> {
     return this.http.get<StatusResponse>(`${this.baseUrl}/lock-unlock/container/${tramite}/${contenedor}/${usr}`)
   }
