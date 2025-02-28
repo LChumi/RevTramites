@@ -1,11 +1,18 @@
 import { Component } from '@angular/core';
+import {InputTextModule} from 'primeng/inputtext';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   standalone: true,
-  imports: [],
+  imports: [
+    InputTextModule,
+    FormsModule
+  ],
   templateUrl: './muestra.component.html',
   styles: ``
 })
-export class MuestraComponent {
+export default class MuestraComponent {
 
+  barra: any;
+  muestra: any;
 }

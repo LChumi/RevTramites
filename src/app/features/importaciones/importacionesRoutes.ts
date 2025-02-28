@@ -8,5 +8,9 @@ export const importacionesRoutes: Routes = [
   {
     path: 'revision-bultos',
     loadComponent: () => import('@features/importaciones/revision-tramite/revision-tramite.component')
+  },
+  {
+    path: 'muestras',
+    loadComponent: () => import('@features/importaciones/muestra/muestra.component')
   }
 ]

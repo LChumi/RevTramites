@@ -1,1 +1,33 @@
-<p>muestra works!</p>
+<div class="card">
+  <div class="grid grid-nogutter">
+    <div class="col-12">
+      <span>
+        <span class="text-900 font-bold text-4xl">Muestras</span>
+      </span>
+      <div class="col-12 mt-4">
+        <ul class="flex list-none flex-wrap">
+          <li class="flex align-items-center text-primary mr-2">Carga Tramite<i
+            class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
+          <li class="flex align-items-center text-500 mr-2">Información<i
+            class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
+          <li class="flex align-items-center text-500 mr-2">Lista productos</li>
+        </ul>
+
+        <div class="card p-fluid">
+          <h4>Envio de Muestras</h4>
+          <div class="p-formgrid grid">
+            <div class="field col">
+              <label htmlFor="caja">Barra Caja </label>
+              <input pInputText id="caja" type="text" [ngModel]="">
+            </div>
+            <div class="field col">
+              <label htmlFor="barra">Barra Muestra</label>
+              <input pInputText id="barra" type="text">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
