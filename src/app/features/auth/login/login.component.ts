@@ -5,7 +5,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {PasswordModule} from 'primeng/password';
 import {Ripple} from 'primeng/ripple';
 import {Router} from '@angular/router';
-import {LoginRequest} from '../../../core/dto/login-request';
+import {LoginRequest} from '@dtos/login-request';
 import {AuthService} from '@services/auth.service';
 
 @Component({

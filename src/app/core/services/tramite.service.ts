@@ -4,7 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Tramite} from '@models/tramite';
 import {Producto} from '@models/producto';
-import {StatusResponse} from '../dto/status-response';
+import {StatusResponse} from '@dtos/status-response';
 
 @Injectable({
   providedIn: 'root'
