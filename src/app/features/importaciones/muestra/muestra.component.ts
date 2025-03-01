@@ -5,12 +5,20 @@ import {TramiteService} from '@services/tramite.service';
 import {Tramite} from '@models/tramite';
 import {MessageService} from 'primeng/api';
 import {MuestraService} from '@services/muestra.service';
+import {TableModule} from 'primeng/table';
+import {NgStyle} from '@angular/common';
+import {ButtonDirective} from 'primeng/button';
+import {Ripple} from 'primeng/ripple';
 
 @Component({
   standalone: true,
   imports: [
     InputTextModule,
-    FormsModule
+    FormsModule,
+    TableModule,
+    NgStyle,
+    ButtonDirective,
+    Ripple
   ],
   templateUrl: './muestra.component.html',
   styles: ``
@@ -24,9 +32,10 @@ export default class MuestraComponent implements OnInit {
   tramites: Tramite[] = [];
   barra: any;
   muestra: any;
+  tramiteExist: boolean = false;
 
   listarCmpletos() {
-    this.tramiteService.pending().subscribe({
+    this.tramiteService.complete().subscribe({
       next: (tramites) => {
         if (tramites.length > 0) {
           this.tramites = tramites
@@ -36,7 +45,7 @@ export default class MuestraComponent implements OnInit {
         this.messageService.add({
           severity: 'warn',
           summary: 'No existen Tramites ',
-          detail: 'No se encontraron Tramites Pendientes de verificar '
+          detail: 'No se encontraron Tramites Finalizados o Completos finalize la revision '
         });
 
       }
@@ -44,5 +53,10 @@ export default class MuestraComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.listarCmpletos()
+  }
+
+  tramiteSelected(tramiteId: string){
+    this.tramiteExist = true;
   }
 }

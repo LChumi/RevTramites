@@ -6,26 +6,71 @@
       </span>
       <div class="col-12 mt-4">
         <ul class="flex list-none flex-wrap">
-          <li class="flex align-items-center text-primary mr-2">Carga Tramite<i
+          <li class="flex align-items-center text-primary mr-2">Tramite<i
             class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
           <li class="flex align-items-center text-500 mr-2">Información<i
             class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
-          <li class="flex align-items-center text-500 mr-2">Lista productos</li>
+          <li class="flex align-items-center text-500 mr-2">Agregar Muestra</li>
         </ul>
 
-        <div class="card p-fluid">
-          <h4>Envio de Muestras</h4>
-          <div class="p-formgrid grid">
-            <div class="field col">
-              <label [htmlFor]="'caja'">Barra Caja </label>
-              <input pInputText id="caja" type="text" [(ngModel)]="barra">
-            </div>
-            <div class="field col">
-              <label [htmlFor]="'barra'">Barra Muestra</label>
-              <input pInputText id="barra" type="text" [(ngModel)]="muestra">
+        @if (tramiteExist){
+          <div class="flex justify-content-start">
+            <div class="card border-round p-2 w-full md:w-10 lg:w-8">
+              <h4 class="text-900">Envío de Muestras</h4>
+              <div class="p-formgrid grid gap-2">
+                <div class="field col-12 md:col-4">
+                  <label for="caja">Barra Caja</label>
+                  <input pInputText id="caja" type="text" [(ngModel)]="barra" class="p-inputtext w-full" />
+                </div>
+                <div class="field col-12 md:col-4">
+                  <label for="barra">Barra Muestra</label>
+                  <input pInputText id="barra" type="text" [(ngModel)]="muestra" class="p-inputtext w-full" />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        } @else {
+          <div class="mt-2">
+            <div class="card">
+              <p-table
+                #tr
+                [value]="tramites"
+                [responsiveLayout]="'scroll'"
+                [paginator]="true"
+                [rows]="5"
+                dataKey="id"
+                class="my-3 p-p-3"
+                styleClass="p-datatble-gridlines">
+
+                <ng-template pTemplate="caption">
+                  <h3>Tramites Finalizados</h3>
+                  <small>{{tramites.length}}</small>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th></th>
+                    <th>Tramite</th>
+                    <th>Fecha Carga</th>
+                    <th>Fecha Llegada</th>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-tramite>
+                  <tr>
+                    <td [ngStyle]="{'width': '50px'}">
+                      <button (click)="tramiteSelected(tramite.id)" type="button" pButton pRipple class="p-button-text p-button-rounded p-button-plain" icon="pi pi-chevron-right"></button>
+                    </td>
+                    <td class="p-text-center p-col-1 p-col-fixed">{{tramite.id}}</td>
+                    <td class="p-text-center p-col-1">{{tramite.fechaCarga}}</td>
+                    <td class="p-text-center p-col-1">{{tramite.fechaLlegada}}</td>
+                  </tr>
+                </ng-template>
+
+              </p-table>
+            </div>
+          </div>
+        }
 
       </div>
     </div>
