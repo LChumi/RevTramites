@@ -17,12 +17,12 @@
           <h4>Envio de Muestras</h4>
           <div class="p-formgrid grid">
             <div class="field col">
-              <label htmlFor="caja">Barra Caja </label>
-              <input pInputText id="caja" type="text" [ngModel]="">
+              <label [htmlFor]="'caja'">Barra Caja </label>
+              <input pInputText id="caja" type="text" [(ngModel)]="barra">
             </div>
             <div class="field col">
-              <label htmlFor="barra">Barra Muestra</label>
-              <input pInputText id="barra" type="text">
+              <label [htmlFor]="'barra'">Barra Muestra</label>
+              <input pInputText id="barra" type="text" [(ngModel)]="muestra">
             </div>
           </div>
         </div>

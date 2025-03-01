@@ -6,7 +6,7 @@ import {PasswordModule} from 'primeng/password';
 import {Ripple} from 'primeng/ripple';
 import {Router} from '@angular/router';
 import {LoginRequest} from '../../../core/dto/login-request';
-import {AuthService} from '../../../core/services/auth.service';
+import {AuthService} from '@services/auth.service';
 
 @Component({
   imports: [

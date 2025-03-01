@@ -1,9 +1,10 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {InputTextModule} from 'primeng/inputtext';
 import {FormsModule} from '@angular/forms';
-import {TramiteService} from '../../../core/services/tramite.service';
+import {TramiteService} from '@services/tramite.service';
 import {Tramite} from '@models/tramite';
 import {MessageService} from 'primeng/api';
+import {MuestraService} from '@services/muestra.service';
 
 @Component({
   standalone: true,
@@ -14,10 +15,11 @@ import {MessageService} from 'primeng/api';
   templateUrl: './muestra.component.html',
   styles: ``
 })
-export default class MuestraComponent {
+export default class MuestraComponent implements OnInit {
 
   private tramiteService = inject(TramiteService);
   private messageService = inject(MessageService);
+  private muestraService = inject(MuestraService)
 
   tramites: Tramite[] = [];
   barra: any;
@@ -39,5 +41,8 @@ export default class MuestraComponent {
 
       }
     })
+  }
+
+  ngOnInit(): void {
   }
 }
