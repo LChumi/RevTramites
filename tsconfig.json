@@ -8,6 +8,7 @@
       "@models/*": ["./src/app/core/models/*"],
       "@services/*": ["./src/app/core/services/*"],
       "@dtos/*":  ["./src/app/core/dto/*"],
+      "@guards/*": ["./src/app/core/guards/*"],
       "@features/*": ["./src/app/features/*"],
       "@interceptors/*": ["./src/app/core/interceptors/*"],
       "@utils/*": ["./src/app/core/utils/*"],
