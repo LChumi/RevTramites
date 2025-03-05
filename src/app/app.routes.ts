@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import {importacionesRoutes} from '@features/importaciones/importacionesRoutes';
 import {authGuard} from '@guards/auth.guard';
+import {LayoutComponent} from '@shared/component/layout/layout.component';
 
 export const routes: Routes = [
   {
@@ -15,10 +16,13 @@ export const routes: Routes = [
         ]
       },
       {
-        path: 'bodega-recepcion',
+        path: 'bodega-recepcion', component: LayoutComponent,
         canActivate:[authGuard],
+        canActivateChild:[authGuard],
         children: importacionesRoutes
-      }
+      },
+      {path: '', redirectTo: 'auth', pathMatch: "full"},
+      {path: '**', redirectTo: 'auth', pathMatch: "full"}
     ]
   },
   {path: '', redirectTo: 'icep/auth', pathMatch: "full"},

@@ -1,0 +1,19 @@
+<div class="layout-sidebar" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+  <div class="sidebar-header flex align-items-center justify-content-center p-3 ">
+    <a class="app-logo flex align-items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 75" class="app-logo-normal">
+        <!-- Imagen -->
+        <image href="/images/img.png" x="0" y="0" height="75" width="75" />
+        <!-- Texto CUMPLEAÑOS -->
+        <text x="90" y="45" font-family="Arial, sans-serif" font-size="35" font-weight="900" fill="var(--logo-color)">
+          CUMPLEAÑOS
+        </text>
+      </svg>
+    </a>
+    <button class="layout-sidebar-anchor p-link z-2 mb-2" type="button" (click)="anchor()"></button>
+  </div>
+
+  <div #menuContainer class="layout-menu-container overflow-y-auto p-3">
+    <app-menu></app-menu>
+  </div>
+</div>
