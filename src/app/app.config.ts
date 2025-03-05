@@ -6,13 +6,14 @@ import {provideHttpClient, withFetch, withInterceptors} from '@angular/common/ht
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
 import {provideAnimations} from '@angular/platform-browser/animations';
+import {errorHandlerInterceptor} from '@interceptors/error-handler.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     importProvidersFrom(ToastModule),
-    provideHttpClient(withFetch(), withInterceptors([])),
+    provideHttpClient(withFetch(), withInterceptors([errorHandlerInterceptor])),
     provideAnimations(),
     MessageService,
     ConfirmationService

@@ -9,6 +9,7 @@ import {TableModule} from 'primeng/table';
 import {NgStyle} from '@angular/common';
 import {ButtonDirective} from 'primeng/button';
 import {Ripple} from 'primeng/ripple';
+import {ErrorResponse} from '@dtos/error-response';
 
 @Component({
   standalone: true,
@@ -81,7 +82,7 @@ export default class MuestraComponent implements OnInit {
             detail: `Se agrego la muestra ${result.id} del bulto barra ${result.barraMuestra}`,
           })
         },
-        error: (err) => {
+        error: (err: ErrorResponse) => {
           this.messageService.add({
             severity: 'error',
             summary: 'Ocurrio un problema ',
