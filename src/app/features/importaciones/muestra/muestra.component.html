@@ -20,11 +20,11 @@
               <div class="p-formgrid grid gap-2">
                 <div class="field col-12 md:col-4">
                   <label for="caja">Barra Caja</label>
-                  <input pInputText id="caja" type="text" [(ngModel)]="barra" class="p-inputtext w-full" />
+                  <input pInputText id="caja" type="text" [(ngModel)]="barra" class="p-inputtext w-full" #cajaInput (keydown.enter)="focusNext(cajaInput, muestraInput)" />
                 </div>
                 <div class="field col-12 md:col-4">
                   <label for="barra">Barra Muestra</label>
-                  <input pInputText id="barra" type="text" [(ngModel)]="muestra" class="p-inputtext w-full" />
+                  <input pInputText id="barra" type="text" [(ngModel)]="muestra" class="p-inputtext w-full" #muestraInput (keydown.enter)="addCompare()"/>
                 </div>
               </div>
             </div>

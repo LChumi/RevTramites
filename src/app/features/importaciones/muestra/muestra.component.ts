@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {InputTextModule} from 'primeng/inputtext';
 import {FormsModule} from '@angular/forms';
 import {TramiteService} from '@services/tramite.service';
@@ -24,6 +24,9 @@ import {Ripple} from 'primeng/ripple';
   styles: ``
 })
 export default class MuestraComponent implements OnInit {
+  @ViewChild('cajaInput') cajaInput!: HTMLInputElement;
+  @ViewChild('muestraInput') muestraInput!: HTMLInputElement;
+
 
   private tramiteService = inject(TramiteService);
   private messageService = inject(MessageService);
@@ -33,6 +36,7 @@ export default class MuestraComponent implements OnInit {
   barra: any;
   muestra: any;
   tramiteExist: boolean = false;
+  private tramiteId: string = '';
 
   listarCmpletos() {
     this.tramiteService.complete().subscribe({
@@ -58,5 +62,39 @@ export default class MuestraComponent implements OnInit {
 
   tramiteSelected(tramiteId: string){
     this.tramiteExist = true;
+    this.tramiteId = tramiteId;
+  }
+
+  focusNext(currentInput: HTMLInputElement, nextInput: HTMLInputElement) {
+    if (nextInput) {
+      nextInput.focus();
+    }
+  }
+
+  addCompare(){
+    if (this.barra && this.muestra && this.tramiteId){
+      this.muestraService.addCompare(this.barra, this.muestra, this.tramiteId).subscribe({
+        next: (result) => {
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Muestra agregada',
+            detail: `Se agrego la muestra ${result.id} del bulto barra ${result.barraMuestra}`,
+          })
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Ocurrio un problema ',
+            detail: `Error en el servicio ${err.message}`,
+          })
+        }
+      })
+    } else {
+      this.messageService.add({
+        severity: 'warning',
+        summary: 'Barra no agregada',
+        detail: `llene los campos por favor`,
+      })
+    }
   }
 }
