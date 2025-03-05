@@ -12,5 +12,11 @@ export const importacionesRoutes: Routes = [
   {
     path: 'muestras',
     loadComponent: () => import('@features/importaciones/muestra/muestra.component')
-  }
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('@features/dashboard/inicio/inicio.component')
+  },
+  {path: '', redirectTo: 'dashboard', pathMatch: "full"},
+  {path:'**', redirectTo:'dashboard', pathMatch: "full"}
 ]

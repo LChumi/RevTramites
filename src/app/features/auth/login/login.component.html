@@ -15,18 +15,6 @@
     <!-- Imagen del logo centrada -->
     <img src="/images/img.png" alt="Logo" class="block mx-auto mb-4 w-2 h-2">
 
-    @if (submitted) {
-      <div class="mb-4">
-        <div class="text-900 text-xl font-bold mb-2">Seleccione una opcion</div>
-        <span class="text-600 font-medium">Tramites</span>
-      </div>
-      <div class="flex flex-column">
-        <button (click)="goToCarga()" pButton pRipple type="button" label="Cargar Tramite a Llegar"
-                icon="pi pi-chevron-circle-right" iconPos="right"></button>
-        <button (click)="goToRevision()" pButton pRipple type="button" label="Revision de Tramites" class="mt-2"
-                icon="pi pi-chevron-circle-right" iconPos="right"></button>
-      </div>
-    } @else {
       <div class="mb-4">
         <div class="text-900 text-xl font-bold mb-2">Iniciar Sesión</div>
         <span class="text-600 font-medium">Bienvenido</span>
@@ -70,7 +58,7 @@
           <button pButton pRipple label="Iniciar Sesión" class="w-6 p-3 text-xs" type="submit"></button>
         </form>
       </div>
-    }
+
 
   </div>
 </div>

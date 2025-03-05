@@ -58,6 +58,7 @@ export default class LoginComponent implements OnInit {
         sessionStorage.setItem("username", nombre + (segundoNombre ? ' ' + segundoNombre : ''));
         this.loginForm.reset();
         this.submitted = true;
+        this.goToDashboard()
       }
     })
   }
@@ -66,18 +67,13 @@ export default class LoginComponent implements OnInit {
     setTimeout(() => {
       const username = sessionStorage.getItem("username");
       if (username) {
-        this.submitted = true;
+        this.goToDashboard()
       }
     }, 500);
   }
 
-  goToCarga() {
-    this.router.navigate(['icep', 'bodega-recepcion', 'carga-bultos']).then(r => {
-    });
-  }
-
-  goToRevision() {
-    this.router.navigate(['icep', 'bodega-recepcion', 'revision-bultos']).then(r => {
+  goToDashboard() {
+    this.router.navigate(['icep', 'bodega-recepcion', 'dashboard']).then(r => {
     });
   }
 
