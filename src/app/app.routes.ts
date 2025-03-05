@@ -16,7 +16,7 @@ export const routes: Routes = [
         ]
       },
       {
-        path: 'bodega-recepcion', component: LayoutComponent,
+        path: 'bodega', component: LayoutComponent,
         canActivate:[authGuard],
         canActivateChild:[authGuard],
         children: importacionesRoutes

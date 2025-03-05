@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
   templateUrl: './consultas-tramite.component.html',
   styles: ``
 })
-export class ConsultasTramiteComponent {
+export default class ConsultasTramiteComponent {
 
 }

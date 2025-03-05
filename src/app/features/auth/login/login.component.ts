@@ -73,7 +73,7 @@ export default class LoginComponent implements OnInit {
   }
 
   goToDashboard() {
-    this.router.navigate(['icep', 'bodega-recepcion', 'dashboard']).then(r => {
+    this.router.navigate(['icep', 'bodega', 'dashboard']).then(r => {
     });
   }
 

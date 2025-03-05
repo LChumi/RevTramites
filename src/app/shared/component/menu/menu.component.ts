@@ -28,12 +28,12 @@ export class MenuComponent implements OnInit{
               {
                 label: 'Carga de Tramites por llegar',
                 icon: 'pi pi-upload',
-                routerLink: '/icep/bodega-recepcion/carga-bultos',
+                routerLink: '/icep/bodega/tramite/carga-contenedores',
               },
               {
                 label: 'Consultas',
-                icon: 'pi pi-fw pi-list',
-                routerLink: '/icep/bodega-recepcion/consulta-tramite',
+                icon: 'pi pi-fw pi-search',
+                routerLink: '/icep/bodega/tramite/consultas',
               }
             ]
           },
@@ -43,14 +43,14 @@ export class MenuComponent implements OnInit{
             route: ['/'],
             items: [
               {
-                label: 'Revision de productos',
+                label: 'Escaneo de Productos',
                 icon: 'pi pi-barcode',
-                routerLink: '/icep/bodega-recepcion/revision-bultos',
+                routerLink: '/icep/bodega/revision/contenedor',
               },
               {
                 label: 'Consultas',
-                icon: 'pi pi-fw pi-list',
-                routerLink: '/icep/bodega-recepcion/consulta-revision',
+                icon: 'pi pi-fw pi-search',
+                routerLink: '/icep/bodega/revision/consultas',
               }
             ]
           },
@@ -62,12 +62,12 @@ export class MenuComponent implements OnInit{
               {
               label: 'Muestras por llegar',
               icon: 'pi pi-window-maximize',
-              routerLink: '/icep/bodega-recepcion/muestras',
+              routerLink: '/icep/bodega/muestra/envio-muestras',
             },
               {
                 label: 'Consultas',
-                icon: 'pi pi-fw pi-list',
-                routerLink: '/icep/bodega-recepcion/consulta-muestras',
+                icon: 'pi pi-fw pi-search',
+                routerLink: '/icep/bodega/muestra/consultas',
               }
               ]
           },
