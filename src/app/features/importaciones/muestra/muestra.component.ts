@@ -86,7 +86,7 @@ export default class MuestraComponent implements OnInit {
           this.messageService.add({
             severity: 'error',
             summary: 'Ocurrio un problema ',
-            detail: `Error en el servicio ${err.message}`,
+            detail: `Error:  ${err.message}`,
           })
         }
       })
