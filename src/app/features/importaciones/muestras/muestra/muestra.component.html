@@ -1,8 +1,10 @@
 <div class="card">
   <div class="grid grid-nogutter">
     <div class="col-12">
-      <span>
-        <button pButton type="button" icon="pi pi-undo" class="p-button-rounded p-button-secondary p-button-outlined mr-2" (click)="regresar()"></button>
+      <span class="flex align-items-center">
+        @if (tramiteExist){
+          <button pButton type="button" icon="pi pi-chevron-left" pTooltip="Regresar" class="p-button-rounded p-button-secondary p-button-outlined mr-2" (click)="regresar()"></button>
+        }
         <span class="text-900 font-bold text-4xl">Muestras</span>
       </span>
       <div class="col-12 mt-4">

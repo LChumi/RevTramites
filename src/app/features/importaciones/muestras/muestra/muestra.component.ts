@@ -11,6 +11,7 @@ import {ButtonDirective} from 'primeng/button';
 import {Ripple} from 'primeng/ripple';
 import {ErrorResponse} from '@dtos/error-response';
 import {Muestra} from '@models/muestra';
+import {TooltipModule} from 'primeng/tooltip';
 
 @Component({
   standalone: true,
@@ -20,7 +21,8 @@ import {Muestra} from '@models/muestra';
     TableModule,
     NgStyle,
     ButtonDirective,
-    Ripple
+    Ripple,
+    TooltipModule
   ],
   templateUrl: './muestra.component.html',
   styles: ``
