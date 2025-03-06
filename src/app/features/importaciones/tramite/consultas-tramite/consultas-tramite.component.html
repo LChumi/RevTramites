@@ -1,1 +1,37 @@
-<p>consultas-tramite works!</p>
+<div class="card">
+  <div class="grid grid-nogutter">
+    <div class="col-12">
+      <span class="flex align-items-center">
+        <span class="text-900 font-bold text-4xl">Tramites Cargados</span>
+      </span>
+      <div class="col-12 mt-4">
+        <ul class="flex list-none flex-wrap">
+          <li class="flex align-items-center text-primary mr-2">Tramite<i
+            class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
+          <li class="flex align-items-center text-500 mr-2">Consulta<i
+            class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
+          <li class="flex align-items-center text-500 mr-2">lista de tramites</li>
+        </ul>
+        <div class="col-12">
+          <div class="field col-12 md:col-6">
+            <h4>Monitoreo de Tramites</h4>
+            <div class="card">
+              <div (keydown.enter)="find()">
+                <div class="grid p-fluid">
+                  <div class="grid formgrid">
+                    <div class="col-12 lg:col2 field">
+                      <div class="col-12 lg:col-2 field">
+                        <p-calendar dateFormat="dd-mm-yy" placeholder="Fecha Inicio" [required]="true" inputId="fecha"
+                                    [(ngModel)]="fechaInicio"></p-calendar>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

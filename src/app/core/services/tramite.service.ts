@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {environment} from '@environments/environment';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Tramite} from '@models/tramite';
 import {Producto} from '@models/producto';
@@ -46,5 +46,19 @@ export class TramiteService {
 
   lockUnlockContainer(tramite: string, contenedor: string, usr: string): Observable<StatusResponse> {
     return this.http.get<StatusResponse>(`${this.baseUrl}/lock-unlock/container/${tramite}/${contenedor}/${usr}`)
+  }
+
+  buscar(
+    id?: string,
+    estado?: boolean,
+    fechaInicio?: string,
+    fechaFin?: string
+  ): Observable<Tramite[]>{
+    let params = new HttpParams();
+    if (id) params = params.set('id', id);
+    if (estado) params = params.set('estado', estado);
+    if (fechaInicio) params = params.set('fechaInicio', fechaInicio);
+    if (fechaFin) params = params.set('fechaFin', fechaFin);
+    return this.http.get<Tramite[]>(`${this.baseUrl}/filtros`, { params });
   }
 }
