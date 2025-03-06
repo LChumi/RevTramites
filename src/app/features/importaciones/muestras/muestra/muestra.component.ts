@@ -10,6 +10,7 @@ import {NgStyle} from '@angular/common';
 import {ButtonDirective} from 'primeng/button';
 import {Ripple} from 'primeng/ripple';
 import {ErrorResponse} from '@dtos/error-response';
+import {Muestra} from '@models/muestra';
 
 @Component({
   standalone: true,
@@ -34,6 +35,7 @@ export default class MuestraComponent implements OnInit {
   private muestraService = inject(MuestraService)
 
   tramites: Tramite[] = [];
+  muestras: Muestra[]= []
   barra: any;
   muestra: any;
   tramiteExist: boolean = false;
@@ -64,6 +66,13 @@ export default class MuestraComponent implements OnInit {
   tramiteSelected(tramiteId: string){
     this.tramiteExist = true;
     this.tramiteId = tramiteId;
+    this.listarMuestras(tramiteId);
+  }
+
+  regresar(){
+    this.tramiteExist = false;
+    this.muestras = [];
+    this.tramiteId ='';
   }
 
   focusNext(currentInput: HTMLInputElement, nextInput: HTMLInputElement) {
@@ -81,6 +90,7 @@ export default class MuestraComponent implements OnInit {
             summary: 'Muestra agregada',
             detail: `Se agrego la muestra ${result.id} del bulto barra ${result.barraMuestra}`,
           })
+          this.listarMuestras(this.tramiteId)
         },
         error: (err: ErrorResponse) => {
           this.messageService.add({
@@ -98,4 +108,14 @@ export default class MuestraComponent implements OnInit {
       })
     }
   }
+
+  listarMuestras(tramiteId: string){
+    this.muestraService.listarTramite(tramiteId).subscribe({
+      next: (result) => {
+        this.muestras = result;
+      }
+    })
+  }
+
+  protected readonly scroll = scroll;
 }

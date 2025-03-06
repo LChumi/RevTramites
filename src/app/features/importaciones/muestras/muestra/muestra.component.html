@@ -2,6 +2,7 @@
   <div class="grid grid-nogutter">
     <div class="col-12">
       <span>
+        <button pButton type="button" icon="pi pi-undo" class="p-button-rounded p-button-secondary p-button-outlined mr-2" (click)="regresar()"></button>
         <span class="text-900 font-bold text-4xl">Muestras</span>
       </span>
       <div class="col-12 mt-4">
@@ -20,13 +21,61 @@
               <div class="p-formgrid grid gap-2">
                 <div class="field col-12 md:col-4">
                   <label for="caja">Barra Caja</label>
-                  <input pInputText id="caja" type="text" [(ngModel)]="barra" class="p-inputtext w-full" #cajaInput (keydown.enter)="focusNext(cajaInput, muestraInput)" />
+                  <input pInputText id="caja" autocomplete="off" type="text" [(ngModel)]="barra" class="p-inputtext w-full" #cajaInput (keydown.enter)="focusNext(cajaInput, muestraInput)" />
                 </div>
                 <div class="field col-12 md:col-4">
                   <label for="barra">Barra Muestra</label>
-                  <input pInputText id="barra" type="text" [(ngModel)]="muestra" class="p-inputtext w-full" #muestraInput (keydown.enter)="addCompare()"/>
+                  <input pInputText id="barra" autocomplete="off" type="text" [(ngModel)]="muestra" class="p-inputtext w-full" #muestraInput (keydown.enter)="addCompare()"/>
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="mt-2">
+            <div class="card">
+              <p-table
+                #mr
+                [value]="muestras"
+                [responsiveLayout]="'scroll'"
+                [paginator]="true"
+                [rows]="5"
+                dataKey="id"
+                class="my-3 p-p-3"
+                styleClass="p-datatable-gridlines">
+
+                <ng-template pTemplate="caption">
+                  <h3>Lista de Muestras</h3>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th></th>
+                    <th>Barra bulto</th>
+                    <th>Barra Muestra</th>
+                    <th>Cantidad</th>
+                    <th>Estado de revision</th>
+                    <th>Usuario Revision</th>
+                    <th>Tramite Id</th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-muestra>
+                  <tr>
+                    <td></td>
+                    <td [ngStyle]="{'width': '50px'}">{{muestra.id}}</td>
+                    <td class="p-text-center p-col-1 p-col-fixed">{{muestra.barraMuestra}}</td>
+                    <td class="p-text-center p-col-1">{{muestra.cantidad}}</td>
+                    @if (muestra.revision) {
+                      <td class="p-text-center p-col-1">{{muestra.revision.estado}}</td>
+                      <td class="p-text-center p-col-1">{{muestra.revision.usuario}}</td>
+                      @if (muestra.revision.tramite){
+                        <td class="p-text-center p-col-1">{{muestra.revision.tramite.id}}</td>
+                      }
+                    }
+                  </tr>
+                </ng-template>
+
+              </p-table>
             </div>
           </div>
         } @else {
@@ -40,11 +89,10 @@
                 [rows]="5"
                 dataKey="id"
                 class="my-3 p-p-3"
-                styleClass="p-datatble-gridlines">
+                styleClass="p-datatable-gridlines">
 
                 <ng-template pTemplate="caption">
                   <h3>Tramites Finalizados</h3>
-                  <small>{{tramites.length}}</small>
                 </ng-template>
 
                 <ng-template pTemplate="header">
