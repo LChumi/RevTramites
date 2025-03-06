@@ -97,7 +97,17 @@
                               <td>{{ contenedor.id }}</td>
                               <td>{{ contenedor.bloqueado }}</td>
                               <td>{{ contenedor.usrBloquea }}</td>
-                              <td>{{ contenedor.finalizado }}</td>
+                              <td>
+                                <p-toggleButton
+                                disabled="true"
+                                [(ngModel)]="contenedor.finalizado"
+                                onLabel="Finalizado"
+                                offLabel="Pendiente"
+                                onIcon="pi pi-check"
+                                offIcon="pi pi-times"
+                                styleClass="w-9rem"
+                                ariaLabel="Finalizado"/>
+                              </td>
                               <td>
                                 <span class="flex">
                                   <button

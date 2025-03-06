@@ -16,20 +16,22 @@ import {Tramite} from '@models/tramite';
 import {ToolbarModule} from 'primeng/toolbar';
 import {converToExcel} from '@utils/excel-utils';
 import {Contenedor} from '@models/contenedor';
+import {ToggleButtonModule} from "primeng/togglebutton";
 
 
 @Component({
-  imports: [
-    FormsModule,
-    InputTextModule,
-    InputGroupModule,
-    ButtonDirective,
-    TableModule,
-    Ripple,
-    NgStyle,
-    EstadoColorPipe,
-    ToolbarModule
-  ],
+    imports: [
+        FormsModule,
+        InputTextModule,
+        InputGroupModule,
+        ButtonDirective,
+        TableModule,
+        Ripple,
+        NgStyle,
+        EstadoColorPipe,
+        ToolbarModule,
+        ToggleButtonModule
+    ],
   templateUrl: './revision-tramite.component.html',
   standalone: true,
   styles: ``
