@@ -8,9 +8,11 @@ import {TableModule} from 'primeng/table';
 import {Revision} from '@models/revision';
 import {RevisionService} from '@services/revision.service';
 import {ErrorResponse} from '@dtos/error-response';
-import {NgStyle} from '@angular/common';
+import {KeyValuePipe, NgStyle} from '@angular/common';
 import {Ripple} from 'primeng/ripple';
 import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
+import {CheckboxModule} from 'primeng/checkbox';
+import {ToggleButtonModule} from 'primeng/togglebutton';
 
 @Component({
   standalone: true,
@@ -23,7 +25,10 @@ import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
     FormsModule,
     NgStyle,
     Ripple,
-    EstadoColorPipe
+    EstadoColorPipe,
+    KeyValuePipe,
+    CheckboxModule,
+    ToggleButtonModule
   ],
   templateUrl: './consultas-revision.component.html',
   styles: ``

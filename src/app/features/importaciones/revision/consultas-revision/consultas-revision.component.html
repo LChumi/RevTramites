@@ -40,27 +40,28 @@
               <ng-template pTemplate="header">
                 <tr>
                   <th></th>
-                  <th>Id</th>
                   <th>Barra</th>
                   <th>Cantidad</th>
-                  <th>Fecha</th>
+                  <th>Fecha Revision</th>
                   <th>Usuario Revision</th>
                   <th>Cantidad Pedida</th>
                   <th>Cantidad Diferencia</th>
-                  <th>Estado</th>
+                  <th>Estado Revision</th>
+                  <th>Tramite</th>
+                  <th>Fecha Llegada</th>
+                  <th>Estado Tramite</th>
                 </tr>
               </ng-template>
 
               <ng-template pTemplate="body" let-revision let-expanded="expanded">
                 <tr>
                   <td [ngStyle]="{'width': '50px'}">
-                    @if (revision.tramite) {
+                    @if (revision.tramite | keyvalue) {
                       <button type="button" pButton pRipple [pRowToggler]="revision"
                               class="p-button-text p-button-rounded p-button-plain"
                               [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                     }
                   </td>
-                  <td class="p-text-center p-col-1">{{revision.id}}</td>
                  <td class="p-text-center p-col-1">{{revision.barra}}</td>
                   <td class="p-text-center p-col-1">{{revision.cantidad}}</td>
                   <td class="p-text-center p-col-1">{{revision.fecha}}</td>
@@ -70,6 +71,21 @@
                   <td class="text-xs flex align-items-center">
                     <span [ngStyle]="revision.estado | estadoColor" class="flex-grow-1">{{ revision.estado }}</span>
                   </td>
+                  @if (revision.tramite) {
+                    <td class="p-text-center p-col-1">{{revision.tramite.id}}</td>
+                    <td class="p-text-secondary">{{revision.tramite.fechaLlegada}}</td>
+                    <td class="p-text-secondary">
+                      <p-toggleButton
+                        disabled="true"
+                        [(ngModel)]="revision.tramite.estado"
+                        onLabel="Finalizado"
+                        offLabel="Pendiente"
+                        onIcon="pi pi-check"
+                        offIcon="pi pi-times"
+                        styleClass="w-9rem"
+                        ariaLabel="Finalizado"/>
+                    </td>
+                  }
                 </tr>
               </ng-template>
 
@@ -78,65 +94,49 @@
                   <td colspan="13">
                     <div class="p-3">
                       <p-table
-                        [value]="revision.tramite"
+                        [value]="revision.tramite.contenedores"
                         dataKey="id"
                         responsiveLayout="scroll">
                         <ng-template pTemplate="header">
                           <tr>
                             <th></th>
                             <th>Id</th>
-                            <th>Fecha Carga</th>
-                            <th>Fecha Llegada</th>
-                            <th>Estado</th>
+                            <th>Usuario Bloquea</th>
+                            <th>Contenedor bloqueado</th>
+                            <th>Contenedor Finalizado</th>
                           </tr>
                         </ng-template>
-                        <ng-template pTemplate="body" let-tramite let-expanded1="expanded">
+                        <ng-template pTemplate="body" let-contenedor>
                           <tr>
-                            <td [ngStyle]="{'width': '50px'}">
-                              @if (tramite.contenedores) {
-                                <button type="button" pButton pRipple [pRowToggler]="tramite"
-                                        class="p-button-text p-button-rounded p-button-plain"
-                                        [icon]="expanded1 ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
-                              }
+                            <td></td>
+                            <td>{{contenedor.id}}</td>
+                            <td>{{contenedor.usrBloquea}}</td>
+                            <td class="align-content-center">
+                              <p-toggleButton
+                                disabled="true"
+                                [(ngModel)]="contenedor.bloqueado"
+                                onLabel="Bloqueado"
+                                offLabel="Desbloqueado"
+                                onIcon="pi pi-lock"
+                                offIcon="pi pi-lock-open"
+                                styleClass="w-9rem"
+                                ariaLabel="Finalizado"/>
                             </td>
-                            <td class="p-text-center p-col-1">{{tramite.id}}</td>
-                            <td class="p-text-center p-col-1">{{tramite.fechaCarga}}</td>
-                            <td class="p-text-center p-col-1">{{tramite.fechaLlegada}}</td>
-                            <td class="p-text-center p-col-1">{{tramite.estado}}</td>
-                          </tr>
-                        </ng-template>
-                        <ng-template pTemplate="rowexpansion" let-tramite>
-                          <tr>
-                            <td colspan="13">
-                              <div class="p-3">
-                                <p-table
-                                  [value]="tramite.contenedores"
-                                  dataKey="id"
-                                  responsiveLayout="scroll">
-                                  <ng-template pTemplate="header">
-                                    <tr>
-                                      <th></th>
-                                      <th>Id</th>
-                                      <th>Usuario Bloquea</th>
-                                      <th>Contenedor bloqueado</th>
-                                      <th>Contenedor Finalizado</th>
-                                    </tr>
-                                  </ng-template>
-                                  <ng-template pTemplate="body" let-contenedor>
-                                    <tr>
-                                      <td></td>
-                                      <td>{{contenedor.id}}</td>
-                                      <td>{{contenedor.usrBloquea}}</td>
-                                      <td>{{contenedor.bloqueado}}</td>
-                                      <td>{{contenedor.finalizado}}</td>
-                                    </tr>
-                                  </ng-template>
+                            <td>
+                              <p-toggleButton
+                                disabled="true"
+                                [(ngModel)]="contenedor.finalizado"
+                                onLabel="Finalizado"
+                                offLabel="Pendiente"
+                                onIcon="pi pi-check"
+                                offIcon="pi pi-times"
+                                styleClass="w-9rem"
+                                ariaLabel="Finalizado"/>
+                            </td>
 
-                                </p-table>
-                              </div>
-                            </td>
                           </tr>
                         </ng-template>
+
                       </p-table>
                     </div>
                   </td>
