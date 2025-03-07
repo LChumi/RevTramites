@@ -62,7 +62,7 @@ export default class ConsultasTramiteComponent {
 
     if (count < 1){
       this.loading = false;
-      this.messageService.add({severity: 'warn', summary: 'Campos vacios', detail: 'Ingrese valor almenos en un campo '});
+      this.messageService.add({severity: 'warn', summary: 'Campos vacíos', detail: 'Por favor, ingrese un valor en al menos un campo.'});
       return
     }
 
@@ -76,15 +76,15 @@ export default class ConsultasTramiteComponent {
         if (data && data.length > 0) {
           this.tramites = data;
           this.loading = false;
-          this.messageService.add({severity: 'info', summary: 'Ok', detail:''})
+          this.messageService.add({severity: 'info', summary: 'Datos encontrados', detail: 'Se encontraron trámites exitosamente.'});
         } else {
           this.tramites = []
-          this.messageService.add({severity: 'warn', summary: 'Sin datos', detail:'No se encontraron Tramites'})
+          this.messageService.add({severity: 'warn', summary: 'Sin datos', detail: 'No se encontraron trámites.'});
         }
       }, error: (err : ErrorResponse) => {
         this.loading = false;
         this.tramites = []
-        this.messageService.add({severity: 'error', summary: 'Error', detail:`Ocurrió un problema: ${err.message}`})
+        this.messageService.add({severity: 'error', summary: 'Error', detail: `Ocurrió un problema: ${err.message}`});
       }
     })
 
