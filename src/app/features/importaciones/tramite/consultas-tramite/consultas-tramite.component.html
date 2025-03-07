@@ -75,6 +75,7 @@
                   <td [ngStyle]="{'width': '50px'}">
                     @if (tramite.contenedores) {
                       <button type="button" pButton pRipple [pRowToggler]="tramite"
+                              (click)="listarProducto(tramite.id)"
                               class="p-button-text p-button-rounded p-button-plain"
                               [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                     }
@@ -100,49 +101,80 @@
                 <tr>
                   <td colspan="13">
                     <div class="p-3">
-                      <p-table
-                        [value]="tramite.contenedores"
-                        dataKey="id"
-                        responsiveLayout="scroll">
-                        <ng-template pTemplate="header">
-                          <tr>
-                            <th></th>
-                            <th>Id</th>
-                            <th>Usuario Bloquea</th>
-                            <th>Contenedor bloqueado</th>
-                            <th>Contenedor Finalizado</th>
-                          </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-contenedor>
-                          <tr>
-                            <td></td>
-                            <td>{{contenedor.id}}</td>
-                            <td>{{contenedor.usrBloquea}}</td>
-                            <td class="align-content-center">
-                              <p-toggleButton
-                                disabled="true"
-                                [(ngModel)]="contenedor.bloqueado"
-                                onLabel="Bloqueado"
-                                offLabel="Desbloqueado"
-                                onIcon="pi pi-lock"
-                                offIcon="pi pi-lock-open"
-                                styleClass="w-9rem"
-                                ariaLabel="Finalizado"/>
-                            </td>
-                            <td>
-                              <p-toggleButton
-                                disabled="true"
-                                [(ngModel)]="contenedor.finalizado"
-                                onLabel="Finalizado"
-                                offLabel="Pendiente"
-                                onIcon="pi pi-check"
-                                offIcon="pi pi-times"
-                                styleClass="w-9rem"
-                                ariaLabel="Finalizado"/>
-                            </td>
-                          </tr>
-                        </ng-template>
-                      </p-table>
+                      <p-tabView>
+                        <!-- Pestaña Contenedores -->
+                        <p-tabPanel header="Contenedores">
+                          <p-table [value]="tramite.contenedores" dataKey="id" responsiveLayout="scroll">
+                            <ng-template pTemplate="caption">
+                              <h3>Lista Contenedores del trámite: {{tramite.id}}</h3>
+                            </ng-template>
+                            <ng-template pTemplate="header">
+                              <tr>
+                                <th>Id</th>
+                                <th>Usuario Bloquea</th>
+                                <th>Contenedor Bloqueado</th>
+                                <th>Contenedor Finalizado</th>
+                              </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-contenedor>
+                              <tr>
+                                <td>{{contenedor.id}}</td>
+                                <td>{{contenedor.usrBloquea}}</td>
+                                <td>
+                                  <p-toggleButton
+                                    disabled="true"
+                                    [(ngModel)]="contenedor.bloqueado"
+                                    onLabel="Bloqueado"
+                                    offLabel="Desbloqueado"
+                                    onIcon="pi pi-lock"
+                                    offIcon="pi pi-lock-open"
+                                    styleClass="w-9rem"
+                                    ariaLabel="Finalizado"/>
+                                </td>
+                                <td>
+                                  <p-toggleButton
+                                    disabled="true"
+                                    [(ngModel)]="contenedor.finalizado"
+                                    onLabel="Finalizado"
+                                    offLabel="Pendiente"
+                                    onIcon="pi pi-check"
+                                    offIcon="pi pi-times"
+                                    styleClass="w-9rem"
+                                    ariaLabel="Finalizado"/>
+                                </td>
+                              </tr>
+                            </ng-template>
+                          </p-table>
+                        </p-tabPanel>
+
+                        <!-- Pestaña Productos -->
+                        <p-tabPanel header="Productos">
+                          <p-table [value]="productos" dataKey="id" responsiveLayout="scroll">
+                            <ng-template pTemplate="header">
+                              <tr>
+                                <th>Barra</th>
+                                <th>Item</th>
+                                <th>Nombre</th>
+                                <th>CXB</th>
+                                <th>Bultos</th>
+                                <th>Total</th>
+                                <th>PVP</th>
+                              </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-producto>
+                              <tr>
+                                <td>{{producto.id}}</td>
+                                <td>{{producto.id1}}</td>
+                                <td>{{producto.nombre}}</td>
+                                <td>{{producto.cxb}}</td>
+                                <td>{{producto.bultos}}</td>
+                                <td>{{producto.total}}</td>
+                                <td>{{producto.pvp}}</td>
+                              </tr>
+                            </ng-template>
+                          </p-table>
+                        </p-tabPanel>
+                      </p-tabView>
                     </div>
                   </td>
                 </tr>

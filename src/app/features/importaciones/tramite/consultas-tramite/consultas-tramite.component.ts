@@ -1,5 +1,4 @@
 import {Component, inject} from '@angular/core';
-import {ButtonDirective} from 'primeng/button';
 import {InputGroupModule} from 'primeng/inputgroup';
 import {InputTextModule} from 'primeng/inputtext';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -14,6 +13,8 @@ import {TableModule} from 'primeng/table';
 import {Ripple} from 'primeng/ripple';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {NgStyle} from '@angular/common';
+import {Producto} from '@models/producto';
+import {TabViewModule} from 'primeng/tabview';
 
 @Component({
   standalone: true,
@@ -27,7 +28,8 @@ import {NgStyle} from '@angular/common';
     TableModule,
     Ripple,
     ToggleButtonModule,
-    NgStyle
+    NgStyle,
+    TabViewModule
   ],
   templateUrl: './consultas-tramite.component.html',
   styles: ``
@@ -38,6 +40,7 @@ export default class ConsultasTramiteComponent {
   private messageService = inject(MessageService);
 
   tramites: Tramite[] = [];
+  productos: Producto[] = []
 
   id: any;
   estado: any;
@@ -87,6 +90,17 @@ export default class ConsultasTramiteComponent {
         this.messageService.add({severity: 'error', summary: 'Error', detail: `Ocurrió un problema: ${err.message}`});
       }
     })
+  }
 
+  listarProducto(tramiteId: string){
+    this.tramiteService.productos(tramiteId).subscribe({
+      next: data => {
+        if (data && data.length > 0) {
+          this.productos = data;
+        }else {
+          this.productos =[]
+        }
+      }
+    })
   }
 }
