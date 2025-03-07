@@ -9,16 +9,25 @@ import {getCurrentDate} from '@utils/date-utils';
 import {ErrorResponse} from '@dtos/error-response';
 import {MessageService} from 'primeng/api';
 import {CalendarModule} from 'primeng/calendar';
+import {DropdownModule} from 'primeng/dropdown';
+import {TableModule} from 'primeng/table';
+import {Ripple} from 'primeng/ripple';
+import {ToggleButtonModule} from 'primeng/togglebutton';
+import {NgStyle} from '@angular/common';
 
 @Component({
   standalone: true,
   imports: [
-    ButtonDirective,
     InputGroupModule,
     InputTextModule,
     ReactiveFormsModule,
     CalendarModule,
-    FormsModule
+    FormsModule,
+    DropdownModule,
+    TableModule,
+    Ripple,
+    ToggleButtonModule,
+    NgStyle
   ],
   templateUrl: './consultas-tramite.component.html',
   styles: ``
@@ -32,6 +41,7 @@ export default class ConsultasTramiteComponent {
 
   id: any;
   estado: any;
+  estados: any[] =[{name: 'Finalizado', status: true},{name: 'Pendiente', status: false}]
   fechaInicio: any;
   fechaFin: any;
   loading: boolean = false;
@@ -42,7 +52,7 @@ export default class ConsultasTramiteComponent {
     const formatetedDateEnd = getCurrentDate(this.fechaFin)
 
     const id = this.id ? this.id : null;
-    const estado = this.estado ? this.estado : null;
+    const estado = this.estado ? this.estado.status : null;
 
     let count = 0;
     if (id) count++;
@@ -52,6 +62,7 @@ export default class ConsultasTramiteComponent {
 
     if (count < 1){
       this.loading = false;
+      this.messageService.add({severity: 'warn', summary: 'Campos vacios', detail: 'Ingrese valor almenos en un campo '});
       return
     }
 
@@ -62,11 +73,18 @@ export default class ConsultasTramiteComponent {
       formatetedDateEnd,
     ).subscribe({
       next: data => {
-        this.tramites = data;
-        this.loading = false;
+        if (data && data.length > 0) {
+          this.tramites = data;
+          this.loading = false;
+          this.messageService.add({severity: 'info', summary: 'Ok', detail:''})
+        } else {
+          this.tramites = []
+          this.messageService.add({severity: 'warn', summary: 'Sin datos', detail:'No se encontraron Tramites'})
+        }
       }, error: (err : ErrorResponse) => {
         this.loading = false;
         this.tramites = []
+        this.messageService.add({severity: 'error', summary: 'Error', detail:`Ocurrió un problema: ${err.message}`})
       }
     })
 

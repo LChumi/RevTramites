@@ -12,23 +12,142 @@
             class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
           <li class="flex align-items-center text-500 mr-2">lista de tramites</li>
         </ul>
-        <div class="col-12">
-          <div class="field col-12 md:col-6">
-            <h4>Monitoreo de Tramites</h4>
-            <div class="card">
-              <div (keydown.enter)="find()">
-                <div class="grid p-fluid">
-                  <div class="grid formgrid">
-                    <div class="col-12 lg:col2 field">
-                      <div class="col-12 lg:col-2 field">
-                        <p-calendar dateFormat="dd-mm-yy" placeholder="Fecha Inicio" [required]="true" inputId="fecha"
-                                    [(ngModel)]="fechaInicio"></p-calendar>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        <div class="field col-12 md:col-6">
+          <h4>Monitoreo de Tramites</h4>
+        </div>
+        <div class="card">
+          <div class="grid p-fluid" (keydown.enter)="find()">
+            <div class="grid formgrid">
+              <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+                <label for="id" class="text-900 font-semibold">Fecha Inicio</label>
+                <p-calendar dateFormat="dd-mm-yy" [required]="true" inputId="fecha"
+                            [(ngModel)]="fechaInicio"></p-calendar>
+              </div>
+              <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+                <label for="id" class="text-900 font-semibold">Fecha Fin</label>
+                <p-calendar dateFormat="dd-mm-yy" [required]="true" inputId="fechaFin"
+                            [(ngModel)]="fechaFin"></p-calendar>
+              </div>
+              <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+                <label for="id" class="text-900 font-semibold">Tramite</label>
+                <span class="p-input-icon-left">
+                  <i class="pi pi-bookmark"></i>
+                  <input id="id" pInputText type="text" [(ngModel)]="id" autocomplete="off">
+                </span>
+              </div>
+              <div class="col-12 mb-2 lg:col-4 lg:mb-0 py-5">
+                <label for="estado" class="text-900 font-semibold">Estado</label>
+                <span class="p-input-icon-left">
+                  <p-dropdown id="estado" [options]="estados" [(ngModel)]="estado" optionLabel="name"></p-dropdown>
+                </span>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="mt-2">
+          <div class="card">
+            <p-table
+              [value]="tramites"
+              [responsiveLayout]="'scroll'"
+              [paginator]="true"
+              [rows]="5"
+              dataKey="id"
+              class="my-3 p-p-3"
+              styleClass="p-datatable-gridlines">
+
+              <ng-template pTemplate="caption">
+                <h3>Listado de Tramites</h3>
+                <small>Tramites: {{ tramites.length }}</small>
+              </ng-template>
+
+              <ng-template pTemplate="header">
+                <tr>
+                  <th></th>
+                  <th pSortableColumn="id">Tramite</th>
+                  <th pSortableColumn="fechaCarga">Fecha Carga</th>
+                  <th pSortableColumn="observacion">Fecha Llegada</th>
+                  <th pSortableColumn="estado">Estado</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-tramite let-expanded="expanded">
+                <tr>
+                  <td [ngStyle]="{'width': '50px'}">
+                    @if (tramite.contenedores) {
+                      <button type="button" pButton pRipple [pRowToggler]="tramite"
+                              class="p-button-text p-button-rounded p-button-plain"
+                              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                    }
+                  </td>
+                  <td class="p-text-center p-col-1 p-col-fixed">{{ tramite.id }}</td>
+                  <td class="p-text-center p-col-1">{{ tramite.fechaCarga }}</td>
+                  <td class="p-text-center p-col-1">{{ tramite.fechaLlegada }}</td>
+                  <td class="p-text-secondary">
+                    <p-toggleButton
+                      disabled="true"
+                      [(ngModel)]="tramite.estado"
+                      onLabel="Finalizado"
+                      offLabel="Pendiente"
+                      onIcon="pi pi-check"
+                      offIcon="pi pi-times"
+                      styleClass="w-9rem"
+                      ariaLabel="Finalizado"/>
+                  </td>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="rowexpansion" let-tramite>
+                <tr>
+                  <td colspan="13">
+                    <div class="p-3">
+                      <p-table
+                        [value]="tramite.contenedores"
+                        dataKey="id"
+                        responsiveLayout="scroll">
+                        <ng-template pTemplate="header">
+                          <tr>
+                            <th></th>
+                            <th>Id</th>
+                            <th>Usuario Bloquea</th>
+                            <th>Contenedor bloqueado</th>
+                            <th>Contenedor Finalizado</th>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-contenedor>
+                          <tr>
+                            <td></td>
+                            <td>{{contenedor.id}}</td>
+                            <td>{{contenedor.usrBloquea}}</td>
+                            <td class="align-content-center">
+                              <p-toggleButton
+                                disabled="true"
+                                [(ngModel)]="contenedor.bloqueado"
+                                onLabel="Bloqueado"
+                                offLabel="Desbloqueado"
+                                onIcon="pi pi-lock"
+                                offIcon="pi pi-lock-open"
+                                styleClass="w-9rem"
+                                ariaLabel="Finalizado"/>
+                            </td>
+                            <td>
+                              <p-toggleButton
+                                disabled="true"
+                                [(ngModel)]="contenedor.finalizado"
+                                onLabel="Finalizado"
+                                offLabel="Pendiente"
+                                onIcon="pi pi-check"
+                                offIcon="pi pi-times"
+                                styleClass="w-9rem"
+                                ariaLabel="Finalizado"/>
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
           </div>
         </div>
       </div>
