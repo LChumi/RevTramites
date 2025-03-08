@@ -158,6 +158,10 @@ export default class RevisionTramiteComponent implements OnInit {
     this.revisionService.updateQuantity(this.tramiteId, this.barra, this.user).pipe(
       switchMap(revision => {
         this.revision = revision;
+        if (revision.estado ==='SIN REGISTRO') {
+          this.playAlert()
+          this.messageService.add({severity: 'warn', summary: 'Barra no registrada', detail: `La barra ${this.barra} no se encuentra registrada en el tramite`})
+        }
         this.barra = '';
         return this.revisionService.findByTramite(this.tramiteId);
       })
@@ -208,4 +212,10 @@ export default class RevisionTramiteComponent implements OnInit {
     }
   }
 
+  playAlert() {
+    const audio = new Audio('/sounds/alert.mp3');
+    audio.play().catch(error => {
+      console.error('Error al reproducir el audio:', error);
+    });
+  }
 }
