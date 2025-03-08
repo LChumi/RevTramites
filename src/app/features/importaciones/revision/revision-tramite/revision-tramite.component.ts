@@ -17,7 +17,7 @@ import {ToolbarModule} from 'primeng/toolbar';
 import {converToExcel} from '@utils/excel-utils';
 import {Contenedor} from '@models/contenedor';
 import {ToggleButtonModule} from "primeng/togglebutton";
-
+import {playAlert} from '@utils/audio-utils';
 
 @Component({
     imports: [
@@ -159,7 +159,7 @@ export default class RevisionTramiteComponent implements OnInit {
       switchMap(revision => {
         this.revision = revision;
         if (revision.estado ==='SIN REGISTRO') {
-          this.playAlert()
+          playAlert()
           this.messageService.add({severity: 'warn', summary: 'Barra no registrada', detail: `La barra ${this.barra} no se encuentra registrada en el tramite`})
         }
         this.barra = '';
@@ -210,12 +210,5 @@ export default class RevisionTramiteComponent implements OnInit {
     } else {
       return contenedor.bloqueado ? 'pi pi-lock' : 'pi pi-lock-open';
     }
-  }
-
-  playAlert() {
-    const audio = new Audio('/sounds/alert.mp3');
-    audio.play().catch(error => {
-      console.error('Error al reproducir el audio:', error);
-    });
   }
 }
