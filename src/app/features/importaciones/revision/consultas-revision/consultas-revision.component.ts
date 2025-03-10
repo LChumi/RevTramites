@@ -13,6 +13,7 @@ import {Ripple} from 'primeng/ripple';
 import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
 import {CheckboxModule} from 'primeng/checkbox';
 import {ToggleButtonModule} from 'primeng/togglebutton';
+import {ProcesoTramitePipe} from '@shared/pipes/proceso-tramite.pipe';
 
 @Component({
   standalone: true,
@@ -28,7 +29,8 @@ import {ToggleButtonModule} from 'primeng/togglebutton';
     EstadoColorPipe,
     KeyValuePipe,
     CheckboxModule,
-    ToggleButtonModule
+    ToggleButtonModule,
+    ProcesoTramitePipe
   ],
   templateUrl: './consultas-revision.component.html',
   styles: ``

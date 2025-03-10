@@ -36,21 +36,17 @@ export class TramiteService {
     return this.http.get<Producto[]>(`${this.baseUrl}/${tramiteId}/products`);
   }
 
-  pending(): Observable<Tramite[]> {
-    return this.http.get<Tramite[]>(`${this.baseUrl}/pending`);
-  }
-
-  complete(): Observable<Tramite[]> {
-    return this.http.get<Tramite[]>(`${this.baseUrl}/completed`);
-  }
-
   lockUnlockContainer(tramite: string, contenedor: string, usr: string): Observable<StatusResponse> {
     return this.http.get<StatusResponse>(`${this.baseUrl}/lock-unlock/container/${tramite}/${contenedor}/${usr}`)
   }
 
+  listByStatus(status:number): Observable<Tramite[]> {
+    return this.http.get<Tramite[]>(`${this.baseUrl}/status/${status}`);
+  }
+
   buscar(
     id?: string,
-    estado?: boolean,
+    estado?: number,
     fechaInicio?: string,
     fechaFin?: string
   ): Observable<Tramite[]>{

@@ -135,7 +135,7 @@ export default class RevisionTramiteComponent implements OnInit {
 
 
   listarPendientes() {
-    this.tramiteService.pending().subscribe({
+    this.tramiteService.listByStatus(1).subscribe({
       next: (tramites) => {
         if (tramites.length > 0) {
           this.tramites = tramites

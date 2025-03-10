@@ -15,6 +15,7 @@ import {ToggleButtonModule} from 'primeng/togglebutton';
 import {NgStyle} from '@angular/common';
 import {Producto} from '@models/producto';
 import {TabViewModule} from 'primeng/tabview';
+import {ProcesoTramitePipe} from '@shared/pipes/proceso-tramite.pipe';
 
 @Component({
   standalone: true,
@@ -29,7 +30,8 @@ import {TabViewModule} from 'primeng/tabview';
     Ripple,
     ToggleButtonModule,
     NgStyle,
-    TabViewModule
+    TabViewModule,
+    ProcesoTramitePipe
   ],
   templateUrl: './consultas-tramite.component.html',
   styles: ``
@@ -44,7 +46,7 @@ export default class ConsultasTramiteComponent {
 
   id: any;
   estado: any;
-  estados: any[] =[{name: 'Finalizado', status: true},{name: 'Pendiente', status: false}]
+  estados: any[] =[{name: 'Registrado', status: 1},{name: 'Pendiente', status: 2},{name: 'Validado', status: 3},{name: 'Muestra', status: 4}, {name: 'Finalizado', status: 5}]
   fechaInicio: any;
   fechaFin: any;
   loading: boolean = false;

@@ -29,7 +29,11 @@ export const importacionesRoutes: Routes = [
       {
         path: 'consultas',
         loadComponent: () => import('@features/importaciones/revision/consultas-revision/consultas-revision.component')
-      }
+      },
+      {
+        path: 'validar',
+        loadComponent: () => import('@features/importaciones/validar/validacion-tramite/validacion-tramite.component')
+      },
     ]
   },
   {
@@ -42,7 +46,7 @@ export const importacionesRoutes: Routes = [
       {
         path: 'consultas',
         loadComponent:() => import('@features/importaciones/muestras/consultas-muestras/consultas-muestras.component')
-      }
+      },
     ]
   },
   {path: '', redirectTo: 'dashboard', pathMatch: "full"},

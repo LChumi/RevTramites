@@ -39,7 +39,7 @@ export class MenuComponent implements OnInit{
           },
           {
             label: 'Revision',
-            icon: 'pi pi-th-large',
+            icon: 'pi pi-sliders-h',
             route: ['/'],
             items: [
               {
@@ -51,12 +51,17 @@ export class MenuComponent implements OnInit{
                 label: 'Consultas',
                 icon: 'pi pi-fw pi-search',
                 routerLink: '/icep/bodega/revision/consultas',
+              },
+              {
+                label: 'Validar',
+                icon: 'pi pi-check',
+                routerLink: '/icep/bodega/revision/validar',
               }
             ]
           },
           {
             label: 'Muestras',
-            icon: 'pi pi-th-large',
+            icon: 'pi pi-list',
             route: ['/'],
             items: [
               {

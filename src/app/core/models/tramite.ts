@@ -5,5 +5,5 @@ export interface Tramite {
   fechaCarga:   Date;
   fechaLlegada: Date;
   contenedores: Contenedor[];
-  estado:       boolean;
+  proceso:      number;
 }

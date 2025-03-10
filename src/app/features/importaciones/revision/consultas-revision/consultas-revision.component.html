@@ -74,17 +74,7 @@
                   @if (revision.tramite) {
                     <td class="p-text-center p-col-1">{{revision.tramite.id}}</td>
                     <td class="p-text-secondary">{{revision.tramite.fechaLlegada}}</td>
-                    <td class="p-text-secondary">
-                      <p-toggleButton
-                        disabled="true"
-                        [(ngModel)]="revision.tramite.estado"
-                        onLabel="Finalizado"
-                        offLabel="Pendiente"
-                        onIcon="pi pi-check"
-                        offIcon="pi pi-times"
-                        styleClass="w-9rem"
-                        ariaLabel="Finalizado"/>
-                    </td>
+                    <td class="p-text-secondary">{{revision.tramite.estado | procesoTramite}}</td>
                   }
                 </tr>
               </ng-template>
