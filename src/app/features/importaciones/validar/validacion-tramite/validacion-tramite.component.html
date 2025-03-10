@@ -58,7 +58,7 @@
                     <td class="p-text-center p-col-1">{{ tramite.fechaCarga }}</td>
                     <td class="p-text-center p-col-1">{{ tramite.fechaLlegada }}</td>
                     <td class="p-text-center p-col-1">
-                      <button
+                      <button (click)="validar(tramite.id)"
                         pButton
                         pRipple
                         icon="pi pi-verified"
@@ -93,7 +93,6 @@
                                   type="button"
                                   pButton
                                   pRipple
-                                  (click)="buscarTramite(tramite.id, contenedor.id)"
                                   [hidden]="contenedor.finalizado || contenedor.bloqueado"
                                   [disabled]="contenedor.finalizado || contenedor.bloqueado"
                                   class="p-button-text p-button-rounded p-button-plain"
@@ -134,7 +133,7 @@
                 </div>
               </ng-template>
               <ng-template pTemplate="right">
-                <button pButton pRipple label="Descargar Csv" icon="pi pi-download" class="p-button-outlined"
+                <button pButton pRipple label="Descargar Excel" icon="pi pi-download" class="p-button-outlined"
                         (click)="exportToExcel()"></button>
               </ng-template>
             </p-toolbar>

@@ -38,4 +38,8 @@ export class RevisionService {
   updateQuantity(tramiteId: string, barra: string, usuario: string): Observable<Revision> {
     return this.http.put<Revision>(`${this.baseUrl}/updateQuantity/${tramiteId}/${barra}/${usuario}`, {});
   }
+
+  validate(tramiteId: string): Observable<Revision[]> {
+    return this.http.get<Revision[]>(`${this.baseUrl}/validate/${tramiteId}`);
+  }
 }
