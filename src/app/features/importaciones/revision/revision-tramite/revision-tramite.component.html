@@ -159,6 +159,31 @@
 
           @if (revisiones.length > 0) {
             <div class="mt-2">
+              @if (revision){
+                  <div class="card">
+                    <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3">Ultima barra escaneada</div>
+                    <ul class="list-none p-0 m-0">
+                      <li class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border">
+                        <div class="flex align-items-center flex-1">
+                          <div>
+                            <strong>Barra:</strong>{{revision.barra}}
+                          </div>
+                        </div>
+                        <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
+                          <div class="flex align-items-center">
+                            <strong>Cantidad:</strong> {{revision.cantidad}}
+                          </div>
+                        </div>
+                        <div class="flex align-items-center sm:justify-content-end">
+                          <div>
+                            <strong>Estado:</strong> <span [ngStyle]="revision.estado | estadoColor">{{ revision.estado }}</span>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  }
+
               <div class="card">
                 <p-table
                   #dt

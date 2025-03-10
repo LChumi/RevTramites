@@ -158,7 +158,7 @@ export default class RevisionTramiteComponent implements OnInit {
     this.revisionService.updateQuantity(this.tramiteId, this.barra, this.user).pipe(
       switchMap(revision => {
         this.revision = revision;
-        if (revision.estado ==='SIN REGISTRO') {
+        if (revision.estado ==='SIN REGISTRO' && revision.cantidad===1) {
           playAlert()
           this.messageService.add({severity: 'warn', summary: 'Barra no registrada', detail: `La barra ${this.barra} no se encuentra registrada en el tramite`})
         }
