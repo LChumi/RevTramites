@@ -17,8 +17,7 @@
         </ul>
 
         @if (tramiteExist){
-          <div class="flex justify-content-start">
-            <div class="card border-round p-2 w-full md:w-10 lg:w-8">
+            <div class="card border-round p-2">
               <h4 class="text-900">Envío de Muestras</h4>
               <div class="p-formgrid grid gap-2">
                 <div class="field col-12 md:col-4">
@@ -30,41 +29,40 @@
                   <input pInputText id="barra" autocomplete="off" type="text" [(ngModel)]="muestra" class="p-inputtext w-full" #muestraInput (keydown.enter)="addCompare()"/>
                 </div>
               </div>
+              @if (muestraAdd){
+                <div class="card">
+                  <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3">Ultima barra escaneada</div>
+                  <ul class="list-none p-0 m-0">
+                    <li class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border">
+                      <div class="flex align-items-center flex-1">
+                        <div>
+                          <strong>Barra:</strong>{{muestraAdd.barraMuestra}}
+                        </div>
+                      </div>
+                      <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
+                        <div class="flex align-items-center">
+                          <strong>Cantidad:</strong> {{muestraAdd.cantidad}}
+                        </div>
+                      </div>
+                      <div class="flex align-items-center sm:justify-content-end">
+                        <div>
+                          <p-toggleButton
+                            disabled="true"
+                            [(ngModel)]="muestraAdd.status"
+                            onLabel="Coincide"
+                            offLabel="No Coincide"
+                            onIcon="pi pi-check-circle"
+                            offIcon="pi pi-times-circle"
+                            styleClass="w-9rem"
+                            ariaLabel="Finalizado"/>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              }
             </div>
-          </div>
 
-          @if (muestraAdd){
-            <div class="card">
-              <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3">Ultima barra escaneada</div>
-              <ul class="list-none p-0 m-0">
-                <li class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border">
-                  <div class="flex align-items-center flex-1">
-                    <div>
-                      <strong>Barra:</strong>{{muestraAdd.barraMuestra}}
-                    </div>
-                  </div>
-                  <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
-                    <div class="flex align-items-center">
-                      <strong>Cantidad:</strong> {{muestraAdd.cantidad}}
-                    </div>
-                  </div>
-                  <div class="flex align-items-center sm:justify-content-end">
-                    <div>
-                      <p-toggleButton
-                        disabled="true"
-                        [(ngModel)]="muestraAdd.status"
-                        onLabel="Coincide"
-                        offLabel="No Coincide"
-                        onIcon="pi pi-check-circle"
-                        offIcon="pi pi-times-circle"
-                        styleClass="w-9rem"
-                        ariaLabel="Finalizado"/>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          }
           <div class="mt-2">
             <div class="card">
               <p-table
@@ -87,9 +85,8 @@
                     <th>Barra bulto</th>
                     <th>Barra Muestra</th>
                     <th>Cantidad</th>
-                    <th>Comparacion muestra</th>
-                    <th>Estado muestra - revision</th>
-                    <th>Estado de revision</th>
+                    <th>Comparación Muestra</th>
+                    <th>Estado Muestra</th>
                     <th>Usuario Revision</th>
                     <th>Tramite Id</th>
                     <th></th>
@@ -115,7 +112,6 @@
                     </td>
                     <td class="p-text-center p-col-1">{{muestra.proceso}}</td>
                     @if (muestra.revision) {
-                      <td class="p-text-center p-col-1">{{muestra.revision.estado}}</td>
                       <td class="p-text-center p-col-1">{{muestra.revision.usuario}}</td>
                       @if (muestra.revision.tramite){
                         <td class="p-text-center p-col-1">{{muestra.revision.tramite.id}}</td>
@@ -125,6 +121,14 @@
                 </ng-template>
 
               </p-table>
+
+              <button (click)="validate()"
+                      pButton
+                      pRipple
+                      icon="pi pi-verified"
+                      label="Finalizar"
+                      class="p-button-rounded p-button-info">
+              </button>
             </div>
           </div>
         } @else {
@@ -163,7 +167,6 @@
                     <td class="p-text-center p-col-1">{{tramite.fechaLlegada}}</td>
                   </tr>
                 </ng-template>
-
               </p-table>
             </div>
           </div>

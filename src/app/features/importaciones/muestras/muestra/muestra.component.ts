@@ -41,7 +41,7 @@ export default class MuestraComponent implements OnInit {
 
   tramites: Tramite[] = [];
   muestras: Muestra[]= []
-  muestraAdd: Muestra= {} as Muestra;
+  muestraAdd: Muestra | null = null;
   barra: any;
   muestra: any;
   tramiteExist: boolean = false;
@@ -127,11 +127,17 @@ export default class MuestraComponent implements OnInit {
   validate(){
     this.muestraService.validate(this.tramiteId).subscribe({
       next: (result) => {
-        this.messageService.add({severity: 'info', summary: 'Muestra Validadas',})
         this.muestras = result;
+        const allComplete = this.muestras.every(muestra => muestra.proceso === 'COMPLETA');
+        if (allComplete) {
+          this.messageService.add({severity: 'info', summary: 'Muestra Validadas',})
+        } else {
+          this.messageService.add({severity: 'warn', summary: 'Muestra incompletas',})
+        }
       }
     })
   }
+
 
   protected readonly scroll = scroll;
 }
