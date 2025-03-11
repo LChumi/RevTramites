@@ -13,6 +13,7 @@ import {ErrorResponse} from '@dtos/error-response';
 import {Muestra} from '@models/muestra';
 import {TooltipModule} from 'primeng/tooltip';
 import {ToggleButtonModule} from 'primeng/togglebutton';
+import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
 
 @Component({
   standalone: true,
@@ -24,7 +25,8 @@ import {ToggleButtonModule} from 'primeng/togglebutton';
     ButtonDirective,
     Ripple,
     TooltipModule,
-    ToggleButtonModule
+    ToggleButtonModule,
+    EstadoColorPipe
   ],
   templateUrl: './muestra.component.html',
   styles: ``
@@ -33,13 +35,13 @@ export default class MuestraComponent implements OnInit {
   @ViewChild('cajaInput') cajaInput!: HTMLInputElement;
   @ViewChild('muestraInput') muestraInput!: HTMLInputElement;
 
-
   private tramiteService = inject(TramiteService);
   private messageService = inject(MessageService);
   private muestraService = inject(MuestraService)
 
   tramites: Tramite[] = [];
   muestras: Muestra[]= []
+  muestraAdd: Muestra= {} as Muestra;
   barra: any;
   muestra: any;
   tramiteExist: boolean = false;
@@ -94,6 +96,7 @@ export default class MuestraComponent implements OnInit {
             summary: 'Muestra agregada',
             detail: `Se agrego la muestra ${result.id} del bulto barra ${result.barraMuestra}`,
           })
+          this.muestraAdd = result
           this.listarMuestras(this.tramiteId)
         },
         error: (err: ErrorResponse) => {
@@ -116,6 +119,15 @@ export default class MuestraComponent implements OnInit {
   listarMuestras(tramiteId: string){
     this.muestraService.listarTramite(tramiteId).subscribe({
       next: (result) => {
+        this.muestras = result;
+      }
+    })
+  }
+
+  validate(){
+    this.muestraService.validate(this.tramiteId).subscribe({
+      next: (result) => {
+        this.messageService.add({severity: 'info', summary: 'Muestra Validadas',})
         this.muestras = result;
       }
     })

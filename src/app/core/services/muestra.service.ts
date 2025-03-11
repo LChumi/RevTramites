@@ -21,4 +21,8 @@ export class MuestraService {
   addCompare(barra: string, muestra: string, tramite: string): Observable<Muestra> {
     return this.http.get<Muestra>(`${this.baseUrl}/add/compare/${barra}/${muestra}/${tramite}`, {})
   }
+
+  validate(tramite: string): Observable<Muestra[]> {
+    return this.http.get<Muestra[]>(`${this.baseUrl}/validate/${tramite}`);
+  }
 }
