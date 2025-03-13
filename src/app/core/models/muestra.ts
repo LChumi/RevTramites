@@ -8,4 +8,6 @@ export interface Muestra {
   status:       boolean;
   revision:     Revision;
   proceso:      string;
+  fecha:        null;
+  hora:         null;
 }

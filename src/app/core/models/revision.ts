@@ -5,6 +5,7 @@ export interface Revision {
   barra:              string;
   cantidad:           number;
   fecha:              null;
+  hora:               null;
   usuario:            string;
   tramite:            Tramite;
   cantidadPedida:     number;
