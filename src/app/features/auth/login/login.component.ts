@@ -51,7 +51,6 @@ export default class LoginComponent implements OnInit {
 
     this.autService.login(user).subscribe({
       next: usuario => {
-        console.log(usuario);
         const nombres = usuario.usr_nombre.split(' ');
         const nombre = nombres[0]; // Primer nombre
         const segundoNombre = nombres.length > 2 ? nombres[2] : nombres.length > 1 ? nombres[1] : ''; // Segundo nombre, si existe
