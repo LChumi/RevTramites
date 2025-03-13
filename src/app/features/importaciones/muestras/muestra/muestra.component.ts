@@ -40,7 +40,7 @@ export default class MuestraComponent implements OnInit {
   private muestraService = inject(MuestraService)
 
   tramites: Tramite[] = [];
-  muestras: Muestra[]= []
+  muestras: Muestra[] = []
   muestraAdd: Muestra | null = null;
   barra: any;
   muestra: any;
@@ -70,16 +70,16 @@ export default class MuestraComponent implements OnInit {
     this.listarCmpletos()
   }
 
-  tramiteSelected(tramiteId: string){
+  tramiteSelected(tramiteId: string) {
     this.tramiteExist = true;
     this.tramiteId = tramiteId;
     this.listarMuestras(tramiteId);
   }
 
-  regresar(){
+  regresar() {
     this.tramiteExist = false;
     this.muestras = [];
-    this.tramiteId ='';
+    this.tramiteId = '';
   }
 
   focusNext(currentInput: HTMLInputElement, nextInput: HTMLInputElement) {
@@ -88,8 +88,8 @@ export default class MuestraComponent implements OnInit {
     }
   }
 
-  addCompare(){
-    if (this.barra && this.muestra && this.tramiteId){
+  addCompare() {
+    if (this.barra && this.muestra && this.tramiteId) {
       this.muestraService.addCompare(this.barra, this.muestra, this.tramiteId, this.status).subscribe({
         next: (result) => {
           this.messageService.add({
@@ -120,7 +120,7 @@ export default class MuestraComponent implements OnInit {
     }
   }
 
-  listarMuestras(tramiteId: string){
+  listarMuestras(tramiteId: string) {
     this.muestraService.listarTramite(tramiteId).subscribe({
       next: (result) => {
         this.muestras = result;
@@ -128,7 +128,7 @@ export default class MuestraComponent implements OnInit {
     })
   }
 
-  validate(){
+  validate() {
     this.muestraService.validate(this.tramiteId).subscribe({
       next: (result) => {
         this.muestras = result;

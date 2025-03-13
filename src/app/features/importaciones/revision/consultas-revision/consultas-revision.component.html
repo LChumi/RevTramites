@@ -17,7 +17,8 @@
             <h4>Buscar por numero de Tramite</h4>
             <p-inputGroup id="caja">
               <button type="button" pButton icon="pi pi-search" (click)="buscarRevisiones()"></button>
-              <input type="text" pInputText placeholder="Tramite" [(ngModel)]="tramite" (keydown.enter)="buscarRevisiones()"/>
+              <input type="text" pInputText placeholder="Tramite" [(ngModel)]="tramite"
+                     (keydown.enter)="buscarRevisiones()"/>
             </p-inputGroup>
           </div>
         </div>
@@ -62,19 +63,19 @@
                               [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                     }
                   </td>
-                 <td class="p-text-center p-col-1">{{revision.barra}}</td>
-                  <td class="p-text-center p-col-1">{{revision.cantidad}}</td>
-                  <td class="p-text-center p-col-1">{{revision.fecha}}</td>
-                  <td class="p-text-center p-col-1">{{revision.usuario}}</td>
-                    <td class="p-text-center p-col-1">{{revision.cantidadPedida}}</td>
-                    <td class="p-text-center p-col-1">{{revision.cantidadDiferencia}}</td>
+                  <td class="p-text-center p-col-1">{{ revision.barra }}</td>
+                  <td class="p-text-center p-col-1">{{ revision.cantidad }}</td>
+                  <td class="p-text-center p-col-1">{{ revision.fecha }}</td>
+                  <td class="p-text-center p-col-1">{{ revision.usuario }}</td>
+                  <td class="p-text-center p-col-1">{{ revision.cantidadPedida }}</td>
+                  <td class="p-text-center p-col-1">{{ revision.cantidadDiferencia }}</td>
                   <td class="text-xs flex align-items-center">
                     <span [ngStyle]="revision.estado | estadoColor" class="flex-grow-1">{{ revision.estado }}</span>
                   </td>
                   @if (revision.tramite) {
-                    <td class="p-text-center p-col-1">{{revision.tramite.id}}</td>
-                    <td class="p-text-secondary">{{revision.tramite.fechaLlegada}}</td>
-                    <td class="p-text-secondary">{{revision.tramite.estado | procesoTramite}}</td>
+                    <td class="p-text-center p-col-1">{{ revision.tramite.id }}</td>
+                    <td class="p-text-secondary">{{ revision.tramite.fechaLlegada }}</td>
+                    <td class="p-text-secondary">{{ revision.tramite.estado | procesoTramite }}</td>
                   }
                 </tr>
               </ng-template>
@@ -99,8 +100,8 @@
                         <ng-template pTemplate="body" let-contenedor>
                           <tr>
                             <td></td>
-                            <td>{{contenedor.id}}</td>
-                            <td>{{contenedor.usrBloquea}}</td>
+                            <td>{{ contenedor.id }}</td>
+                            <td>{{ contenedor.usrBloquea }}</td>
                             <td class="align-content-center">
                               <p-toggleButton
                                 disabled="true"

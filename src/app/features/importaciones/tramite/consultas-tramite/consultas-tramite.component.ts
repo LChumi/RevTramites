@@ -46,12 +46,17 @@ export default class ConsultasTramiteComponent {
 
   id: any;
   estado: any;
-  estados: any[] =[{name: 'Registrado', status: 1},{name: 'Pendiente', status: 2},{name: 'Validado', status: 3},{name: 'Muestra', status: 4}, {name: 'Finalizado', status: 5}]
+  estados: any[] = [
+    {name: 'Registrado', status: 1},
+    {name: 'Pendiente', status: 2},
+    {name: 'Validado', status: 3},
+    {name: 'Muestra', status: 4},
+    {name: 'Finalizado', status: 5}]
   fechaInicio: any;
   fechaFin: any;
   loading: boolean = false;
 
-  find(){
+  find() {
     this.loading = true;
     const formatetedDateStart = getCurrentDate(this.fechaInicio)
     const formatetedDateEnd = getCurrentDate(this.fechaFin)
@@ -65,9 +70,13 @@ export default class ConsultasTramiteComponent {
     if (formatetedDateEnd) count++;
     if (formatetedDateStart) count++;
 
-    if (count < 1){
+    if (count < 1) {
       this.loading = false;
-      this.messageService.add({severity: 'warn', summary: 'Campos vacíos', detail: 'Por favor, ingrese un valor en al menos un campo.'});
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Campos vacíos',
+        detail: 'Por favor, ingrese un valor en al menos un campo.'
+      });
       return
     }
 
@@ -81,12 +90,16 @@ export default class ConsultasTramiteComponent {
         if (data && data.length > 0) {
           this.tramites = data;
           this.loading = false;
-          this.messageService.add({severity: 'info', summary: 'Datos encontrados', detail: 'Se encontraron trámites exitosamente.'});
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Datos encontrados',
+            detail: 'Se encontraron trámites exitosamente.'
+          });
         } else {
           this.tramites = []
           this.messageService.add({severity: 'warn', summary: 'Sin datos', detail: 'No se encontraron trámites.'});
         }
-      }, error: (err : ErrorResponse) => {
+      }, error: (err: ErrorResponse) => {
         this.loading = false;
         this.tramites = []
         this.messageService.add({severity: 'error', summary: 'Error', detail: `Ocurrió un problema: ${err.message}`});
@@ -94,13 +107,13 @@ export default class ConsultasTramiteComponent {
     })
   }
 
-  listarProducto(tramiteId: string){
+  listarProducto(tramiteId: string) {
     this.tramiteService.productos(tramiteId).subscribe({
       next: data => {
         if (data && data.length > 0) {
           this.productos = data;
-        }else {
-          this.productos =[]
+        } else {
+          this.productos = []
         }
       }
     })

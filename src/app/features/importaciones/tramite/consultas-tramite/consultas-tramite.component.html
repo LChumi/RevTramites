@@ -83,7 +83,7 @@
                   <td class="p-text-center p-col-1 p-col-fixed">{{ tramite.id }}</td>
                   <td class="p-text-center p-col-1">{{ tramite.fechaCarga }}</td>
                   <td class="p-text-center p-col-1">{{ tramite.fechaLlegada }}</td>
-                  <td class="p-text-secondary">{{tramite.proceso | procesoTramite}}</td>
+                  <td class="p-text-secondary">{{ tramite.proceso | procesoTramite }}</td>
                 </tr>
               </ng-template>
 
@@ -96,7 +96,7 @@
                         <p-tabPanel header="Contenedores">
                           <p-table [value]="tramite.contenedores" dataKey="id" responsiveLayout="scroll">
                             <ng-template pTemplate="caption">
-                              <h3>Lista Contenedores del trámite: {{tramite.id}}</h3>
+                              <h3>Lista Contenedores del trámite: {{ tramite.id }}</h3>
                             </ng-template>
                             <ng-template pTemplate="header">
                               <tr>
@@ -108,8 +108,8 @@
                             </ng-template>
                             <ng-template pTemplate="body" let-contenedor>
                               <tr>
-                                <td>{{contenedor.id}}</td>
-                                <td>{{contenedor.usrBloquea}}</td>
+                                <td>{{ contenedor.id }}</td>
+                                <td>{{ contenedor.usrBloquea }}</td>
                                 <td>
                                   <p-toggleButton
                                     disabled="true"
@@ -153,13 +153,13 @@
                             </ng-template>
                             <ng-template pTemplate="body" let-producto>
                               <tr>
-                                <td>{{producto.id}}</td>
-                                <td>{{producto.id1}}</td>
-                                <td>{{producto.nombre}}</td>
-                                <td>{{producto.cxb}}</td>
-                                <td>{{producto.bultos}}</td>
-                                <td>{{producto.total}}</td>
-                                <td>{{producto.pvp}}</td>
+                                <td>{{ producto.id }}</td>
+                                <td>{{ producto.id1 }}</td>
+                                <td>{{ producto.nombre }}</td>
+                                <td>{{ producto.cxb }}</td>
+                                <td>{{ producto.bultos }}</td>
+                                <td>{{ producto.total }}</td>
+                                <td>{{ producto.pvp }}</td>
                               </tr>
                             </ng-template>
                           </p-table>

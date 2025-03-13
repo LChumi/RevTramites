@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {getCurrentDateNow, getCurrentTime} from '@utils/date-utils';
 
 @Component({
@@ -9,7 +9,7 @@ import {getCurrentDateNow, getCurrentTime} from '@utils/date-utils';
 })
 export default class InicioComponent {
 
-  nombre:any
+  nombre: any
   fecha: any;
   hora: any;
 

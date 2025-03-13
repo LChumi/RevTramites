@@ -45,10 +45,10 @@ export const importacionesRoutes: Routes = [
       },
       {
         path: 'consultas',
-        loadComponent:() => import('@features/importaciones/muestras/consultas-muestras/consultas-muestras.component')
+        loadComponent: () => import('@features/importaciones/muestras/consultas-muestras/consultas-muestras.component')
       },
     ]
   },
   {path: '', redirectTo: 'dashboard', pathMatch: "full"},
-  {path:'**', redirectTo:'dashboard', pathMatch: "full"}
+  {path: '**', redirectTo: 'dashboard', pathMatch: "full"}
 ]

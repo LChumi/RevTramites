@@ -8,7 +8,7 @@ export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
       console.error(`HTTP Error: ${err}`);
 
       //Procesar el error y convertirlo como ErrorResponse
-      const error: ErrorResponse ={
+      const error: ErrorResponse = {
         status: err.status,
         message: err.error?.message || err.message || 'Error desconocido',
       }

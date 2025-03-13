@@ -20,18 +20,18 @@ import {ToggleButtonModule} from "primeng/togglebutton";
 import {playAlert} from '@utils/audio-utils';
 
 @Component({
-    imports: [
-        FormsModule,
-        InputTextModule,
-        InputGroupModule,
-        ButtonDirective,
-        TableModule,
-        Ripple,
-        NgStyle,
-        EstadoColorPipe,
-        ToolbarModule,
-        ToggleButtonModule
-    ],
+  imports: [
+    FormsModule,
+    InputTextModule,
+    InputGroupModule,
+    ButtonDirective,
+    TableModule,
+    Ripple,
+    NgStyle,
+    EstadoColorPipe,
+    ToolbarModule,
+    ToggleButtonModule
+  ],
   templateUrl: './revision-tramite.component.html',
   standalone: true,
   styles: ``
@@ -153,9 +153,13 @@ export default class RevisionTramiteComponent implements OnInit {
     this.revisionService.updateQuantity(this.tramiteId, this.barra, this.user, this.status).pipe(
       switchMap(revision => {
         this.revision = revision;
-        if (revision.estado ==='SIN REGISTRO' && revision.cantidad===1) {
+        if (revision.estado === 'SIN REGISTRO' && revision.cantidad === 1) {
           playAlert()
-          this.messageService.add({severity: 'warn', summary: 'Barra no registrada', detail: `La barra ${this.barra} no se encuentra registrada en el tramite`})
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Barra no registrada',
+            detail: `La barra ${this.barra} no se encuentra registrada en el tramite`
+          })
         }
         this.barra = '';
         return this.revisionService.findByTramite(this.tramiteId);

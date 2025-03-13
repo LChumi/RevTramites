@@ -29,8 +29,8 @@ import {ErrorResponse} from '@dtos/error-response';
 export default class ConsultasMuestrasComponent {
 
   private muestraService = inject(MuestraService)
-  private messageService= inject(MessageService);
-  tramite: string ='';
+  private messageService = inject(MessageService);
+  tramite: string = '';
   muestras: Muestra[] = [];
   loading = false;
 
@@ -47,16 +47,16 @@ export default class ConsultasMuestrasComponent {
             })
             this.muestras = data;
             this.loading = false;
-            this.tramite=''
-          }else {
+            this.tramite = ''
+          } else {
             this.messageService.add({
               severity: 'warn',
               summary: `No existen datos en el tramite ${this.tramite}`,
             })
-            this.tramite=''
+            this.tramite = ''
           }
         },
-        error: (err : ErrorResponse) => {
+        error: (err: ErrorResponse) => {
           this.muestras = [];
           this.loading = false;
           this.messageService.add({

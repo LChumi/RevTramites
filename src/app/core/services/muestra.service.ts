@@ -12,9 +12,10 @@ export class MuestraService {
   private baseUrl = environment.apiUrlBase + 'muestra';
   private http = inject(HttpClient)
 
-  constructor() { }
+  constructor() {
+  }
 
-  listarTramite(tramiteId:string): Observable<Muestra[]> {
+  listarTramite(tramiteId: string): Observable<Muestra[]> {
     return this.http.get<Muestra[]>(`${this.baseUrl}/list/${tramiteId}`);
   }
 

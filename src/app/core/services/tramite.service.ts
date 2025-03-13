@@ -40,7 +40,7 @@ export class TramiteService {
     return this.http.get<StatusResponse>(`${this.baseUrl}/lock-unlock/container/${tramite}/${contenedor}/${usr}`)
   }
 
-  listByStatus(status:number): Observable<Tramite[]> {
+  listByStatus(status: number): Observable<Tramite[]> {
     return this.http.get<Tramite[]>(`${this.baseUrl}/status/${status}`);
   }
 
@@ -49,12 +49,12 @@ export class TramiteService {
     estado?: number,
     fechaInicio?: string,
     fechaFin?: string
-  ): Observable<Tramite[]>{
+  ): Observable<Tramite[]> {
     let params = new HttpParams();
     if (id) params = params.set('id', id);
     if (estado) params = params.set('estado', estado);
     if (fechaInicio) params = params.set('fechaInicio', fechaInicio);
     if (fechaFin) params = params.set('fechaFin', fechaFin);
-    return this.http.get<Tramite[]>(`${this.baseUrl}/filtros`, { params });
+    return this.http.get<Tramite[]>(`${this.baseUrl}/filtros`, {params});
   }
 }

@@ -34,7 +34,7 @@ import {Contenedor} from '@models/contenedor';
   templateUrl: './validacion-tramite.component.html',
   styles: ``
 })
-export default class ValidacionTramiteComponent implements OnInit{
+export default class ValidacionTramiteComponent implements OnInit {
 
   private tramiteService = inject(TramiteService)
   private revisionService = inject(RevisionService)

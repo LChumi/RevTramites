@@ -39,11 +39,11 @@ export default class ConsultasRevisionComponent {
 
   revisionService = inject(RevisionService)
   messageService = inject(MessageService)
-  tramite: string=''
+  tramite: string = ''
   loading: boolean = false;
-  revisiones: Revision[] =[]
+  revisiones: Revision[] = []
 
-  buscarRevisiones(){
+  buscarRevisiones() {
     if (this.tramite) {
       this.loading = true;
       this.revisionService.findByTramite(this.tramite).subscribe({
@@ -56,16 +56,16 @@ export default class ConsultasRevisionComponent {
             })
             this.revisiones = data;
             this.loading = false;
-            this.tramite=''
-          }else {
+            this.tramite = ''
+          } else {
             this.messageService.add({
               severity: 'warn',
               summary: `No existen datos en el tramite ${this.tramite}`,
             })
-            this.tramite=''
+            this.tramite = ''
           }
         },
-        error: (err : ErrorResponse) => {
+        error: (err: ErrorResponse) => {
           this.revisiones = [];
           this.loading = false;
           this.messageService.add({

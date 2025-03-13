@@ -17,7 +17,8 @@
             <h4>Buscar por numero de Tramite</h4>
             <p-inputGroup id="caja">
               <button type="button" pButton icon="pi pi-search" (click)="buscarMuestras()"></button>
-              <input type="text" pInputText placeholder="Tramite" [(ngModel)]="tramite" (keydown.enter)="buscarMuestras()"/>
+              <input type="text" pInputText placeholder="Tramite" [(ngModel)]="tramite"
+                     (keydown.enter)="buscarMuestras()"/>
             </p-inputGroup>
           </div>
         </div>
@@ -53,14 +54,14 @@
               <ng-template pTemplate="body" let-muestra>
                 <tr>
                   <td></td>
-                  <td [ngStyle]="{'width': '50px'}">{{muestra.id}}</td>
-                  <td class="p-text-center p-col-1 p-col-fixed">{{muestra.barraMuestra}}</td>
-                  <td class="p-text-center p-col-1">{{muestra.cantidad}}</td>
+                  <td [ngStyle]="{'width': '50px'}">{{ muestra.id }}</td>
+                  <td class="p-text-center p-col-1 p-col-fixed">{{ muestra.barraMuestra }}</td>
+                  <td class="p-text-center p-col-1">{{ muestra.cantidad }}</td>
                   @if (muestra.revision) {
-                    <td class="p-text-center p-col-1">{{muestra.revision.estado}}</td>
-                    <td class="p-text-center p-col-1">{{muestra.revision.usuario}}</td>
-                    @if (muestra.revision.tramite){
-                      <td class="p-text-center p-col-1">{{muestra.revision.tramite.id}}</td>
+                    <td class="p-text-center p-col-1">{{ muestra.revision.estado }}</td>
+                    <td class="p-text-center p-col-1">{{ muestra.revision.usuario }}</td>
+                    @if (muestra.revision.tramite) {
+                      <td class="p-text-center p-col-1">{{ muestra.revision.tramite.id }}</td>
                     }
                   }
                 </tr>

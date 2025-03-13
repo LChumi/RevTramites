@@ -98,14 +98,14 @@
                               <td>{{ contenedor.usrBloquea }}</td>
                               <td>
                                 <p-toggleButton
-                                disabled="true"
-                                [(ngModel)]="contenedor.finalizado"
-                                onLabel="Finalizado"
-                                offLabel="Pendiente"
-                                onIcon="pi pi-check"
-                                offIcon="pi pi-times"
-                                styleClass="w-9rem"
-                                ariaLabel="Finalizado"/>
+                                  disabled="true"
+                                  [(ngModel)]="contenedor.finalizado"
+                                  onLabel="Finalizado"
+                                  offLabel="Pendiente"
+                                  onIcon="pi pi-check"
+                                  offIcon="pi pi-times"
+                                  styleClass="w-9rem"
+                                  ariaLabel="Finalizado"/>
                               </td>
                               <td>
                                 <span class="flex">
@@ -149,7 +149,8 @@
             <div class="grid p-fluid mt-3">
               <div class="field mb-2 lg:col-6 lg:mb-0">
             <span class="p-float-label">
-              <input autocomplete="off" type="text" id="barra" pInputText [(ngModel)]="barra" (keydown.enter)="escaneo()">
+              <input autocomplete="off" type="text" id="barra" pInputText [(ngModel)]="barra"
+                     (keydown.enter)="escaneo()">
               <label for="barra">Barra</label>
             </span>
               </div>
@@ -168,24 +169,28 @@
 
           @if (revisiones.length > 0) {
             <div class="mt-2">
-              @if (revision){
+              @if (revision) {
                 <div class="card">
-                  <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3">Ultima barra escaneada</div>
+                  <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3">Ultima barra
+                    escaneada
+                  </div>
                   <ul class="list-none p-0 m-0">
-                    <li class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border">
+                    <li
+                      class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border">
                       <div class="flex align-items-center flex-1">
                         <div>
-                          <strong>Barra:</strong>{{revision.barra}}
+                          <strong>Barra:</strong>{{ revision.barra }}
                         </div>
                       </div>
                       <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
                         <div class="flex align-items-center">
-                          <strong>Cantidad:</strong> {{revision.cantidad}}
+                          <strong>Cantidad:</strong> {{ revision.cantidad }}
                         </div>
                       </div>
                       <div class="flex align-items-center sm:justify-content-end">
                         <div>
-                          <strong>Estado:</strong> <span class="text-sm" [ngStyle]="revision.estado | estadoColor">{{ revision.estado }}</span>
+                          <strong>Estado:</strong> <span class="text-sm"
+                                                         [ngStyle]="revision.estado | estadoColor">{{ revision.estado }}</span>
                         </div>
                       </div>
                     </li>
