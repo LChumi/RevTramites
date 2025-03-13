@@ -116,7 +116,16 @@
                     <th pSortableColumn="cxb">CXB</th>
                     <th pSortableColumn="bultos">Cantidad Bultos</th>
                     <th pSortableColumn="total">Total</th>
-                    <th pSortableColumn="pvp">PVP</th>
+                    <th>Item Alterno</th>
+                    <th>PVP</th>
+                    <th>CXB Anterior</th>
+                    <th>Ubicacion Bulto</th>
+                    <th>Ubicacion Unidad</th>
+                    <th>Stock Zhucay</th>
+                    <th>Stock Narancay</th>
+                    <th>Descripcion</th>
+                    <th>Barra Sistema</th>
+                    <th>Diferencias</th>
                   </tr>
                 </ng-template>
 
@@ -128,8 +137,16 @@
                     <td style="white-space: nowrap; min-width: 12rem" class="text-right">{{ producto.nombre }}</td>
                     <td class="text-right">{{ producto.cxb }}</td>
                     <td class="text-right">{{ producto.bultos }}</td>
-                    <td class="text-right">{{ producto.total }}</td>
+                    <td class="text-right">{{ producto.itemAlterno }}</td>
                     <td class="text-right">{{ producto.pvp }}</td>
+                    <td class="text-right">{{ producto.cxbAnterior }}</td>
+                    <td class="text-right">{{ producto.ubicacionBulto }}</td>
+                    <td class="text-right">{{ producto.ubicacionUnidad }}</td>
+                    <td class="text-right">{{ producto.stockZhucay }}</td>
+                    <td class="text-right">{{ producto.stockNarancay }}</td>
+                    <td class="text-right">{{ producto.descripcion }}</td>
+                    <td class="text-right">{{ producto.barraSistema }}</td>
+                    <td class="text-right">{{ producto.diferencia }}</td>
                   </tr>
                 </ng-template>
 

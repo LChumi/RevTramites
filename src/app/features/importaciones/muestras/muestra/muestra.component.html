@@ -104,6 +104,7 @@
                     <th>Cantidad</th>
                     <th>Comparación Muestra</th>
                     <th>Estado Muestra</th>
+                    <th>Hora</th>
                     <th>Usuario Revision</th>
                     <th>Tramite Id</th>
                   </tr>
@@ -127,6 +128,7 @@
                         ariaLabel="Muestra"/>
                     </td>
                     <td class="p-text-center p-col-1">{{ muestra.proceso }}</td>
+                    <td class="p-text-center p-col-1">{{ muestra.hora }}</td>
                     @if (muestra.revision) {
                       <td class="p-text-center p-col-1">{{ muestra.revision.usuario }}</td>
                       @if (muestra.revision.tramite) {
