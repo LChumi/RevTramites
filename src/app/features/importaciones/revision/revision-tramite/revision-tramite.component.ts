@@ -53,6 +53,7 @@ export default class RevisionTramiteComponent implements OnInit {
   revision: Revision | null = null;
   tramite: Tramite | null = null;
   loading: boolean = false;
+  status: boolean = true;
 
   blockUnlockContainer(tramiteId: string, conatainerId: string) {
     if (!tramiteId) return;
@@ -91,12 +92,6 @@ export default class RevisionTramiteComponent implements OnInit {
       switchMap(tramite => {
         if (tramite) {
           this.tramiteExist = true;
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Trámite existe',
-            detail: 'Se encontró el registro de trámite'
-          });
-
           const container = tramite.contenedores.find(c => c.id === containerId);
           if (container) {
             if (container.bloqueado) {
@@ -155,7 +150,7 @@ export default class RevisionTramiteComponent implements OnInit {
   escaneo() {
     if (!this.tramiteId || !this.barra || !this.user) return;
 
-    this.revisionService.updateQuantity(this.tramiteId, this.barra, this.user).pipe(
+    this.revisionService.updateQuantity(this.tramiteId, this.barra, this.user, this.status).pipe(
       switchMap(revision => {
         this.revision = revision;
         if (revision.estado ==='SIN REGISTRO' && revision.cantidad===1) {
@@ -167,6 +162,7 @@ export default class RevisionTramiteComponent implements OnInit {
       })
     ).subscribe(revisiones => {
       this.revisiones = revisiones;
+      this.status = true
     });
   }
 

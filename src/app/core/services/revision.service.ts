@@ -35,8 +35,8 @@ export class RevisionService {
     return this.http.put<Revision[]>(`${this.baseUrl}/updateQuantities/${tramiteId}/${containerId}`, {});
   }
 
-  updateQuantity(tramiteId: string, barra: string, usuario: string): Observable<Revision> {
-    return this.http.put<Revision>(`${this.baseUrl}/updateQuantity/${tramiteId}/${barra}/${usuario}`, {});
+  updateQuantity(tramiteId: string, barra: string, usuario: string, status: boolean): Observable<Revision> {
+    return this.http.put<Revision>(`${this.baseUrl}/updateQuantity/${tramiteId}/${barra}/${usuario}/${status}`, {});
   }
 
   validate(tramiteId: string): Observable<Revision[]> {

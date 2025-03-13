@@ -28,6 +28,17 @@
                   <label for="barra">Barra Muestra</label>
                   <input pInputText id="barra" autocomplete="off" type="text" [(ngModel)]="muestra" class="p-inputtext w-full" #muestraInput (keydown.enter)="addCompare()"/>
                 </div>
+                <div class="field col-12 md:col-2 py-5">
+                  <p-toggleButton
+                    [(ngModel)]="status"
+                    id="status"
+                    onLabel="Agregar"
+                    offLabel="Quitar"
+                    onIcon="pi pi-plus-circle"
+                    offIcon="pi pi-minus-circle"
+                    styleClass="w-9rem"
+                    ariaLabel="status"/>
+                </div>
               </div>
               @if (muestraAdd){
                 <div class="card">
@@ -89,7 +100,6 @@
                     <th>Estado Muestra</th>
                     <th>Usuario Revision</th>
                     <th>Tramite Id</th>
-                    <th></th>
                   </tr>
                 </ng-template>
 

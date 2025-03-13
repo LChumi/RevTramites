@@ -44,6 +44,7 @@ export default class MuestraComponent implements OnInit {
   muestraAdd: Muestra | null = null;
   barra: any;
   muestra: any;
+  status: boolean = true;
   tramiteExist: boolean = false;
   private tramiteId: string = '';
 
@@ -89,7 +90,7 @@ export default class MuestraComponent implements OnInit {
 
   addCompare(){
     if (this.barra && this.muestra && this.tramiteId){
-      this.muestraService.addCompare(this.barra, this.muestra, this.tramiteId).subscribe({
+      this.muestraService.addCompare(this.barra, this.muestra, this.tramiteId, this.status).subscribe({
         next: (result) => {
           this.messageService.add({
             severity: 'info',
@@ -98,8 +99,11 @@ export default class MuestraComponent implements OnInit {
           })
           this.muestraAdd = result
           this.listarMuestras(this.tramiteId)
+          this.status = true
+          this.muestra = ''
         },
         error: (err: ErrorResponse) => {
+          this.status = true
           this.messageService.add({
             severity: 'error',
             summary: 'Ocurrio un problema ',
