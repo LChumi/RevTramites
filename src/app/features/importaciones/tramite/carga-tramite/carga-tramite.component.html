@@ -14,6 +14,10 @@
           class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
         <li class="flex align-items-center text-500 mr-2">Lista productos</li>
       </ul>
+      <!-- Botón alineado a la derecha con ancho ajustado -->
+      <div class="flex justify-content-end mt-3">
+        <button pButton pRipple type="button" (click)="visibleSidebarEmails = true" icon="pi pi-address-book" class="p-button-rounded p-button-outlined"></button>
+      </div>
 
       @if (loading) {
         <div class="flex align-items-center justify-content-center" style="height: 100%;">
@@ -25,14 +29,14 @@
           <div class="col-12">
             <div class="grid p-fluid mt-3">
               <div class="field mb-2 lg:col-6 lg:mb-0">
-            <span class="p-float-label">
-              <input autocomplete="off" type="text" id="tramite" pInputText [(ngModel)]="tramiteId">
-              <label for="tramite">Numero de tramite</label>
-            </span>
+                <span class="p-float-label">
+                  <input autocomplete="off" type="text" id="tramite" pInputText [(ngModel)]="tramiteId">
+                  <label for="tramite">Numero de tramite</label>
+                </span>
                 <span class="p-float-label mt-4">
-              <input autocomplete="off" type="text" id="contenedor" pInputText [(ngModel)]="contenedor">
-              <label for="contenedor">Ingrese el nombre o numero de contenedor</label>
-            </span>
+                  <input autocomplete="off" type="text" id="contenedor" pInputText [(ngModel)]="contenedor">
+                  <label for="contenedor">Ingrese el nombre o numero de contenedor</label>
+                </span>
                 <div class="mt-4">
                   <p-calendar
                     dateFormat="dd-mm-yy"
@@ -51,6 +55,7 @@
               </div>
             </div>
           </div>
+
 
           @if (contenedor && tramiteId) {
             <p-fileUpload
@@ -159,4 +164,59 @@
 
     </div>
   </div>
+</div>
+
+<div class="card">
+  <p-sidebar [(visible)]="visibleSidebarEmails" position="right" [baseZIndex]="10000" [style]="{width: '90vw', maxWidth: '500px'}">
+    <span> Correos </span>
+    @if (email.destinatarios){
+      <p-table
+        [value]="email.destinatarios"
+        [responsiveLayout]="'scroll'"
+        [paginator]="true"
+        [rows]="10"
+        dataKey="direccion"
+        class="my-3 p-p-3"
+        styleClass="p-datatble-gridlines">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Direccion</th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-email>
+          <tr>
+            <td>{{email.direccion}}</td>
+            <td>
+              <button pButton pRipple type="button" (click)="removeAddressee(email.direccion)" icon="pi pi-times" class="p-button-rounded p-button-secondary p-button-text"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    }
+    <div class="flex justify-content-center">
+      <div class="justify-content-start mt-3">
+        Agregar Nuevo Destinatario
+        <span class="p-float-label">
+        <input
+          type="email"
+          id="email"
+          pInputText
+          [(ngModel)]="emailText"
+          name="email"
+          #emailRef="ngModel"
+          required
+          email>
+        </span>
+        @if (emailRef.invalid && emailRef.touched){
+          <small class="p-error">
+            Ingrese Correo
+          </small>
+        }
+      </div>
+      <div class="justify-content-end mt-3">
+        <button pButton pRipple type="button" (click)="addAddressee(emailRef)" icon="pi pi-user-plus" class="p-button-rounded p-button-outlined"></button>
+      </div>
+    </div>
+  </p-sidebar>
 </div>

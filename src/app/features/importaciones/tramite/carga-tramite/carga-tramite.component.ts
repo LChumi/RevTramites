@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {FileUploadModule} from 'primeng/fileupload';
-import {MessageService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {FormsModule} from '@angular/forms';
 import {InputTextModule} from 'primeng/inputtext';
 import {FileService} from '@services/file.service';
@@ -12,6 +12,10 @@ import {ToolbarModule} from 'primeng/toolbar';
 import {converToExcel} from '@utils/excel-utils';
 import {CalendarModule} from 'primeng/calendar';
 import {getCurrentDate} from '@utils/date-utils';
+import {SidebarModule} from 'primeng/sidebar';
+import {EmailsService} from '@services/emails.service';
+import {Emails} from '@models/emails';
+import {Destinatario} from '@models/destinatario';
 
 @Component({
   imports: [
@@ -22,6 +26,7 @@ import {getCurrentDate} from '@utils/date-utils';
     Ripple,
     ToolbarModule,
     CalendarModule,
+    SidebarModule,
   ],
   templateUrl: './carga-tramite.component.html',
   standalone: true,
@@ -32,14 +37,20 @@ export default class CargaTramiteComponent implements OnInit {
   private messageService = inject(MessageService)
   private fileService = inject(FileService)
   private tramiteService = inject(TramiteService)
+  private emailService = inject(EmailsService)
+  private confirmationService = inject(ConfirmationService)
 
   protected uploadedFiles: any[] = [];
   protected tramiteId: any;
+  protected emailText: any;
   protected contenedor: any;
   protected productos: Producto[] = [];
   protected loading = false;
+  protected email: Emails = {} as Emails;
+  private tipo = 1
   fecha: any
   minDate: Date | undefined
+  visibleSidebarEmails: boolean = false;
 
   onUpload(event: any) {
     this.loading = true;
@@ -110,5 +121,55 @@ export default class CargaTramiteComponent implements OnInit {
 
   ngOnInit(): void {
     this.minDate = new Date();
+    this.uploadEmails()
+  }
+
+  uploadEmails(){
+    this.emailService.getByTipo(this.tipo).subscribe({
+      next: response => {
+        this.email = response;
+      }
+    })
+  }
+
+  addAddressee(emailRef: any){
+    if (emailRef.invalid) {
+      this.message('error', 'Error', 'Ingrese un correo valido');
+      this.emailText = ''
+      return;
+    }
+    const addressee : Destinatario= {
+      direccion: this.emailText,
+    }
+    this.emailService.addAddressee(this.tipo,addressee ).subscribe({
+      next: response => {
+        this.email = response;
+        this.emailText = ''
+        this.message('info', 'Agregado', 'Se registro el correo con éxito');
+      },
+      error: error => {
+        this.message('error', 'Error', `${error.message}`);
+        this.emailText = ''
+      }
+    })
+  }
+
+  removeAddressee(email:string) {
+    this.confirmationService.confirm({
+      message: '¿Esta seguro de quitar este correo?',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-circle',
+      accept: () => {
+        this.emailService.removeAddressee(this.tipo, email).subscribe({
+          next: response => {
+            this.email = response;
+            this.message('warn', 'Eliminado', 'Correo eliminado')
+          },
+          error: err => {
+            this.message('error', 'Error', `Ocurrió un problema: ${err.message}`);
+          }
+        })
+      }
+    })
   }
 }
