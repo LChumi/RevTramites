@@ -24,4 +24,8 @@ export class FileService {
 
     return this.http.post<Tramite>(`${this.baseUrl}/excel/tramite`, formData, {})
   }
+
+  sendTramite(tramiteId: string): Observable<string> {
+    return this.http.get(`${this.baseUrl}/send/tramite/${tramiteId}`, { responseType: 'text' })
+  }
 }

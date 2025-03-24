@@ -172,4 +172,22 @@ export default class CargaTramiteComponent implements OnInit {
       }
     })
   }
+
+  checkTramite(){
+    this.confirmationService.confirm({
+      message: 'Desea Finalizar la carga de Tramites y enviar a los subscritores el email',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-circle',
+      accept: () => {
+        this.fileService.sendTramite(this.tramiteId).subscribe({
+          next: response => {
+            this.message('info', 'Tramite finalizado', 'Se registro el tramite y se envio a los subscritores el email' );
+            this.cargarNuevo();
+          }, error: error => {
+            this.message('error', 'Error', `${error.message}`);
+          }
+        })
+      }
+    })
+  }
 }

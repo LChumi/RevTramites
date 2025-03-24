@@ -22,7 +22,6 @@ import {AuthService} from '@services/auth.service';
   styles: ``
 })
 export default class LoginComponent implements OnInit {
-  password!: string;
 
   loginForm!: FormGroup
   private fb = inject(FormBuilder)
