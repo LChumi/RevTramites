@@ -49,7 +49,7 @@ export default class MuestraComponent implements OnInit {
   private tramiteId: string = '';
 
   listarCmpletos() {
-    this.tramiteService.listByStatus(3).subscribe({
+    this.tramiteService.listByStatus(1).subscribe({
       next: (tramites) => {
         if (tramites.length > 0) {
           this.tramites = tramites

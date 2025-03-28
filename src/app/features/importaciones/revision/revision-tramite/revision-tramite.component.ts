@@ -128,7 +128,6 @@ export default class RevisionTramiteComponent implements OnInit {
     });
   }
 
-
   listarPendientes() {
     this.tramiteService.listByStatus(1).subscribe({
       next: (tramites) => {
