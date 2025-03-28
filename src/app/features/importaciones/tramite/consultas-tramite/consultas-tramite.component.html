@@ -100,14 +100,22 @@
                             </ng-template>
                             <ng-template pTemplate="header">
                               <tr>
+                                <th></th>
                                 <th>Id</th>
                                 <th>Usuario Bloquea</th>
                                 <th>Contenedor Bloqueado</th>
                                 <th>Contenedor Finalizado</th>
                               </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-contenedor>
+                            <ng-template pTemplate="body" let-contenedor let-expanded="expanded">
                               <tr>
+                                <td [ngStyle]="{'width': '50px'}">
+                                  @if (contenedor.productos) {
+                                    <button type="button" pButton pRipple [pRowToggler]="contenedor"
+                                            class="p-button-text p-button-rounded p-button-plain"
+                                            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                                  }
+                                </td>
                                 <td>{{ contenedor.id }}</td>
                                 <td>{{ contenedor.usrBloquea }}</td>
                                 <td>
@@ -131,6 +139,59 @@
                                     offIcon="pi pi-times"
                                     styleClass="w-9rem"
                                     ariaLabel="Finalizado"/>
+                                </td>
+                              </tr>
+                            </ng-template>
+                            <ng-template pTemplate="rowexpansion" let-contenedor>
+                              <tr>
+                                <td colspan="13">
+                                  <div class="p-3">
+                                    <p-table
+                                      [value]="contenedor.productos"
+                                      dataKey="id"
+                                      responsiveLayout="scroll">
+                                      <ng-template pTemplate="header">
+                                        <tr>
+                                          <th>Barra</th>
+                                          <th>Item</th>
+                                          <th>Nombre</th>
+                                          <th>CXB</th>
+                                          <th>Bultos</th>
+                                          <th>Total</th>
+                                          <th>Item Alterno</th>
+                                          <th>PVP</th>
+                                          <th>CXB Anterior</th>
+                                          <th>Ubicacion Bulto</th>
+                                          <th>Ubicacion Unidad</th>
+                                          <th>Stock Zhucay</th>
+                                          <th>Stock Narancay</th>
+                                          <th>Descripcion</th>
+                                          <th>Barra Sistema</th>
+                                          <th>Diferencias</th>
+                                        </tr>
+                                      </ng-template>
+                                      <ng-template pTemplate="body" let-producto>
+                                        <tr>
+                                          <td>{{ producto.id }}</td>
+                                          <td>{{ producto.id1 }}</td>
+                                          <td>{{ producto.nombre }}</td>
+                                          <td>{{ producto.cxb }}</td>
+                                          <td>{{ producto.bultos }}</td>
+                                          <td>{{ producto.total }}</td>
+                                          <td>{{ producto.itemAlterno }}</td>
+                                          <td>{{ producto.pvp }}</td>
+                                          <td>{{ producto.cxbAnterior }}</td>
+                                          <td>{{ producto.ubicacionBulto }}</td>
+                                          <td>{{ producto.ubicacionUnidad }}</td>
+                                          <td>{{ producto.stockZhucay }}</td>
+                                          <td>{{ producto.stockNarancay }}</td>
+                                          <td>{{ producto.descripcion }}</td>
+                                          <td>{{ producto.barraSistema }}</td>
+                                          <td>{{ producto.diferencia }}</td>
+                                        </tr>
+                                      </ng-template>
+                                    </p-table>
+                                  </div>
                                 </td>
                               </tr>
                             </ng-template>
