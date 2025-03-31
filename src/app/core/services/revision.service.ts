@@ -3,6 +3,7 @@ import {environment} from '@environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Revision} from '@models/revision';
+import {RevisionRequest} from '@models/revision-request';
 
 @Injectable({
   providedIn: 'root'
@@ -35,8 +36,8 @@ export class RevisionService {
     return this.http.put<Revision[]>(`${this.baseUrl}/updateQuantities/${tramiteId}/${containerId}`, {});
   }
 
-  updateQuantity(tramiteId: string, barra: string, usuario: string, status: boolean): Observable<Revision> {
-    return this.http.put<Revision>(`${this.baseUrl}/updateQuantity/${tramiteId}/${barra}/${usuario}/${status}`, {});
+  updateQuantity(request: RevisionRequest): Observable<Revision> {
+    return this.http.put<Revision>(`${this.baseUrl}/updateQuantity`, request);
   }
 
   validate(tramiteId: string): Observable<Revision[]> {

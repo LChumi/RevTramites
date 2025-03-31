@@ -18,6 +18,7 @@ import {converToExcel} from '@utils/excel-utils';
 import {Contenedor} from '@models/contenedor';
 import {ToggleButtonModule} from "primeng/togglebutton";
 import {playAlert} from '@utils/audio-utils';
+import {RevisionRequest} from '@models/revision-request';
 
 @Component({
   imports: [
@@ -147,9 +148,18 @@ export default class RevisionTramiteComponent implements OnInit {
   }
 
   escaneo() {
-    if (!this.tramiteId || !this.barra || !this.user) return;
+    if (!this.tramiteId || !this.barra || !this.user || !this.containerId) return;
 
-    this.revisionService.updateQuantity(this.tramiteId, this.barra, this.user, this.status).pipe(
+    const request: RevisionRequest = {
+      tramiteId: this.tramiteId,
+      contenedor: this.containerId,
+      barra: this.barra,
+      usuario: this.user,
+      status: this.status
+    };
+
+    console.log(request)
+    this.revisionService.updateQuantity(request).pipe(
       switchMap(revision => {
         this.revision = revision;
         if (revision.estado === 'SIN REGISTRO' && revision.cantidad === 1) {
@@ -187,7 +197,7 @@ export default class RevisionTramiteComponent implements OnInit {
   }
 
   nuevoEscaneo() {
-    this.listarPendientes();
+    this.blockUnlockContainer(this.tramiteId, this.containerId)
     this.tramiteExist = false;
     this.tramiteId = ''
 
