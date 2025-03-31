@@ -13,7 +13,7 @@ import {ErrorResponse} from '@dtos/error-response';
 import {Muestra} from '@models/muestra';
 import {TooltipModule} from 'primeng/tooltip';
 import {ToggleButtonModule} from 'primeng/togglebutton';
-import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
+import {forkJoin} from 'rxjs';
 
 @Component({
   standalone: true,
@@ -26,7 +26,6 @@ import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
     Ripple,
     TooltipModule,
     ToggleButtonModule,
-    EstadoColorPipe
   ],
   templateUrl: './muestra.component.html',
   styles: ``
@@ -48,26 +47,30 @@ export default class MuestraComponent implements OnInit {
   tramiteExist: boolean = false;
   private tramiteId: string = '';
 
-  listarCmpletos() {
-    this.tramiteService.listByStatus(1).subscribe({
-      next: (tramites) => {
-        if (tramites.length > 0) {
-          this.tramites = tramites
-        }
+  ngOnInit(): void {
+    this.listarCompletos([3, 1]);
+  }
+
+  listarCompletos(processes: number[]): void {
+    // Crear un array de observables con las solicitudes para cada proceso
+    const observables = processes.map(process =>
+      this.tramiteService.listByStatus(process)
+    );
+
+    // Combinar los resultados con forkJoin
+    forkJoin(observables).subscribe({
+      next: (results) => {
+        // Combinar los resultados en una sola lista
+        this.tramites = results.flat(); // Usamos flat() para aplanar los arrays
       },
       error: (err) => {
         this.messageService.add({
           severity: 'warn',
-          summary: 'No existen Tramites ',
-          detail: 'No se encontraron Tramites Finalizados o Completos finalize la revision '
+          summary: 'No existen Tramites',
+          detail: 'No se encontraron Tramites Finalizados o Completos, finalize la revisión'
         });
-
       }
-    })
-  }
-
-  ngOnInit(): void {
-    this.listarCmpletos()
+    });
   }
 
   tramiteSelected(tramiteId: string) {

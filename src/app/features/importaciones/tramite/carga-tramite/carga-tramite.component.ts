@@ -61,6 +61,11 @@ export default class CargaTramiteComponent implements OnInit {
       return;
     }
 
+    if (!this.contenedor){
+      this.message('warn', 'Contenedor vacio', 'Ingrese el nombre del contenedor o numero de contenedor ')
+      return;
+    }
+
     if (!this.fecha) {
       this.message('warn', 'Datos vacios', 'Ingrese la fecha')
       return;
@@ -68,7 +73,7 @@ export default class CargaTramiteComponent implements OnInit {
     const fecha = getCurrentDate(this.fecha);
 
     files.forEach((file: File) => {
-      this.fileService.sendExcel(file, fecha, this.tramiteId, this.contenedor).subscribe({
+      this.fileService.sendExcel(file, fecha, this.tramiteId.toUpperCase(), this.contenedor.toUpperCase()).subscribe({
         next: response => {
           if (response == null) {
             this.message('warn', 'Advertencia', 'El archivo esta vacio')
@@ -174,6 +179,7 @@ export default class CargaTramiteComponent implements OnInit {
   }
 
   checkTramite(){
+    this.loading = true
     this.confirmationService.confirm({
       message: 'Desea Finalizar la carga de Tramites y enviar a los subscritores el email',
       header: 'Confirmación',
@@ -182,6 +188,7 @@ export default class CargaTramiteComponent implements OnInit {
         this.fileService.sendTramite(this.tramiteId).subscribe({
           next: response => {
             this.message('info', 'Tramite finalizado', 'Se registro el tramite y se envio a los subscritores el email' );
+            this.loading = false
             this.cargarNuevo();
           }, error: error => {
             this.message('error', 'Error', `${error.message}`);
