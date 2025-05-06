@@ -25,3 +25,13 @@ export function getCurrentTime(): string {
   const formattedHours = (hours % 12 || 12).toString().padStart(2, '0'); // Convierte 0 a 12
   return `${formattedHours}:${minutes} ${ampm}`;
 }
+
+export function getTime(hora: any): string | null {
+  if (!hora) {
+    return null;
+  }
+  const hours = hora.getHours().toString().padStart(2, '0');
+  const minutes = hora.getMinutes().toString().padStart(2, '0');
+  const seconds = '00'; // Si no manejas segundos, puedes dejarlo fijo.
+  return `${hours}:${minutes}:${seconds}`; // Formato correcto para LocalTime en Spring.
+}

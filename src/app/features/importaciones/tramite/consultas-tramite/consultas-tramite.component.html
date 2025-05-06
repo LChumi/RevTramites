@@ -41,6 +41,9 @@
                   <p-dropdown id="estado" [options]="estados" [(ngModel)]="estado" optionLabel="name"></p-dropdown>
                 </span>
               </div>
+              <div class="field col-12 md:col-2 py-5">
+                <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-outlined" (click)="find()"></button>
+              </div>
             </div>
           </div>
         </div>
@@ -67,6 +70,7 @@
                   <th pSortableColumn="fechaCarga">Fecha Carga</th>
                   <th pSortableColumn="observacion">Fecha Llegada</th>
                   <th pSortableColumn="estado">Estado</th>
+                  <th pSortableColumn="estado">Arribo</th>
                 </tr>
               </ng-template>
 
@@ -84,6 +88,66 @@
                   <td class="p-text-center p-col-1">{{ tramite.fechaCarga }}</td>
                   <td class="p-text-center p-col-1">{{ tramite.fechaLlegada }}</td>
                   <td class="p-text-secondary">{{ tramite.proceso | procesoTramite }}</td>
+                  <td class="p-text-secondary">
+                    <p-dialog
+                      header="Agregar Fecha de Arribo"
+                      [(visible)]="modalVisibility[tramite.id]"
+                      [modal]="true"
+                      showEffect="fade"
+                      [style]="{width: '35vw', height: '75vh', 'border-radius': '12px'}"
+                      [breakpoints]="{'960px': '80vw'}"
+                    >
+
+                    <div style="padding: 20px;">
+
+                        <p style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">
+                          Tramite {{ tramite.id }}
+                        </p>
+
+                        <p-calendar
+                          [(ngModel)]="fechaArribo"
+                          [showIcon]="true"
+                          inputId="icondisplay"
+                          styleClass="p-mb-3"
+                        />
+
+                        <p style="font-size: 14px; margin-top: 15px;">
+                          Seleccione la Hora Estimada (Opcional)
+                        </p>
+
+                        <p-calendar
+                          [(ngModel)]="horaArribo"
+                          [showIcon]="true"
+                          [timeOnly]="true"
+                          inputId="templatedisplay"
+                          styleClass="p-mb-3"
+                        />
+
+                        <p style="font-size: 12px; color: gray; margin-top: 10px;">
+                          ⚠ Si la hora cambia, se enviará otra notificación.
+                        </p>
+
+                        <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                          <button
+                            pButton
+                            icon="pi pi-check"
+                            (click)="updateDate(tramite.id)"
+                            label="Guardar"
+                            class="p-button-success"
+                          ></button>
+                        </div>
+                      </div>
+                    </p-dialog>
+
+                    <button
+                      (click)="mostrarModal(tramite.id)"
+                      pButton
+                      icon="pi pi-calendar"
+                      label="Actualizar Fecha de Arribo"
+                      class="p-button-outlined p-mt-3"
+                    ></button>
+
+                  </td>
                 </tr>
               </ng-template>
 

@@ -4,7 +4,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TramiteService} from '@services/tramite.service';
 import {Tramite} from '@models/tramite';
-import {getCurrentDate} from '@utils/date-utils';
+import {getCurrentDate, getCurrentTime, getTime} from '@utils/date-utils';
 import {ErrorResponse} from '@dtos/error-response';
 import {MessageService} from 'primeng/api';
 import {CalendarModule} from 'primeng/calendar';
@@ -16,6 +16,7 @@ import {NgStyle} from '@angular/common';
 import {Producto} from '@models/producto';
 import {TabViewModule} from 'primeng/tabview';
 import {ProcesoTramitePipe} from '@shared/pipes/proceso-tramite.pipe';
+import {DialogModule} from 'primeng/dialog';
 
 @Component({
   standalone: true,
@@ -31,7 +32,8 @@ import {ProcesoTramitePipe} from '@shared/pipes/proceso-tramite.pipe';
     ToggleButtonModule,
     NgStyle,
     TabViewModule,
-    ProcesoTramitePipe
+    ProcesoTramitePipe,
+    DialogModule
   ],
   templateUrl: './consultas-tramite.component.html',
   styles: ``
@@ -40,6 +42,8 @@ export default class ConsultasTramiteComponent {
 
   private tramiteService = inject(TramiteService);
   private messageService = inject(MessageService);
+
+  modalVisibility: { [key: string]: boolean } = {};
 
   tramites: Tramite[] = [];
   productos: Producto[] = []
@@ -54,6 +58,8 @@ export default class ConsultasTramiteComponent {
     {name: 'Finalizado', status: 5}]
   fechaInicio: any;
   fechaFin: any;
+  fechaArribo: any;
+  horaArribo: any;
   loading: boolean = false;
 
   find() {
@@ -118,4 +124,35 @@ export default class ConsultasTramiteComponent {
       }
     })
   }
+
+  updateDate(id: string) {
+    this.fechaArribo = getCurrentDate(this.fechaArribo)
+    this.horaArribo = getTime(this.horaArribo)
+    this.tramiteService.updateDate(this.fechaArribo, this.horaArribo, id).subscribe({
+      next: data => {
+        if (data.status){
+          this.messageService.add({severity: 'info', summary: `${data.info}, Fecha de arribo agregada`, detail: 'Se actualizo la fecha de arribo, se envio notificacion a los usuarios'});
+          this.cerrarModal(id)
+        } else {
+          this.messageService.add({severity: 'warn', summary: 'Observacion', detail: 'Se encontro un problema al actualizar la fecha de arribo'});
+          this.cerrarModal(id)
+        }
+      },
+      error: err => {
+        this.messageService.add({severity: 'error', summary: 'Error', detail: 'Ocurrio un problema en el servidor'});
+        this.cerrarModal(id)
+      }
+    })
+  }
+
+  mostrarModal(tramiteId: string) {
+    this.modalVisibility[tramiteId] = true;
+    this.horaArribo = getCurrentTime()
+  }
+
+  cerrarModal(tramiteId: string) {
+    this.modalVisibility[tramiteId] = false;
+  }
+
+
 }

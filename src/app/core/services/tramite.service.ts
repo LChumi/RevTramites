@@ -57,4 +57,12 @@ export class TramiteService {
     if (fechaFin) params = params.set('fechaFin', fechaFin);
     return this.http.get<Tramite[]>(`${this.baseUrl}/filtros`, {params});
   }
+
+  updateDate(fechaArribo: any, horaArribo: any, tramiteId: string){
+    let params = new HttpParams();
+    params = params.set('fechaArribo', fechaArribo);
+    params = params.set('horaArribo', horaArribo);
+    params = params.set('id', tramiteId);
+    return this.http.get<StatusResponse>(`${this.baseUrl}/update/date`, {params})
+  }
 }

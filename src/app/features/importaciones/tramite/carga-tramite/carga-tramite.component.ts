@@ -185,7 +185,7 @@ export default class CargaTramiteComponent implements OnInit {
       header: 'Confirmación',
       icon: 'pi pi-exclamation-circle',
       accept: () => {
-        this.fileService.sendTramite(this.tramiteId).subscribe({
+        this.fileService.sendTramite(this.tramiteId.toUpperCase()).subscribe({
           next: response => {
             this.message('info', 'Tramite finalizado', 'Se registro el tramite y se envio a los subscritores el email' );
             this.loading = false
