@@ -133,6 +133,8 @@
                             icon="pi pi-check"
                             (click)="updateDate(tramite.id)"
                             label="Guardar"
+                            [loading]="sending"
+                            [disabled]="sending"
                             class="p-button-success"
                           ></button>
                         </div>

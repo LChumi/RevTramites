@@ -61,6 +61,7 @@ export default class ConsultasTramiteComponent {
   fechaArribo: any;
   horaArribo: any;
   loading: boolean = false;
+  sending: boolean = false;
 
   find() {
     this.loading = true;
@@ -126,6 +127,7 @@ export default class ConsultasTramiteComponent {
   }
 
   updateDate(id: string) {
+    this.sending= true
     this.fechaArribo = getCurrentDate(this.fechaArribo)
     this.horaArribo = getTime(this.horaArribo)
     this.tramiteService.updateDate(this.fechaArribo, this.horaArribo, id).subscribe({
@@ -152,6 +154,7 @@ export default class ConsultasTramiteComponent {
 
   cerrarModal(tramiteId: string) {
     this.modalVisibility[tramiteId] = false;
+    this.sending = false
   }
 
 
