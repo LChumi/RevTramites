@@ -1,0 +1,42 @@
+name: Build push Angular Image
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download code
+        uses: actions/checkout@v4
+
+      - name: configure Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: build anguar Application
+        run: npm run build -- --configuration production
+
+      - name: Loggin in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+
+      - name: build and push docker image
+        run: |
+          IMAGE=ghcr.io/lchumi/front-revtramites
+          docker build -t $IMAGE .
+          docker push $IMAGE
+      
