@@ -14,6 +14,7 @@ import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
 import {CheckboxModule} from 'primeng/checkbox';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {ProcesoTramitePipe} from '@shared/pipes/proceso-tramite.pipe';
+import {converToExcel} from '@utils/excel-utils';
 
 @Component({
   standalone: true,
@@ -40,6 +41,7 @@ export default class ConsultasRevisionComponent {
   revisionService = inject(RevisionService)
   messageService = inject(MessageService)
   tramite: string = ''
+  private tramiteSelec: string = ''
   loading: boolean = false;
   revisiones: Revision[] = []
 
@@ -56,6 +58,7 @@ export default class ConsultasRevisionComponent {
             })
             this.revisiones = data;
             this.loading = false;
+            this.tramiteSelec=this.tramite
             this.tramite = ''
           } else {
             this.messageService.add({
@@ -82,5 +85,9 @@ export default class ConsultasRevisionComponent {
         detail: 'Ingrese el tramite a buscar',
       })
     }
+  }
+
+  exportToExcel() {
+    converToExcel(this.revisiones, this.tramiteSelec)
   }
 }

@@ -29,13 +29,17 @@
               [value]="revisiones"
               [responsiveLayout]="'scroll'"
               [paginator]="true"
-              [rows]="5"
+              [rows]="50"
               dataKey="id"
               class="my-3 p-p-3"
               styleClass="p-datatable-gridlines">
 
               <ng-template pTemplate="caption">
                 <h3>Lista de Muestras</h3>
+                @if (revisiones.length > 0) {
+                  <button pButton pRipple label="Descargar Excel" icon="pi pi-download" class="p-button-outlined"
+                          (click)="exportToExcel()"></button>
+                }
               </ng-template>
 
               <ng-template pTemplate="header">
