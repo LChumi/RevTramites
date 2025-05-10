@@ -24,91 +24,90 @@
       } @else {
         @if (!tramiteExist) {
           <div class="mt-2">
-            <div class="card">
-              <p-table
-                [value]="tramites"
-                [responsiveLayout]="'scroll'"
-                [paginator]="true"
-                [rows]="30"
-                [rowsPerPageOptions]="[30,50,100]"
-                dataKey="id"
-                class="my-3 p-p-3"
-                styleClass="p-datatable-gridlines">
-                <ng-template pTemplate="caption">
-                  <h3>Tramites pendientes de validacion</h3>
-                  <small>Tramites pendientes: {{ tramites.length }}</small>
-                </ng-template>
+            <p-table
+              [value]="tramites"
+              [responsiveLayout]="'scroll'"
+              [paginator]="true"
+              [rows]="30"
+              [rowsPerPageOptions]="[30,50,100]"
+              dataKey="id"
+              class="my-3 p-p-3"
+              styleClass="p-datatable-gridlines">
+              <ng-template pTemplate="caption">
+                <h3>Tramites pendientes de validacion</h3>
+                <small>Tramites pendientes: {{ tramites.length }}</small>
+              </ng-template>
 
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th></th>
-                    <th pSortableColumn="id">Tramite</th>
-                    <th pSortableColumn="fechaCarga">Fecha Carga</th>
-                    <th pSortableColumn="observacion">Fecha Llegada</th>
-                  </tr>
-                </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th></th>
+                  <th pSortableColumn="id">Tramite</th>
+                  <th pSortableColumn="fechaCarga">Fecha Carga</th>
+                  <th pSortableColumn="observacion">Fecha Llegada</th>
+                </tr>
+              </ng-template>
 
-                <ng-template pTemplate="body" let-tramite let-expanded="expanded">
-                  <tr>
-                    <td [ngStyle]="{'width': '50px'}">
-                      @if (tramite.contenedores) {
-                        <button type="button" pButton pRipple [pRowToggler]="tramite"
+              <ng-template pTemplate="body" let-tramite let-expanded="expanded">
+                <tr>
+                  <td [ngStyle]="{'width': '50px'}">
+                    @if (tramite.contenedores) {
+                      <button type="button" pButton pRipple [pRowToggler]="tramite"
+                              class="p-button-text p-button-rounded p-button-plain"
+                              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                    }
+                  </td>
+                  <td class="p-text-center p-col-1 p-col-fixed">{{ tramite.id }}</td>
+                  <td class="p-text-center p-col-1">{{ tramite.fechaCarga }}</td>
+                  <td class="p-text-center p-col-1">{{ tramite.fechaLlegada }}</td>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="rowexpansion" let-tramite>
+                <tr>
+                  <td colspan="13">
+                    <div class="p-3">
+                      <p-table
+                        [value]="tramite.contenedores"
+                        dataKey="id"
+                        responsiveLayout="scroll">
+                        <ng-template pTemplate="header">
+                          <tr>
+                            <th></th>
+                            <th>N contenedor</th>
+                            <th>Cont Bloqueado</th>
+                            <th>Usuario Bloquea</th>
+                            <th>Cont finalizado</th>
+                            <th></th>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-contenedor>
+                          <tr>
+                            <td>
+                              <button
+                                type="button"
+                                pButton
+                                pRipple
+                                (click)="buscarTramite(tramite.id, contenedor.id)"
+                                [hidden]="contenedor.finalizado || contenedor.bloqueado"
+                                [disabled]="contenedor.finalizado || contenedor.bloqueado"
                                 class="p-button-text p-button-rounded p-button-plain"
-                                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
-                      }
-                    </td>
-                    <td class="p-text-center p-col-1 p-col-fixed">{{ tramite.id }}</td>
-                    <td class="p-text-center p-col-1">{{ tramite.fechaCarga }}</td>
-                    <td class="p-text-center p-col-1">{{ tramite.fechaLlegada }}</td>
-                  </tr>
-                </ng-template>
-
-                <ng-template pTemplate="rowexpansion" let-tramite>
-                  <tr>
-                    <td colspan="13">
-                      <div class="p-3">
-                        <p-table
-                          [value]="tramite.contenedores"
-                          dataKey="id"
-                          responsiveLayout="scroll">
-                          <ng-template pTemplate="header">
-                            <tr>
-                              <th></th>
-                              <th>N contenedor</th>
-                              <th>Cont Bloqueado</th>
-                              <th>Usuario Bloquea</th>
-                              <th>Cont finalizado</th>
-                              <th></th>
-                            </tr>
-                          </ng-template>
-                          <ng-template pTemplate="body" let-contenedor>
-                            <tr>
-                              <td>
-                                <button
-                                  type="button"
-                                  pButton
-                                  pRipple
-                                  (click)="buscarTramite(tramite.id, contenedor.id)"
-                                  [hidden]="contenedor.finalizado || contenedor.bloqueado"
-                                  [disabled]="contenedor.finalizado || contenedor.bloqueado"
-                                  class="p-button-text p-button-rounded p-button-plain"
-                                  icon="pi pi-chevron-right"></button>
-                              </td>
-                              <td>{{ contenedor.id }}</td>
-                              <td>{{ contenedor.bloqueado }}</td>
-                              <td>{{ contenedor.usrBloquea }}</td>
-                              <td>
-                                <p-toggleButton
-                                  disabled="true"
-                                  [(ngModel)]="contenedor.finalizado"
-                                  onLabel="Finalizado"
-                                  offLabel="Pendiente"
-                                  onIcon="pi pi-check"
-                                  offIcon="pi pi-times"
-                                  styleClass="w-9rem"
-                                  ariaLabel="Finalizado"/>
-                              </td>
-                              <td>
+                                icon="pi pi-chevron-right"></button>
+                            </td>
+                            <td>{{ contenedor.id }}</td>
+                            <td>{{ contenedor.bloqueado }}</td>
+                            <td>{{ contenedor.usrBloquea }}</td>
+                            <td>
+                              <p-toggleButton
+                                disabled="true"
+                                [(ngModel)]="contenedor.finalizado"
+                                onLabel="Finalizado"
+                                offLabel="Pendiente"
+                                onIcon="pi pi-check"
+                                offIcon="pi pi-times"
+                                styleClass="w-9rem"
+                                ariaLabel="Finalizado"/>
+                            </td>
+                            <td>
                                 <span class="flex">
                                   <button
                                     (click)="blockUnlockContainer(tramite.id,contenedor.id)"
@@ -120,16 +119,15 @@
                                     class="p-button-rounded p-button-info mr-2">
                                   </button>
                                 </span>
-                              </td>
-                            </tr>
-                          </ng-template>
-                        </p-table>
-                      </div>
-                    </td>
-                  </tr>
-                </ng-template>
-              </p-table>
-            </div>
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
           </div>
         } @else {
           <div class="col-12">
