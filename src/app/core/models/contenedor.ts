@@ -5,5 +5,10 @@ export interface Contenedor {
   usrBloquea: string;
   bloqueado:  boolean;
   finalizado: boolean;
-  productos:  Producto[];
+  productIds: string[];
+  tramiteId:  string;
+
+  startDate:  any;
+  startHour:  any;
+  endHour:    any;
 }

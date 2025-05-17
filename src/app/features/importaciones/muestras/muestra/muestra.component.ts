@@ -10,10 +10,10 @@ import {NgStyle} from '@angular/common';
 import {ButtonDirective} from 'primeng/button';
 import {Ripple} from 'primeng/ripple';
 import {ErrorResponse} from '@dtos/error-response';
-import {Muestra} from '@models/muestra';
 import {TooltipModule} from 'primeng/tooltip';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {forkJoin} from 'rxjs';
+import {Producto} from '@models/producto';
 
 @Component({
   standalone: true,
@@ -39,8 +39,8 @@ export default class MuestraComponent implements OnInit {
   private muestraService = inject(MuestraService)
 
   tramites: Tramite[] = [];
-  muestras: Muestra[] = []
-  muestraAdd: Muestra | null = null;
+  muestras: Producto[] = []
+  muestraAdd: Producto | null = null;
   barra: any;
   muestra: any;
   status: boolean = true;
@@ -135,7 +135,7 @@ export default class MuestraComponent implements OnInit {
     this.muestraService.validate(this.tramiteId).subscribe({
       next: (result) => {
         this.muestras = result;
-        const allComplete = this.muestras.every(muestra => muestra.proceso === 'COMPLETA');
+        const allComplete = this.muestras.every(muestra => muestra.procesoMuestra === 'COMPLETA');
         if (allComplete) {
           this.messageService.add({severity: 'info', summary: 'Muestra Validadas',})
         } else {

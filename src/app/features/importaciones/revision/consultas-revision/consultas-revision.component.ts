@@ -2,10 +2,9 @@ import {Component, inject} from '@angular/core';
 import {ButtonDirective} from 'primeng/button';
 import {InputGroupModule} from 'primeng/inputgroup';
 import {InputTextModule} from 'primeng/inputtext';
-import {MessageService, PrimeTemplate} from 'primeng/api';
+import {MessageService} from 'primeng/api';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TableModule} from 'primeng/table';
-import {Revision} from '@models/revision';
 import {RevisionService} from '@services/revision.service';
 import {ErrorResponse} from '@dtos/error-response';
 import {KeyValuePipe, NgStyle} from '@angular/common';
@@ -15,6 +14,7 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {ProcesoTramitePipe} from '@shared/pipes/proceso-tramite.pipe';
 import {converToExcel} from '@utils/excel-utils';
+import {Producto} from '@models/producto';
 
 @Component({
   standalone: true,
@@ -43,7 +43,7 @@ export default class ConsultasRevisionComponent {
   tramite: string = ''
   private tramiteSelec: string = ''
   loading: boolean = false;
-  revisiones: Revision[] = []
+  revisiones: Producto[] = []
 
   buscarRevisiones() {
     if (this.tramite) {

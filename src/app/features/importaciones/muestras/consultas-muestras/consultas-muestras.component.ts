@@ -6,10 +6,10 @@ import {TooltipModule} from 'primeng/tooltip';
 import {InputTextModule} from 'primeng/inputtext';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MuestraService} from '@services/muestra.service';
-import {Muestra} from '@models/muestra';
 import {InputGroupModule} from 'primeng/inputgroup';
 import {NgStyle} from '@angular/common';
 import {ErrorResponse} from '@dtos/error-response';
+import {Producto} from '@models/producto';
 
 @Component({
   standalone: true,
@@ -31,7 +31,7 @@ export default class ConsultasMuestrasComponent {
   private muestraService = inject(MuestraService)
   private messageService = inject(MessageService);
   tramite: string = '';
-  muestras: Muestra[] = [];
+  productos: Producto[] = [];
   loading = false;
 
   buscarMuestras() {
@@ -45,7 +45,7 @@ export default class ConsultasMuestrasComponent {
               summary: 'Exito',
               detail: 'Se econtraron registros '
             })
-            this.muestras = data;
+            this.productos = data;
             this.loading = false;
             this.tramite = ''
           } else {
@@ -57,7 +57,7 @@ export default class ConsultasMuestrasComponent {
           }
         },
         error: (err: ErrorResponse) => {
-          this.muestras = [];
+          this.productos = [];
           this.loading = false;
           this.messageService.add({
             severity: 'error',

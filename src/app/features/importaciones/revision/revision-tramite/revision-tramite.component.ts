@@ -6,12 +6,11 @@ import {ButtonDirective} from 'primeng/button';
 import {TramiteService} from '@services/tramite.service';
 import {RevisionService} from '@services/revision.service';
 import {ConfirmationService, MessageService} from 'primeng/api';
-import {Revision} from '@models/revision';
 import {TableModule} from 'primeng/table';
 import {Ripple} from 'primeng/ripple';
 import {NgStyle} from '@angular/common';
 import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
-import {Observable, switchMap} from 'rxjs';
+import {Observable, of, switchMap} from 'rxjs';
 import {Tramite} from '@models/tramite';
 import {ToolbarModule} from 'primeng/toolbar';
 import {converToExcel} from '@utils/excel-utils';
@@ -19,6 +18,7 @@ import {Contenedor} from '@models/contenedor';
 import {ToggleButtonModule} from "primeng/togglebutton";
 import {playAlert} from '@utils/audio-utils';
 import {RevisionRequest} from '@models/revision-request';
+import {Producto} from '@models/producto';
 
 @Component({
   imports: [
@@ -49,9 +49,9 @@ export default class RevisionTramiteComponent implements OnInit {
   containerId: string = '';
   barra: string = '';
   tramiteExist: boolean = false;
-  revisiones: Revision[] = [];
+  revisiones: Producto[] = [];
   tramites: Tramite[] = [];
-  revision: Revision | null = null;
+  revision: Producto | null = null;
   tramite: Tramite | null = null;
   loading: boolean = false;
   status: boolean = true;
@@ -91,42 +91,52 @@ export default class RevisionTramiteComponent implements OnInit {
 
     this.tramiteService.findById(this.tramiteId).pipe(
       switchMap(tramite => {
-        if (tramite) {
-          this.tramiteExist = true;
-          const container = tramite.contenedores.find(c => c.id === containerId);
-          if (container) {
-            if (container.bloqueado) {
-              this.messageService.add({
-                severity: 'warn',
-                summary: 'Contenedor Bloqueado',
-                detail: 'El contenedor está bloqueado'
-              });
-              return new Observable<Revision[]>(observer => observer.next([]));
-            } else {
-              this.blockUnlockContainer(tramiteId, containerId);
-              return this.revisionService.findByTramite(this.tramiteId);
-            }
-          } else {
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Contenedor no encontrado',
-              detail: 'No se encontró el contenedor especificado'
-            });
-            return new Observable<Revision[]>(observer => observer.next([]));
-          }
-        } else {
+        if (!tramite) {
           this.tramiteExist = false;
           this.messageService.add({
             severity: 'warn',
             summary: 'Trámite no existe',
             detail: 'No se encontró registro de trámite'
           });
-          return new Observable<Revision[]>(observer => observer.next([]));
+          return of([]); // retornar Observable vacío
         }
+
+        this.tramiteExist = true;
+
+        const containerTramite = tramite.contenedoresIds.find(c => c === containerId);
+        if (!containerTramite) {
+          return of([]); //también retornar Observable
+        }
+
+        return this.tramiteService.getContenedor(tramiteId, containerId).pipe(
+          switchMap(container => {
+            if (!container) {
+              this.messageService.add({
+                severity: 'warn',
+                summary: 'Contenedor no encontrado',
+                detail: 'No se encontró el contenedor especificado'
+              });
+              return of([]);
+            }
+
+            if (container.bloqueado) {
+              this.messageService.add({
+                severity: 'warn',
+                summary: 'Contenedor Bloqueado',
+                detail: 'El contenedor está bloqueado'
+              });
+              return of([]);
+            }
+
+            this.blockUnlockContainer(tramiteId, containerId);
+            return this.revisionService.findByTramite(this.tramiteId);
+          })
+        );
       })
     ).subscribe(revisiones => {
       this.revisiones = revisiones;
     });
+
   }
 
   listarPendientes() {
@@ -162,7 +172,7 @@ export default class RevisionTramiteComponent implements OnInit {
     this.revisionService.updateQuantity(request).pipe(
       switchMap(revision => {
         this.revision = revision;
-        if (revision.estado === 'SIN REGISTRO' && revision.cantidad === 1) {
+        if (revision.estadoRevision === 'SIN REGISTRO' && revision.cantidadRevision === 1) {
           playAlert()
           this.messageService.add({
             severity: 'warn',
@@ -188,7 +198,7 @@ export default class RevisionTramiteComponent implements OnInit {
       accept: () => {
         this.revisionService.updateQuantities(this.tramiteId, this.containerId).subscribe(revisiones => {
           this.revisiones = revisiones;
-          if (this.revisiones.every(revision => revision.estado === 'SN')) {
+          if (this.revisiones.every(revision => revision.estadoRevision === 'SN')) {
             this.nuevoEscaneo();
           }
         });

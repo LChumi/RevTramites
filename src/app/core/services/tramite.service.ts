@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {Tramite} from '@models/tramite';
 import {Producto} from '@models/producto';
 import {StatusResponse} from '@dtos/status-response';
+import {Contenedor} from '@models/contenedor';
 
 @Injectable({
   providedIn: 'root'
@@ -16,20 +17,8 @@ export class TramiteService {
   constructor() {
   }
 
-  getAll(): Observable<Tramite[]> {
-    return this.http.get<Tramite[]>(`${this.baseUrl}/All`);
-  }
-
   findById(tramiteId: string): Observable<Tramite> {
     return this.http.get<Tramite>(`${this.baseUrl}/findId/${tramiteId}`);
-  }
-
-  update(tramiteId: string, tramite: Tramite): Observable<Tramite> {
-    return this.http.put<Tramite>(`${this.baseUrl}/update/${tramiteId}`, JSON.stringify(tramite));
-  }
-
-  delete(tramiteId: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/delete/${tramiteId}`);
   }
 
   productos(tramiteId: string): Observable<Producto[]> {
@@ -64,5 +53,9 @@ export class TramiteService {
     params = params.set('horaArribo', horaArribo);
     params = params.set('id', tramiteId);
     return this.http.get<StatusResponse>(`${this.baseUrl}/update/date`, {params})
+  }
+
+  getContenedor(tramiteId: string, contenedorId: string): Observable<Contenedor> {
+    return this.http.get<Contenedor>(`/contenedor/${tramiteId}/${contenedorId}`);
   }
 }
