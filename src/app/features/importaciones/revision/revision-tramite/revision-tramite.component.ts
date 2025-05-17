@@ -10,7 +10,7 @@ import {TableModule} from 'primeng/table';
 import {Ripple} from 'primeng/ripple';
 import {NgStyle} from '@angular/common';
 import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
-import {Observable, of, switchMap} from 'rxjs';
+import {of, switchMap} from 'rxjs';
 import {Tramite} from '@models/tramite';
 import {ToolbarModule} from 'primeng/toolbar';
 import {converToExcel} from '@utils/excel-utils';
