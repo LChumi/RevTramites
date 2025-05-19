@@ -10,7 +10,7 @@ import {TableModule} from 'primeng/table';
 import {Ripple} from 'primeng/ripple';
 import {NgStyle} from '@angular/common';
 import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
-import {of, switchMap} from 'rxjs';
+import {forkJoin, of, switchMap} from 'rxjs';
 import {Tramite} from '@models/tramite';
 import {ToolbarModule} from 'primeng/toolbar';
 import {converToExcel} from '@utils/excel-utils';
@@ -51,6 +51,7 @@ export default class RevisionTramiteComponent implements OnInit {
   tramiteExist: boolean = false;
   revisiones: Producto[] = [];
   tramites: Tramite[] = [];
+  contenedor: Contenedor | null = null;
   revision: Producto | null = null;
   tramite: Tramite | null = null;
   loading: boolean = false;
@@ -223,11 +224,32 @@ export default class RevisionTramiteComponent implements OnInit {
     converToExcel(this.revisiones, this.tramiteId)
   }
 
-  public getIcon(contenedor: Contenedor): string {
+  getIcon(contenedor: Contenedor): string {
     if (contenedor.finalizado) {
       return 'pi pi-check';
     } else {
       return contenedor.bloqueado ? 'pi pi-lock' : 'pi pi-lock-open';
     }
   }
+
+  contenedoresPorTramite: {[key:string]: Contenedor[] } = {}
+
+  buscarContenedores(tramite: Tramite){
+    if (!this.contenedoresPorTramite[tramite.id]){
+      this.contenedoresPorTramite[tramite.id] = [];//Evitar multiples llamadas innecesarias
+
+      const request = tramite.contenedoresIds.map(id => {
+        return this.tramiteService.getContenedor(tramite.id,id)
+      });
+
+      console.log("Solicitudes generadas:", request);
+
+      forkJoin(request).subscribe({
+        next: (containers) => {
+          this.contenedoresPorTramite[tramite.id] = containers.flat();
+        }
+      });
+    }
+  }
+
 }

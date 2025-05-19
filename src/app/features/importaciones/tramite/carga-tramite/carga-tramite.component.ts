@@ -88,7 +88,6 @@ export default class CargaTramiteComponent implements OnInit {
     this.message('info', 'Exito', 'Archivo registrado y guardado con exito');
   }
 
-
   cargarNuevo() {
     this.tramiteId = null
     this.contenedor = null
@@ -104,6 +103,7 @@ export default class CargaTramiteComponent implements OnInit {
   listProductos(tramiteId: any) {
     this.tramiteService.productos(tramiteId).subscribe({
       next: response => {
+        console.log(response)
         if (response == null) {
           this.message('warn', 'Sin productos', 'El tramite no tiene productos registrados')
         }

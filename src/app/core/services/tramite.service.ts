@@ -56,6 +56,6 @@ export class TramiteService {
   }
 
   getContenedor(tramiteId: string, contenedorId: string): Observable<Contenedor> {
-    return this.http.get<Contenedor>(`/contenedor/${tramiteId}/${contenedorId}`);
+    return this.http.get<Contenedor>(`${this.baseUrl}/contenedor/${tramiteId}/${contenedorId}`);
   }
 }

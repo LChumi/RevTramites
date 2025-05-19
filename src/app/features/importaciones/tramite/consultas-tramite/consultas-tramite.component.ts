@@ -17,6 +17,8 @@ import {Producto} from '@models/producto';
 import {TabViewModule} from 'primeng/tabview';
 import {ProcesoTramitePipe} from '@shared/pipes/proceso-tramite.pipe';
 import {DialogModule} from 'primeng/dialog';
+import {RevisionService} from '@services/revision.service';
+import {Contenedor} from '@models/contenedor';
 
 @Component({
   standalone: true,
@@ -41,12 +43,14 @@ import {DialogModule} from 'primeng/dialog';
 export default class ConsultasTramiteComponent {
 
   private tramiteService = inject(TramiteService);
+  private revisionService = inject(RevisionService);
   private messageService = inject(MessageService);
 
   modalVisibility: { [key: string]: boolean } = {};
 
   tramites: Tramite[] = [];
-  productos: Producto[] = []
+  productos: Producto[] = [];
+  contenedores: Contenedor[] = [];
 
   id: any;
   estado: any;
@@ -114,6 +118,11 @@ export default class ConsultasTramiteComponent {
     })
   }
 
+  obtenerDatos(tramiteId: string){
+   this.listarProducto(tramiteId)
+   this.getContenedores(tramiteId)
+  }
+
   listarProducto(tramiteId: string) {
     this.tramiteService.productos(tramiteId).subscribe({
       next: data => {
@@ -121,6 +130,18 @@ export default class ConsultasTramiteComponent {
           this.productos = data;
         } else {
           this.productos = []
+        }
+      }
+    })
+  }
+
+  getContenedores(tramiteId: string){
+    this.revisionService.getContenedores(tramiteId).subscribe({
+      next: data => {
+        if (data && data.length > 0) {
+          this.contenedores = data;
+        } else {
+          this.contenedores = []
         }
       }
     })
@@ -156,6 +177,5 @@ export default class ConsultasTramiteComponent {
     this.modalVisibility[tramiteId] = false;
     this.sending = false
   }
-
 
 }

@@ -42,7 +42,8 @@
                 </span>
               </div>
               <div class="field col-12 md:col-2 py-5">
-                <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-outlined" (click)="find()"></button>
+                <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-outlined"
+                        (click)="find()"></button>
               </div>
             </div>
           </div>
@@ -78,9 +79,9 @@
               <ng-template pTemplate="body" let-tramite let-expanded="expanded">
                 <tr>
                   <td [ngStyle]="{'width': '50px'}">
-                    @if (tramite.contenedores) {
+                    @if (tramite.contenedoresIds) {
                       <button type="button" pButton pRipple [pRowToggler]="tramite"
-                              (click)="listarProducto(tramite.id)"
+                              (click)="obtenerDatos(tramite.id)"
                               class="p-button-text p-button-rounded p-button-plain"
                               [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                     }
@@ -99,23 +100,18 @@
                       [breakpoints]="{'960px': '80vw'}"
                     >
 
-                    <div style="padding: 20px;">
-
+                      <div style="padding: 20px;">
                         <p style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">
                           Tramite {{ tramite.id }}
                         </p>
-
                         <p-calendar
                           [(ngModel)]="fechaArribo"
                           [showIcon]="true"
                           inputId="icondisplay"
-                          styleClass="p-mb-3"
-                        />
-
+                          styleClass="p-mb-3"/>
                         <p style="font-size: 14px; margin-top: 15px;">
                           Seleccione la Hora Estimada (Opcional)
                         </p>
-
                         <p-calendar
                           [(ngModel)]="horaArribo"
                           [showIcon]="true"
@@ -123,11 +119,9 @@
                           inputId="templatedisplay"
                           styleClass="p-mb-3"
                         />
-
                         <p style="font-size: 12px; color: gray; margin-top: 10px;">
                           ⚠ Si la hora cambia, se enviará otra notificación.
                         </p>
-
                         <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
                           <button
                             pButton
@@ -136,19 +130,18 @@
                             label="Guardar"
                             [loading]="sending"
                             [disabled]="sending"
-                            class="p-button-success"
-                          ></button>
+                            class="p-button-success">
+                          </button>
                         </div>
                       </div>
                     </p-dialog>
-
                     <button
                       (click)="mostrarModal(tramite.id)"
                       pButton
                       icon="pi pi-calendar"
                       label="Actualizar Fecha de Arribo"
-                      class="p-button-outlined p-mt-3"
-                    ></button>
+                      class="p-button-outlined p-mt-3">
+                    </button>
 
                   </td>
                 </tr>
@@ -161,7 +154,7 @@
                       <p-tabView>
                         <!-- Pestaña Contenedores -->
                         <p-tabPanel header="Contenedores">
-                          <p-table [value]="tramite.contenedores" dataKey="id" responsiveLayout="scroll">
+                          <p-table [value]="contenedores" dataKey="id" responsiveLayout="scroll">
                             <ng-template pTemplate="caption">
                               <h3>Lista Contenedores del trámite: {{ tramite.id }}</h3>
                             </ng-template>
@@ -183,7 +176,7 @@
                                             [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                                   }
                                 </td>
-                                <td>{{ contenedor.id }}</td>
+                                <td>{{ contenedor.contenedorId }}</td>
                                 <td>{{ contenedor.usrBloquea }}</td>
                                 <td>
                                   <p-toggleButton
@@ -206,59 +199,6 @@
                                     offIcon="pi pi-times"
                                     styleClass="w-9rem"
                                     ariaLabel="Finalizado"/>
-                                </td>
-                              </tr>
-                            </ng-template>
-                            <ng-template pTemplate="rowexpansion" let-contenedor>
-                              <tr>
-                                <td colspan="13">
-                                  <div class="p-3">
-                                    <p-table
-                                      [value]="contenedor.productos"
-                                      dataKey="id"
-                                      responsiveLayout="scroll">
-                                      <ng-template pTemplate="header">
-                                        <tr>
-                                          <th>Barra</th>
-                                          <th>Item</th>
-                                          <th>Nombre</th>
-                                          <th>CXB</th>
-                                          <th>Bultos</th>
-                                          <th>Total</th>
-                                          <th>Item Alterno</th>
-                                          <th>PVP</th>
-                                          <th>CXB Anterior</th>
-                                          <th>Ubicacion Bulto</th>
-                                          <th>Ubicacion Unidad</th>
-                                          <th>Stock Zhucay</th>
-                                          <th>Stock Narancay</th>
-                                          <th>Descripcion</th>
-                                          <th>Barra Sistema</th>
-                                          <th>Diferencias</th>
-                                        </tr>
-                                      </ng-template>
-                                      <ng-template pTemplate="body" let-producto>
-                                        <tr>
-                                          <td>{{ producto.id }}</td>
-                                          <td>{{ producto.id1 }}</td>
-                                          <td>{{ producto.nombre }}</td>
-                                          <td>{{ producto.cxb }}</td>
-                                          <td>{{ producto.bultos }}</td>
-                                          <td>{{ producto.total }}</td>
-                                          <td>{{ producto.itemAlterno }}</td>
-                                          <td>{{ producto.pvp }}</td>
-                                          <td>{{ producto.cxbAnterior }}</td>
-                                          <td>{{ producto.ubicacionBulto }}</td>
-                                          <td>{{ producto.ubicacionUnidad }}</td>
-                                          <td>{{ producto.stockZhucay }}</td>
-                                          <td>{{ producto.stockNarancay }}</td>
-                                          <td>{{ producto.descripcion }}</td>
-                                          <td>{{ producto.barraSistema }}</td>
-                                          <td>{{ producto.diferencia }}</td>
-                                        </tr>
-                                      </ng-template>
-                                    </p-table>
-                                  </div>
                                 </td>
                               </tr>
                             </ng-template>

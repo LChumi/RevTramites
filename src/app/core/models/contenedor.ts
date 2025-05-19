@@ -1,5 +1,3 @@
-import {Producto} from '@models/producto';
-
 export interface Contenedor {
   id:         string;
   usrBloquea: string;

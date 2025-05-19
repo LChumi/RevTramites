@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {RevisionRequest} from '@models/revision-request';
 import {Producto} from '@models/producto';
+import {Contenedor} from '@models/contenedor';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,7 @@ export class RevisionService {
     return this.http.get<Producto[]>(`${this.baseUrl}/validate/${tramiteId}`);
   }
 
-  getContenedores(tramiteId: string): Observable<Producto[]> {
-    return this.http.get<Producto[]>(`${this.baseUrl}/revision/contenedores/${tramiteId}`);
+  getContenedores(tramiteId: string): Observable<Contenedor[]> {
+    return this.http.get<Contenedor[]>(`${this.baseUrl}/contenedores/${tramiteId}`);
   }
 }

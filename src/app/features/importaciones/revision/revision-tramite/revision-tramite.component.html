@@ -1,4 +1,3 @@
-<div class="card">
   <div class="grid grid-nogutter">
     <div class="col-12">
       <span class="text-900 font-bold text-4xl">Revision</span>
@@ -30,6 +29,7 @@
               [paginator]="true"
               [rows]="30"
               [rowsPerPageOptions]="[30,50,100]"
+              (onRowExpand)="buscarContenedores($event.data)"
               dataKey="id"
               class="my-3 p-p-3"
               styleClass="p-datatable-gridlines">
@@ -50,7 +50,7 @@
               <ng-template pTemplate="body" let-tramite let-expanded="expanded">
                 <tr>
                   <td [ngStyle]="{'width': '50px'}">
-                    @if (tramite.contenedores) {
+                    @if (tramite.contenedoresIds) {
                       <button type="button" pButton pRipple [pRowToggler]="tramite"
                               class="p-button-text p-button-rounded p-button-plain"
                               [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
@@ -67,7 +67,7 @@
                   <td colspan="13">
                     <div class="p-3">
                       <p-table
-                        [value]="tramite.contenedores"
+                        [value]="contenedoresPorTramite[tramite.id] ?? []"
                         dataKey="id"
                         responsiveLayout="scroll">
                         <ng-template pTemplate="header">
@@ -93,7 +93,7 @@
                                 class="p-button-text p-button-rounded p-button-plain"
                                 icon="pi pi-chevron-right"></button>
                             </td>
-                            <td>{{ contenedor.id }}</td>
+                            <td>{{ contenedor.contenedorId }}</td>
                             <td>{{ contenedor.bloqueado }}</td>
                             <td>{{ contenedor.usrBloquea }}</td>
                             <td>
@@ -110,7 +110,7 @@
                             <td>
                                 <span class="flex">
                                   <button
-                                    (click)="blockUnlockContainer(tramite.id,contenedor.id)"
+                                    (click)="blockUnlockContainer(tramite.id,contenedor.contenedorId)"
                                     pButton
                                     pRipple
                                     [hidden]="contenedor.finalizado"
@@ -260,4 +260,3 @@
       }
     </div>
   </div>
-</div>
