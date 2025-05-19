@@ -11,10 +11,10 @@ import {ToolbarModule} from 'primeng/toolbar';
 import {NgStyle} from '@angular/common';
 import {TramiteService} from '@services/tramite.service';
 import {RevisionService} from '@services/revision.service';
-import {Revision} from '@models/revision';
 import {Tramite} from '@models/tramite';
 import {converToExcel} from '@utils/excel-utils';
 import {Contenedor} from '@models/contenedor';
+import {Producto} from '@models/producto';
 
 @Component({
   standalone: true,
@@ -44,7 +44,7 @@ export default class ValidacionTramiteComponent implements OnInit {
   tramiteId: string = '';
   barra: string = '';
   tramiteExist: boolean = false;
-  revisiones: Revision[] = [];
+  revisiones: Producto[] = [];
   tramites: Tramite[] = [];
   tramite: Tramite | null = null;
   loading: boolean = false;

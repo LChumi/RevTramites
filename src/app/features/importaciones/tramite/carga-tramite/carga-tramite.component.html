@@ -1,4 +1,3 @@
-<div class="card">
   <div class="grid grid-nogutter">
     <div class="col-12">
       <span class="text-900 font-bold text-4xl">Trámites</span>
@@ -81,7 +80,6 @@
           }
         } @else if (productos.length > 0) {
           <div class="mt-1">
-            <div class="card">
               <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                   <div class="my-2 mr-2">
@@ -157,19 +155,16 @@
                 </ng-template>
 
               </p-table>
-
               <div>
                 <button pButton pRipple label="Finalizar Carga" icon="pi pi-check-circle" class="p-button-outlined"
                         (click)="checkTramite()"></button>
               </div>
-            </div>
           </div>
         }
       }
 
     </div>
   </div>
-</div>
 
 <div class="card">
   <p-sidebar [(visible)]="visibleSidebarEmails" position="right" [baseZIndex]="10000" [style]="{width: '90vw', maxWidth: '500px'}">

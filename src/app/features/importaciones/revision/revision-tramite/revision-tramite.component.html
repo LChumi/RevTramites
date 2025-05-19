@@ -178,18 +178,18 @@
                       class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border">
                       <div class="flex align-items-center flex-1">
                         <div>
-                          <strong>Barra:</strong>{{ revision.barra }}
+                          <strong>Barra:</strong>{{ revision.barcode }}
                         </div>
                       </div>
                       <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
                         <div class="flex align-items-center">
-                          <strong>Cantidad:</strong> {{ revision.cantidad }}
+                          <strong>Cantidad:</strong> {{ revision.cantidadRevision }}
                         </div>
                       </div>
                       <div class="flex align-items-center sm:justify-content-end">
                         <div>
                           <strong>Estado:</strong> <span class="text-sm"
-                                                         [ngStyle]="revision.estado | estadoColor">{{ revision.estado }}</span>
+                                                         [ngStyle]="revision.estadoRevision | estadoColor">{{ revision.estadoRevision }}</span>
                         </div>
                       </div>
                     </li>
