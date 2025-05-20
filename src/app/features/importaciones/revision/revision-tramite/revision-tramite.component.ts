@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {InputTextModule} from 'primeng/inputtext';
 import {InputGroupModule} from 'primeng/inputgroup';
@@ -43,6 +43,7 @@ export default class RevisionTramiteComponent implements OnInit {
   private revisionService = inject(RevisionService)
   private messageService = inject(MessageService)
   private confirmationService = inject(ConfirmationService)
+  private cdRef = inject(ChangeDetectorRef)
 
   user: any;
   tramiteId: string = '';
@@ -57,61 +58,79 @@ export default class RevisionTramiteComponent implements OnInit {
   loading: boolean = false;
   status: boolean = true;
 
-  blockUnlockContainer(tramiteId: string, conatainerId: string) {
+  blockUnlockContainer(tramiteId: string, containerId: string) {
     if (!tramiteId) return;
-    this.tramiteId = tramiteId;
 
-    this.tramiteService.lockUnlockContainer(tramiteId, conatainerId, this.user).subscribe({
+    this.tramiteService.lockUnlockContainer(tramiteId, containerId, this.user).subscribe({
       next: response => {
         if (!response.status && response.info === 'error') {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Contenedor Bloqueado por otro usuario'
-          });
-        } else if (response.status && response.info === 'bloqueado') {
-          this.messageService.add({severity: 'info', summary: 'Éxito', detail: 'Contenedor Bloqueado'});
-        } else if (response.status && response.info === 'desbloqueado') {
-          this.messageService.add({severity: 'success', summary: 'Éxito', detail: 'Contenedor Desbloqueado'});
-        } else {
-          this.messageService.add({
-            severity: 'warn',
-            summary: 'Advertencia',
-            detail: 'Respuesta inesperada del servidor'
-          });
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Contenedor Bloqueado por otro usuario' });
+          return;
         }
-        this.listarPendientes();
+
+        const mensaje = response.info === 'bloqueado'
+          ? 'Contenedor Bloqueado'
+          : response.info === 'desbloqueado'
+            ? 'Contenedor Desbloqueado'
+            : 'Estado actualizado';
+
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: mensaje });
+
+        // Solicitar el contenedor actualizado
+        this.tramiteService.getContenedor(tramiteId, containerId).subscribe({
+          next: (contenedorActualizado) => {
+            const lista = this.contenedoresPorTramite[tramiteId];
+            const index = lista.findIndex(c => c.contenedorId === containerId);
+            if (index !== -1) {
+              lista[index] = contenedorActualizado;
+            }
+          },
+          error: () => {
+            this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'No se pudo actualizar el contenedor visualmente' });
+          }
+        });
+      },
+      error: () => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al comunicarse con el servidor' });
       }
-    })
+    });
   }
 
   buscarTramite(tramiteId: string, containerId: string) {
     if (!tramiteId || !containerId) return;
+
+    console.log(tramiteId,' Contenedor ',  containerId)
+
     this.tramiteId = tramiteId;
     this.containerId = containerId;
 
-    this.tramiteService.findById(this.tramiteId).pipe(
+    this.tramiteService.findById(tramiteId).pipe(
       switchMap(tramite => {
-        if (!tramite) {
+        if (!tramite || !tramite.contenedoresIds) {
           this.tramiteExist = false;
           this.messageService.add({
             severity: 'warn',
             summary: 'Trámite no existe',
-            detail: 'No se encontró registro de trámite'
+            detail: 'No se encontró registro de trámite o no tiene contenedores'
           });
-          return of([]); // retornar Observable vacío
+          return of([]);
         }
 
         this.tramiteExist = true;
 
         const containerTramite = tramite.contenedoresIds.find(c => c === containerId);
         if (!containerTramite) {
-          return of([]); //también retornar Observable
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Contenedor no pertenece al trámite',
+            detail: 'El contenedor no está listado en el trámite'
+          });
+          return of([]);
         }
 
         return this.tramiteService.getContenedor(tramiteId, containerId).pipe(
           switchMap(container => {
-            if (!container) {
+            if (!container || Object.keys(container).length === 0) {
               this.messageService.add({
                 severity: 'warn',
                 summary: 'Contenedor no encontrado',
@@ -129,15 +148,27 @@ export default class RevisionTramiteComponent implements OnInit {
               return of([]);
             }
 
+            // Solo si pasa todo, se intenta bloquear
             this.blockUnlockContainer(tramiteId, containerId);
-            return this.revisionService.findByTramite(this.tramiteId);
+
+            // Buscar revisiones si todo está OK
+            return this.revisionService.findByTramite(tramiteId,containerId);
           })
         );
       })
-    ).subscribe(revisiones => {
-      this.revisiones = revisiones;
+    ).subscribe({
+      next: revisiones => {
+        this.revisiones = revisiones;
+      },
+      error: err => {
+        console.error('Error en buscarTramite:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Ocurrió un error al procesar el trámite'
+        });
+      }
     });
-
   }
 
   listarPendientes() {
@@ -182,7 +213,7 @@ export default class RevisionTramiteComponent implements OnInit {
           })
         }
         this.barra = '';
-        return this.revisionService.findByTramite(this.tramiteId);
+        return this.revisionService.findByTramite(this.tramiteId, this.containerId);
       })
     ).subscribe(revisiones => {
       this.revisiones = revisiones;

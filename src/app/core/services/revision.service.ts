@@ -17,8 +17,8 @@ export class RevisionService {
   constructor() {
   }
 
-  findByTramite(tramiteId: string): Observable<Producto[]> {
-    return this.http.get<Producto[]>(`${this.baseUrl}/tramiteId/${tramiteId}`);
+  findByTramite(tramiteId: string, contenedorId: string): Observable<Producto[]> {
+    return this.http.get<Producto[]>(`${this.baseUrl}/productos/${tramiteId}/${contenedorId}`);
   }
 
   updateQuantities(tramiteId: string, containerId: string): Observable<Producto[]> {

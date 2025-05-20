@@ -1,113 +1,113 @@
-  <div class="grid grid-nogutter">
-    <div class="col-12">
-      <span class="text-900 font-bold text-4xl">Revision</span>
-    </div>
-    <div class="col-12 mt-4">
-      <span class="text-900 block font-bold text-xl">Escaneo de importaciones</span>
-    </div>
-    <div class="col-12 mt-4">
-      <ul class="flex list-none flex-wrap">
-        <li class="flex align-items-center text-primary mr-2">Tramites Pendientes<i
-          class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
-        <li class="flex align-items-center text-primary mr-2">Tramite a verificar<i
-          class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
-        <li class="flex align-items-center text-500 mr-2">Escaneo<i
-          class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
-        <li class="flex align-items-center text-500 mr-2">Verificación de productos</li>
-      </ul>
+<div class="grid grid-nogutter">
+  <div class="col-12">
+    <span class="text-900 font-bold text-4xl">Revision</span>
+  </div>
+  <div class="col-12 mt-4">
+    <span class="text-900 block font-bold text-xl">Escaneo de importaciones</span>
+  </div>
+  <div class="col-12 mt-4">
+    <ul class="flex list-none flex-wrap">
+      <li class="flex align-items-center text-primary mr-2">Tramites Pendientes<i
+        class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
+      <li class="flex align-items-center text-primary mr-2">Tramite a verificar<i
+        class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
+      <li class="flex align-items-center text-500 mr-2">Escaneo<i
+        class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
+      <li class="flex align-items-center text-500 mr-2">Verificación de productos</li>
+    </ul>
 
-      @if (loading) {
-        <div class="flex align-items-center justify-content-center" style="height: 100%;">
-          <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: blue;"></i>
-        </div>
-      } @else {
-        @if (!tramiteExist) {
-          <div class="mt-2">
-            <p-table
-              [value]="tramites"
-              [responsiveLayout]="'scroll'"
-              [paginator]="true"
-              [rows]="30"
-              [rowsPerPageOptions]="[30,50,100]"
-              (onRowExpand)="buscarContenedores($event.data)"
-              dataKey="id"
-              class="my-3 p-p-3"
-              styleClass="p-datatable-gridlines">
-              <ng-template pTemplate="caption">
-                <h3>Tramites pendientes de validacion</h3>
-                <small>Tramites pendientes: {{ tramites.length }}</small>
-              </ng-template>
+    @if (loading) {
+      <div class="flex align-items-center justify-content-center" style="height: 100%;">
+        <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: blue;"></i>
+      </div>
+    } @else {
+      @if (!tramiteExist) {
+        <div class="mt-2">
+          <p-table
+            [value]="tramites"
+            [responsiveLayout]="'scroll'"
+            [paginator]="true"
+            [rows]="30"
+            [rowsPerPageOptions]="[30,50,100]"
+            (onRowExpand)="buscarContenedores($event.data)"
+            dataKey="id"
+            class="my-3 p-p-3"
+            styleClass="p-datatable-gridlines">
+            <ng-template pTemplate="caption">
+              <h3>Tramites pendientes de validacion</h3>
+              <small>Tramites pendientes: {{ tramites.length }}</small>
+            </ng-template>
 
-              <ng-template pTemplate="header">
-                <tr>
-                  <th></th>
-                  <th pSortableColumn="id">Tramite</th>
-                  <th pSortableColumn="fechaCarga">Fecha Carga</th>
-                  <th pSortableColumn="observacion">Fecha Llegada</th>
-                </tr>
-              </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th></th>
+                <th pSortableColumn="id">Tramite</th>
+                <th pSortableColumn="fechaCarga">Fecha Carga</th>
+                <th pSortableColumn="observacion">Fecha Llegada</th>
+              </tr>
+            </ng-template>
 
-              <ng-template pTemplate="body" let-tramite let-expanded="expanded">
-                <tr>
-                  <td [ngStyle]="{'width': '50px'}">
-                    @if (tramite.contenedoresIds) {
-                      <button type="button" pButton pRipple [pRowToggler]="tramite"
+            <ng-template pTemplate="body" let-tramite let-expanded="expanded">
+              <tr>
+                <td [ngStyle]="{'width': '50px'}">
+                  @if (tramite.contenedoresIds) {
+                    <button type="button" pButton pRipple [pRowToggler]="tramite"
+                            class="p-button-text p-button-rounded p-button-plain"
+                            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                  }
+                </td>
+                <td class="p-text-center p-col-1 p-col-fixed">{{ tramite.id }}</td>
+                <td class="p-text-center p-col-1">{{ tramite.fechaCarga }}</td>
+                <td class="p-text-center p-col-1">{{ tramite.fechaLlegada }}</td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="rowexpansion" let-tramite>
+              <tr>
+                <td colspan="13">
+                  <div class="p-3">
+                    <p-table
+                      [value]="contenedoresPorTramite[tramite.id] ?? []"
+                      dataKey="id"
+                      responsiveLayout="scroll">
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th></th>
+                          <th>N contenedor</th>
+                          <th>Cont Bloqueado</th>
+                          <th>Usuario Bloquea</th>
+                          <th>Cont finalizado</th>
+                          <th></th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-contenedor>
+                        <tr>
+                          <td>
+                            <button
+                              type="button"
+                              pButton
+                              pRipple
+                              (click)="buscarTramite(tramite.id, contenedor.contenedorId)"
+                              [hidden]="contenedor.finalizado || contenedor.bloqueado"
+                              [disabled]="contenedor.finalizado || contenedor.bloqueado"
                               class="p-button-text p-button-rounded p-button-plain"
-                              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
-                    }
-                  </td>
-                  <td class="p-text-center p-col-1 p-col-fixed">{{ tramite.id }}</td>
-                  <td class="p-text-center p-col-1">{{ tramite.fechaCarga }}</td>
-                  <td class="p-text-center p-col-1">{{ tramite.fechaLlegada }}</td>
-                </tr>
-              </ng-template>
-
-              <ng-template pTemplate="rowexpansion" let-tramite>
-                <tr>
-                  <td colspan="13">
-                    <div class="p-3">
-                      <p-table
-                        [value]="contenedoresPorTramite[tramite.id] ?? []"
-                        dataKey="id"
-                        responsiveLayout="scroll">
-                        <ng-template pTemplate="header">
-                          <tr>
-                            <th></th>
-                            <th>N contenedor</th>
-                            <th>Cont Bloqueado</th>
-                            <th>Usuario Bloquea</th>
-                            <th>Cont finalizado</th>
-                            <th></th>
-                          </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-contenedor>
-                          <tr>
-                            <td>
-                              <button
-                                type="button"
-                                pButton
-                                pRipple
-                                (click)="buscarTramite(tramite.id, contenedor.id)"
-                                [hidden]="contenedor.finalizado || contenedor.bloqueado"
-                                [disabled]="contenedor.finalizado || contenedor.bloqueado"
-                                class="p-button-text p-button-rounded p-button-plain"
-                                icon="pi pi-chevron-right"></button>
-                            </td>
-                            <td>{{ contenedor.contenedorId }}</td>
-                            <td>{{ contenedor.bloqueado }}</td>
-                            <td>{{ contenedor.usrBloquea }}</td>
-                            <td>
-                              <p-toggleButton
-                                disabled="true"
-                                [(ngModel)]="contenedor.finalizado"
-                                onLabel="Finalizado"
-                                offLabel="Pendiente"
-                                onIcon="pi pi-check"
-                                offIcon="pi pi-times"
-                                styleClass="w-9rem"
-                                ariaLabel="Finalizado"/>
-                            </td>
-                            <td>
+                              icon="pi pi-chevron-right"></button>
+                          </td>
+                          <td>{{ contenedor.contenedorId }}</td>
+                          <td>{{ contenedor.bloqueado }}</td>
+                          <td>{{ contenedor.usrBloquea }}</td>
+                          <td>
+                            <p-toggleButton
+                              disabled="true"
+                              [(ngModel)]="contenedor.finalizado"
+                              onLabel="Finalizado"
+                              offLabel="Pendiente"
+                              onIcon="pi pi-check"
+                              offIcon="pi pi-times"
+                              styleClass="w-9rem"
+                              ariaLabel="Finalizado"/>
+                          </td>
+                          <td>
                                 <span class="flex">
                                   <button
                                     (click)="blockUnlockContainer(tramite.id,contenedor.contenedorId)"
@@ -119,144 +119,140 @@
                                     class="p-button-rounded p-button-info mr-2">
                                   </button>
                                 </span>
-                            </td>
-                          </tr>
-                        </ng-template>
-                      </p-table>
-                    </div>
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </div>
-        } @else {
-          <div class="col-12">
-            <span>Tramite: {{ tramiteId }}</span>
-            <span> Contenedor: {{ containerId }}</span>
-            <p-toolbar styleClass="mb-4">
-              <ng-template pTemplate="left">
-                <div class="my-2">
-                  <button pButton pRipple label="Seleccionar otro Tramite" icon="pi pi-chevron-left"
-                          class="p-button-outlined" (click)="nuevoEscaneo()"></button>
-                </div>
-              </ng-template>
-              <ng-template pTemplate="right">
-                <button pButton pRipple label="Descargar Excel" icon="pi pi-download" class="p-button-outlined"
-                        (click)="exportToExcel()"></button>
-              </ng-template>
-            </p-toolbar>
-            <div class="grid p-fluid mt-3">
-              <div class="field mb-2 lg:col-6 lg:mb-0">
+                          </td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      } @else {
+        <div class="col-12">
+          <span>Tramite: {{ tramiteId }}</span>
+          <span> Contenedor: {{ containerId }}</span>
+          <p-toolbar styleClass="mb-4">
+            <ng-template pTemplate="left">
+              <div class="my-2">
+                <button pButton pRipple label="Seleccionar otro Tramite" icon="pi pi-chevron-left"
+                        class="p-button-outlined" (click)="nuevoEscaneo()"></button>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="right">
+              <button pButton pRipple label="Descargar Excel" icon="pi pi-download" class="p-button-outlined"
+                      (click)="exportToExcel()"></button>
+            </ng-template>
+          </p-toolbar>
+          <div class="grid p-fluid mt-3">
+            <div class="field mb-2 lg:col-6 lg:mb-0">
             <span class="p-float-label">
               <input autocomplete="off" type="text" id="barra" pInputText [(ngModel)]="barra"
                      (keydown.enter)="escaneo()">
               <label for="barra">Barra</label>
             </span>
+            </div>
+            <div class="field mb-2 lg:col-6 lg:mb-0">
+              <p-toggleButton
+                [(ngModel)]="status"
+                onLabel="Agregar"
+                offLabel="Quitar"
+                onIcon="pi pi-plus-circle"
+                offIcon="pi pi-minus-circle"
+                styleClass="w-9rem"
+                ariaLabel="status"/>
+            </div>
+          </div>
+        </div>
+
+        @if (revisiones.length > 0) {
+          <div class="mt-2">
+            @if (revision) {
+              <div class="card">
+                <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3">Ultima barra
+                  escaneada
+                </div>
+                <ul class="list-none p-0 m-0">
+                  <li
+                    class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border">
+                    <div class="flex align-items-center flex-1">
+                      <div>
+                        <strong>Barra:</strong>{{ revision.barcode }}
+                      </div>
+                    </div>
+                    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
+                      <div class="flex align-items-center">
+                        <strong>Cantidad:</strong> {{ revision.cantidadRevision }}
+                      </div>
+                    </div>
+                    <div class="flex align-items-center sm:justify-content-end">
+                      <div>
+                        <strong>Estado:</strong> <span class="text-sm"
+                                                       [ngStyle]="revision.estadoRevision | estadoColor">{{ revision.estadoRevision }}</span>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
               </div>
-              <div class="field mb-2 lg:col-6 lg:mb-0">
-                <p-toggleButton
-                  [(ngModel)]="status"
-                  onLabel="Agregar"
-                  offLabel="Quitar"
-                  onIcon="pi pi-plus-circle"
-                  offIcon="pi pi-minus-circle"
-                  styleClass="w-9rem"
-                  ariaLabel="status"/>
-              </div>
+            }
+
+            <div class="card">
+              <p-table
+                [value]="revisiones"
+                [responsiveLayout]="'scroll'"
+                [paginator]="true"
+                [rows]="10"
+                dataKey="secuencia"
+                class="my-3 p-p-3"
+                styleClass="p-datatable-gridlines"
+                [rowsPerPageOptions]="[10,20,30,50]">
+                <ng-template pTemplate="caption">
+                  <h4>Lista de Productos pitados</h4>
+                  <small>Productos pitados: {{ revisiones.length }} </small>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th></th>
+                    <th pSortableColumn="barra">Barra</th>
+                    <th pSortableColumn="cantidad">Cant. Escaneada</th>
+                    <th pSortableColumn="cantidadPedida">Cant. Pedida</th>
+                    <th pSortableColumn="cantidadDiferencia">cant. Diferencia</th>
+                    <th pSortableColumn="estado">Estado</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-producto>
+                  <tr>
+                    <td></td>
+                    <td class="p-text-center p-col-1 p-col-fixed">{{ producto.barcode }}</td>
+                    <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{ producto.cantidadRevision }}</td>
+                    <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{ producto.bultos }}</td>
+                    <td class="p-text-center p-col-1"
+                        [ngStyle]="{'width': '50px'}">{{ producto.cantidadDiferenciaRevision }}
+                    </td>
+                    <td class="p-text-center p-col-1 p-col-fixed">
+                      <span [ngStyle]="producto.estadoRevision | estadoColor">
+                        {{ producto.estadoRevision }}
+                      </span>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
             </div>
           </div>
 
-          @if (revisiones.length > 0) {
-            <div class="mt-2">
-              @if (revision) {
-                <div class="card">
-                  <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3">Ultima barra
-                    escaneada
-                  </div>
-                  <ul class="list-none p-0 m-0">
-                    <li
-                      class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border">
-                      <div class="flex align-items-center flex-1">
-                        <div>
-                          <strong>Barra:</strong>{{ revision.barcode }}
-                        </div>
-                      </div>
-                      <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
-                        <div class="flex align-items-center">
-                          <strong>Cantidad:</strong> {{ revision.cantidadRevision }}
-                        </div>
-                      </div>
-                      <div class="flex align-items-center sm:justify-content-end">
-                        <div>
-                          <strong>Estado:</strong> <span class="text-sm"
-                                                         [ngStyle]="revision.estadoRevision | estadoColor">{{ revision.estadoRevision }}</span>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              }
+          <button
+            pButton
+            pRipple
+            (click)="validarTramite()"
+            type="button"
+            label="Validar Tramite"
+            class="p-button-rounded">
+          </button>
 
-              <div class="card">
-                <p-table
-                  [value]="revisiones"
-                  [responsiveLayout]="'scroll'"
-                  [paginator]="true"
-                  [rows]="10"
-                  dataKey="secuencia"
-                  class="my-3 p-p-3"
-                  styleClass="p-datatable-gridlines"
-                  [rowsPerPageOptions]="[10,20,30,50]">
-                  <ng-template pTemplate="caption">
-                    <h4>Lista de Productos pitados</h4>
-                    <small>Productos pitados: {{ revisiones.length }} </small>
-                  </ng-template>
-
-                  <ng-template pTemplate="header">
-                    <tr>
-                      <th></th>
-                      <th pSortableColumn="barra">Barra</th>
-                      <th pSortableColumn="cantidad">Cant. Escaneada</th>
-                      <th pSortableColumn="cantidadPedida">Cant. Pedida</th>
-                      <th pSortableColumn="cantidadDiferencia">cant. Diferencia</th>
-                      <th pSortableColumn="estado">Estado</th>
-                      <th pSortableColumn="fecha">Hora</th>
-                      <th pSortableColumn="fecha">fecha</th>
-                    </tr>
-                  </ng-template>
-                  <ng-template pTemplate="body" let-producto>
-                    <tr>
-                      <td></td>
-                      <td class="p-text-center p-col-1 p-col-fixed">{{ producto.barra }}</td>
-                      <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{ producto.cantidad }}</td>
-                      <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{ producto.cantidadPedida }}</td>
-                      <td class="p-text-center p-col-1"
-                          [ngStyle]="{'width': '50px'}">{{ producto.cantidadDiferencia }}
-                      </td>
-                      <td class="p-text-center p-col-1 p-col-fixed">
-                      <span [ngStyle]="producto.estado | estadoColor">
-                        {{ producto.estado }}
-                      </span>
-                      </td>
-                      <td class="p-text-center p-col-1 p-col-fixed">{{ producto.hora }}</td>
-                      <td class="p-text-center p-col-1 p-col-fixed">{{ producto.fecha }}</td>
-                    </tr>
-                  </ng-template>
-                </p-table>
-              </div>
-            </div>
-
-            <button
-              pButton
-              pRipple
-              (click)="validarTramite()"
-              type="button"
-              label="Validar Tramite"
-              class="p-button-rounded">
-            </button>
-
-          }
         }
       }
-    </div>
+    }
   </div>
+</div>

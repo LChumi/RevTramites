@@ -40,6 +40,7 @@ export default class ConsultasRevisionComponent {
 
   revisionService = inject(RevisionService)
   messageService = inject(MessageService)
+  contenedorId: string = ''
   tramite: string = ''
   private tramiteSelec: string = ''
   loading: boolean = false;
@@ -48,7 +49,7 @@ export default class ConsultasRevisionComponent {
   buscarRevisiones() {
     if (this.tramite) {
       this.loading = true;
-      this.revisionService.findByTramite(this.tramite).subscribe({
+      this.revisionService.findByTramite(this.tramite, this.contenedorId).subscribe({
         next: (data) => {
           if (data.length > 0) {
             this.messageService.add({
