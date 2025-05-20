@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {InputTextModule} from 'primeng/inputtext';
 import {InputGroupModule} from 'primeng/inputgroup';
@@ -43,7 +43,6 @@ export default class RevisionTramiteComponent implements OnInit {
   private revisionService = inject(RevisionService)
   private messageService = inject(MessageService)
   private confirmationService = inject(ConfirmationService)
-  private cdRef = inject(ChangeDetectorRef)
 
   user: any;
   tramiteId: string = '';
@@ -57,6 +56,11 @@ export default class RevisionTramiteComponent implements OnInit {
   tramite: Tramite | null = null;
   loading: boolean = false;
   status: boolean = true;
+
+  ngOnInit(): void {
+    this.listarPendientes([1, 2]);
+    this.user = sessionStorage.getItem("username")
+  }
 
   blockUnlockContainer(tramiteId: string, containerId: string) {
     if (!tramiteId) return;
@@ -98,8 +102,6 @@ export default class RevisionTramiteComponent implements OnInit {
 
   buscarTramite(tramiteId: string, containerId: string) {
     if (!tramiteId || !containerId) return;
-
-    console.log(tramiteId,' Contenedor ',  containerId)
 
     this.tramiteId = tramiteId;
     this.containerId = containerId;
@@ -171,20 +173,21 @@ export default class RevisionTramiteComponent implements OnInit {
     });
   }
 
-  listarPendientes() {
-    this.tramiteService.listByStatus(1).subscribe({
-      next: (tramites) => {
-        if (tramites.length > 0) {
-          this.tramites = tramites
-        }
-      },
-      error: (err) => {
+  listarPendientes(processes: number[]) {
+    //Array de observables con las solicitudes para cada proceso
+    const observables = processes.map(process =>
+    this.tramiteService.listByStatus(process));
+
+    forkJoin(observables).subscribe({
+      next: (results) => {
+        //Combinar los resultados en una sola lista
+        this.tramites = results.flat(); //Usamos flat() para aplanar los arrays
+      }, error: (err) => {
         this.messageService.add({
           severity: 'warn',
-          summary: 'No existen Tramites ',
-          detail: 'No se encontraron Tramites Pendientes de verificar '
+          summary: 'No existen Tramites',
+          detail: 'No se encontraron Tramites Finalizados o Completos, finalize la revisión'
         });
-
       }
     })
   }
@@ -200,7 +203,6 @@ export default class RevisionTramiteComponent implements OnInit {
       status: this.status
     };
 
-    console.log(request)
     this.revisionService.updateQuantity(request).pipe(
       switchMap(revision => {
         this.revision = revision;
@@ -245,12 +247,6 @@ export default class RevisionTramiteComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-    this.listarPendientes()
-    this.user = sessionStorage.getItem("username")
-
-  }
-
   exportToExcel() {
     converToExcel(this.revisiones, this.tramiteId)
   }
@@ -272,8 +268,6 @@ export default class RevisionTramiteComponent implements OnInit {
       const request = tramite.contenedoresIds.map(id => {
         return this.tramiteService.getContenedor(tramite.id,id)
       });
-
-      console.log("Solicitudes generadas:", request);
 
       forkJoin(request).subscribe({
         next: (containers) => {
