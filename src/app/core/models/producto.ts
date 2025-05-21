@@ -28,7 +28,6 @@ export interface Producto {
   usuarioRevision:            string;
   historialRevision:          string[];
 
-
   //Datos Muestras
   barraMuestra:           string;
   cantidadMuestra:        number;

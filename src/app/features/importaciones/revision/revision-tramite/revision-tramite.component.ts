@@ -230,7 +230,7 @@ export default class RevisionTramiteComponent implements OnInit {
       header: 'Confirmación',
       icon: 'pi pi-check',
       accept: () => {
-        this.revisionService.updateQuantities(this.tramiteId, this.containerId).subscribe(revisiones => {
+        this.revisionService.validate(this.tramiteId, this.containerId).subscribe(revisiones => {
           this.revisiones = revisiones;
           if (this.revisiones.every(revision => revision.estadoRevision === 'SN')) {
             this.nuevoEscaneo();

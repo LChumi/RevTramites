@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {RevisionRequest} from '@models/revision-request';
 import {Producto} from '@models/producto';
 import {Contenedor} from '@models/contenedor';
+import {StatusResponse} from '@dtos/status-response';
 
 @Injectable({
   providedIn: 'root'
@@ -21,16 +22,12 @@ export class RevisionService {
     return this.http.get<Producto[]>(`${this.baseUrl}/productos/${tramiteId}/${contenedorId}`);
   }
 
-  updateQuantities(tramiteId: string, containerId: string): Observable<Producto[]> {
-    return this.http.put<Producto[]>(`${this.baseUrl}/updateQuantities/${tramiteId}/${containerId}`, {});
-  }
-
   updateQuantity(request: RevisionRequest): Observable<Producto> {
     return this.http.put<Producto>(`${this.baseUrl}/updateQuantity`, request);
   }
 
-  validate(tramiteId: string): Observable<Producto[]> {
-    return this.http.get<Producto[]>(`${this.baseUrl}/validate/${tramiteId}`);
+  validate(tramiteId: string, containerId : string): Observable<Producto[]> {
+    return this.http.get<Producto[]>(`${this.baseUrl}/validate/${tramiteId}/${containerId}`);
   }
 
   getContenedores(tramiteId: string): Observable<Contenedor[]> {
