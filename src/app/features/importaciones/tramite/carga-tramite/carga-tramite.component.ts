@@ -103,7 +103,6 @@ export default class CargaTramiteComponent implements OnInit {
   listProductos(tramiteId: any) {
     this.tramiteService.productos(tramiteId).subscribe({
       next: response => {
-        console.log(response)
         if (response == null) {
           this.message('warn', 'Sin productos', 'El tramite no tiene productos registrados')
         }
