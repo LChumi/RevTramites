@@ -67,32 +67,25 @@ export default class RevisionTramiteComponent implements OnInit {
 
     this.tramiteService.lockUnlockContainer(tramiteId, containerId, this.user).subscribe({
       next: response => {
-        if (!response.status && response.info === 'error') {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Contenedor Bloqueado por otro usuario' });
-          return;
-        }
 
-        const mensaje = response.info === 'bloqueado'
-          ? 'Contenedor Bloqueado'
-          : response.info === 'desbloqueado'
-            ? 'Contenedor Desbloqueado'
-            : 'Estado actualizado';
-
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: mensaje });
-
-        // Solicitar el contenedor actualizado
-        this.tramiteService.getContenedor(tramiteId, containerId).subscribe({
-          next: (contenedorActualizado) => {
-            const lista = this.contenedoresPorTramite[tramiteId];
-            const index = lista.findIndex(c => c.contenedorId === containerId);
-            if (index !== -1) {
-              lista[index] = contenedorActualizado;
-            }
-          },
-          error: () => {
-            this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'No se pudo actualizar el contenedor visualmente' });
+        if (response.status) {
+          switch (response.info) {
+            case 'bloqueado':
+              this.messageService.add({ severity: 'warn', summary: 'Éxito', detail: 'El contenedor se bloqueó correctamente' });
+              this.updateContenedores(tramiteId, containerId);
+              break;
+            case 'desbloqueado':
+              this.messageService.add({ severity: 'success', summary: 'Info', detail: 'El contenedor se desbloqueó correctamente' });
+              this.updateContenedores(tramiteId, containerId);
+              break;
+            case 'finalizado':
+              this.messageService.add({ severity: 'info', summary: 'Info', detail: 'El contenedor ya está finalizado' });
+              this.updateContenedores(tramiteId, containerId);
+              break;
           }
-        });
+        }else{
+          this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: response.info });
+        }
       },
       error: () => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al comunicarse con el servidor' });
@@ -217,9 +210,21 @@ export default class RevisionTramiteComponent implements OnInit {
         this.barra = '';
         return this.revisionService.findByTramite(this.tramiteId, this.containerId);
       })
-    ).subscribe(revisiones => {
-      this.revisiones = revisiones;
-      this.status = true
+    ).subscribe({
+      next: revisiones => {
+        this.revisiones = revisiones;
+        this.status = true
+      },
+      error: err => {
+        console.error('Error en escaneo:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.message
+        })
+        this.barra = '';
+        this.status = true;
+      }
     });
   }
 
@@ -230,12 +235,18 @@ export default class RevisionTramiteComponent implements OnInit {
       header: 'Confirmación',
       icon: 'pi pi-check',
       accept: () => {
-        this.revisionService.validate(this.tramiteId, this.containerId).subscribe(revisiones => {
-          this.revisiones = revisiones;
-          if (this.revisiones.every(revision => revision.estadoRevision === 'SN')) {
-            this.nuevoEscaneo();
+        this.revisionService.processTramiteCompletion(this.tramiteId, this.containerId).subscribe({
+          next: (status) => {
+            if (status.status){
+              this.messageService.add({ severity: 'success', summary: 'Éxito', detail: status.info });
+            }else{
+              this.messageService.add({ severity: 'info', summary: 'Info', detail: status.info });
+            }
+          },
+          error: (err) => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: err.message });
           }
-        });
+        })
       }
     });
   }
@@ -275,6 +286,22 @@ export default class RevisionTramiteComponent implements OnInit {
         }
       });
     }
+  }
+
+  private updateContenedores(tramiteId: string, containerId: string) {
+    // Solicitar el contenedor actualizado
+    this.tramiteService.getContenedor(tramiteId, containerId).subscribe({
+      next: (contenedorActualizado) => {
+        const lista = this.contenedoresPorTramite[tramiteId];
+        const index = lista.findIndex(c => c.contenedorId === containerId);
+        if (index !== -1) {
+          lista[index] = contenedorActualizado;
+        }
+      },
+      error: () => {
+        this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'No se pudo actualizar el contenedor visualmente' });
+      }
+    });
   }
 
 }

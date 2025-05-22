@@ -216,9 +216,8 @@
                   <tr>
                     <th></th>
                     <th pSortableColumn="barra">Barra</th>
+                    <th>Nombre</th>
                     <th pSortableColumn="cantidad">Cant. Escaneada</th>
-                    <th pSortableColumn="cantidadPedida">Cant. Pedida</th>
-                    <th pSortableColumn="cantidadDiferencia">cant. Diferencia</th>
                     <th pSortableColumn="estado">Estado</th>
                   </tr>
                 </ng-template>
@@ -226,10 +225,9 @@
                   <tr>
                     <td></td>
                     <td class="p-text-center p-col-1 p-col-fixed">{{ producto.barcode }}</td>
-                    <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{ producto.cantidadRevision }}</td>
-                    <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}">{{ producto.bultos }}</td>
+                    <td class="p-text-center p-col-1 p-col-fixed">{{ producto.nombre }}</td>
                     <td class="p-text-center p-col-1"
-                        [ngStyle]="{'width': '50px'}">{{ producto.cantidadDiferenciaRevision }}
+                        [ngStyle]="{'width': '50px'}">{{ producto.cantidadRevision }}
                     </td>
                     <td class="p-text-center p-col-1 p-col-fixed">
                       <span [ngStyle]="producto.estadoRevision | estadoColor">

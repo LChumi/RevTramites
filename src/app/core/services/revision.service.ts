@@ -26,8 +26,12 @@ export class RevisionService {
     return this.http.put<Producto>(`${this.baseUrl}/updateQuantity`, request);
   }
 
-  validate(tramiteId: string, containerId : string): Observable<Producto[]> {
-    return this.http.get<Producto[]>(`${this.baseUrl}/validate/${tramiteId}/${containerId}`);
+  processProductRevision(tramiteId: string, containerId : string): Observable<Producto[]> {
+    return this.http.get<Producto[]>(`${this.baseUrl}/tramite/${tramiteId}/contenedor/${containerId}/productos/revision`);
+  }
+
+  processTramiteCompletion(tramiteId: string, containerId:string): Observable<StatusResponse> {
+    return this.http.get<StatusResponse>(`${this.baseUrl}/tramite/${tramiteId}/contenedor/${containerId}/finalizar`);
   }
 
   getContenedores(tramiteId: string): Observable<Contenedor[]> {

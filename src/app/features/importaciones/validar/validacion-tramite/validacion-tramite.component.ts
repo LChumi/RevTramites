@@ -87,14 +87,14 @@ export default class ValidacionTramiteComponent implements OnInit {
   }
 
   validar(tramiteId: string) {
-    this.revisionService.validate(tramiteId, "").subscribe({
+    /*this.revisionService.validate(tramiteId, "").subscribe({
       next: (revisiones) => {
         if (revisiones.length > 0) {
           this.revisiones = revisiones;
           this.tramiteExist = true;
         }
       }
-    })
+    })*/
   }
 
   ngOnInit(): void {

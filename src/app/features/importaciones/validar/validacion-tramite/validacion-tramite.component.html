@@ -1,4 +1,3 @@
-<div class="card">
   <div class="grid grid-nogutter">
     <div class="col-12">
       <span class="text-900 font-bold text-4xl">Validacion</span>
@@ -21,7 +20,6 @@
       } @else {
         @if (!tramiteExist) {
           <div class="mt-2">
-            <div class="card">
               <p-table
                 [value]="tramites"
                 [responsiveLayout]="'scroll'"
@@ -117,7 +115,6 @@
                   </tr>
                 </ng-template>
               </p-table>
-            </div>
           </div>
         } @else {
           <div class="col-12">
@@ -146,8 +143,6 @@
 
           @if (revisiones.length > 0) {
             <div class="mt-2">
-
-              <div class="card">
                 <p-table
                   [value]="revisiones"
                   [responsiveLayout]="'scroll'"
@@ -192,11 +187,9 @@
                     </tr>
                   </ng-template>
                 </p-table>
-              </div>
             </div>
           }
         }
       }
     </div>
   </div>
-</div>
