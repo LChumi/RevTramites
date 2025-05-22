@@ -1,37 +1,37 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {ButtonDirective} from 'primeng/button';
-import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
-import {InputTextModule} from 'primeng/inputtext';
-import {MessageService, PrimeTemplate} from 'primeng/api';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {Ripple} from 'primeng/ripple';
-import {TableModule} from 'primeng/table';
-import {ToggleButtonModule} from 'primeng/togglebutton';
-import {ToolbarModule} from 'primeng/toolbar';
-import {NgStyle} from '@angular/common';
 import {TramiteService} from '@services/tramite.service';
 import {RevisionService} from '@services/revision.service';
 import {Tramite} from '@models/tramite';
-import {converToExcel} from '@utils/excel-utils';
-import {Contenedor} from '@models/contenedor';
 import {Producto} from '@models/producto';
+import {forkJoin} from 'rxjs';
+import {DataView, DataViewModule} from 'primeng/dataview';
+import {DropdownModule} from 'primeng/dropdown';
+import {MessageService} from 'primeng/api';
+import {InputTextModule} from 'primeng/inputtext';
+import {ProcesoTramitePipe} from '@shared/pipes/proceso-tramite.pipe';
+import {NgStyle} from '@angular/common';
+import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
+
+export interface SelectItem<T = any> {
+  label?: string;
+  value: T;
+  styleClass?: string;
+  icon?: string;
+  title?: string;
+  disabled?: boolean;
+}
 
 @Component({
   standalone: true,
-  imports: [
-    ButtonDirective,
-    EstadoColorPipe,
-    InputTextModule,
-    PrimeTemplate,
-    ReactiveFormsModule,
-    Ripple,
-    TableModule,
-    ToggleButtonModule,
-    ToolbarModule,
-    NgStyle,
-    FormsModule
-  ],
   templateUrl: './validacion-tramite.component.html',
+  imports: [
+    DataViewModule,
+    DropdownModule,
+    InputTextModule,
+    ProcesoTramitePipe,
+    NgStyle,
+    EstadoColorPipe
+  ],
   styles: ``
 })
 export default class ValidacionTramiteComponent implements OnInit {
@@ -43,62 +43,42 @@ export default class ValidacionTramiteComponent implements OnInit {
   user: any;
   tramiteId: string = '';
   barra: string = '';
-  tramiteExist: boolean = false;
   revisiones: Producto[] = [];
+  sortOrder: number = 0;
+  sortField: string = '';
   tramites: Tramite[] = [];
   tramite: Tramite | null = null;
   loading: boolean = false;
 
+  ngOnInit(): void {
+    this.listarCompletos([3, 2]);
+    this.user = sessionStorage.getItem("username")
+  }
 
-  listarPendientes() {
-    this.tramiteService.listByStatus(2).subscribe({
-      next: (tramites) => {
-        if (tramites.length > 0) {
-          this.tramites = tramites
-        }
+  listarCompletos(processes: number[]): void {
+    // Crear un array de observables con las solicitudes para cada proceso
+    const observables = processes.map(process =>
+      this.tramiteService.listByStatus(process)
+    );
+
+    // Combinar los resultados con forkJoin
+    forkJoin(observables).subscribe({
+      next: (results) => {
+        // Combinar los resultados en una sola lista
+        this.tramites = results.flat(); // Usamos flat() para aplanar los arrays
       },
       error: (err) => {
         this.messageService.add({
           severity: 'warn',
-          summary: 'No existen Tramites ',
-          detail: 'No se encontraron Tramites Pendientes de verificar '
+          summary: 'No existen Tramites',
+          detail: 'No se encontraron Tramites Finalizados o Completos, finalize la revisión'
         });
-
       }
-    })
+    });
   }
 
-  exportToExcel() {
-    converToExcel(this.revisiones, this.tramiteId)
+  onFilter(dv: DataView, event: Event) {
+    dv.filter((event.target as HTMLInputElement).value);
   }
 
-  nuevoEscaneo() {
-    this.listarPendientes();
-    this.tramiteExist = false;
-    this.tramiteId = ''
-  }
-
-  public getIcon(contenedor: Contenedor): string {
-    if (contenedor.finalizado) {
-      return 'pi pi-check';
-    } else {
-      return contenedor.bloqueado ? 'pi pi-lock' : 'pi pi-lock-open';
-    }
-  }
-
-  validar(tramiteId: string) {
-    /*this.revisionService.validate(tramiteId, "").subscribe({
-      next: (revisiones) => {
-        if (revisiones.length > 0) {
-          this.revisiones = revisiones;
-          this.tramiteExist = true;
-        }
-      }
-    })*/
-  }
-
-  ngOnInit(): void {
-    this.listarPendientes()
-    this.user = sessionStorage.getItem("username")
-  }
 }

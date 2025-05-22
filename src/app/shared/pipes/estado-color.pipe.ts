@@ -14,9 +14,18 @@ export class EstadoColorPipe implements PipeTransform {
     'faltante': {'background-color': 'orange', 'color': 'white'},
     'agregado': {'background-color': 'yellow', 'color': 'black'},
     'eliminado': {'background-color': 'red', 'color': 'white'},
+    'registrado': { 'background-color': '#ADD8E6', 'color': 'black' },     // celeste suave
+    'pendiente':  { 'background-color': '#1E90FF', 'color': 'white' },     // azul tipo "dodger blue", menos oscuro
+    'validado':   { 'background-color': '#228B22', 'color': 'white' },     // verde tipo "forest green"
+    'muestra':    { 'background-color': '#7CFC00', 'color': 'black' },     // "lawn green", más legible
+    'finalizado': { 'background-color': '#FFD700', 'color': 'black' }      // dorado (queda muy bien)
+
   };
 
-  transform(value: string): any {
+  transform(value: any): any {
+    if (typeof value !== 'string') {
+      value = String(value); // Convierte números en string
+    }
     const baseStyle = {'border-radius': '15px', 'padding': '10px'};
     const estado = this.estados[value.toLowerCase()] || this.estados['no llego'];
     return {...baseStyle, ...estado};

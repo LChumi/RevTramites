@@ -48,7 +48,7 @@ export default class MuestraComponent implements OnInit {
   private tramiteId: string = '';
 
   ngOnInit(): void {
-    this.listarCompletos([3, 1]);
+    this.listarCompletos([3, 2]);
   }
 
   listarCompletos(processes: number[]): void {
