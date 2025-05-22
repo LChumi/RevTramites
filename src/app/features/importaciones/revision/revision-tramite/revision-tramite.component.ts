@@ -242,6 +242,7 @@ export default class RevisionTramiteComponent implements OnInit {
             }else{
               this.messageService.add({ severity: 'info', summary: 'Info', detail: status.info });
             }
+            this.nuevoEscaneo()
           },
           error: (err) => {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: err.message });
