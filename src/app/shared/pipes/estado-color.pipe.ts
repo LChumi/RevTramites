@@ -13,6 +13,7 @@ export class EstadoColorPipe implements PipeTransform {
     'sobrante': {'background-color': 'purple', 'color': 'white'},
     'faltante': {'background-color': 'orange', 'color': 'white'},
     'agregado': {'background-color': 'yellow', 'color': 'black'},
+    'eliminado': {'background-color': 'red', 'color': 'white'},
   };
 
   transform(value: string): any {
