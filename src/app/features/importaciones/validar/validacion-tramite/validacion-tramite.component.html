@@ -13,7 +13,6 @@
         </div>
       } @else {
         @if (tramites.length > 0) {
-          <div class="card">
             <h4> Lista de tramites </h4>
             <p-dataView #dv [value]="tramites" [paginator]="true" [rows]="9" filterBy="id" [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
               <ng-template pTemplate="header">
@@ -29,7 +28,7 @@
               <ng-template let-tramites pTemplate="listItem">
                 @for (tramite of tramites; track $index){
                   <div class="flex flex-column md:flex-row align-items-center p-3 w-full">
-                    <i class="pi pi-truck mr-2"></i>
+                    <i class="pi pi-truck" style="font-size: 24px;"></i>
                     <div class="flex-1 flex flex-column align-items-center text-center md:text-left">
                       <div class="font-bold text-2xl">Tramite {{ tramite.id }}</div>
                       <div class="mb-2">N° de contenedores {{ tramite.contenedoresIds.length }}</div>
@@ -40,13 +39,81 @@
                         </span>
                       </div>
                     </div>
+                    <div class="flex flex-row md:flex-column justify-content-center w-full md:w-auto align-items-center md: align-items-end mt-5 md:mt-0">
+                      <p-button (click)="buscarContenedores(tramite)" icon="pi pi-eye" label="Ver" styleClass="mb-2 p-button-sm"></p-button>
+                    </div>
                   </div>
                 }
               </ng-template>
 
+              <ng-template let-tramites pTemplate="gridItem">
+                <div class="grid grid-nogutter">
+                  @for (tramite of tramites; track $index){
+                    <div class="col-12 md:col-4">
+                      <div class="card m-3 border-1 surface-border">
+                        <div class="flex flex-wrap gap-2 align-items-center justify-content-center mb-2">
+                          <div class="flex align-items-center">
+                            <span class="font-semibold flex-grow-1" [ngStyle]="tramite.proceso | procesoTramite | estadoColor">
+                              <i class="pi pi-clock mr-2"></i>
+                              {{ tramite.proceso | procesoTramite }}
+                            </span>
+                          </div>
+                        </div>
+                        <div class="flex flex-column align-items-center text-center mb-3">
+                          <div class="text-2xl font-bold">Tramite {{ tramite.id }}</div>
+                          <div class="mb-3">N° de contenedores {{tramite.contenedoresIds.length }}</div>
+                          <i class="pi pi-truck" style="font-size: 24px;"></i>
+                        </div>
+                        <div class="flex align-items-center justify-content-center">
+                          <p-button icon="pi pi-eye" (click)="buscarContenedores(tramite)" label="Ver"></p-button>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </ng-template>
+
             </p-dataView>
-          </div>
         }
       }
     </div>
   </div>
+  <p-dialog header="Contenedores"
+            [(visible)]="display"
+            [modal]="true"
+            showEffect="fade"
+            breakpoints="{'1200px': '70vw', '960px': '90vw', '640px': '100vw'}">
+  <p-table
+    [value]="contenedores"
+    dataKey="id"
+    responsiveLayout="scroll">
+    <ng-template pTemplate="body" let-contenedor>
+      <tr>
+        <td>Contenedor {{ contenedor.contenedorId }}</td>
+        <td>
+          <p-toggleButton
+            disabled="true"
+            [(ngModel)]="contenedor.finalizado"
+            onLabel="Finalizado"
+            offLabel="Pendiente"
+            onIcon="pi pi-check-circle"
+            offIcon="pi pi-clock"
+            styleClass="w-9rem"
+            ariaLabel="Finalizado"/>
+        </td>
+        <td>
+          <button
+            type="button"
+            pButton
+            pRipple
+            [disabled]="!contenedor.finalizado"
+            label="Validar"
+            class="p-button-rounded"
+            icon="pi pi-check">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+</p-dialog>

@@ -11,15 +11,13 @@ import {InputTextModule} from 'primeng/inputtext';
 import {ProcesoTramitePipe} from '@shared/pipes/proceso-tramite.pipe';
 import {NgStyle} from '@angular/common';
 import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
-
-export interface SelectItem<T = any> {
-  label?: string;
-  value: T;
-  styleClass?: string;
-  icon?: string;
-  title?: string;
-  disabled?: boolean;
-}
+import {Button, ButtonDirective} from 'primeng/button';
+import {Contenedor} from '@models/contenedor';
+import {DialogModule} from 'primeng/dialog';
+import {Ripple} from 'primeng/ripple';
+import {TableModule} from 'primeng/table';
+import {ToggleButtonModule} from 'primeng/togglebutton';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   standalone: true,
@@ -30,7 +28,14 @@ export interface SelectItem<T = any> {
     InputTextModule,
     ProcesoTramitePipe,
     NgStyle,
-    EstadoColorPipe
+    EstadoColorPipe,
+    Button,
+    DialogModule,
+    ButtonDirective,
+    Ripple,
+    TableModule,
+    ToggleButtonModule,
+    FormsModule
   ],
   styles: ``
 })
@@ -47,8 +52,9 @@ export default class ValidacionTramiteComponent implements OnInit {
   sortOrder: number = 0;
   sortField: string = '';
   tramites: Tramite[] = [];
-  tramite: Tramite | null = null;
+  contenedores: Contenedor[] = [];
   loading: boolean = false;
+  display = false;
 
   ngOnInit(): void {
     this.listarCompletos([3, 2]);
@@ -75,6 +81,22 @@ export default class ValidacionTramiteComponent implements OnInit {
         });
       }
     });
+  }
+
+  buscarContenedores(tramite: Tramite) {
+    this.display = true;
+    this.revisionService.getContenedores(tramite.id).subscribe({
+      next: (data) => {
+        this.contenedores = data;
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Ocurrio un problema',
+          detail: err.message,
+        })
+      }
+    })
   }
 
   onFilter(dv: DataView, event: Event) {

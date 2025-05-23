@@ -11,9 +11,9 @@ export class ProcesoTramitePipe implements PipeTransform {
       case 1:
         return 'Registrado';
       case 2:
-        return 'Pendiente';
+        return 'Proceso';
       case 3:
-        return 'Validado';
+        return 'Descargado';
       case 4:
         return 'Muestra';
       case 5:
