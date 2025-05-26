@@ -49,8 +49,6 @@ export default class ValidacionTramiteComponent implements OnInit {
   tramiteId: string = '';
   barra: string = '';
   revisiones: Producto[] = [];
-  sortOrder: number = 0;
-  sortField: string = '';
   tramites: Tramite[] = [];
   contenedores: Contenedor[] = [];
   loading: boolean = false;
