@@ -6,7 +6,7 @@ import {ButtonDirective} from 'primeng/button';
 import {TramiteService} from '@services/tramite.service';
 import {RevisionService} from '@services/revision.service';
 import {ConfirmationService, MessageService} from 'primeng/api';
-import {TableModule} from 'primeng/table';
+import {Table, TableModule} from 'primeng/table';
 import {Ripple} from 'primeng/ripple';
 import {NgStyle} from '@angular/common';
 import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
@@ -303,6 +303,10 @@ export default class RevisionTramiteComponent implements OnInit {
         this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'No se pudo actualizar el contenedor visualmente' });
       }
     });
+  }
+
+  onGlobalFilter(table: Table, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 
 }

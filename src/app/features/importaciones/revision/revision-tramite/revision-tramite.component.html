@@ -23,27 +23,33 @@
     } @else {
       @if (!tramiteExist) {
         <div class="mt-2">
-          <p-table
+          <p-table #dt1
             [value]="tramites"
             [responsiveLayout]="'scroll'"
             [paginator]="true"
             [rows]="30"
             [rowsPerPageOptions]="[30,50,100]"
             (onRowExpand)="buscarContenedores($event.data)"
+            [globalFilterFields]="['id', 'fechaLlegada']"
             dataKey="id"
             class="my-3 p-p-3"
             styleClass="p-datatable-gridlines">
             <ng-template pTemplate="caption">
+              <div class="flex justify-content-between flex-column sm:flex-row">
               <h3>Tramites pendientes de validacion</h3>
-              <small>Tramites pendientes: {{ tramites.length }}</small>
+              <span class="p-input-icon-left mb-2">
+							<i class="pi pi-search"></i>
+							<input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Buscar tramite" class="w-full"/>
+              </span>
+              </div>
             </ng-template>
 
             <ng-template pTemplate="header">
               <tr>
                 <th></th>
-                <th pSortableColumn="id">Tramite</th>
-                <th pSortableColumn="fechaCarga">Fecha Carga</th>
-                <th pSortableColumn="observacion">Fecha Llegada</th>
+                <th>N° Tramite</th>
+                <th>Fecha Carga</th>
+                <th>Fecha Llegada</th>
               </tr>
             </ng-template>
 
@@ -56,7 +62,7 @@
                             [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                   }
                 </td>
-                <td class="p-text-center p-col-1 p-col-fixed">{{ tramite.id }}</td>
+                <td class="p-text-center p-col-1 p-col-fixed">Tramite {{ tramite.id }}</td>
                 <td class="p-text-center p-col-1">{{ tramite.fechaCarga }}</td>
                 <td class="p-text-center p-col-1">{{ tramite.fechaLlegada }}</td>
               </tr>
@@ -74,10 +80,9 @@
                         <tr>
                           <th></th>
                           <th>N contenedor</th>
-                          <th>Cont Bloqueado</th>
                           <th>Usuario Bloquea</th>
-                          <th>Cont finalizado</th>
                           <th></th>
+                          <th>Cont finalizado</th>
                         </tr>
                       </ng-template>
                       <ng-template pTemplate="body" let-contenedor>
@@ -90,23 +95,12 @@
                               (click)="buscarTramite(tramite.id, contenedor.contenedorId)"
                               [hidden]="contenedor.finalizado || contenedor.bloqueado"
                               [disabled]="contenedor.finalizado || contenedor.bloqueado"
+                              [ngStyle]="{'border-color': contenedor.bloqueado ? 'rgba(150,150,150,0.86)' : 'rgba(50,150,250,0.74)', 'color': 'white'}"
                               class="p-button-text p-button-rounded p-button-plain"
                               icon="pi pi-chevron-right"></button>
                           </td>
                           <td>{{ contenedor.contenedorId }}</td>
-                          <td>{{ contenedor.bloqueado }}</td>
                           <td>{{ contenedor.usrBloquea }}</td>
-                          <td>
-                            <p-toggleButton
-                              disabled="true"
-                              [(ngModel)]="contenedor.finalizado"
-                              onLabel="Finalizado"
-                              offLabel="Pendiente"
-                              onIcon="pi pi-check"
-                              offIcon="pi pi-times"
-                              styleClass="w-9rem"
-                              ariaLabel="Finalizado"/>
-                          </td>
                           <td>
                                 <span class="flex">
                                   <button
@@ -116,9 +110,21 @@
                                     [hidden]="contenedor.finalizado"
                                     [disabled]="contenedor.finalizado"
                                     [icon]="getIcon(contenedor)"
-                                    class="p-button-rounded p-button-info mr-2">
+                                    [ngStyle]="{'background-color': contenedor.bloqueado ? 'rgba(150,150,150,0.86)' : 'rgba(50,150,250,0.74)', 'color': 'white'}"
+                                    class="mr-2">
                                   </button>
                                 </span>
+                          </td>
+                          <td>
+                            <p-toggleButton
+                              disabled="true"
+                              [(ngModel)]="contenedor.finalizado"
+                              onLabel="Descargado"
+                              offLabel="Pendiente"
+                              onIcon="pi pi-list-check"
+                              offIcon="pi pi-clock"
+                              styleClass="{{ contenedor.finalizado ? 'bg-green-500 text-white' : 'bg-blue-300 text-white' }}"
+                              ariaLabel="Descargado"/>
                           </td>
                         </tr>
                       </ng-template>
