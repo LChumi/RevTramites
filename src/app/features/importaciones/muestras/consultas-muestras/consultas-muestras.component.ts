@@ -8,7 +8,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MuestraService} from '@services/muestra.service';
 import {InputGroupModule} from 'primeng/inputgroup';
 import {NgStyle} from '@angular/common';
-import {ErrorResponse} from '@dtos/error-response';
 import {Producto} from '@models/producto';
 
 @Component({
@@ -37,35 +36,7 @@ export default class ConsultasMuestrasComponent {
   buscarMuestras() {
     if (this.tramite) {
       this.loading = true;
-      this.muestraService.listarTramite(this.tramite).subscribe({
-        next: (data) => {
-          if (data.length > 0) {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Exito',
-              detail: 'Se econtraron registros '
-            })
-            this.productos = data;
-            this.loading = false;
-            this.tramite = ''
-          } else {
-            this.messageService.add({
-              severity: 'warn',
-              summary: `No existen datos en el tramite ${this.tramite}`,
-            })
-            this.tramite = ''
-          }
-        },
-        error: (err: ErrorResponse) => {
-          this.productos = [];
-          this.loading = false;
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Ocurrio un problema',
-            detail: err.message,
-          })
-        }
-      })
+
     } else {
       this.messageService.add({
         severity: 'warn',

@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import {InputTextModule} from 'primeng/inputtext';
 import {FormsModule} from '@angular/forms';
 import {TramiteService} from '@services/tramite.service';
@@ -7,13 +7,21 @@ import {MessageService} from 'primeng/api';
 import {MuestraService} from '@services/muestra.service';
 import {TableModule} from 'primeng/table';
 import {NgStyle} from '@angular/common';
-import {ButtonDirective} from 'primeng/button';
+import {Button, ButtonDirective} from 'primeng/button';
 import {Ripple} from 'primeng/ripple';
 import {ErrorResponse} from '@dtos/error-response';
 import {TooltipModule} from 'primeng/tooltip';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {forkJoin} from 'rxjs';
 import {Producto} from '@models/producto';
+import {InputGroupModule} from 'primeng/inputgroup';
+import {DataView, DataViewModule} from 'primeng/dataview';
+import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
+import {ProcesoTramitePipe} from '@shared/pipes/proceso-tramite.pipe';
+import {Contenedor} from '@models/contenedor';
+import {ContenedoresService} from '@services/contenedores.service';
+import {DialogModule} from 'primeng/dialog';
+import {MuestraRequest} from '@models/muestra-request';
 
 @Component({
   standalone: true,
@@ -26,26 +34,37 @@ import {Producto} from '@models/producto';
     Ripple,
     TooltipModule,
     ToggleButtonModule,
+    InputGroupModule,
+    Button,
+    DataViewModule,
+    EstadoColorPipe,
+    ProcesoTramitePipe,
+    DialogModule,
   ],
   templateUrl: './muestra.component.html',
   styles: ``
 })
 export default class MuestraComponent implements OnInit {
-  @ViewChild('cajaInput') cajaInput!: HTMLInputElement;
-  @ViewChild('muestraInput') muestraInput!: HTMLInputElement;
+  @ViewChild('cajaInput') cajaInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('muestraInput') muestraInput!: ElementRef<HTMLInputElement>;
 
   private tramiteService = inject(TramiteService);
+  private contenedorService = inject(ContenedoresService)
   private messageService = inject(MessageService);
   private muestraService = inject(MuestraService)
 
   tramites: Tramite[] = [];
   muestras: Producto[] = []
+  contenedores: Contenedor[] = []
   muestraAdd: Producto | null = null;
   barra: any;
   muestra: any;
-  status: boolean = true;
-  tramiteExist: boolean = false;
+  status = true;
+  display = false;
+  tramiteExist = false;
+  loading = false;
   private tramiteId: string = '';
+  private contenedorId: string = '';
 
   ngOnInit(): void {
     this.listarCompletos([3, 2]);
@@ -73,27 +92,28 @@ export default class MuestraComponent implements OnInit {
     });
   }
 
-  tramiteSelected(tramiteId: string) {
-    this.tramiteExist = true;
-    this.tramiteId = tramiteId;
-    this.listarMuestras(tramiteId);
-  }
-
   regresar() {
     this.tramiteExist = false;
     this.muestras = [];
     this.tramiteId = '';
   }
 
-  focusNext(currentInput: HTMLInputElement, nextInput: HTMLInputElement) {
+  focusNext(_currentInput: HTMLInputElement, nextInput: HTMLInputElement) {
     if (nextInput) {
       nextInput.focus();
     }
   }
 
   addCompare() {
-    if (this.barra && this.muestra && this.tramiteId) {
-      this.muestraService.addCompare(this.barra, this.muestra, this.tramiteId, this.status).subscribe({
+    if (this.barra && this.muestra && this.tramiteId && this.contenedorId) {
+      const request : MuestraRequest = {
+        barra: this.barra,
+        muestra: this.muestra,
+        tramiteId: this.tramiteId,
+        contenedor: this.contenedorId,
+        status: this.status
+      }
+      this.muestraService.addCompare(request).subscribe({
         next: (result) => {
           this.messageService.add({
             severity: 'info',
@@ -101,7 +121,7 @@ export default class MuestraComponent implements OnInit {
             detail: `Se agrego la muestra ${result.id} del bulto barra ${result.barraMuestra}`,
           })
           this.muestraAdd = result
-          this.listarMuestras(this.tramiteId)
+          this.listarMuestras(this.tramiteId, this.contenedorId)
           this.status = true
           this.muestra = ''
         },
@@ -123,8 +143,8 @@ export default class MuestraComponent implements OnInit {
     }
   }
 
-  listarMuestras(tramiteId: string) {
-    this.muestraService.listarTramite(tramiteId).subscribe({
+  listarMuestras(tramiteId: string, contenedor: string) {
+    this.muestraService.getMuestras(tramiteId, contenedor).subscribe({
       next: (result) => {
         this.muestras = result;
       }
@@ -132,7 +152,7 @@ export default class MuestraComponent implements OnInit {
   }
 
   validate() {
-    this.muestraService.validate(this.tramiteId).subscribe({
+    this.muestraService.validate(this.tramiteId, this.contenedorId).subscribe({
       next: (result) => {
         this.muestras = result;
         const allComplete = this.muestras.every(muestra => muestra.procesoMuestra === 'COMPLETA');
@@ -145,6 +165,42 @@ export default class MuestraComponent implements OnInit {
     })
   }
 
+  buscarContenedores(tramite: Tramite) {
+    this.loading = true;
+    this.display = true;
+    this.contenedorService.buscarContenedores(tramite.id).subscribe({
+      next: (data) => {
+        this.contenedores = data;
+        this.tramiteId = tramite.id;
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+        this.display = false;
+      }
+    })
+  }
+
+  limpiarInputs(){
+    this.barra=''
+    this.muestra=''
+    this.status=true
+    this.muestraAdd=null
+    setTimeout(() => {
+      this.cajaInput?.nativeElement.focus();
+    }, 0);
+  }
+
+  onFilter(dv: DataView, event: Event) {
+    dv.filter((event.target as HTMLInputElement).value);
+  }
+
+  getStarted(contenedor: Contenedor){
+    this.display = false
+    this.tramiteExist = true;
+    this.contenedorId=contenedor.contenedorId
+    this.listarMuestras(this.tramiteId, this.contenedorId)
+  }
 
   protected readonly scroll = scroll;
 }

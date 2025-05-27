@@ -53,7 +53,7 @@ export class MenuComponent implements OnInit{
                 routerLink: '/icep/bodega/revision/consultas',
               },
               {
-                label: 'Validar',
+                label: 'Validar Contenedores',
                 icon: 'pi pi-check',
                 routerLink: '/icep/bodega/revision/validar',
               }
@@ -65,7 +65,7 @@ export class MenuComponent implements OnInit{
             route: ['/'],
             items: [
               {
-              label: 'Muestras por llegar',
+              label: 'Muestras por ingresar',
               icon: 'pi pi-window-maximize',
               routerLink: '/icep/bodega/muestra/envio-muestras',
             },

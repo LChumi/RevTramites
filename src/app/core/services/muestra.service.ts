@@ -3,6 +3,7 @@ import {environment} from '@environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Producto} from '@models/producto';
+import {MuestraRequest} from '@models/muestra-request';
 
 @Injectable({
   providedIn: 'root'
@@ -15,15 +16,15 @@ export class MuestraService {
   constructor() {
   }
 
-  listarTramite(tramiteId: string): Observable<Producto[]> {
-    return this.http.get<Producto[]>(`${this.baseUrl}/list/${tramiteId}`);
+  addCompare(request: MuestraRequest): Observable<Producto> {
+    return this.http.put<Producto>(`${this.baseUrl}/add/compare/`, request)
   }
 
-  addCompare(barra: string, muestra: string, tramite: string, status: boolean): Observable<Producto> {
-    return this.http.get<Producto>(`${this.baseUrl}/add/compare/${barra}/${muestra}/${tramite}/${status}`, {})
+  validate(tramite: string, contenedor: string): Observable<Producto[]> {
+    return this.http.get<Producto[]>(`${this.baseUrl}/validate/${tramite}/${contenedor}`);
   }
 
-  validate(tramite: string): Observable<Producto[]> {
-    return this.http.get<Producto[]>(`${this.baseUrl}/validate/${tramite}`);
+  getMuestras(tramite: string, contenedor: string): Observable<Producto[]> {
+    return this.http.get<Producto[]>(`${this.baseUrl}/productos/${tramite}/${contenedor}`);
   }
 }

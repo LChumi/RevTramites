@@ -18,6 +18,7 @@ import {Ripple} from 'primeng/ripple';
 import {TableModule} from 'primeng/table';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {FormsModule} from '@angular/forms';
+import {ContenedoresService} from '@services/contenedores.service';
 
 @Component({
   standalone: true,
@@ -44,6 +45,7 @@ export default class ValidacionTramiteComponent implements OnInit {
   private tramiteService = inject(TramiteService)
   private revisionService = inject(RevisionService)
   private messageService = inject(MessageService)
+  private contenedoresService = inject(ContenedoresService)
 
   user: any;
   tramiteId: string = '';
@@ -83,16 +85,15 @@ export default class ValidacionTramiteComponent implements OnInit {
 
   buscarContenedores(tramite: Tramite) {
     this.display = true;
-    this.revisionService.getContenedores(tramite.id).subscribe({
+    this.loading = true;
+    this.contenedoresService.buscarContenedores(tramite.id).subscribe({
       next: (data) => {
         this.contenedores = data;
+        this.loading = false;
       },
-      error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Ocurrio un problema',
-          detail: err.message,
-        })
+      error: () => {
+        this.loading = false;
+        this.display = false;
       }
     })
   }
