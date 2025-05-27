@@ -9,7 +9,7 @@ import {ErrorResponse} from '@dtos/error-response';
 import {MessageService} from 'primeng/api';
 import {CalendarModule} from 'primeng/calendar';
 import {DropdownModule} from 'primeng/dropdown';
-import {TableModule} from 'primeng/table';
+import {Table, TableModule} from 'primeng/table';
 import {Ripple} from 'primeng/ripple';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {NgStyle} from '@angular/common';
@@ -176,6 +176,10 @@ export default class ConsultasTramiteComponent {
   cerrarModal(tramiteId: string) {
     this.modalVisibility[tramiteId] = false;
     this.sending = false
+  }
+
+  onGlobalFilter(table: Table, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 
 }
