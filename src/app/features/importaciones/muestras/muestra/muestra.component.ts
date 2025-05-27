@@ -118,7 +118,7 @@ export default class MuestraComponent implements OnInit {
           this.messageService.add({
             severity: 'info',
             summary: 'Muestra agregada',
-            detail: `Se agrego la muestra ${result.id} del bulto barra ${result.barraMuestra}`,
+            detail: `Se agrego la muestra ${result.barraMuestra} del producto ${result.nombre}`,
           })
           this.muestraAdd = result
           this.listarMuestras(this.tramiteId, this.contenedorId)
@@ -155,8 +155,9 @@ export default class MuestraComponent implements OnInit {
     this.muestraService.validate(this.tramiteId, this.contenedorId).subscribe({
       next: (result) => {
         this.muestras = result;
-        const allComplete = this.muestras.every(muestra => muestra.procesoMuestra === 'COMPLETA');
+        const allComplete = this.muestras.every(muestra => muestra.procesoMuestra === 'COMPLETO');
         if (allComplete) {
+          this.completed()
           this.messageService.add({severity: 'info', summary: 'Muestra Validadas',})
         } else {
           this.messageService.add({severity: 'warn', summary: 'Muestra incompletas',})
@@ -200,6 +201,13 @@ export default class MuestraComponent implements OnInit {
     this.tramiteExist = true;
     this.contenedorId=contenedor.contenedorId
     this.listarMuestras(this.tramiteId, this.contenedorId)
+  }
+
+  completed(){
+    setTimeout(() => {
+      this.regresar()
+      this.listarCompletos([3, 2]);
+    }, 3000)
   }
 
   protected readonly scroll = scroll;
