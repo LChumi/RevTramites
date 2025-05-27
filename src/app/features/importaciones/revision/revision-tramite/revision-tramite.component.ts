@@ -318,5 +318,4 @@ export default class RevisionTramiteComponent implements OnInit {
     });
   }
 
-
 }
