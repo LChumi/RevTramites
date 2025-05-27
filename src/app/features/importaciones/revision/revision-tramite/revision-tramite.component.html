@@ -220,7 +220,13 @@
                 <ng-template pTemplate="body" let-producto>
                   <tr>
                     <td></td>
-                    <td class="p-text-center p-col-1 p-col-fixed">{{ producto.barcode }}</td>
+                    <td class="p-text-center p-col-1 p-col-fixed">
+                      <div class="flex align-items-center gap-2">
+                        <span>{{ producto.barcode }}</span>
+                        <button pButton pRipple type="button" icon="pi pi-copy" (click)="copyToClipboard(producto.barcode)" class="p-button-text"></button>
+                      </div>
+                    </td>
+
                     <td class="p-text-center p-col-1 p-col-fixed">{{ producto.nombre }}</td>
                     <td class="p-text-center p-col-1"
                         [ngStyle]="{'width': '50px'}">{{ producto.cantidadRevision }}

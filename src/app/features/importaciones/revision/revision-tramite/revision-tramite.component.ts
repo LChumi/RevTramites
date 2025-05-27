@@ -309,4 +309,14 @@ export default class RevisionTramiteComponent implements OnInit {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 
+  copyToClipboard(barcode: string) {
+    navigator.clipboard.writeText(barcode).then(() => {
+      this.barra = barcode
+      this.messageService.add({ severity: 'info', summary: 'Copiado', detail: 'El código de barras se copió al portapapeles' });
+    }).catch(err => {
+      console.error("Error al copiar: ", err);
+    });
+  }
+
+
 }
