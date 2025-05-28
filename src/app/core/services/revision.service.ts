@@ -37,4 +37,8 @@ export class RevisionService {
   getContenedores(tramiteId: string): Observable<Contenedor[]> {
     return this.http.get<Contenedor[]>(`${this.baseUrl}/contenedores/${tramiteId}`);
   }
+
+  productExist(tramite: string, contenedor: string, barcode: string): Observable<StatusResponse> {
+    return this.http.get<StatusResponse>(`${this.baseUrl}/producto/existe/${barcode}/${tramite}/${contenedor}`);
+  }
 }
