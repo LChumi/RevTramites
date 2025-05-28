@@ -212,8 +212,13 @@ export default class RevisionTramiteComponent implements OnInit {
       })
     ).subscribe({
       next: revisiones => {
-        this.revisiones = revisiones;
-        this.status = true
+        if (this.revision){
+          //Reordenar para mostrar el ultimo producto escaneado en la lista
+          const restantes = revisiones.filter(p => p.id !== this.revision?.id);
+          this.revisiones = [this.revision, ...restantes];
+          this.status = true
+        }
+
       },
       error: err => {
         console.error('Error en escaneo:', err);
