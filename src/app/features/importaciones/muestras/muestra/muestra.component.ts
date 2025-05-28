@@ -59,6 +59,7 @@ export default class MuestraComponent implements OnInit {
   muestraAdd: Producto | null = null;
   barra: any;
   muestra: any;
+  user: any;
   status = true;
   display = false;
   tramiteExist = false;
@@ -68,6 +69,7 @@ export default class MuestraComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarCompletos([3, 2]);
+    this.user = sessionStorage.getItem("username")
   }
 
   listarCompletos(processes: number[]): void {
@@ -111,6 +113,7 @@ export default class MuestraComponent implements OnInit {
         muestra: this.muestra,
         tramiteId: this.tramiteId,
         contenedor: this.contenedorId,
+        usuario: this.user,
         status: this.status
       }
       this.muestraService.addCompare(request).subscribe({

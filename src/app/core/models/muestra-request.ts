@@ -3,5 +3,6 @@ export interface MuestraRequest {
   muestra:    string;
   tramiteId:  string;
   contenedor: string;
+  usuario:    string;
   status:     boolean;
 }
