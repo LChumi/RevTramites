@@ -193,6 +193,7 @@ export default class RevisionTramiteComponent implements OnInit {
         if (exist.status){
           this.addProduct()
         }else {
+          playAlert()
           this.confirmationService.confirm({
             message: 'Producto no encontrado en el resgistro ¿Desea agregar?',
             header: 'Confirmación',
@@ -344,6 +345,13 @@ export default class RevisionTramiteComponent implements OnInit {
       this.messageService.add({ severity: 'info', summary: 'Copiado', detail: 'El código de barras se copió al portapapeles' });
     }).catch(err => {
       console.error("Error al copiar: ", err);
+    });
+  }
+
+  playAlert() {
+    const audio = new Audio('/sounds/alert.mp3');
+    audio.play().catch(error => {
+      console.error('Error al reproducir el audio:', error);
     });
   }
 
