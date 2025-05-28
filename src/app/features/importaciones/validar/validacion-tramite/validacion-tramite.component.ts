@@ -19,6 +19,8 @@ import {TableModule} from 'primeng/table';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {FormsModule} from '@angular/forms';
 import {ContenedoresService} from '@services/contenedores.service';
+import {ToolbarModule} from 'primeng/toolbar';
+import {converToExcel} from '@utils/excel-utils';
 
 @Component({
   standalone: true,
@@ -36,7 +38,8 @@ import {ContenedoresService} from '@services/contenedores.service';
     Ripple,
     TableModule,
     ToggleButtonModule,
-    FormsModule
+    FormsModule,
+    ToolbarModule
   ],
   styles: ``
 })
@@ -49,11 +52,13 @@ export default class ValidacionTramiteComponent implements OnInit {
 
   user: any;
   tramiteId: string = '';
+  contenedorId: string = '';
   barra: string = '';
   revisiones: Producto[] = [];
   tramites: Tramite[] = [];
   contenedores: Contenedor[] = [];
   loading: boolean = false;
+  vistaTramites= true
   display = false;
 
   ngOnInit(): void {
@@ -86,6 +91,7 @@ export default class ValidacionTramiteComponent implements OnInit {
   buscarContenedores(tramite: Tramite) {
     this.display = true;
     this.loading = true;
+    this.tramiteId = tramite.id;
     this.contenedoresService.buscarContenedores(tramite.id).subscribe({
       next: (data) => {
         this.contenedores = data;
@@ -100,6 +106,29 @@ export default class ValidacionTramiteComponent implements OnInit {
 
   onFilter(dv: DataView, event: Event) {
     dv.filter((event.target as HTMLInputElement).value);
+  }
+
+  validate(contenedor: Contenedor) {
+    this.revisionService.processProductRevision(this.tramiteId, contenedor.contenedorId).subscribe({
+      next: (result) => {
+        this.revisiones = result;
+        this.messageService.add({severity: 'info', summary: 'Muestra Validadas',})
+        this.vistaTramites= false
+        this.display = false;
+      },
+      error: (err) => {
+        this.messageService.add({severity: 'error', summary: 'Ocurrio un problema ',})
+      }
+    })
+  }
+
+  exportToExcel() {
+    converToExcel(this.revisiones, this.tramiteId)
+  }
+
+  regresar(){
+    this.vistaTramites= true
+    this.display = false;
   }
 
 }

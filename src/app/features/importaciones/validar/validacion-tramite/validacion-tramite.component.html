@@ -12,8 +12,8 @@
           <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: blue;"></i>
         </div>
       } @else {
-        @if (tramites.length > 0) {
-            <h4> Lista de tramites </h4>
+        @if (vistaTramites) {
+          <h4> Lista de tramites </h4>
             <p-dataView #dv
                         [value]="tramites"
                         [paginator]="true"
@@ -78,6 +78,46 @@
               </ng-template>
 
             </p-dataView>
+        } @else {
+          <h4>Productos escaneados</h4>
+          <p-toolbar styleClass="mb-4">
+            <ng-template pTemplate="left">
+              <div class="my-2">
+                <button pButton pRipple label="Regresar" icon="pi pi-chevron-left"
+                        class="p-button-outlined" (click)="regresar()"></button>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="right">
+              <button pButton pRipple label="Descargar Excel" icon="pi pi-download" class="p-button-outlined"
+                      (click)="exportToExcel()"></button>
+            </ng-template>
+          </p-toolbar>
+          <p-table [value]="revisiones" dataKey="id" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Barra</th>
+                <th>Item</th>
+                <th>Nombre</th>
+                <th>Cantidad</th>
+                <th>Cantidad Revision</th>
+                <th>Diferencias</th>
+                <th>Estado Revision</th>
+                <th>Usuario</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-producto>
+              <tr>
+                <td>{{ producto.id }}</td>
+                <td>{{ producto.id1 }}</td>
+                <td>{{ producto.nombre }}</td>
+                <td>{{ producto.bultos }}</td>
+                <td>{{ producto.cantidadRevision }}</td>
+                <td>{{ producto.cantidadDiferenciaRevision }}</td>
+                <td [ngStyle]="producto.estadoRevision | estadoColor">{{ producto.estadoRevision }}</td>
+                <td>{{ producto.usuarioRevision }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
         }
       }
     </div>
@@ -107,6 +147,7 @@
         </td>
         <td>
           <button
+            (click)="validate(contenedor)"
             type="button"
             pButton
             pRipple
