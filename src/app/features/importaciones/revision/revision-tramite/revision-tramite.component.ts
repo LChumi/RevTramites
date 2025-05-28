@@ -188,6 +188,30 @@ export default class RevisionTramiteComponent implements OnInit {
   escaneo() {
     if (!this.tramiteId || !this.barra || !this.user || !this.containerId) return;
 
+    this.revisionService.productExist(this.tramiteId, this.containerId, this.barra).subscribe({
+      next: (exist) => {
+        if (exist.status){
+          this.addProduct()
+        }else {
+          this.confirmationService.confirm({
+            message: 'Producto no encontrado en el resgistro ¿Desea agregar?',
+            header: 'Confirmación',
+            icon: 'pi pi-spin pi-spinner-dotted',
+            accept: () => {
+              this.addProduct()
+            },
+            reject: () => {
+              this.barra = '';
+            }
+          })
+        }
+      }
+    })
+
+
+  }
+
+  addProduct(){
     const request: RevisionRequest = {
       tramiteId: this.tramiteId,
       contenedor: this.containerId,
