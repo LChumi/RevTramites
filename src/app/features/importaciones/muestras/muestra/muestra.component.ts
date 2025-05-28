@@ -108,7 +108,7 @@ export default class MuestraComponent implements OnInit {
 
   addCompare() {
     if (this.barra && this.muestra && this.tramiteId && this.contenedorId) {
-      const request : MuestraRequest = {
+      const request: MuestraRequest = {
         barra: this.barra,
         muestra: this.muestra,
         tramiteId: this.tramiteId,
@@ -185,11 +185,11 @@ export default class MuestraComponent implements OnInit {
     })
   }
 
-  limpiarInputs(){
-    this.barra=''
-    this.muestra=''
-    this.status=true
-    this.muestraAdd=null
+  limpiarInputs() {
+    this.barra = ''
+    this.muestra = ''
+    this.status = true
+    this.muestraAdd = null
     setTimeout(() => {
       this.cajaInput?.nativeElement.focus();
     }, 0);
@@ -199,14 +199,14 @@ export default class MuestraComponent implements OnInit {
     dv.filter((event.target as HTMLInputElement).value);
   }
 
-  getStarted(contenedor: Contenedor){
+  getStarted(contenedor: Contenedor) {
     this.display = false
     this.tramiteExist = true;
-    this.contenedorId=contenedor.contenedorId
+    this.contenedorId = contenedor.contenedorId
     this.listarMuestras(this.tramiteId, this.contenedorId)
   }
 
-  completed(){
+  completed() {
     setTimeout(() => {
       this.regresar()
       this.listarCompletos([3, 2]);

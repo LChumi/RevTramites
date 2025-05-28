@@ -71,24 +71,32 @@ export default class RevisionTramiteComponent implements OnInit {
         if (response.status) {
           switch (response.info) {
             case 'bloqueado':
-              this.messageService.add({ severity: 'warn', summary: 'Éxito', detail: 'El contenedor se bloqueó correctamente' });
+              this.messageService.add({
+                severity: 'warn',
+                summary: 'Éxito',
+                detail: 'El contenedor se bloqueó correctamente'
+              });
               this.updateContenedores(tramiteId, containerId);
               break;
             case 'desbloqueado':
-              this.messageService.add({ severity: 'success', summary: 'Info', detail: 'El contenedor se desbloqueó correctamente' });
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Info',
+                detail: 'El contenedor se desbloqueó correctamente'
+              });
               this.updateContenedores(tramiteId, containerId);
               break;
             case 'finalizado':
-              this.messageService.add({ severity: 'info', summary: 'Info', detail: 'El contenedor ya está finalizado' });
+              this.messageService.add({severity: 'info', summary: 'Info', detail: 'El contenedor ya está finalizado'});
               this.updateContenedores(tramiteId, containerId);
               break;
           }
-        }else{
-          this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: response.info });
+        } else {
+          this.messageService.add({severity: 'warn', summary: 'Advertencia', detail: response.info});
         }
       },
       error: () => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al comunicarse con el servidor' });
+        this.messageService.add({severity: 'error', summary: 'Error', detail: 'Error al comunicarse con el servidor'});
       }
     });
   }
@@ -147,7 +155,7 @@ export default class RevisionTramiteComponent implements OnInit {
             this.blockUnlockContainer(tramiteId, containerId);
 
             // Buscar revisiones si todo está OK
-            return this.revisionService.findByTramite(tramiteId,containerId);
+            return this.revisionService.findByTramite(tramiteId, containerId);
           })
         );
       })
@@ -169,7 +177,7 @@ export default class RevisionTramiteComponent implements OnInit {
   listarPendientes(processes: number[]) {
     //Array de observables con las solicitudes para cada proceso
     const observables = processes.map(process =>
-    this.tramiteService.listByStatus(process));
+      this.tramiteService.listByStatus(process));
 
     forkJoin(observables).subscribe({
       next: (results) => {
@@ -190,9 +198,9 @@ export default class RevisionTramiteComponent implements OnInit {
 
     this.revisionService.productExist(this.tramiteId, this.containerId, this.barra).subscribe({
       next: (exist) => {
-        if (exist.status){
+        if (exist.status) {
           this.addProduct()
-        }else {
+        } else {
           playAlert()
           this.confirmationService.confirm({
             message: 'Producto no encontrado en el resgistro ¿Desea agregar?',
@@ -212,7 +220,7 @@ export default class RevisionTramiteComponent implements OnInit {
 
   }
 
-  addProduct(){
+  addProduct() {
     const request: RevisionRequest = {
       tramiteId: this.tramiteId,
       contenedor: this.containerId,
@@ -237,7 +245,7 @@ export default class RevisionTramiteComponent implements OnInit {
       })
     ).subscribe({
       next: revisiones => {
-        if (this.revision){
+        if (this.revision) {
           //Reordenar para mostrar el ultimo producto escaneado en la lista
           const restantes = revisiones.filter(p => p.id !== this.revision?.id);
           this.revisiones = [this.revision, ...restantes];
@@ -267,15 +275,15 @@ export default class RevisionTramiteComponent implements OnInit {
       accept: () => {
         this.revisionService.processTramiteCompletion(this.tramiteId, this.containerId).subscribe({
           next: (status) => {
-            if (status.status){
-              this.messageService.add({ severity: 'success', summary: 'Éxito', detail: status.info });
-            }else{
-              this.messageService.add({ severity: 'info', summary: 'Info', detail: status.info });
+            if (status.status) {
+              this.messageService.add({severity: 'success', summary: 'Éxito', detail: status.info});
+            } else {
+              this.messageService.add({severity: 'info', summary: 'Info', detail: status.info});
             }
             this.nuevoEscaneo()
           },
           error: (err) => {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: err.message });
+            this.messageService.add({severity: 'error', summary: 'Error', detail: err.message});
           }
         })
       }
@@ -301,14 +309,14 @@ export default class RevisionTramiteComponent implements OnInit {
     }
   }
 
-  contenedoresPorTramite: {[key:string]: Contenedor[] } = {}
+  contenedoresPorTramite: { [key: string]: Contenedor[] } = {}
 
-  buscarContenedores(tramite: Tramite){
-    if (!this.contenedoresPorTramite[tramite.id]){
+  buscarContenedores(tramite: Tramite) {
+    if (!this.contenedoresPorTramite[tramite.id]) {
       this.contenedoresPorTramite[tramite.id] = [];//Evitar multiples llamadas innecesarias
 
       const request = tramite.contenedoresIds.map(id => {
-        return this.tramiteService.getContenedor(tramite.id,id)
+        return this.tramiteService.getContenedor(tramite.id, id)
       });
 
       forkJoin(request).subscribe({
@@ -330,7 +338,11 @@ export default class RevisionTramiteComponent implements OnInit {
         }
       },
       error: () => {
-        this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'No se pudo actualizar el contenedor visualmente' });
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Advertencia',
+          detail: 'No se pudo actualizar el contenedor visualmente'
+        });
       }
     });
   }
@@ -342,17 +354,13 @@ export default class RevisionTramiteComponent implements OnInit {
   copyToClipboard(barcode: string) {
     navigator.clipboard.writeText(barcode).then(() => {
       this.barra = barcode
-      this.messageService.add({ severity: 'info', summary: 'Copiado', detail: 'El código de barras se copió al portapapeles' });
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Copiado',
+        detail: 'El código de barras se copió al portapapeles'
+      });
     }).catch(err => {
       console.error("Error al copiar: ", err);
     });
   }
-
-  playAlert() {
-    const audio = new Audio('/sounds/alert.mp3');
-    audio.play().catch(error => {
-      console.error('Error al reproducir el audio:', error);
-    });
-  }
-
 }

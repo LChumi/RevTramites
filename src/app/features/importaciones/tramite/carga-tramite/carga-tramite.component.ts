@@ -61,7 +61,7 @@ export default class CargaTramiteComponent implements OnInit {
       return;
     }
 
-    if (!this.contenedor){
+    if (!this.contenedor) {
       this.message('warn', 'Contenedor vacio', 'Ingrese el nombre del contenedor o numero de contenedor ')
       return;
     }
@@ -128,7 +128,7 @@ export default class CargaTramiteComponent implements OnInit {
     this.uploadEmails()
   }
 
-  uploadEmails(){
+  uploadEmails() {
     this.emailService.getByTipo(this.tipo).subscribe({
       next: response => {
         this.email = response;
@@ -136,16 +136,16 @@ export default class CargaTramiteComponent implements OnInit {
     })
   }
 
-  addAddressee(emailRef: any){
+  addAddressee(emailRef: any) {
     if (emailRef.invalid) {
       this.message('error', 'Error', 'Ingrese un correo valido');
       this.emailText = ''
       return;
     }
-    const addressee : Destinatario= {
+    const addressee: Destinatario = {
       direccion: this.emailText,
     }
-    this.emailService.addAddressee(this.tipo,addressee ).subscribe({
+    this.emailService.addAddressee(this.tipo, addressee).subscribe({
       next: response => {
         this.email = response;
         this.emailText = ''
@@ -158,7 +158,7 @@ export default class CargaTramiteComponent implements OnInit {
     })
   }
 
-  removeAddressee(email:string) {
+  removeAddressee(email: string) {
     this.confirmationService.confirm({
       message: '¿Esta seguro de quitar este correo?',
       header: 'Confirmación',
@@ -177,7 +177,7 @@ export default class CargaTramiteComponent implements OnInit {
     })
   }
 
-  checkTramite(){
+  checkTramite() {
     this.loading = true
     this.confirmationService.confirm({
       message: 'Desea Finalizar la carga de Tramites y enviar a los subscritores el email',
@@ -186,7 +186,7 @@ export default class CargaTramiteComponent implements OnInit {
       accept: () => {
         this.fileService.sendTramite(this.tramiteId.toUpperCase()).subscribe({
           next: response => {
-            this.message('info', 'Tramite finalizado', 'Se registro el tramite y se envio a los subscritores el email' );
+            this.message('info', 'Tramite finalizado', 'Se registro el tramite y se envio a los subscritores el email');
             this.loading = false
             this.cargarNuevo();
           }, error: error => {

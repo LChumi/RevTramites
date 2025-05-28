@@ -1,5 +1,5 @@
-  <div class="grid grid-nogutter">
-    <div class="col-12">
+<div class="grid grid-nogutter">
+  <div class="col-12">
       <span class="flex align-items-center">
         @if (tramiteExist) {
           <button pButton type="button" icon="pi pi-chevron-left" pTooltip="Regresar"
@@ -7,251 +7,256 @@
         }
         <span class="text-900 font-bold text-4xl">Muestras</span>
       </span>
-      <div class="col-12 mt-4">
+    <div class="col-12 mt-4">
 
-        @if (tramiteExist) {
-            <h4 class="text-900">Envío de Muestras</h4>
-            <div class="p-formgrid grid gap-2">
+      @if (tramiteExist) {
+        <h4 class="text-900">Envío de Muestras</h4>
+        <div class="p-formgrid grid gap-2">
 
-              <div class="field col-12 md:col-4">
-                <label for="caja">Barra Caja</label>
-                <p-inputGroup id="barra">
-                  <button type="button" pButton icon="pi pi-eraser" (click)="limpiarInputs()"></button>
-                  <input #cajaInput type="text" pInputText placeholder="Barra" [(ngModel)]="barra"
-                         (keydown.enter)="focusNext(cajaInput, muestraInput)"/>
-                </p-inputGroup>
-              </div>
+          <div class="field col-12 md:col-4">
+            <label for="caja">Barra Caja</label>
+            <p-inputGroup id="barra">
+              <button type="button" pButton icon="pi pi-eraser" (click)="limpiarInputs()"></button>
+              <input #cajaInput type="text" pInputText placeholder="Barra" [(ngModel)]="barra"
+                     (keydown.enter)="focusNext(cajaInput, muestraInput)"/>
+            </p-inputGroup>
+          </div>
 
-              <div class="field col-12 md:col-4">
-                <label for="barra">Barra Muestra</label>
-                <input pInputText id="barra" autocomplete="off" type="text" [(ngModel)]="muestra"
-                       class="p-inputtext w-full" #muestraInput (keydown.enter)="addCompare()"/>
-              </div>
+          <div class="field col-12 md:col-4">
+            <label for="barra">Barra Muestra</label>
+            <input pInputText id="barra" autocomplete="off" type="text" [(ngModel)]="muestra"
+                   class="p-inputtext w-full" #muestraInput (keydown.enter)="addCompare()"/>
+          </div>
 
-              <div class="field col-12 md:col-2 py-5">
-                <p-toggleButton
-                  [(ngModel)]="status"
-                  onLabel="Agregando"
-                  offLabel="Retirando"
-                  onIcon="pi pi-spin pi-spinner-dotted"
-                  offIcon="pi pi-minus-circle"
-                  styleClass="w-9rem"
-                  ariaLabel="status"/>
-              </div>
+          <div class="field col-12 md:col-2 py-5">
+            <p-toggleButton
+              [(ngModel)]="status"
+              onLabel="Agregando"
+              offLabel="Retirando"
+              onIcon="pi pi-spin pi-spinner-dotted"
+              offIcon="pi pi-minus-circle"
+              styleClass="w-9rem"
+              ariaLabel="status"/>
+          </div>
+        </div>
+        @if (muestraAdd) {
+          <div class="card">
+            <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3">Ultima barra
+              escaneada {{ muestraAdd.nombre }}
             </div>
-            @if (muestraAdd) {
-              <div class="card">
-                <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3">Ultima barra
-                  escaneada {{muestraAdd.nombre}}
+            <ul class="list-none p-0 m-0">
+              <li
+                class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border">
+                <div class="flex align-items-center flex-1">
+                  <div>
+                    <strong>Barra:</strong>{{ muestraAdd.barraMuestra }}
+                  </div>
                 </div>
-                <ul class="list-none p-0 m-0">
-                  <li
-                    class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border">
-                    <div class="flex align-items-center flex-1">
-                      <div>
-                        <strong>Barra:</strong>{{ muestraAdd.barraMuestra }}
-                      </div>
-                    </div>
-                    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
-                      <div class="flex align-items-center">
-                        <strong>Cantidad:</strong> {{ muestraAdd.cantidadMuestra }}
-                      </div>
-                    </div>
-                    <div class="flex align-items-center sm:justify-content-end">
-                      <div>
-                        <p-toggleButton
-                          disabled="true"
-                          [(ngModel)]="muestraAdd.statusMuestra"
-                          onLabel="Coincide"
-                          offLabel="No Coincide"
-                          onIcon="pi pi-check-circle"
-                          offIcon="pi pi-times-circle"
-                          styleClass="w-9rem"
-                          ariaLabel="Finalizado"/>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            }
-          <div class="mt-2">
-              <p-table
-                #mr
-                [value]="muestras"
-                [responsiveLayout]="'scroll'"
-                [paginator]="true"
-                [rows]="30"
-                [rowsPerPageOptions]="[30,50,100]"
-                dataKey="id"
-                class="my-3 p-p-3"
-                styleClass="p-datatable-gridlines">
+                <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
+                  <div class="flex align-items-center">
+                    <strong>Cantidad:</strong> {{ muestraAdd.cantidadMuestra }}
+                  </div>
+                </div>
+                <div class="flex align-items-center sm:justify-content-end">
+                  <div>
+                    <p-toggleButton
+                      disabled="true"
+                      [(ngModel)]="muestraAdd.statusMuestra"
+                      onLabel="Coincide"
+                      offLabel="No Coincide"
+                      onIcon="pi pi-check-circle"
+                      offIcon="pi pi-times-circle"
+                      styleClass="w-9rem"
+                      ariaLabel="Finalizado"/>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        }
+        <div class="mt-2">
+          <p-table
+            #mr
+            [value]="muestras"
+            [responsiveLayout]="'scroll'"
+            [paginator]="true"
+            [rows]="30"
+            [rowsPerPageOptions]="[30,50,100]"
+            dataKey="id"
+            class="my-3 p-p-3"
+            styleClass="p-datatable-gridlines">
 
-                <ng-template pTemplate="caption">
-                  <h3>Lista de Muestras</h3>
-                </ng-template>
+            <ng-template pTemplate="caption">
+              <h3>Lista de Muestras</h3>
+            </ng-template>
 
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th>Nombre</th>
-                    <th>Barra bulto</th>
-                    <th>Barra Muestra</th>
-                    <th>Cantidad</th>
-                    <th>Comparación barras</th>
-                    <th>Estado Muestra</th>
-                    <th>Usuario Revision</th>
-                  </tr>
-                </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Nombre</th>
+                <th>Barra bulto</th>
+                <th>Barra Muestra</th>
+                <th>Cantidad</th>
+                <th>Comparación barras</th>
+                <th>Estado Muestra</th>
+                <th>Usuario Revision</th>
+              </tr>
+            </ng-template>
 
-                <ng-template pTemplate="body" let-muestra>
-                  <tr>
-                    <td>{{muestra.nombre}}</td>
-                    <td [ngStyle]="{'width': '50px'}">{{ muestra.barcode }}</td>
-                    <td class="p-text-center p-col-1 p-col-fixed">{{ muestra.barraMuestra }}</td>
-                    <td class="p-text-center" [ngStyle]="{'width': '50px'}">{{ muestra.cantidadMuestra }}</td>
-                    <td>
-                      <p-toggleButton
-                        disabled="true"
-                        [(ngModel)]="muestra.statusMuestra"
-                        onLabel="Coincide"
-                        offLabel="No Coincide"
-                        onIcon="pi pi-check"
-                        offIcon="pi pi-times"
-                        styleClass="w-9rem"
-                        ariaLabel="Muestra"/>
-                    </td>
-                    <td>
-                      <span [ngStyle]="muestra.procesoMuestra | estadoColor">{{ muestra.procesoMuestra }}</span>
-                    </td>
-                    <td class="p-text-center p-col-1">{{ muestra.usuarioMuestra }}</td>
-                  </tr>
-                </ng-template>
+            <ng-template pTemplate="body" let-muestra>
+              <tr>
+                <td>{{ muestra.nombre }}</td>
+                <td [ngStyle]="{'width': '50px'}">{{ muestra.barcode }}</td>
+                <td class="p-text-center p-col-1 p-col-fixed">{{ muestra.barraMuestra }}</td>
+                <td class="p-text-center" [ngStyle]="{'width': '50px'}">{{ muestra.cantidadMuestra }}</td>
+                <td>
+                  <p-toggleButton
+                    disabled="true"
+                    [(ngModel)]="muestra.statusMuestra"
+                    onLabel="Coincide"
+                    offLabel="No Coincide"
+                    onIcon="pi pi-check"
+                    offIcon="pi pi-times"
+                    styleClass="w-9rem"
+                    ariaLabel="Muestra"/>
+                </td>
+                <td>
+                  <span [ngStyle]="muestra.procesoMuestra | estadoColor">{{ muestra.procesoMuestra }}</span>
+                </td>
+                <td class="p-text-center p-col-1">{{ muestra.usuarioMuestra }}</td>
+              </tr>
+            </ng-template>
 
-              </p-table>
-              <button (click)="validate()"
-                      pButton
-                      pRipple
-                      icon="pi pi-verified"
-                      label="Finalizar Muestras"
-                      class="p-button-rounded p-button-info">
-              </button>
+          </p-table>
+          <button (click)="validate()"
+                  pButton
+                  pRipple
+                  icon="pi pi-verified"
+                  label="Finalizar Muestras"
+                  class="p-button-rounded p-button-info">
+          </button>
+        </div>
+      } @else {
+        @if (loading) {
+          <div class="flex align-items-center justify-content-center" style="height: 100%;">
+            <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: blue;"></i>
           </div>
         } @else {
-          @if (loading) {
-            <div class="flex align-items-center justify-content-center" style="height: 100%;">
-              <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: blue;"></i>
-            </div>
-          } @else {
-            @if (tramites.length > 0) {
-              <h4> Lista de tramites </h4>
-              <p-dataView #dv
-                          [value]="tramites"
-                          [paginator]="true"
-                          [rows]="9" filterBy="id"
-                          layout="grid">
-                <ng-template pTemplate="header">
-                  <div class="flex flex-column md:flex-row md:justify-content-between gap-2">
+          @if (tramites.length > 0) {
+            <h4> Lista de tramites </h4>
+            <p-dataView #dv
+                        [value]="tramites"
+                        [paginator]="true"
+                        [rows]="9" filterBy="id"
+                        layout="grid">
+              <ng-template pTemplate="header">
+                <div class="flex flex-column md:flex-row md:justify-content-between gap-2">
                   <span class="p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input type="search" pInputText placeholder="Buscar por tramite" (input)="onFilter(dv, $event)">
+                            <input type="search" pInputText placeholder="Buscar por tramite"
+                                   (input)="onFilter(dv, $event)">
                         </span>
-                    <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
-                  </div>
-                </ng-template>
+                  <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+                </div>
+              </ng-template>
 
-                <ng-template let-tramites pTemplate="listItem">
-                  @for (tramite of tramites; track $index){
-                    <div class="flex flex-column md:flex-row align-items-center p-3 w-full">
-                      <i class="pi pi-truck" style="font-size: 24px;"></i>
-                      <div class="flex-1 flex flex-column align-items-center text-center md:text-left">
-                        <div class="font-bold text-2xl">Tramite {{ tramite.id }}</div>
-                        <div class="mb-2">N° de contenedores {{ tramite.contenedoresIds.length }}</div>
-                        <div class="flex align-items-center mt-2">
-                        <span class="font-semibold flex-grow-1" [ngStyle]="tramite.proceso | procesoTramite | estadoColor">
+              <ng-template let-tramites pTemplate="listItem">
+                @for (tramite of tramites; track $index) {
+                  <div class="flex flex-column md:flex-row align-items-center p-3 w-full">
+                    <i class="pi pi-truck" style="font-size: 24px;"></i>
+                    <div class="flex-1 flex flex-column align-items-center text-center md:text-left">
+                      <div class="font-bold text-2xl">Tramite {{ tramite.id }}</div>
+                      <div class="mb-2">N° de contenedores {{ tramite.contenedoresIds.length }}</div>
+                      <div class="flex align-items-center mt-2">
+                        <span class="font-semibold flex-grow-1"
+                              [ngStyle]="tramite.proceso | procesoTramite | estadoColor">
                           <i class="pi pi-clock mr-2"></i>
                           {{ tramite.proceso | procesoTramite }}
                         </span>
-                        </div>
-                      </div>
-                      <div class="flex flex-row md:flex-column justify-content-center w-full md:w-auto align-items-center md: align-items-end mt-5 md:mt-0">
-                        <p-button (click)="buscarContenedores(tramite)" icon="pi pi-eye" label="Ver" styleClass="mb-2 p-button-sm"></p-button>
                       </div>
                     </div>
-                  }
-                </ng-template>
+                    <div
+                      class="flex flex-row md:flex-column justify-content-center w-full md:w-auto align-items-center md: align-items-end mt-5 md:mt-0">
+                      <p-button (click)="buscarContenedores(tramite)" icon="pi pi-eye" label="Ver"
+                                styleClass="mb-2 p-button-sm"></p-button>
+                    </div>
+                  </div>
+                }
+              </ng-template>
 
-                <ng-template let-tramites pTemplate="gridItem">
-                  <div class="grid grid-nogutter">
-                    @for (tramite of tramites; track $index){
-                      <div class="col-12 md:col-4">
-                        <div class="card m-3 border-1 surface-border">
-                          <div class="flex flex-wrap gap-2 align-items-center justify-content-center mb-2">
-                            <div class="flex align-items-center">
-                            <span class="font-semibold flex-grow-1" [ngStyle]="tramite.proceso | procesoTramite | estadoColor">
+              <ng-template let-tramites pTemplate="gridItem">
+                <div class="grid grid-nogutter">
+                  @for (tramite of tramites; track $index) {
+                    <div class="col-12 md:col-4">
+                      <div class="card m-3 border-1 surface-border">
+                        <div class="flex flex-wrap gap-2 align-items-center justify-content-center mb-2">
+                          <div class="flex align-items-center">
+                            <span class="font-semibold flex-grow-1"
+                                  [ngStyle]="tramite.proceso | procesoTramite | estadoColor">
                               <i class="pi pi-clock mr-2"></i>
                               {{ tramite.proceso | procesoTramite }}
                             </span>
-                            </div>
-                          </div>
-                          <div class="flex flex-column align-items-center text-center mb-3">
-                            <div class="text-2xl font-bold">Tramite {{ tramite.id }}</div>
-                            <div class="mb-3">N° de contenedores {{tramite.contenedoresIds.length }}</div>
-                            <i class="pi pi-truck" style="font-size: 24px;"></i>
-                          </div>
-                          <div class="flex align-items-center justify-content-center">
-                            <p-button icon="pi pi-eye" (click)="buscarContenedores(tramite)" label="Ver"></p-button>
                           </div>
                         </div>
+                        <div class="flex flex-column align-items-center text-center mb-3">
+                          <div class="text-2xl font-bold">Tramite {{ tramite.id }}</div>
+                          <div class="mb-3">N° de contenedores {{ tramite.contenedoresIds.length }}</div>
+                          <i class="pi pi-truck" style="font-size: 24px;"></i>
+                        </div>
+                        <div class="flex align-items-center justify-content-center">
+                          <p-button icon="pi pi-eye" (click)="buscarContenedores(tramite)" label="Ver"></p-button>
+                        </div>
                       </div>
-                    }
-                  </div>
-                </ng-template>
+                    </div>
+                  }
+                </div>
+              </ng-template>
 
-              </p-dataView>
-            }
+            </p-dataView>
           }
         }
+      }
 
-      </div>
     </div>
   </div>
+</div>
 
-  <p-dialog header="Contenedores"
-            [(visible)]="display"
-            [modal]="true"
-            showEffect="fade"
-            breakpoints="{'1200px': '70vw', '960px': '90vw', '640px': '100vw'}">
-    <p-table
-      [value]="contenedores"
-      dataKey="id"
-      responsiveLayout="scroll">
-      <ng-template pTemplate="body" let-contenedor>
-        <tr>
-          <td>Contenedor {{ contenedor.contenedorId }}</td>
-          <td>
-            <p-toggleButton
-              disabled="true"
-              [(ngModel)]="contenedor.finalizado"
-              onLabel="Descargado"
-              offLabel="Pendiente"
-              onIcon="pi pi-check-circle"
-              offIcon="pi pi-clock"
-              styleClass="{{ contenedor.finalizado ? 'bg-green-500 text-black' : 'bg-gray-300 text-black' }}"
-              ariaLabel="Finalizado"/>
-          </td>
-          <td>
-            <button
-              (click)="getStarted(contenedor)"
-              type="button"
-              pButton
-              pRipple
-              [disabled]="!contenedor.finalizado"
-              label="Agregar muestras"
-              class="p-button-outlined"
-              icon="pi pi-plus">
-            </button>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
+<p-dialog header="Contenedores"
+          [(visible)]="display"
+          [modal]="true"
+          showEffect="fade"
+          breakpoints="{'1200px': '70vw', '960px': '90vw', '640px': '100vw'}">
+  <p-table
+    [value]="contenedores"
+    dataKey="id"
+    responsiveLayout="scroll">
+    <ng-template pTemplate="body" let-contenedor>
+      <tr>
+        <td>Contenedor {{ contenedor.contenedorId }}</td>
+        <td>
+          <p-toggleButton
+            disabled="true"
+            [(ngModel)]="contenedor.finalizado"
+            onLabel="Descargado"
+            offLabel="Pendiente"
+            onIcon="pi pi-check-circle"
+            offIcon="pi pi-clock"
+            styleClass="{{ contenedor.finalizado ? 'bg-green-500 text-black' : 'bg-gray-300 text-black' }}"
+            ariaLabel="Finalizado"/>
+        </td>
+        <td>
+          <button
+            (click)="getStarted(contenedor)"
+            type="button"
+            pButton
+            pRipple
+            [disabled]="!contenedor.finalizado"
+            label="Agregar muestras"
+            class="p-button-outlined"
+            icon="pi pi-plus">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 
-  </p-dialog>
+</p-dialog>

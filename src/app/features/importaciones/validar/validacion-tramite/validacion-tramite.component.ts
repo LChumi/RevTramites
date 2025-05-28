@@ -58,7 +58,7 @@ export default class ValidacionTramiteComponent implements OnInit {
   tramites: Tramite[] = [];
   contenedores: Contenedor[] = [];
   loading: boolean = false;
-  vistaTramites= true
+  vistaTramites = true
   display = false;
 
   ngOnInit(): void {
@@ -113,7 +113,7 @@ export default class ValidacionTramiteComponent implements OnInit {
       next: (result) => {
         this.revisiones = result;
         this.messageService.add({severity: 'info', summary: 'Muestra Validadas',})
-        this.vistaTramites= false
+        this.vistaTramites = false
         this.display = false;
       },
       error: (err) => {
@@ -126,8 +126,8 @@ export default class ValidacionTramiteComponent implements OnInit {
     converToExcel(this.revisiones, this.tramiteId)
   }
 
-  regresar(){
-    this.vistaTramites= true
+  regresar() {
+    this.vistaTramites = true
     this.display = false;
   }
 

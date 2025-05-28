@@ -15,22 +15,23 @@
       @if (!tramiteExist) {
         <div class="mt-2">
           <p-table #dt1
-            [value]="tramites"
-            [responsiveLayout]="'scroll'"
-            [paginator]="true"
-            [rows]="30"
-            [rowsPerPageOptions]="[30,50,100]"
-            (onRowExpand)="buscarContenedores($event.data)"
-            [globalFilterFields]="['id', 'fechaLlegada']"
-            dataKey="id"
-            class="my-3 p-p-3"
-            styleClass="p-datatable-gridlines">
+                   [value]="tramites"
+                   [responsiveLayout]="'scroll'"
+                   [paginator]="true"
+                   [rows]="30"
+                   [rowsPerPageOptions]="[30,50,100]"
+                   (onRowExpand)="buscarContenedores($event.data)"
+                   [globalFilterFields]="['id', 'fechaLlegada']"
+                   dataKey="id"
+                   class="my-3 p-p-3"
+                   styleClass="p-datatable-gridlines">
             <ng-template pTemplate="caption">
               <div class="flex justify-content-between flex-column sm:flex-row">
-              <h3>Tramites pendientes de validacion</h3>
-              <span class="p-input-icon-left mb-2">
+                <h3>Tramites pendientes de validacion</h3>
+                <span class="p-input-icon-left mb-2">
 							<i class="pi pi-search"></i>
-							<input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Buscar tramite" class="w-full"/>
+							<input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Buscar tramite"
+                     class="w-full"/>
               </span>
               </div>
             </ng-template>
@@ -195,50 +196,51 @@
             }
 
             <p-table
-                [value]="revisiones"
-                [responsiveLayout]="'scroll'"
-                [paginator]="true"
-                [rows]="10"
-                dataKey="secuencia"
-                class="my-3 p-p-3"
-                styleClass="p-datatable-gridlines"
-                [rowsPerPageOptions]="[10,20,30,50]">
-                <ng-template pTemplate="caption">
-                  <h4>Lista de Productos pitados</h4>
-                  <small>Productos pitados: {{ revisiones.length }} </small>
-                </ng-template>
+              [value]="revisiones"
+              [responsiveLayout]="'scroll'"
+              [paginator]="true"
+              [rows]="10"
+              dataKey="secuencia"
+              class="my-3 p-p-3"
+              styleClass="p-datatable-gridlines"
+              [rowsPerPageOptions]="[10,20,30,50]">
+              <ng-template pTemplate="caption">
+                <h4>Lista de Productos pitados</h4>
+                <small>Productos pitados: {{ revisiones.length }} </small>
+              </ng-template>
 
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th></th>
-                    <th pSortableColumn="barra">Barra</th>
-                    <th>Nombre</th>
-                    <th pSortableColumn="cantidad">Cant. Escaneada</th>
-                    <th pSortableColumn="estado">Estado</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-producto>
-                  <tr>
-                    <td></td>
-                    <td class="p-text-center p-col-1 p-col-fixed">
-                      <div class="flex align-items-center gap-2">
-                        <span>{{ producto.barcode }}</span>
-                        <button pButton pRipple type="button" icon="pi pi-copy" (click)="copyToClipboard(producto.barcode)" class="p-button-text"></button>
-                      </div>
-                    </td>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th></th>
+                  <th pSortableColumn="barra">Barra</th>
+                  <th>Nombre</th>
+                  <th pSortableColumn="cantidad">Cant. Escaneada</th>
+                  <th pSortableColumn="estado">Estado</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-producto>
+                <tr>
+                  <td></td>
+                  <td class="p-text-center p-col-1 p-col-fixed">
+                    <div class="flex align-items-center gap-2">
+                      <span>{{ producto.barcode }}</span>
+                      <button pButton pRipple type="button" icon="pi pi-copy"
+                              (click)="copyToClipboard(producto.barcode)" class="p-button-text"></button>
+                    </div>
+                  </td>
 
-                    <td class="p-text-center p-col-1 p-col-fixed">{{ producto.nombre }}</td>
-                    <td class="p-text-center p-col-1"
-                        [ngStyle]="{'width': '50px'}">{{ producto.cantidadRevision }}
-                    </td>
-                    <td class="p-text-center p-col-1 p-col-fixed">
+                  <td class="p-text-center p-col-1 p-col-fixed">{{ producto.nombre }}</td>
+                  <td class="p-text-center p-col-1"
+                      [ngStyle]="{'width': '50px'}">{{ producto.cantidadRevision }}
+                  </td>
+                  <td class="p-text-center p-col-1 p-col-fixed">
                       <span [ngStyle]="producto.estadoRevision | estadoColor">
                         {{ producto.estadoRevision }}
                       </span>
-                    </td>
-                  </tr>
-                </ng-template>
-              </p-table>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
 
           </div>
 

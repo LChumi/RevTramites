@@ -1,175 +1,179 @@
-  <div class="grid grid-nogutter">
-    <div class="col-12">
-      <span class="text-900 font-bold text-4xl">Trámites</span>
+<div class="grid grid-nogutter">
+  <div class="col-12">
+    <span class="text-900 font-bold text-4xl">Trámites</span>
+  </div>
+  <div class="col-12 mt-4">
+    <span class="text-900 block font-bold text-xl">Carga de archivo productos por llegar a Bodega </span>
+  </div>
+  <div class="col-12 mt-4">
+    <ul class="flex list-none flex-wrap">
+      <li class="flex align-items-center text-primary mr-2">Carga Tramite<i
+        class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
+      <li class="flex align-items-center text-500 mr-2">Información<i
+        class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
+      <li class="flex align-items-center text-500 mr-2">Lista productos</li>
+    </ul>
+    <!-- Botón alineado a la derecha con ancho ajustado -->
+    <div class="flex justify-content-end mt-3">
+      <button pButton pRipple type="button" (click)="visibleSidebarEmails = true" icon="pi pi-address-book"
+              class="p-button-rounded p-button-outlined"></button>
     </div>
-    <div class="col-12 mt-4">
-      <span class="text-900 block font-bold text-xl">Carga de archivo productos por llegar a Bodega </span>
-    </div>
-    <div class="col-12 mt-4">
-      <ul class="flex list-none flex-wrap">
-        <li class="flex align-items-center text-primary mr-2">Carga Tramite<i
-          class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
-        <li class="flex align-items-center text-500 mr-2">Información<i
-          class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
-        <li class="flex align-items-center text-500 mr-2">Lista productos</li>
-      </ul>
-      <!-- Botón alineado a la derecha con ancho ajustado -->
-      <div class="flex justify-content-end mt-3">
-        <button pButton pRipple type="button" (click)="visibleSidebarEmails = true" icon="pi pi-address-book" class="p-button-rounded p-button-outlined"></button>
+
+    @if (loading) {
+      <div class="flex align-items-center justify-content-center" style="height: 100%;">
+        <i class="pi pi-spin pi-spinner" style="font-size: 4rem; color: blue;"></i>
       </div>
 
-      @if (loading) {
-        <div class="flex align-items-center justify-content-center" style="height: 100%;">
-          <i class="pi pi-spin pi-spinner" style="font-size: 4rem; color: blue;"></i>
-        </div>
-
-      } @else {
-        @if (productos.length === 0) {
-          <div class="col-12">
-            <div class="grid p-fluid mt-3">
-              <div class="field mb-2 lg:col-6 lg:mb-0">
+    } @else {
+      @if (productos.length === 0) {
+        <div class="col-12">
+          <div class="grid p-fluid mt-3">
+            <div class="field mb-2 lg:col-6 lg:mb-0">
                 <span class="p-float-label">
-                  <input class="uppercase" autocomplete="off" type="text" id="tramite" pInputText [(ngModel)]="tramiteId">
+                  <input class="uppercase" autocomplete="off" type="text" id="tramite" pInputText
+                         [(ngModel)]="tramiteId">
                   <label for="tramite">Numero de tramite</label>
                 </span>
-                <span class="p-float-label mt-4">
-                  <input class="uppercase" autocomplete="off" type="text" id="contenedor" pInputText [(ngModel)]="contenedor">
+              <span class="p-float-label mt-4">
+                  <input class="uppercase" autocomplete="off" type="text" id="contenedor" pInputText
+                         [(ngModel)]="contenedor">
                   <label for="contenedor">Ingrese el nombre o numero de contenedor</label>
                 </span>
-                <div class="mt-4">
-                  <p-calendar
-                    dateFormat="dd-mm-yy"
-                    placeholder="Fecha"
-                    [required]="true"
-                    inputId="fecha"
-                    [(ngModel)]="fecha"
-                    [readonlyInput]="true"
-                    showButtonBar
-                    showIcon
-                    [minDate]="minDate"
-                    [style]="{ width: '250px' }"
-                    [inputStyle]="{ width: '100%', maxWidth: '150px' }">
-                  </p-calendar>
-                </div>
+              <div class="mt-4">
+                <p-calendar
+                  dateFormat="dd-mm-yy"
+                  placeholder="Fecha"
+                  [required]="true"
+                  inputId="fecha"
+                  [(ngModel)]="fecha"
+                  [readonlyInput]="true"
+                  showButtonBar
+                  showIcon
+                  [minDate]="minDate"
+                  [style]="{ width: '250px' }"
+                  [inputStyle]="{ width: '100%', maxWidth: '150px' }">
+                </p-calendar>
               </div>
             </div>
           </div>
+        </div>
 
 
-          @if (contenedor && tramiteId) {
-            <p-fileUpload
-              name="demo[]"
-              url="https://www.primefaces.org/cdn/api/upload.php"
-              (onUpload)="onUpload($event)"
-              [multiple]="false"
-              accept=".xlsx"
-              [maxFileSize]="20971520"
-              mode="advanced" chooseLabel="Seleccionar Archivo" uploadLabel="Subir">
-              <ng-template pTemplate="content">
-                @if (uploadedFiles.length) {
-                  <ul class="list-none p-0 m-0">
-                    @for (file of uploadedFiles; track $index) {
-                      <li class="py-2 border-bottom-1 border-gray-300">
-                        📄 {{ file.name }} - {{ file.size }} bytes
-                      </li>
-                    }
-                  </ul>
-                }
-              </ng-template>
-            </p-fileUpload>
-          }
-        } @else if (productos.length > 0) {
-          <div class="mt-1">
-              <p-toolbar styleClass="mb-4">
-                <ng-template pTemplate="left">
-                  <div class="my-2 mr-2">
-                    <button pButton pRipple label="Seleccionar Nuevo Archivo" icon="pi pi-check"
-                            class="p-button-outlined" (click)="cargarNuevo()"></button>
-                  </div>
-                  <div class="my-2 ">
-                    <button pButton pRipple label="Agregar otro Contenedor" icon="pi pi-check"
-                            class="p-button-outlined" (click)="agregarContenedor()"></button>
-                  </div>
-                </ng-template>
-                <ng-template pTemplate="right">
-                  <button pButton pRipple label="Descargar Excel" icon="pi pi-upload" class="p-button-outlined"
-                          (click)="exportToExcel()"></button>
-                </ng-template>
-              </p-toolbar>
-              <p-table
-                #dt
-                [value]="productos"
-                [responsiveLayout]="'scroll'"
-                [paginator]="true"
-                [rows]="30"
-                dataKey="secuencia"
-                class="my-3 p-p-3"
-                styleClass="p-datatable-gridlines"
-                [rowsPerPageOptions]="[30,50,100]">
-                <ng-template pTemplate="caption">
-                  <h4>Lista de Productos a llegar</h4>
-                </ng-template>
-
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th></th>
-                    <th pSortableColumn="id">Barra</th>
-                    <th pSortableColumn="id1">Item</th>
-                    <th pSortableColumn="nombre">Nombre</th>
-                    <th pSortableColumn="cxb">CXB</th>
-                    <th pSortableColumn="bultos">N° Bultos</th>
-                    <th>Total</th>
-                    <th>Item Alterno</th>
-                    <th>PVP</th>
-                    <th>CXB Anterior</th>
-                    <th>Ubicacion Bulto</th>
-                    <th>Ubicacion Unidad</th>
-                    <th>Stock Zhucay</th>
-                    <th>Stock Narancay</th>
-                    <th>Descripcion</th>
-                    <th>Barra Sistema</th>
-                    <th>Diferencias</th>
-                  </tr>
-                </ng-template>
-
-                <ng-template pTemplate="body" let-producto>
-                  <tr>
-                    <td></td>
-                    <td class="text-right">{{ producto.barcode }}</td>
-                    <td class="text-right">{{ producto.id1 }}</td>
-                    <td style="white-space: nowrap; min-width: 12rem" class="text-right">{{ producto.nombre }}</td>
-                    <td class="text-right">{{ producto.cxb }}</td>
-                    <td class="text-right">{{ producto.bultos }}</td>
-                    <td>{{ producto.total }}</td>
-                    <td class="text-right">{{ producto.itemAlterno }}</td>
-                    <td class="text-right">{{ producto.pvp }}</td>
-                    <td class="text-right">{{ producto.cxbAnterior }}</td>
-                    <td class="text-right">{{ producto.ubicacionBulto }}</td>
-                    <td class="text-right">{{ producto.ubicacionUnidad }}</td>
-                    <td class="text-right">{{ producto.stockZhucay }}</td>
-                    <td class="text-right">{{ producto.stockNarancay }}</td>
-                    <td class="text-right">{{ producto.descripcion }}</td>
-                    <td class="text-right">{{ producto.barraSistema }}</td>
-                    <td class="text-right">{{ producto.diferencia }}</td>
-                  </tr>
-                </ng-template>
-
-              </p-table>
-              <div>
-                <button pButton pRipple label="Finalizar Carga" icon="pi pi-check-circle" class="p-button-outlined"
-                        (click)="checkTramite()"></button>
-              </div>
-          </div>
+        @if (contenedor && tramiteId) {
+          <p-fileUpload
+            name="demo[]"
+            url="https://www.primefaces.org/cdn/api/upload.php"
+            (onUpload)="onUpload($event)"
+            [multiple]="false"
+            accept=".xlsx"
+            [maxFileSize]="20971520"
+            mode="advanced" chooseLabel="Seleccionar Archivo" uploadLabel="Subir">
+            <ng-template pTemplate="content">
+              @if (uploadedFiles.length) {
+                <ul class="list-none p-0 m-0">
+                  @for (file of uploadedFiles; track $index) {
+                    <li class="py-2 border-bottom-1 border-gray-300">
+                      📄 {{ file.name }} - {{ file.size }} bytes
+                    </li>
+                  }
+                </ul>
+              }
+            </ng-template>
+          </p-fileUpload>
         }
-      }
+      } @else if (productos.length > 0) {
+        <div class="mt-1">
+          <p-toolbar styleClass="mb-4">
+            <ng-template pTemplate="left">
+              <div class="my-2 mr-2">
+                <button pButton pRipple label="Seleccionar Nuevo Archivo" icon="pi pi-check"
+                        class="p-button-outlined" (click)="cargarNuevo()"></button>
+              </div>
+              <div class="my-2 ">
+                <button pButton pRipple label="Agregar otro Contenedor" icon="pi pi-check"
+                        class="p-button-outlined" (click)="agregarContenedor()"></button>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="right">
+              <button pButton pRipple label="Descargar Excel" icon="pi pi-upload" class="p-button-outlined"
+                      (click)="exportToExcel()"></button>
+            </ng-template>
+          </p-toolbar>
+          <p-table
+            #dt
+            [value]="productos"
+            [responsiveLayout]="'scroll'"
+            [paginator]="true"
+            [rows]="30"
+            dataKey="secuencia"
+            class="my-3 p-p-3"
+            styleClass="p-datatable-gridlines"
+            [rowsPerPageOptions]="[30,50,100]">
+            <ng-template pTemplate="caption">
+              <h4>Lista de Productos a llegar</h4>
+            </ng-template>
 
-    </div>
+            <ng-template pTemplate="header">
+              <tr>
+                <th></th>
+                <th pSortableColumn="id">Barra</th>
+                <th pSortableColumn="id1">Item</th>
+                <th pSortableColumn="nombre">Nombre</th>
+                <th pSortableColumn="cxb">CXB</th>
+                <th pSortableColumn="bultos">N° Bultos</th>
+                <th>Total</th>
+                <th>Item Alterno</th>
+                <th>PVP</th>
+                <th>CXB Anterior</th>
+                <th>Ubicacion Bulto</th>
+                <th>Ubicacion Unidad</th>
+                <th>Stock Zhucay</th>
+                <th>Stock Narancay</th>
+                <th>Descripcion</th>
+                <th>Barra Sistema</th>
+                <th>Diferencias</th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-producto>
+              <tr>
+                <td></td>
+                <td class="text-right">{{ producto.barcode }}</td>
+                <td class="text-right">{{ producto.id1 }}</td>
+                <td style="white-space: nowrap; min-width: 12rem" class="text-right">{{ producto.nombre }}</td>
+                <td class="text-right">{{ producto.cxb }}</td>
+                <td class="text-right">{{ producto.bultos }}</td>
+                <td>{{ producto.total }}</td>
+                <td class="text-right">{{ producto.itemAlterno }}</td>
+                <td class="text-right">{{ producto.pvp }}</td>
+                <td class="text-right">{{ producto.cxbAnterior }}</td>
+                <td class="text-right">{{ producto.ubicacionBulto }}</td>
+                <td class="text-right">{{ producto.ubicacionUnidad }}</td>
+                <td class="text-right">{{ producto.stockZhucay }}</td>
+                <td class="text-right">{{ producto.stockNarancay }}</td>
+                <td class="text-right">{{ producto.descripcion }}</td>
+                <td class="text-right">{{ producto.barraSistema }}</td>
+                <td class="text-right">{{ producto.diferencia }}</td>
+              </tr>
+            </ng-template>
+
+          </p-table>
+          <div>
+            <button pButton pRipple label="Finalizar Carga" icon="pi pi-check-circle" class="p-button-outlined"
+                    (click)="checkTramite()"></button>
+          </div>
+        </div>
+      }
+    }
+
   </div>
+</div>
 
 <div class="card">
-  <p-sidebar [(visible)]="visibleSidebarEmails" position="right" [baseZIndex]="10000" [style]="{width: '90vw', maxWidth: '500px'}">
+  <p-sidebar [(visible)]="visibleSidebarEmails" position="right" [baseZIndex]="10000"
+             [style]="{width: '90vw', maxWidth: '500px'}">
     <span> Correos </span>
-    @if (email.destinatarios){
+    @if (email.destinatarios) {
       <p-table
         [value]="email.destinatarios"
         [responsiveLayout]="'scroll'"
@@ -186,9 +190,10 @@
         </ng-template>
         <ng-template pTemplate="body" let-email>
           <tr>
-            <td>{{email.direccion}}</td>
+            <td>{{ email.direccion }}</td>
             <td>
-              <button pButton pRipple type="button" (click)="removeAddressee(email.direccion)" icon="pi pi-times" class="p-button-rounded p-button-secondary p-button-text"></button>
+              <button pButton pRipple type="button" (click)="removeAddressee(email.direccion)" icon="pi pi-times"
+                      class="p-button-rounded p-button-secondary p-button-text"></button>
             </td>
           </tr>
         </ng-template>
@@ -208,14 +213,15 @@
           required
           email>
         </span>
-        @if (emailRef.invalid && emailRef.touched){
+        @if (emailRef.invalid && emailRef.touched) {
           <small class="p-error">
             Ingrese Correo
           </small>
         }
       </div>
       <div class="justify-content-end mt-3">
-        <button pButton pRipple type="button" (click)="addAddressee(emailRef)" icon="pi pi-user-plus" class="p-button-rounded p-button-outlined"></button>
+        <button pButton pRipple type="button" (click)="addAddressee(emailRef)" icon="pi pi-user-plus"
+                class="p-button-rounded p-button-outlined"></button>
       </div>
     </div>
   </p-sidebar>
