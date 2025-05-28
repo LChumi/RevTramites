@@ -92,7 +92,6 @@
 
                 <ng-template pTemplate="header">
                   <tr>
-                    <th></th>
                     <th>Nombre</th>
                     <th>Barra bulto</th>
                     <th>Barra Muestra</th>
@@ -105,7 +104,6 @@
 
                 <ng-template pTemplate="body" let-muestra>
                   <tr>
-                    <td></td>
                     <td>{{muestra.nombre}}</td>
                     <td [ngStyle]="{'width': '50px'}">{{ muestra.barcode }}</td>
                     <td class="p-text-center p-col-1 p-col-fixed">{{ muestra.barraMuestra }}</td>
