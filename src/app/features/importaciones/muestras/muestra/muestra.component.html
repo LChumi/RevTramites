@@ -154,7 +154,11 @@
               <ng-template let-tramites pTemplate="listItem">
                 @for (tramite of tramites; track $index) {
                   <div class="flex flex-column md:flex-row align-items-center p-3 w-full">
-                    <i class="pi pi-truck" style="font-size: 24px;"></i>
+                    <img
+                      [src]="'images/' + (tramite.proceso | procesoTramite) + '.webp'"
+                      [alt]="'Estado ' + tramite.proceso"
+                      class="w-8rem md:w-10rem border-round shadow-2 mb-2 md:mb-0"
+                    />
                     <div class="flex-1 flex flex-column align-items-center text-center md:text-left">
                       <div class="font-bold text-2xl">Tramite {{ tramite.id }}</div>
                       <div class="mb-2">N° de contenedores {{ tramite.contenedoresIds.length }}</div>
@@ -192,7 +196,11 @@
                         <div class="flex flex-column align-items-center text-center mb-3">
                           <div class="text-2xl font-bold">Tramite {{ tramite.id }}</div>
                           <div class="mb-3">N° de contenedores {{ tramite.contenedoresIds.length }}</div>
-                          <i class="pi pi-truck" style="font-size: 24px;"></i>
+                          <img
+                            [src]="'images/' + (tramite.proceso | procesoTramite) + '.webp'"
+                            [alt]="'Estado ' + tramite.proceso"
+                            class="w-8rem md:w-10rem border-round shadow-2 mb-2 md:mb-0"
+                          />
                         </div>
                         <div class="flex align-items-center justify-content-center">
                           <p-button icon="pi pi-eye" (click)="buscarContenedores(tramite)" label="Ver"></p-button>
