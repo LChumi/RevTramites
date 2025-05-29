@@ -48,11 +48,6 @@ export class MenuComponent implements OnInit{
                 routerLink: '/icep/bodega/revision/contenedor',
               },
               {
-                label: 'Consultas',
-                icon: 'pi pi-fw pi-search',
-                routerLink: '/icep/bodega/revision/consultas',
-              },
-              {
                 label: 'Validar Contenedores',
                 icon: 'pi pi-check',
                 routerLink: '/icep/bodega/revision/validar',
@@ -68,12 +63,7 @@ export class MenuComponent implements OnInit{
               label: 'Muestras por ingresar',
               icon: 'pi pi-window-maximize',
               routerLink: '/icep/bodega/muestra/envio-muestras',
-            },
-              {
-                label: 'Consultas',
-                icon: 'pi pi-fw pi-search',
-                routerLink: '/icep/bodega/muestra/consultas',
-              }
+            }
               ]
           },
         ]
