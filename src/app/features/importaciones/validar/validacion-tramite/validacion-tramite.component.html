@@ -40,7 +40,11 @@
                   <div class="flex align-items-center mt-2">
                         <span class="font-semibold flex-grow-1"
                               [ngStyle]="tramite.proceso | procesoTramite | estadoColor">
-                          <i class="pi pi-clock mr-2"></i>
+                          @if ((tramite.proceso | procesoTramite )=== 'Proceso') {
+                            <i class="pi pi-clock mr-2"></i>
+                          } @else {
+                            <i class="pi pi-check mr-2"></i>
+                          }
                           {{ tramite.proceso | procesoTramite }}
                         </span>
                   </div>
@@ -63,7 +67,11 @@
                       <div class="flex align-items-center">
                             <span class="font-semibold flex-grow-1"
                                   [ngStyle]="tramite.proceso | procesoTramite | estadoColor">
-                              <i class="pi pi-clock mr-2"></i>
+                              @if ((tramite.proceso | procesoTramite )=== 'Proceso') {
+                                <i class="pi pi-clock mr-2"></i>
+                              } @else {
+                                <i class="pi pi-check mr-2"></i>
+                              }
                               {{ tramite.proceso | procesoTramite }}
                             </span>
                       </div>

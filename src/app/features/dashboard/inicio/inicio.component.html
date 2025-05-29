@@ -8,5 +8,59 @@
         </div>
       </div>
     </div>
+    <div class="card">
+      <h4>Tramites de la Semana</h4>
+      <p-dataView #dv
+                  [value]="tramites"
+                  [paginator]="true"
+                  [rows]="9"
+                  filterBy="id"
+                  layout="list">
+
+        <ng-template pTemplate="header">
+          <div class="flex flex-column md:flex-row md:justify-content-between gap-2">
+            <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+          </div>
+        </ng-template>
+
+        <ng-template let-tramite pTemplate="list">
+          @for (tramite of tramites; track tramite.id) {
+            <div class="p-3 border-round border-1 surface-border mb-3 shadow-1">
+              <div class="flex flex-column md:flex-row gap-4 align-items-start md:align-items-center">
+                <!-- Imagen e icono de estado -->
+                <div class="flex-shrink-0 text-center md:text-left">
+                  <img
+                    [src]="'images/' + (tramite.proceso | procesoTramite) + '.webp'"
+                    [alt]="'Estado ' + tramite.proceso"
+                    class="w-8rem md:w-10rem border-round shadow-2 mb-2 md:mb-0"
+                  />
+                </div>
+
+                <!-- Información del trámite -->
+                <div class="flex-1">
+                  <div class="text-xl font-semibold mb-2 text-primary">Trámite {{ tramite.id }}</div>
+                  <div class="mb-2 text-secondary">N° de contenedores: {{ tramite.contenedoresIds.length }}</div>
+                  <div class="flex align-items-center gap-2 mt-1 px-2 py-1 border-round text-sm"
+                       style="max-width: fit-content;"
+                       [ngStyle]="tramite.proceso | procesoTramite | estadoColor">
+                    <i class="pi text-sm"
+                       [ngClass]="(tramite.proceso | procesoTramite) === 'Proceso' ? 'pi-clock' : 'pi-check'"></i>
+                    <span class="font-medium">{{ tramite.proceso | procesoTramite }}</span>
+                  </div>
+                </div>
+
+                <!-- Acciones -->
+                <div class="flex flex-column gap-2 text-right md:text-left">
+                  <p-button icon="pi pi-eye" label="Ver" styleClass="p-button-sm p-button-outlined"
+                            ></p-button>
+                  <p-button icon="pi pi-bars" label="Contenedores" styleClass="p-button-sm" [disabled]="!tramite.contenedoresIds.length"></p-button>
+                </div>
+              </div>
+            </div>
+          }
+        </ng-template>
+
+      </p-dataView>
+    </div>
   </div>
 </div>

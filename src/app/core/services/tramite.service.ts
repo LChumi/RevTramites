@@ -58,4 +58,8 @@ export class TramiteService {
   getContenedor(tramiteId: string, contenedorId: string): Observable<Contenedor> {
     return this.http.get<Contenedor>(`${this.baseUrl}/contenedor/${tramiteId}/${contenedorId}`);
   }
+
+  getTramiestWeek(): Observable<Tramite[]>{
+    return this.http.get<Tramite[]>(`${this.baseUrl}/week`);
+  }
 }

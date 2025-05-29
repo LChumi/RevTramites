@@ -70,7 +70,7 @@ export default class MuestraComponent implements OnInit {
   private contenedorId: string = '';
 
   ngOnInit(): void {
-    this.listarCompletos([3, 2]);
+    this.listarCompletos([3, 4]);
     this.user = sessionStorage.getItem("username")
   }
 
