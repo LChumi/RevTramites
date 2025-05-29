@@ -19,6 +19,9 @@ import {ProcesoTramitePipe} from '@shared/pipes/proceso-tramite.pipe';
 import {DialogModule} from 'primeng/dialog';
 import {RevisionService} from '@services/revision.service';
 import {Contenedor} from '@models/contenedor';
+import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
+import {ToolbarModule} from 'primeng/toolbar';
+import {converToExcel} from '@utils/excel-utils';
 
 @Component({
   standalone: true,
@@ -35,7 +38,9 @@ import {Contenedor} from '@models/contenedor';
     NgStyle,
     TabViewModule,
     ProcesoTramitePipe,
-    DialogModule
+    DialogModule,
+    EstadoColorPipe,
+    ToolbarModule
   ],
   templateUrl: './consultas-tramite.component.html',
   styles: ``
@@ -66,6 +71,7 @@ export default class ConsultasTramiteComponent {
   horaArribo: any;
   loading: boolean = false;
   sending: boolean = false;
+  tramiteId: string = '';
 
   find() {
     this.loading = true;
@@ -128,6 +134,7 @@ export default class ConsultasTramiteComponent {
       next: data => {
         if (data && data.length > 0) {
           this.productos = data;
+          this.tramiteId = tramiteId;
         } else {
           this.productos = []
         }
@@ -180,6 +187,10 @@ export default class ConsultasTramiteComponent {
 
   onGlobalFilter(table: Table, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  }
+
+  exportToExcel() {
+    converToExcel(this.productos, this.tramiteId)
   }
 
 }

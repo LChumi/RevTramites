@@ -110,15 +110,7 @@
                 <td>{{ muestra.nombre }}</td>
                 <td class="p-text-center" [ngStyle]="{'width': '50px'}">{{ muestra.cantidadMuestra }}</td>
                 <td>
-                  <p-toggleButton
-                    disabled="true"
-                    [(ngModel)]="muestra.statusMuestra"
-                    onLabel="Coincide"
-                    offLabel="No Coincide"
-                    onIcon="pi pi-check"
-                    offIcon="pi pi-times"
-                    styleClass="w-9rem"
-                    ariaLabel="Muestra"/>
+
                 </td>
                 <td [ngStyle]="{'width': '50px'}">{{ muestra.barcode }}</td>
                 <td class="p-text-center p-col-1 p-col-fixed">{{ muestra.barraMuestra }}</td>

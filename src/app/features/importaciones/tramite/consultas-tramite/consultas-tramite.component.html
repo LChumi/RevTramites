@@ -205,6 +205,12 @@
 
                         <!-- Pestaña Productos -->
                         <p-tabPanel header="Productos">
+                          <p-toolbar styleClass="mb-4">
+                            <ng-template pTemplate="left">
+                              <button pButton pRipple label="Descargar Excel" icon="pi pi-download" class="p-button-outlined"
+                                      (click)="exportToExcel()"></button>
+                            </ng-template>
+                          </p-toolbar>
                           <p-table [value]="productos" dataKey="id" responsiveLayout="scroll">
                             <ng-template pTemplate="header">
                               <tr>
@@ -239,12 +245,24 @@
                                 <!-- Datos revision -->
                                 <td>{{ producto.cantidadRevision}}</td>
                                 <td>{{ producto.cantidadDiferenciaRevision}}</td>
-                                <td>{{ producto.estadoRevision}}</td>
+                                <td>
+                                  <div><span [ngStyle]="producto.estadoRevision | estadoColor">{{ producto.estadoRevision}}</span></div>
+                                </td>
                                 <td>{{ producto.usuarioRevision}}</td>
                                 <!-- Datos muestra-->
                                 <td>{{ producto.cantidadMuestra}}</td>
                                 <td>{{ producto.procesoMuestra}}</td>
-                                <td>{{ producto.statusMuestra}}</td>
+                                <td>
+                                  <p-toggleButton
+                                  disabled="true"
+                                  [(ngModel)]="producto.statusMuestra"
+                                  onLabel="Coincide"
+                                  offLabel="No Coincide"
+                                  onIcon="pi pi-check"
+                                  offIcon="pi pi-times"
+                                  styleClass="w-9rem"
+                                  ariaLabel="Muestra"/>
+                                </td>
                                 <td>{{ producto.usuarioMuestra}}</td>
                                 <!-- Datos sistema -->
                                 <td>{{ producto.itemAlterno }}</td>
