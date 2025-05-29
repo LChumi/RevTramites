@@ -92,21 +92,22 @@
 
             <ng-template pTemplate="header">
               <tr>
+                <th>Estado Muestra</th>
                 <th>Nombre</th>
-                <th>Barra bulto</th>
-                <th>Barra Muestra</th>
                 <th>Cantidad</th>
                 <th>Comparación barras</th>
-                <th>Estado Muestra</th>
+                <th>Barra bulto</th>
+                <th>Barra Muestra</th>
                 <th>Usuario Revision</th>
               </tr>
             </ng-template>
 
             <ng-template pTemplate="body" let-muestra>
               <tr>
+                <td>
+                  <span [ngStyle]="muestra.procesoMuestra | estadoColor">{{ muestra.procesoMuestra }}</span>
+                </td>
                 <td>{{ muestra.nombre }}</td>
-                <td [ngStyle]="{'width': '50px'}">{{ muestra.barcode }}</td>
-                <td class="p-text-center p-col-1 p-col-fixed">{{ muestra.barraMuestra }}</td>
                 <td class="p-text-center" [ngStyle]="{'width': '50px'}">{{ muestra.cantidadMuestra }}</td>
                 <td>
                   <p-toggleButton
@@ -119,9 +120,8 @@
                     styleClass="w-9rem"
                     ariaLabel="Muestra"/>
                 </td>
-                <td>
-                  <span [ngStyle]="muestra.procesoMuestra | estadoColor">{{ muestra.procesoMuestra }}</span>
-                </td>
+                <td [ngStyle]="{'width': '50px'}">{{ muestra.barcode }}</td>
+                <td class="p-text-center p-col-1 p-col-fixed">{{ muestra.barraMuestra }}</td>
                 <td class="p-text-center p-col-1">{{ muestra.usuarioMuestra }}</td>
               </tr>
             </ng-template>
@@ -260,3 +260,4 @@
   </p-table>
 
 </p-dialog>
+<p-scrollTop></p-scrollTop>

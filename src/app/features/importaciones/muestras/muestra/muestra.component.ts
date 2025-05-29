@@ -22,6 +22,7 @@ import {Contenedor} from '@models/contenedor';
 import {ContenedoresService} from '@services/contenedores.service';
 import {DialogModule} from 'primeng/dialog';
 import {MuestraRequest} from '@models/muestra-request';
+import {ScrollTopModule} from 'primeng/scrolltop';
 
 @Component({
   standalone: true,
@@ -40,6 +41,7 @@ import {MuestraRequest} from '@models/muestra-request';
     EstadoColorPipe,
     ProcesoTramitePipe,
     DialogModule,
+    ScrollTopModule,
   ],
   templateUrl: './muestra.component.html',
   styles: ``
@@ -149,7 +151,13 @@ export default class MuestraComponent implements OnInit {
   listarMuestras(tramiteId: string, contenedor: string) {
     this.muestraService.getMuestras(tramiteId, contenedor).subscribe({
       next: (result) => {
-        this.muestras = result;
+        if (this.muestraAdd){
+          const restantes = result.filter(p => p.id !== this.muestraAdd?.id)
+          this.muestras = [this.muestraAdd, ...restantes]
+        } else{
+          this.muestras = result;
+        }
+
       }
     })
   }
@@ -157,17 +165,26 @@ export default class MuestraComponent implements OnInit {
   validate() {
     this.muestraService.validate(this.tramiteId, this.contenedorId).subscribe({
       next: (result) => {
-        this.muestras = result;
-        const allComplete = this.muestras.every(muestra => muestra.procesoMuestra === 'COMPLETO');
+        // Filtrar muestras incompletas y completas
+        const incompletas = result.filter(p => p.procesoMuestra !== 'COMPLETO');
+        const completas = result.filter(p => p.procesoMuestra === 'COMPLETO');
+
+        // Validar si todas están completas
+        const allComplete = completas.length === result.length;
+
         if (allComplete) {
-          this.completed()
-          this.messageService.add({severity: 'info', summary: 'Muestra Validadas',})
+          this.muestras=result;
+          this.completed();
+          this.messageService.add({severity: 'info', summary: 'Muestras Validadas'});
         } else {
-          this.messageService.add({severity: 'warn', summary: 'Muestra incompletas',})
+          // Si hay incompletas, actualizar la lista para mostrarlas primero
+          this.muestras = [...incompletas, ...completas];
+          this.messageService.add({severity: 'warn', summary: 'Muestras incompletas'});
         }
       }
-    })
+    });
   }
+
 
   buscarContenedores(tramite: Tramite) {
     this.loading = true;
