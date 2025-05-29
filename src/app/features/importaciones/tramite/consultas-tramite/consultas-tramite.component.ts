@@ -124,9 +124,9 @@ export default class ConsultasTramiteComponent {
     })
   }
 
-  obtenerDatos(tramiteId: string){
-   this.listarProducto(tramiteId)
-   this.getContenedores(tramiteId)
+  obtenerDatos(tramiteId: string) {
+    this.listarProducto(tramiteId)
+    this.getContenedores(tramiteId)
   }
 
   listarProducto(tramiteId: string) {
@@ -142,7 +142,7 @@ export default class ConsultasTramiteComponent {
     })
   }
 
-  getContenedores(tramiteId: string){
+  getContenedores(tramiteId: string) {
     this.revisionService.getContenedores(tramiteId).subscribe({
       next: data => {
         if (data && data.length > 0) {
@@ -155,16 +155,24 @@ export default class ConsultasTramiteComponent {
   }
 
   updateDate(id: string) {
-    this.sending= true
+    this.sending = true
     this.fechaArribo = getCurrentDate(this.fechaArribo)
     this.horaArribo = getTime(this.horaArribo)
     this.tramiteService.updateDate(this.fechaArribo, this.horaArribo, id).subscribe({
       next: data => {
-        if (data.status){
-          this.messageService.add({severity: 'info', summary: `${data.info}, Fecha de arribo agregada`, detail: 'Se actualizo la fecha de arribo, se envio notificacion a los usuarios'});
+        if (data.status) {
+          this.messageService.add({
+            severity: 'info',
+            summary: `${data.info}, Fecha de arribo agregada`,
+            detail: 'Se actualizo la fecha de arribo, se envio notificacion a los usuarios'
+          });
           this.cerrarModal(id)
         } else {
-          this.messageService.add({severity: 'warn', summary: 'Observacion', detail: 'Se encontro un problema al actualizar la fecha de arribo'});
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Observacion',
+            detail: 'Se encontro un problema al actualizar la fecha de arribo'
+          });
           this.cerrarModal(id)
         }
       },

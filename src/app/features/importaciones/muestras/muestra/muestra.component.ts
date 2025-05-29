@@ -151,10 +151,10 @@ export default class MuestraComponent implements OnInit {
   listarMuestras(tramiteId: string, contenedor: string) {
     this.muestraService.getMuestras(tramiteId, contenedor).subscribe({
       next: (result) => {
-        if (this.muestraAdd){
+        if (this.muestraAdd) {
           const restantes = result.filter(p => p.id !== this.muestraAdd?.id)
           this.muestras = [this.muestraAdd, ...restantes]
-        } else{
+        } else {
           this.muestras = result;
         }
 
@@ -173,7 +173,7 @@ export default class MuestraComponent implements OnInit {
         const allComplete = completas.length === result.length;
 
         if (allComplete) {
-          this.muestras=result;
+          this.muestras = result;
           this.completed();
           this.messageService.add({severity: 'info', summary: 'Muestras Validadas'});
         } else {
