@@ -68,3 +68,11 @@
     </div>
   </div>
 </div>
+
+
+<p-chart type="bar" [data]="chartData" [options]="chartOptions" *ngIf="chartData"></p-chart>
+
+<p-chart type="bar"
+         [data]="chartProductosHistorialData"
+         [options]="chartProductosHistorialOptions"
+         *ngIf="chartProductosHistorialData"></p-chart>
