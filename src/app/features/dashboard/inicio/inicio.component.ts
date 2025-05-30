@@ -57,8 +57,8 @@ export default class InicioComponent implements OnInit{
   private tramiteService = inject(TramiteService)
   private contenedorService = inject(ContenedoresService)
 
-  chartProductosHistorialData: any;
-  chartProductosHistorialOptions: any;
+  chartProductoHistorialData: any;
+  chartProductoHistorialOptions: any;
 
   chartLineContenedoresData: any;
   chartLineContenedoresOptions: any;
@@ -97,13 +97,17 @@ export default class InicioComponent implements OnInit{
     })
   }
 
-  buscarContenedores(tramite: Tramite) {
+  obtenerDatosGraficos(tramite: Tramite) {
     this.loading = true;
     this.display = true;
+    this.getContenedores(tramite)
+    this.listarProducto(tramite.id)
+  }
+
+  getContenedores(tramite: Tramite) {
     this.contenedorService.buscarContenedores(tramite.id).subscribe({
       next: (data) => {
         this.contenedores = data;
-        console.log(data)
         this.tramiteId = tramite.id;
         this.generarGraficoLineasContenedores(); // Llama aquí
         this.loading = false;
@@ -115,21 +119,26 @@ export default class InicioComponent implements OnInit{
     });
   }
 
-  getResumenHistorialProductos(): ProductoHistorialResumen {
-    let conRevision = 0;
-    let conMuestra = 0;
-    let sinHistorial = 0;
 
-    for (const p of this.productos) {
-      const tieneRevision = p.historialRevision && p.historialRevision.length > 0;
-      const tieneMuestra = p.historialBarrasMuestra && p.historialBarrasMuestra.length > 0;
+  listarProducto(tramiteId: string) {
+    this.tramiteService.productos(tramiteId).subscribe({
+      next: data => {
+        if (data && data.length > 0) {
+          this.productos = data;
+          this.tramiteId = tramiteId;
+          this.generarGraficoProductosPorHistorial(); // Aquí
+        } else {
+          this.productos = [];
+        }
+      }
+    });
+  }
 
-      if (tieneRevision) conRevision++;
-      if (tieneMuestra) conMuestra++;
-      if (!tieneRevision && !tieneMuestra) sinHistorial++;
-    }
-
-    return { conRevision, conMuestra, sinHistorial };
+  regresar() {
+    this.display = false;
+    this.tramiteId = '';
+    this.productos = [];
+    this.contenedores = [];
   }
 
   generarGraficoLineasContenedores() {
@@ -213,62 +222,73 @@ export default class InicioComponent implements OnInit{
           title: {
             display: true,
             text: 'Contenedores'
+          },
+          ticks: {
+            autoSkip: false,
+            maxTicksLimit: 5,
+            padding: 15,
+            font: {
+              size: 12
+            }
+          }
+
+        }
+      }
+    };
+  }
+
+  generarGraficoProductosPorHistorial() {
+    const labels = this.productos.map(p => p.nombre ?? p.id);
+
+    const revisionData = this.productos.map(p => p.historialRevision?.length ?? 0);
+    const muestraData = this.productos.map(p => p.historialBarrasMuestra?.length ?? 0);
+
+    this.chartProductoHistorialData = {
+      labels,
+      datasets: [
+        {
+          label: 'Historial de Revisión',
+          backgroundColor: '#42A5F5',
+          data: revisionData
+        },
+        {
+          label: 'Historial de Muestra',
+          backgroundColor: '#66BB6A',
+          data: muestraData
+        }
+      ]
+    };
+
+    this.chartProductoHistorialOptions = {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top'
+        },
+        title: {
+          display: true,
+          text: 'Cantidad de movimientos en Revisión y Muestra por Producto'
+        }
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Productos'
+          }
+        },
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Cantidad de acciones'
+          },
+          ticks: {
+            stepSize: 1
           }
         }
       }
     };
   }
 
-  generarGraficoHistorialProductos() {
-    const resumen = this.getResumenHistorialProductos();
-
-    this.chartProductosHistorialData = {
-      labels: ['Revisión', 'Muestra', 'Sin historial'],
-      datasets: [
-        {
-          label: 'Productos',
-          data: [resumen.conRevision, resumen.conMuestra, resumen.sinHistorial],
-          backgroundColor: ['#42A5F5', '#66BB6A', '#FFA726']
-        }
-      ]
-    };
-
-    this.chartProductosHistorialOptions = {
-      responsive: true,
-      plugins: {
-        legend: { display: false },
-        title: {
-          display: true,
-          text: 'Historial de Productos'
-        }
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: { precision: 0 }
-        }
-      }
-    };
-  }
-
-  listarProducto(tramiteId: string) {
-    this.tramiteService.productos(tramiteId).subscribe({
-      next: data => {
-        if (data && data.length > 0) {
-          this.productos = data;
-          this.tramiteId = tramiteId;
-          this.generarGraficoHistorialProductos(); // Aquí
-        } else {
-          this.productos = [];
-        }
-      }
-    });
-  }
-
-  regresar() {
-    this.display = false;
-    this.tramiteId = '';
-    this.productos = [];
-    this.contenedores = [];
-  }
 }

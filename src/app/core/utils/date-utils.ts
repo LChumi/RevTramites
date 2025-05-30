@@ -42,9 +42,7 @@ export function horaEnMinutos(hours: string): number {
 }
 
 export function horaEnDecimal(horaStr: string): number {
-  console.log(horaStr)
   const [h, m, s] = horaStr.split(':').map(Number);
-  console.log("Hora convertida a decimal ", h + m / 60 + s / 3600)
   return h + m / 60 + s / 3600;
 }
 

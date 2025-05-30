@@ -57,7 +57,7 @@
 
               <!-- Acciones -->
               <div class="flex flex-column gap-2 md:text-right">
-                <p-button (click)="buscarContenedores(tramite)" icon="pi pi-eye" label="Ver" styleClass="p-button-sm p-button-outlined"></p-button>
+                <p-button (click)="obtenerDatosGraficos(tramite)" icon="pi pi-eye" label="Ver" styleClass="p-button-sm p-button-outlined"></p-button>
               </div>
             </div>
           </div>
@@ -81,6 +81,15 @@
           <p-chart type="line"
                    [data]="chartLineContenedoresData"
                    [options]="chartLineContenedoresOptions"></p-chart>
+        }
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="card">
+        @if (chartProductoHistorialData) {
+          <p-chart type="line"
+                   [data]="chartProductoHistorialData"
+                   [options]="chartProductoHistorialOptions"></p-chart>
         }
       </div>
     </div>
