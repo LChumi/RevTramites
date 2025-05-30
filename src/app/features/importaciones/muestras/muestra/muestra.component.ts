@@ -70,7 +70,7 @@ export default class MuestraComponent implements OnInit {
   private contenedorId: string = '';
 
   ngOnInit(): void {
-    this.listarCompletos([2, 3]);
+    this.listarCompletos([2, 3, 4]);
     this.user = sessionStorage.getItem("username")
   }
 
@@ -185,13 +185,12 @@ export default class MuestraComponent implements OnInit {
     });
   }
 
-
   buscarContenedores(tramite: Tramite) {
     this.loading = true;
     this.display = true;
     this.contenedorService.buscarContenedores(tramite.id).subscribe({
       next: (data) => {
-        this.contenedores = data;
+        this.contenedores = data.filter(c => !c.muestras);
         this.tramiteId = tramite.id;
         this.loading = false;
       },
@@ -226,7 +225,7 @@ export default class MuestraComponent implements OnInit {
   completed() {
     setTimeout(() => {
       this.regresar()
-      this.listarCompletos([3, 2]);
+      this.listarCompletos([3, 2, 4]);
     }, 3000)
   }
 

@@ -4,6 +4,7 @@ export interface Contenedor {
   usrBloquea:   string;
   bloqueado:    boolean;
   finalizado:   boolean;
+  muestras:     boolean;
   productIds:   string[];
   tramiteId:    string;
 
