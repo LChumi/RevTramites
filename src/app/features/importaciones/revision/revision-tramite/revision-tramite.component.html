@@ -57,7 +57,7 @@
                   </td>
                   <td class="p-text-center p-col-1 p-col-fixed">Tramite {{ tramite.id }}</td>
                   <td class="p-text-center p-col-1">{{ tramite.fechaCarga }}</td>
-                  <td class="p-text-center p-col-1">{{ tramite.fechaLlegada }}</td>
+                  <td class="p-text-center p-col-1">{{ tramite.fechaArribo ? tramite.fechaArribo : 'En tránsito' }}</td>
                 </tr>
               </ng-template>
 
