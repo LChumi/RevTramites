@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {getCurrentDateNow, getCurrentTime, horaEnDecimal, horaEnMinutos} from '@utils/date-utils';
+import {getCurrentDateNow, getCurrentTime, horaEnDecimal, horaEnMinutos, horaFormateada} from '@utils/date-utils';
 import {TramiteService} from '@services/tramite.service';
 import {Tramite} from '@models/tramite';
 import {Contenedor} from '@models/contenedor';
@@ -11,7 +11,7 @@ import {NgClass, NgStyle} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {RatingModule} from 'primeng/rating';
 import {TagModule} from 'primeng/tag';
-import {Button} from 'primeng/button';
+import {Button, ButtonDirective} from 'primeng/button';
 import {ChartModule} from 'primeng/chart';
 import {ContenedoresService} from '@services/contenedores.service';
 import {ProductoHistorialResumen} from '@dtos/producto-historial-resumen';
@@ -20,6 +20,8 @@ import {ScrollTopModule} from 'primeng/scrolltop';
 import {TableModule} from 'primeng/table';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {ChartDataset, ChartOptions} from 'chart.js';
+import {Ripple} from 'primeng/ripple';
+import {ToolbarModule} from 'primeng/toolbar';
 
 interface XYPoint {
   x: number;
@@ -42,7 +44,10 @@ interface XYPoint {
     DialogModule,
     ScrollTopModule,
     TableModule,
-    ToggleButtonModule
+    ToggleButtonModule,
+    ButtonDirective,
+    Ripple,
+    ToolbarModule
   ],
   templateUrl: './inicio.component.html',
   styles: ``
@@ -139,15 +144,24 @@ export default class InicioComponent implements OnInit{
       const end = horaEnDecimal(c.endHour);
       const duracion = end - start;
       const minutos = Math.round(duracion * 60);
-      const label = `${c.contenedorId} - ${c.usrBloquea} (${minutos} min)`;
+
+      // Convertir minutos a formato "h min"
+      const horas = Math.floor(minutos / 60);
+      const mins = minutos % 60;
+      const tiempoFormateado = horas > 0 ? `${horas}h ${mins} min` : `${mins} min`;
+
+      const label = `TIEMPO DE DESCARGA (${tiempoFormateado}) ENCARGADO: ${c.usrBloquea} `;
+
+      const  horaIni= horaFormateada(c.startHour)
+      const horaFin= horaFormateada(c.endHour)
 
       datasets.push({
         label,
         borderColor: colores[index % colores.length],
         backgroundColor: colores[index % colores.length],
         data: [
-          { x: start, y: c.contenedorId },
-          { x: end, y: c.contenedorId }
+          { x: horaIni, y: c.contenedorId },
+          { x: horaFin, y: c.contenedorId }
         ],
         tension: 0.4,
         pointRadius: 6,
@@ -251,4 +265,10 @@ export default class InicioComponent implements OnInit{
     });
   }
 
+  regresar() {
+    this.display = false;
+    this.tramiteId = '';
+    this.productos = [];
+    this.contenedores = [];
+  }
 }
