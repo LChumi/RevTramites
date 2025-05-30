@@ -11,4 +11,7 @@ export interface Contenedor {
   startDate:  any;
   startHour:  any;
   endHour:    any;
+
+  startMuestra: any;
+  endMuestra:   any;
 }

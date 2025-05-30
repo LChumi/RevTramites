@@ -14,7 +14,6 @@ import {TagModule} from 'primeng/tag';
 import {Button, ButtonDirective} from 'primeng/button';
 import {ChartModule} from 'primeng/chart';
 import {ContenedoresService} from '@services/contenedores.service';
-import {ProductoHistorialResumen} from '@dtos/producto-historial-resumen';
 import {DialogModule} from 'primeng/dialog';
 import {ScrollTopModule} from 'primeng/scrolltop';
 import {TableModule} from 'primeng/table';
@@ -60,8 +59,11 @@ export default class InicioComponent implements OnInit{
   chartProductoHistorialData: any;
   chartProductoHistorialOptions: any;
 
-  chartLineContenedoresData: any;
-  chartLineContenedoresOptions: any;
+  chartLineContenedoresRevisionData: any;
+  chartLineContenedoresRevisionOptions: any;
+
+  chartLineContenedoresMuestraData: any;
+  chartLineContenedoresMuestraOptions: any;
 
   tramites: Tramite[] = []
   contenedores: Contenedor[] = []
@@ -109,7 +111,19 @@ export default class InicioComponent implements OnInit{
       next: (data) => {
         this.contenedores = data;
         this.tramiteId = tramite.id;
-        this.generarGraficoLineasContenedores(); // Llama aquí
+
+        // Solo generar gráfico si hay al menos un contenedor con hora de inicio de revisión válida
+        const tieneDatosRevision = this.contenedores.some(c => !!c.startHour);
+        if (tieneDatosRevision) {
+          this.generarGraficoLineasContenedoresRevision();
+        }
+
+        // Solo generar gráfico si hay al menos un contenedor con hora de inicio de muestra válida
+        const tieneDatosMuestra = this.contenedores.some(c => !!c.startMuestra);
+        if (tieneDatosMuestra) {
+          this.generarGraficoLineasContenedoresMuestra();
+        }
+
         this.loading = false;
       },
       error: () => {
@@ -141,101 +155,34 @@ export default class InicioComponent implements OnInit{
     this.contenedores = [];
   }
 
-  generarGraficoLineasContenedores() {
-    const datasets: ChartDataset<'line', XYPoint[]>[] = [];
-
-    const colores = ['#42A5F5', '#66BB6A', '#FFA726', '#AB47BC', '#FF7043'];
-
-    this.contenedores.forEach((c, index) => {
-      if (!c.endHour) return;
-
-      const start = horaEnDecimal(c.startHour);
-      const end = horaEnDecimal(c.endHour);
-      const duracion = end - start;
-      const minutos = Math.round(duracion * 60);
-
-      // Convertir minutos a formato "h min"
-      const horas = Math.floor(minutos / 60);
-      const mins = minutos % 60;
-      const tiempoFormateado = horas > 0 ? `${horas}h ${mins} min` : `${mins} min`;
-
-      const label = `TIEMPO DE DESCARGA (${tiempoFormateado}) ENCARGADO: ${c.usrBloquea} `;
-
-      const  horaIni= horaFormateada(c.startHour)
-      const horaFin= horaFormateada(c.endHour)
-
-      datasets.push({
-        label,
-        borderColor: colores[index % colores.length],
-        backgroundColor: colores[index % colores.length],
-        data: [
-          { x: horaIni, y: c.contenedorId },
-          { x: horaFin, y: c.contenedorId }
-        ],
-        tension: 0.4,
-        pointRadius: 6,
-        pointHoverRadius: 8,
-        showLine: true,
-        fill: false
-      });
-    });
-
-    this.chartLineContenedoresData = { datasets };
-
-    this.chartLineContenedoresOptions = <ChartOptions<'line'>>{
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        tooltip: {
-          callbacks: {
-            label: (ctx: any) => ctx.dataset.label
-          }
-        },
-        title: {
-          display: true,
-          text: 'Duración de Procesamiento por Contenedor'
-        },
-        legend: {
-          display: false
-        }
-      },
-      scales: {
-        x: {
-          type: 'linear',
-          title: {
-            display: true,
-            text: 'Hora del día'
-          },
-          ticks: {
-            callback: (value: number) => {
-              const h = Math.floor(value);
-              const m = Math.round((value - h) * 60);
-              return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
-            },
-            stepSize: 0.5,
-            min: 6,
-            max: 20
-          }
-        },
-        y: {
-          type: 'category',
-          title: {
-            display: true,
-            text: 'Contenedores'
-          },
-          ticks: {
-            autoSkip: false,
-            maxTicksLimit: 5,
-            padding: 15,
-            font: {
-              size: 12
-            }
-          }
-
-        }
-      }
+  generarGraficoLineasContenedoresRevision() {
+    this.chartLineContenedoresRevisionData = {
+      datasets: this.generarDatasetContenedores(
+        'descarga',
+        c => c.startHour,
+        c => c.endHour,
+        c => [c.startHour, c.endHour],
+        'Duración Descarga por Contenedor'
+      )
     };
+
+    this.chartLineContenedoresRevisionOptions = this.getOpcionesLinea('Duración Descarga por Contenedor');
   }
+
+  generarGraficoLineasContenedoresMuestra() {
+    this.chartLineContenedoresMuestraData = {
+      datasets: this.generarDatasetContenedores(
+        'muestra',
+        c => c.startMuestra,
+        c => c.endMuestra,
+        c => [c.startMuestra, c.endMuestra],
+        'Duración de Muestras por Contenedor'
+      )
+    };
+
+    this.chartLineContenedoresMuestraOptions = this.getOpcionesLinea('Duración de Muestras por Contenedor');
+  }
+
 
   generarGraficoProductosPorHistorial() {
     const labels = this.productos.map(p => p.nombre ?? p.id);
@@ -248,12 +195,12 @@ export default class InicioComponent implements OnInit{
       datasets: [
         {
           label: 'Historial de Revisión',
-          backgroundColor: '#42A5F5',
+          backgroundColor: 'rgb(0,190,231)',
           data: revisionData
         },
         {
           label: 'Historial de Muestra',
-          backgroundColor: '#66BB6A',
+          backgroundColor: '#e37e3f',
           data: muestraData
         }
       ]
@@ -275,6 +222,13 @@ export default class InicioComponent implements OnInit{
           title: {
             display: true,
             text: 'Productos'
+          },
+          ticks: {
+            autoSkip: true,
+            padding: 15,
+            font: {
+              size: 8
+            }
           }
         },
         y: {
@@ -284,7 +238,102 @@ export default class InicioComponent implements OnInit{
             text: 'Cantidad de acciones'
           },
           ticks: {
-            stepSize: 1
+            stepSize: 2
+          }
+        }
+      }
+    };
+  }
+
+  private generarDatasetContenedores(
+    tipo: 'descarga' | 'muestra',
+    getStart: (c: any) => string,
+    getEnd: (c: any) => string,
+    getHoraLabel: (c: any) => string[],
+    titulo: string
+  ): ChartDataset<'line', XYPoint[]>[] {
+    const colores = ['#42A5F5', '#66BB6A', '#FFA726', '#AB47BC', '#FF7043'];
+
+    return this.contenedores
+      .map((c, index) => {
+        const start = horaEnDecimal(getStart(c));
+        const end = horaEnDecimal(getEnd(c));
+        if (isNaN(start) || isNaN(end)) return undefined; // usar undefined, no null
+
+        const duracion = end - start;
+        const minutos = Math.round(duracion * 60);
+        const horas = Math.floor(minutos / 60);
+        const mins = minutos % 60;
+        const tiempoFormateado = horas > 0 ? `${horas}h ${mins} min` : `${mins} min`;
+        const [horaIni, horaFin] = getHoraLabel(c);
+
+        const label = `TIEMPO DE ${tipo.toUpperCase()} (${tiempoFormateado}) ENCARGADO: ${c.usrBloquea}`;
+
+        return {
+          label,
+          borderColor: colores[index % colores.length],
+          backgroundColor: colores[index % colores.length],
+          data: [
+            { x: horaEnDecimal(horaIni), y: c.contenedorId },
+            { x: horaEnDecimal(horaFin), y: c.contenedorId }
+          ],
+          tension: 0.4,
+          pointRadius: 6,
+          pointHoverRadius: 8,
+          showLine: true,
+          fill: false
+        } as ChartDataset<'line', XYPoint[]>;
+      })
+      .filter((d): d is ChartDataset<'line', XYPoint[]> => !!d); // <-- Narrow type
+  }
+
+  private getOpcionesLinea(titulo: string): ChartOptions<'line'> {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: (ctx: any) => ctx.dataset.label
+          }
+        },
+        title: {
+          display: true,
+          text: titulo
+        },
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        x: {
+          type: 'linear',
+          title: {
+            display: true,
+            text: 'Hora del día'
+          },
+          ticks: {
+            callback: (tickValue: string | number) => {
+              const value = typeof tickValue === 'number' ? tickValue : parseFloat(tickValue);
+              const h = Math.floor(value);
+              const m = Math.round((value - h) * 60);
+              return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+            },
+            stepSize: 0.5,
+          }
+        },
+        y: {
+          type: 'category',
+          title: {
+            display: true,
+            text: 'Contenedores'
+          },
+          ticks: {
+            autoSkip: true,
+            padding: 15,
+            font: {
+              size: 12
+            }
           }
         }
       }
