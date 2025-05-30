@@ -54,10 +54,7 @@
 
                   <!-- Acciones -->
                   <div class="flex flex-column gap-2 md:text-right">
-                    <p-button icon="pi pi-eye" label="Ver" styleClass="p-button-sm p-button-outlined"></p-button>
-                    <p-button icon="pi pi-bars" label="Contenedores"
-                              styleClass="p-button-sm"
-                              [disabled]="!tramite.contenedoresIds.length"></p-button>
+                    <p-button (click)="buscarContenedores(tramite)" icon="pi pi-eye" label="Ver" styleClass="p-button-sm p-button-outlined"></p-button>
                   </div>
                 </div>
               </div>
@@ -69,10 +66,25 @@
   </div>
 </div>
 
+@if (display){
 
-<p-chart type="bar" [data]="chartData" [options]="chartOptions" *ngIf="chartData"></p-chart>
+  <div class="grid p-fluid">
+    <div class="col-12 lg:col-6">
+      <div class="card">
+        @if (chartLineContenedoresData) {
+          <p-chart type="line"
+                   [data]="chartLineContenedoresData"
+                   [options]="chartLineContenedoresOptions"></p-chart>
+        }
+      </div>
+    </div>
+  </div>
 
-<p-chart type="bar"
-         [data]="chartProductosHistorialData"
-         [options]="chartProductosHistorialOptions"
-         *ngIf="chartProductosHistorialData"></p-chart>
+}
+
+@if (chartProductosHistorialData) {
+  <p-chart type="bar"
+           [data]="chartProductosHistorialData"
+           [options]="chartProductosHistorialOptions"></p-chart>
+}
+<p-scrollTop></p-scrollTop>

@@ -35,3 +35,13 @@ export function getTime(hora: any): string | null {
   const seconds = '00'; // Si no manejas segundos, puedes dejarlo fijo.
   return `${hours}:${minutes}:${seconds}`; // Formato correcto para LocalTime en Spring.
 }
+
+export function horaEnMinutos(hours: string): number {
+  const [h, m, s] = hours.split(':').map(Number);
+  return h * 60 + m + s / 60;
+}
+
+export function horaEnDecimal(horaStr: string): number {
+  const [h, m, s] = horaStr.split(':').map(Number);
+  return h + m / 60 + s / 3600;
+}
