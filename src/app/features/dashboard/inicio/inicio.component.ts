@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {getCurrentDateNow, getCurrentTime, horaEnDecimal, horaEnMinutos, horaFormateada} from '@utils/date-utils';
+import {getCurrentDateNow, getCurrentTime, horaFormateada} from '@utils/date-utils';
 import {TramiteService} from '@services/tramite.service';
 import {Tramite} from '@models/tramite';
 import {Contenedor} from '@models/contenedor';
@@ -256,8 +256,8 @@ export default class InicioComponent implements OnInit{
 
     return this.contenedores
       .map((c, index) => {
-        const start = horaEnDecimal(getStart(c));
-        const end = horaEnDecimal(getEnd(c));
+        const start = horaFormateada(getStart(c));
+        const end = horaFormateada(getEnd(c));
         if (isNaN(start) || isNaN(end)) return undefined; // usar undefined, no null
 
         const duracion = end - start;
@@ -274,8 +274,8 @@ export default class InicioComponent implements OnInit{
           borderColor: colores[index % colores.length],
           backgroundColor: colores[index % colores.length],
           data: [
-            { x: horaEnDecimal(horaIni), y: c.contenedorId },
-            { x: horaEnDecimal(horaFin), y: c.contenedorId }
+            { x: horaFormateada(horaIni), y: c.contenedorId },
+            { x: horaFormateada(horaFin), y: c.contenedorId }
           ],
           tension: 0.4,
           pointRadius: 6,
