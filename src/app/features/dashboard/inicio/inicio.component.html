@@ -11,108 +11,115 @@
   </div>
 </div>
 
-@if (!display){
-  <section>
-    <h4>Tramites de la Semana</h4>
-    <p-dataView #dv
-                [value]="tramites"
-                [paginator]="true"
-                [rows]="9"
-                filterBy="id"
-                layout="list">
+@if (tramites.length > 0) {
+  @if (!display){
+    <section>
+      <h4>Tramites de la Semana</h4>
+      <p-dataView #dv
+                  [value]="tramites"
+                  [paginator]="true"
+                  [rows]="9"
+                  filterBy="id"
+                  layout="list">
 
-      <ng-template let-tramite pTemplate="list">
-        @for (tramite of tramites; track tramite.id) {
-          <div class="p-3 border-round border-1 surface-border mb-3 shadow-1">
-            <div class="flex flex-column md:flex-row gap-4 md:items-center">
+        <ng-template let-tramite pTemplate="list">
+          @for (tramite of tramites; track tramite.id) {
+            <div class="p-3 border-round border-1 surface-border mb-3 shadow-1">
+              <div class="flex flex-column md:flex-row gap-4 md:items-center">
 
-              <!-- Imagen -->
-              <div class="flex-shrink-0 text-center md:text-left">
-                <img
-                  [src]="'images/' + (tramite.proceso | procesoTramite) + '.webp'"
-                  [alt]="'Estado ' + tramite.proceso"
-                  class="w-8rem md:w-10rem border-round shadow-2 mb-2 md:mb-0"
-                />
-              </div>
-
-              <!-- Info + Acciones -->
-              <div class="flex flex-1 flex-column md:flex-row md:justify-between md:items-center w-full gap-4">
-
-                <!-- Información del trámite -->
-                <div class="flex-1">
-                  <div class="text-xl font-semibold mb-2 text-primary">Trámite {{ tramite.id }}</div>
-                  <div class="mb-2 text-secondary">N° de contenedores: {{ tramite.contenedoresIds.length }}</div>
-                  <div class="flex align-items-center gap-2 px-2 py-1 border-round text-sm"
-                       style="max-width: fit-content;"
-                       [ngStyle]="tramite.proceso | procesoTramite | estadoColor">
-                    <i class="pi text-sm"
-                       [ngClass]="(tramite.proceso | procesoTramite) === 'Proceso' ? 'pi-clock' : 'pi-check'"></i>
-                    <span class="font-medium">{{ tramite.proceso | procesoTramite }}</span>
-                  </div>
+                <!-- Imagen -->
+                <div class="flex-shrink-0 text-center md:text-left">
+                  <img
+                    [src]="'images/' + (tramite.proceso | procesoTramite) + '.webp'"
+                    [alt]="'Estado ' + tramite.proceso"
+                    class="w-8rem md:w-10rem border-round shadow-2 mb-2 md:mb-0"
+                  />
                 </div>
 
-                <!-- Acciones -->
-                <div class="flex flex-column gap-2 md:text-right">
-                  <p-button (click)="obtenerDatosGraficos(tramite)" icon="pi pi-eye" label="Ver" styleClass="p-button-sm p-button-outlined"></p-button>
+                <!-- Info + Acciones -->
+                <div class="flex flex-1 flex-column md:flex-row md:justify-between md:items-center w-full gap-4">
+
+                  <!-- Información del trámite -->
+                  <div class="flex-1">
+                    <div class="text-xl font-semibold mb-2 text-primary">Trámite {{ tramite.id }}</div>
+                    <div class="mb-2 text-secondary">N° de contenedores: {{ tramite.contenedoresIds.length }}</div>
+                    <div class="flex align-items-center gap-2 px-2 py-1 border-round text-sm"
+                         style="max-width: fit-content;"
+                         [ngStyle]="tramite.proceso | procesoTramite | estadoColor">
+                      <i class="pi text-sm"
+                         [ngClass]="(tramite.proceso | procesoTramite) === 'Proceso' ? 'pi-clock' : 'pi-check'"></i>
+                      <span class="font-medium">{{ tramite.proceso | procesoTramite }}</span>
+                    </div>
+                  </div>
+
+                  <!-- Acciones -->
+                  <div class="flex flex-column gap-2 md:text-right">
+                    <p-button (click)="obtenerDatosGraficos(tramite)" icon="pi pi-eye" label="Ver" styleClass="p-button-sm p-button-outlined"></p-button>
+                  </div>
                 </div>
               </div>
             </div>
+          }
+        </ng-template>
+      </p-dataView>
+    </section>
+  } @else {
+    <section class="section">
+      <!-- Toolbar con botón optimizado -->
+      <p-toolbar styleClass="mb-4 toolbar-custom">
+        <ng-template pTemplate="left">
+          <div class="flex align-items-center">
+            <button pButton pRipple label="Seleccionar otro Trámite" icon="pi pi-chevron-left"
+                    class="p-button-outlined p-button-sm" (click)="regresar()"></button>
           </div>
-        }
-      </ng-template>
-    </p-dataView>
-  </section>
-} @else {
-  <section class="section">
-    <!-- Toolbar con botón optimizado -->
-    <p-toolbar styleClass="mb-4 toolbar-custom">
-      <ng-template pTemplate="left">
-        <div class="flex align-items-center">
-          <button pButton pRipple label="Seleccionar otro Trámite" icon="pi pi-chevron-left"
-                  class="p-button-outlined p-button-sm" (click)="regresar()"></button>
-        </div>
-      </ng-template>
-    </p-toolbar>
+        </ng-template>
+      </p-toolbar>
 
-    <!-- Grid con gráficos -->
-    <div class="grid p-fluid gap-3">
-      <div class="col-12">
-        <div class="card chart-card">
-          @if (chartLineContenedoresRevisionData) {
-            <p-chart
-              type="line"
-              [data]="chartLineContenedoresRevisionData"
-              [options]="chartLineContenedoresRevisionOptions"
-              style="width: 100%; height: 300px"
-            ></p-chart>
-          }
-        </div>
+      <!-- Grid con gráficos -->
+      <div class="grid p-fluid gap-3">
+        <div class="col-12">
+          <div class="card chart-card">
+            @if (chartLineContenedoresRevisionData) {
+              <p-chart
+                type="line"
+                [data]="chartLineContenedoresRevisionData"
+                [options]="chartLineContenedoresRevisionOptions"
+                style="width: 100%; height: 300px"
+              ></p-chart>
+            }
+          </div>
 
-        <div class="card chart-card">
-          @if (chartLineContenedoresMuestraData) {
-            <p-chart
-              type="line"
-              [data]="chartLineContenedoresMuestraData"
-              [options]="chartLineContenedoresMuestraOptions"
-              style="width: 100%; height: 300px"
-            ></p-chart>
-          }
-        </div>
+          <div class="card chart-card">
+            @if (chartLineContenedoresMuestraData) {
+              <p-chart
+                type="line"
+                [data]="chartLineContenedoresMuestraData"
+                [options]="chartLineContenedoresMuestraOptions"
+                style="width: 100%; height: 300px"
+              ></p-chart>
+            }
+          </div>
 
-        <div class="card chart-card">
-          @if (chartProductoHistorialData) {
-            <p-chart
-              type="line"
-              [data]="chartProductoHistorialData"
-              [options]="chartProductoHistorialOptions"
-              style="width: 100%; height: 350px"
-            ></p-chart>
-          }
+          <div class="card chart-card">
+            @if (chartProductoHistorialData) {
+              <p-chart
+                type="line"
+                [data]="chartProductoHistorialData"
+                [options]="chartProductoHistorialOptions"
+                style="width: 100%; height: 350px"
+              ></p-chart>
+            }
+          </div>
         </div>
       </div>
-    </div>
 
-  </section>
+    </section>
+  }
+} @else {
+  <div class="card">
+    <p>No tienes trámites pendientes de descarga. ¡Puedes continuar con tu gestión sin preocupaciones!</p>
+  </div>
 }
+
 
 <p-scrollTop></p-scrollTop>

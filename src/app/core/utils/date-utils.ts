@@ -46,7 +46,11 @@ export function horaEnDecimal(horaStr: string): number {
   return h + m / 60 + s / 3600;
 }
 
-export function horaFormateada(horaStr: string): number {
-  const [h, m, s] = horaStr.split(':').map(Number);
+export function horaFormateada(horaStr: string | null | undefined): number {
+  // Si la cadena es nula o indefinida, obtener la hora actual
+  const ahora = new Date();
+  const hora = horaStr ? horaStr.split(':').map(Number) : [ahora.getHours(), ahora.getMinutes(), ahora.getSeconds()];
+
+  const [h, m, s] = hora;
   return h + m / 100; // Divide por 100 para mantener el formato adecuado
 }
