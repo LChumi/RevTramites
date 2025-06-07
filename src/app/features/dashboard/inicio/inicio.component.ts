@@ -21,6 +21,7 @@ import {ToggleButtonModule} from 'primeng/togglebutton';
 import {ChartDataset, ChartOptions} from 'chart.js';
 import {Ripple} from 'primeng/ripple';
 import {ToolbarModule} from 'primeng/toolbar';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 interface XYPoint {
   x: number;
@@ -46,7 +47,8 @@ interface XYPoint {
     ToggleButtonModule,
     ButtonDirective,
     Ripple,
-    ToolbarModule
+    ToolbarModule,
+    ProgressSpinnerModule
   ],
   templateUrl: './inicio.component.html',
   styles: ``
@@ -79,6 +81,7 @@ export default class InicioComponent implements OnInit {
   percentage: any;
 
   loading = false;
+  isLoadingGraficos = true;
   display = false;
   tramiteId: string = '';
 
@@ -345,12 +348,24 @@ export default class InicioComponent implements OnInit {
   }
 
   getValues() {
+    this.isLoadingGraficos = true;
     this.contenedorGraficos = [];
+
+    const total = this.contenedores.length;
+    let loaded = 0;
 
     for (const contenedor of this.contenedores) {
       this.tramiteService.getPercentage(this.tramiteId, contenedor.contenedorId).subscribe({
         next: data => {
-          const porcentaje = Math.round(data); // Redondear
+          const porcentaje = Math.round(data);
+
+          let color = '#4CAF50'; // verde por defecto
+          if (porcentaje < 50) {
+            color = '#FF5252'; // rojo
+          } else if (porcentaje < 80) {
+            color = '#FFC107'; // amarillo
+          }
+
           this.contenedorGraficos.push({
             label: `Contenedor ${contenedor.contenedorId}`,
             porcentaje: porcentaje,
@@ -358,7 +373,7 @@ export default class InicioComponent implements OnInit {
               labels: ['Procesado', 'Restante'],
               datasets: [{
                 data: [porcentaje, 100 - porcentaje],
-                backgroundColor: ['#36A2EB', '#E0E0E0']
+                backgroundColor: [color, '#E0E0E0']
               }]
             },
             chartOptions: {
@@ -367,16 +382,21 @@ export default class InicioComponent implements OnInit {
                 legend: {
                   position: 'bottom'
                 }
-              },
-              tooltip:{
-                callbacks:{
-                  label: function (tooltipItem: any){
-                    return `${tooltipItem.label}: ${tooltipItem.raw}%`; // Agregar el símbolo %
-                  }
-                }
               }
-            }
+            },
+            iconColor: color
           });
+
+          loaded++;
+          if (loaded === total) {
+            this.isLoadingGraficos = false;
+          }
+        },
+        error: () => {
+          loaded++;
+          if (loaded === total) {
+            this.isLoadingGraficos = false;
+          }
         }
       });
     }
