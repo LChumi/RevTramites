@@ -51,7 +51,7 @@ interface XYPoint {
   templateUrl: './inicio.component.html',
   styles: ``
 })
-export default class InicioComponent implements OnInit{
+export default class InicioComponent implements OnInit {
 
   private tramiteService = inject(TramiteService)
   private contenedorService = inject(ContenedoresService)
@@ -65,6 +65,8 @@ export default class InicioComponent implements OnInit{
   chartLineContenedoresMuestraData: any;
   chartLineContenedoresMuestraOptions: any;
 
+  contenedorGraficos: any[] = [];
+
   tramites: Tramite[] = []
   contenedores: Contenedor[] = []
   productos: Producto[] = []
@@ -72,6 +74,9 @@ export default class InicioComponent implements OnInit{
   nombre: any
   fecha: any;
   hora: any;
+
+  total: any;
+  percentage: any;
 
   loading = false;
   display = false;
@@ -83,7 +88,7 @@ export default class InicioComponent implements OnInit{
 
   ngOnInit(): void {
     this.getTramites()
-    }
+  }
 
   getInfo() {
     this.nombre = sessionStorage.getItem('username');
@@ -111,6 +116,7 @@ export default class InicioComponent implements OnInit{
       next: (data) => {
         this.contenedores = data;
         this.tramiteId = tramite.id;
+        this.getValues()
 
         // Solo generar gráfico si hay al menos un contenedor con hora de inicio de revisión válida
         const tieneDatosRevision = this.contenedores.some(c => !!c.startHour);
@@ -132,7 +138,6 @@ export default class InicioComponent implements OnInit{
       }
     });
   }
-
 
   listarProducto(tramiteId: string) {
     this.tramiteService.productos(tramiteId).subscribe({
@@ -183,7 +188,6 @@ export default class InicioComponent implements OnInit{
     this.chartLineContenedoresMuestraOptions = this.getOpcionesLinea('Duración de Muestras por Contenedor');
   }
 
-
   generarGraficoProductosPorHistorial() {
     const labels = this.productos.map(p => p.nombre ?? p.id);
 
@@ -214,7 +218,7 @@ export default class InicioComponent implements OnInit{
         },
         title: {
           display: true,
-          text: 'Cantidad de movimientos en Revisión y Muestra por Producto'
+          text: 'Cantidad de Items escaneados en Revisión y Muestra'
         }
       },
       scales: {
@@ -235,7 +239,7 @@ export default class InicioComponent implements OnInit{
           beginAtZero: true,
           title: {
             display: true,
-            text: 'Cantidad de acciones'
+            text: 'Cantidad de bultos escaneados'
           },
           ticks: {
             stepSize: 2
@@ -274,8 +278,8 @@ export default class InicioComponent implements OnInit{
           borderColor: colores[index % colores.length],
           backgroundColor: colores[index % colores.length],
           data: [
-            { x: horaFormateada(horaIni), y: c.contenedorId },
-            { x: horaFormateada(horaFin), y: c.contenedorId }
+            {x: horaFormateada(horaIni), y: c.contenedorId},
+            {x: horaFormateada(horaFin), y: c.contenedorId}
           ],
           tension: 0.4,
           pointRadius: 6,
@@ -339,5 +343,44 @@ export default class InicioComponent implements OnInit{
       }
     };
   }
+
+  getValues() {
+    this.contenedorGraficos = [];
+
+    for (const contenedor of this.contenedores) {
+      this.tramiteService.getPercentage(this.tramiteId, contenedor.contenedorId).subscribe({
+        next: data => {
+          const porcentaje = Math.round(data); // Redondear
+          this.contenedorGraficos.push({
+            label: `Contenedor ${contenedor.contenedorId}`,
+            porcentaje: porcentaje,
+            chartData: {
+              labels: ['Procesado', 'Restante'],
+              datasets: [{
+                data: [porcentaje, 100 - porcentaje],
+                backgroundColor: ['#36A2EB', '#E0E0E0']
+              }]
+            },
+            chartOptions: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: 'bottom'
+                }
+              },
+              tooltip:{
+                callbacks:{
+                  label: function (tooltipItem: any){
+                    return `${tooltipItem.label}: ${tooltipItem.raw}%`; // Agregar el símbolo %
+                  }
+                }
+              }
+            }
+          });
+        }
+      });
+    }
+  }
+
 
 }

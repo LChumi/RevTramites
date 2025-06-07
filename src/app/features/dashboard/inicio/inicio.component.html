@@ -78,38 +78,68 @@
       <!-- Grid con gráficos -->
       <div class="grid p-fluid gap-3">
         <div class="col-12">
-          <div class="card chart-card">
             @if (chartLineContenedoresRevisionData) {
+              <div class="card chart-card">
               <p-chart
                 type="line"
                 [data]="chartLineContenedoresRevisionData"
                 [options]="chartLineContenedoresRevisionOptions"
                 style="width: 100%; height: 300px"
               ></p-chart>
+              </div>
             }
-          </div>
 
-          <div class="card chart-card">
             @if (chartLineContenedoresMuestraData) {
+              <div class="card chart-card">
               <p-chart
                 type="line"
                 [data]="chartLineContenedoresMuestraData"
                 [options]="chartLineContenedoresMuestraOptions"
-                style="width: 100%; height: 300px"
-              ></p-chart>
+                style="width: 100%; height: 300px"></p-chart>
+              </div>
             }
-          </div>
 
-          <div class="card chart-card">
+          @if (contenedorGraficos.length === 1){
+            <div class="flex justify-content-center">
+              <div class="card chart-card text-center w-11 md:w-6 lg:w-4" >
+                <h5>{{ contenedorGraficos[0].label }} estado {{ contenedorGraficos[0].porcentaje }}%</h5>
+                <p-chart
+                  type="doughnut"
+                  [data]="contenedorGraficos[0].chartData"
+                  [options]="contenedorGraficos[0].chartOptions"
+                  style="width: 100%; height: 250px;">
+                </p-chart>
+              </div>
+            </div>
+          } @else {
+            <div class="grid">
+              @for (grafico of contenedorGraficos; track $index){
+                <div class="col-12 md:col-6 lg:col-4">
+                  <div class="card chart-card text-center">
+                    <h5>{{ grafico.label }} estado {{ grafico.porcentaje }}%</h5>
+                    <p-chart
+                      type="doughnut"
+                      [data]="grafico.chartData"
+                      [options]="grafico.chartOptions"
+                      style="width: 100%; height: 250px;">
+                    </p-chart>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+
             @if (chartProductoHistorialData) {
+              <div class="card chart-card">
               <p-chart
                 type="line"
                 [data]="chartProductoHistorialData"
                 [options]="chartProductoHistorialOptions"
                 style="width: 100%; height: 350px"
               ></p-chart>
+              </div>
             }
-          </div>
+
         </div>
       </div>
 

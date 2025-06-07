@@ -62,4 +62,12 @@ export class TramiteService {
   getTramiestWeek(): Observable<Tramite[]>{
     return this.http.get<Tramite[]>(`${this.baseUrl}/week`);
   }
+
+  getTotal(tramite: string, contenedor: string): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/total/package/${tramite}/${contenedor}`)
+  }
+
+  getPercentage(tramite: string, contenedor: string): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/percentage/package/${tramite}/${contenedor}`)
+  }
 }
