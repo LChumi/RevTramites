@@ -19,6 +19,7 @@ import {ToggleButtonModule} from "primeng/togglebutton";
 import {playAlert} from '@utils/audio-utils';
 import {RevisionRequest} from '@models/revision-request';
 import {Producto} from '@models/producto';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 
 @Component({
   imports: [
@@ -31,7 +32,8 @@ import {Producto} from '@models/producto';
     NgStyle,
     EstadoColorPipe,
     ToolbarModule,
-    ToggleButtonModule
+    ToggleButtonModule,
+    ConfirmDialogModule
   ],
   templateUrl: './revision-tramite.component.html',
   standalone: true,
@@ -206,12 +208,14 @@ export default class RevisionTramiteComponent implements OnInit {
             message: 'Producto no encontrado en el resgistro ¿Desea agregar?',
             header: 'Confirmación',
             icon: 'pi pi-spin pi-spinner-dotted',
+            defaultFocus: `none`,
             accept: () => {
-              this.addProduct()
+              this.addProduct();
             },
             reject: () => {
               this.barra = '';
-            }
+            },
+            key: 'confirmDialog'
           })
         }
       }
@@ -363,4 +367,5 @@ export default class RevisionTramiteComponent implements OnInit {
       console.error("Error al copiar: ", err);
     });
   }
+
 }
