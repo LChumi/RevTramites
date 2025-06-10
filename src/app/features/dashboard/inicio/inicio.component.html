@@ -12,7 +12,7 @@
 </div>
 
 @if (tramites.length > 0) {
-  @if (!display){
+  @if (!display) {
     <section>
       <h4>Tramites de la Semana</h4>
       <p-dataView #dv
@@ -54,7 +54,8 @@
 
                   <!-- Acciones -->
                   <div class="flex flex-column gap-2 md:text-right">
-                    <p-button (click)="obtenerDatosGraficos(tramite)" icon="pi pi-eye" label="Ver" styleClass="p-button-sm p-button-outlined"></p-button>
+                    <p-button (click)="obtenerDatosGraficos(tramite)" icon="pi pi-eye" label="Ver"
+                              styleClass="p-button-sm p-button-outlined"></p-button>
                   </div>
                 </div>
               </div>
@@ -67,7 +68,7 @@
     <section class="section">
 
       <div class="flex justify-content-center">
-        <h5 class="align-items-center text-center hover:text-blue-400 font-bold text-gray-500">Tramite: {{tramiteId}}</h5>
+        <h5 class="align-items-center text-center hover:text-blue-700 font-bold">Tramite: {{ tramiteId }}</h5>
       </div>
 
       <!-- Toolbar con botón optimizado -->
@@ -91,9 +92,9 @@
             </div>
 
           } @else {
-            @if (contenedorGraficos.length === 1){
+            @if (contenedorGraficos.length === 1) {
               <div class="flex justify-content-center">
-                <div class="card chart-card text-center w-11 md:w-6 lg:w-4" >
+                <div class="card chart-card text-center w-11 md:w-6 lg:w-4">
                   <h5>
                     <i class="pi pi-box" [style.color]="contenedorGraficos[0].iconColor"></i>
                     {{ contenedorGraficos[0].label }} estado {{ contenedorGraficos[0].porcentaje }}%
@@ -108,7 +109,7 @@
               </div>
             } @else {
               <div class="grid">
-                @for (grafico of contenedorGraficos; track $index){
+                @for (grafico of contenedorGraficos; track $index) {
                   <div class="col-12 md:col-6 lg:col-4">
                     <div class="card chart-card text-center">
                       <h5>
@@ -129,37 +130,37 @@
           }
         </div>
         <div class="col-12">
-            @if (chartLineContenedoresRevisionData) {
-              <div class="card chart-card">
+          @if (chartLineContenedoresRevisionData) {
+            <div class="card chart-card">
               <p-chart
                 type="line"
                 [data]="chartLineContenedoresRevisionData"
                 [options]="chartLineContenedoresRevisionOptions"
                 style="width: 100%; height: 300px"
               ></p-chart>
-              </div>
-            }
+            </div>
+          }
 
-            @if (chartLineContenedoresMuestraData) {
-              <div class="card chart-card">
+          @if (chartLineContenedoresMuestraData) {
+            <div class="card chart-card">
               <p-chart
                 type="line"
                 [data]="chartLineContenedoresMuestraData"
                 [options]="chartLineContenedoresMuestraOptions"
                 style="width: 100%; height: 300px"></p-chart>
-              </div>
-            }
+            </div>
+          }
 
-            @if (chartProductoHistorialData) {
-              <div class="card chart-card">
+          @if (chartProductoHistorialData) {
+            <div class="card chart-card">
               <p-chart
                 type="line"
                 [data]="chartProductoHistorialData"
                 [options]="chartProductoHistorialOptions"
                 style="width: 100%; height: 350px"
               ></p-chart>
-              </div>
-            }
+            </div>
+          }
 
         </div>
       </div>
@@ -171,6 +172,5 @@
     <p>No tienes trámites pendientes de descarga. ¡Puedes continuar con tu gestión sin preocupaciones!</p>
   </div>
 }
-
 
 <p-scrollTop></p-scrollTop>

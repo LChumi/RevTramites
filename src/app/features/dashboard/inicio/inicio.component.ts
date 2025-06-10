@@ -364,8 +364,8 @@ export default class InicioComponent implements OnInit {
             color = '#FF5252'; // rojo
           } else if (porcentaje < 80) {
             color = '#FFC107'; // amarillo
-          } else if (porcentaje > 101){
-            color ='#e37e3f'
+          } else if (porcentaje > 101) {
+            color = '#e37e3f'
           }
 
           this.contenedorGraficos.push({
@@ -403,6 +403,5 @@ export default class InicioComponent implements OnInit {
       });
     }
   }
-
 
 }
