@@ -65,11 +65,16 @@
     </section>
   } @else {
     <section class="section">
+
+      <div class="flex justify-content-center">
+        <h5 class="align-items-center text-center hover:text-blue-400 font-bold text-gray-500">Tramite: {{tramiteId}}</h5>
+      </div>
+
       <!-- Toolbar con botón optimizado -->
       <p-toolbar styleClass="mb-4 toolbar-custom">
         <ng-template pTemplate="left">
           <div class="flex align-items-center">
-            <button pButton pRipple label="Seleccionar otro Trámite" icon="pi pi-chevron-left"
+            <button pButton pRipple label="Regresar" icon="pi pi-chevron-left"
                     class="p-button-outlined p-button-sm" (click)="regresar()"></button>
           </div>
         </ng-template>
@@ -77,6 +82,7 @@
 
       <!-- Grid con gráficos -->
       <div class="grid p-fluid gap-3">
+
         <div class="col-12">
           @if (isLoadingGraficos) {
 
