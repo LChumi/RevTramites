@@ -6,6 +6,7 @@ import {RevisionRequest} from '@models/revision-request';
 import {Producto} from '@models/producto';
 import {Contenedor} from '@models/contenedor';
 import {StatusResponse} from '@dtos/status-response';
+import {ProductValidateRequest} from '@dtos/product-validate-request';
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +41,9 @@ export class RevisionService {
 
   productExist(tramite: string, contenedor: string, barcode: string): Observable<StatusResponse> {
     return this.http.get<StatusResponse>(`${this.baseUrl}/producto/existe/${barcode}/${tramite}/${contenedor}`);
+  }
+
+  updateProductWithValidation(request: ProductValidateRequest): Observable<Producto>{
+    return this.http.put<Producto>(`${this.baseUrl}/producto/validate`, request)
   }
 }
