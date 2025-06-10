@@ -100,7 +100,7 @@
 
         </p-dataView>
       } @else {
-        <h4>Productos escaneados</h4>
+        <h4>Productos escaneados {{revisiones.length}}</h4>
         <p-toolbar styleClass="mb-4">
           <ng-template pTemplate="left">
             <div class="my-2">
@@ -113,17 +113,40 @@
                     (click)="exportToExcel()"></button>
           </ng-template>
         </p-toolbar>
-        <p-table [value]="revisiones" dataKey="id" responsiveLayout="scroll">
+        <p-table #dt [value]="revisiones" dataKey="id" responsiveLayout="scroll">
           <ng-template pTemplate="header">
             <tr>
               <th>Barra</th>
               <th>Item</th>
               <th>Nombre</th>
-              <th>Cantidad</th>
-              <th>Cantidad Revision</th>
-              <th>Diferencias</th>
-              <th>Estado Revision</th>
+              <th>Bultos</th>
+              <th>Escaneados</th>
+              <th>Diferencia</th>
+              <th style="min-width: 12rem">
+                <div class="flex justify-content-between align-items-center">
+                  <p-columnFilter
+                    field="estadoRevision"
+                    matchMode="equals"
+                    [showMenu]="false"
+                    [showMatchModes]="false"
+                    [showOperator]="false"
+                    [showAddButton]="false">
+
+                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                      <p-dropdown
+                        [options]="estadoOptions"
+                        placeholder="Filtrar por estado"
+                        [ngModel]="value"
+                        (onChange)="filter($event.value)"
+                        appendTo="body">
+                      </p-dropdown>
+                    </ng-template>
+                  </p-columnFilter>
+
+                </div>
+                </th>
               <th>Usuario</th>
+              <th>Novedad</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-producto>
@@ -134,8 +157,13 @@
               <td>{{ producto.bultos }}</td>
               <td>{{ producto.cantidadRevision }}</td>
               <td>{{ producto.cantidadDiferenciaRevision }}</td>
-              <td [ngStyle]="producto.estadoRevision | estadoColor">{{ producto.estadoRevision }}</td>
+              <td>
+                <div [ngStyle]="producto.estadoRevision | estadoColor">
+                  {{ producto.estadoRevision }}
+                </div>
+              </td>
               <td>{{ producto.usuarioRevision }}</td>
+              <td></td>
             </tr>
           </ng-template>
         </p-table>

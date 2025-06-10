@@ -31,7 +31,16 @@ export class AppComponent implements OnInit {
       monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
       monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
       today: "Hoy",
-      clear: "Limpiar"
+      clear: "Limpiar",
+      apply:"Aplicar",
+      matchAll: "Coincidir con todo",
+      matchAny: "Coincidir con cualquiera",
+      startsWith: "Comienza con",
+      contains: "Contiene",
+      notContains: "No Contiene",
+      endsWith: "Termina con",
+      equals: "Igual",
+      notEquals: "No es Igual"
     });
   }
 }

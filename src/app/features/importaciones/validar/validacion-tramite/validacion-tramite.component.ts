@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {TramiteService} from '@services/tramite.service';
 import {RevisionService} from '@services/revision.service';
 import {Tramite} from '@models/tramite';
@@ -15,7 +15,7 @@ import {Button, ButtonDirective} from 'primeng/button';
 import {Contenedor} from '@models/contenedor';
 import {DialogModule} from 'primeng/dialog';
 import {Ripple} from 'primeng/ripple';
-import {TableModule} from 'primeng/table';
+import {Table, TableModule} from 'primeng/table';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {FormsModule} from '@angular/forms';
 import {ContenedoresService} from '@services/contenedores.service';
@@ -45,6 +45,8 @@ import {converToExcel} from '@utils/excel-utils';
 })
 export default class ValidacionTramiteComponent implements OnInit {
 
+  @ViewChild('dt') dt: Table | undefined; // Asegúrate de tener la referencia a la tabla
+
   private tramiteService = inject(TramiteService)
   private revisionService = inject(RevisionService)
   private messageService = inject(MessageService)
@@ -53,13 +55,21 @@ export default class ValidacionTramiteComponent implements OnInit {
   user: any;
   tramiteId: string = '';
   contenedorId: string = '';
-  barra: string = '';
   revisiones: Producto[] = [];
   tramites: Tramite[] = [];
   contenedores: Contenedor[] = [];
   loading: boolean = false;
   vistaTramites = true
   display = false;
+
+  estadoOptions = [
+    { label: 'Estados', value: null},
+    { label: 'SOBRANTE', value: 'SOBRANTE' },
+    { label: 'FALTANTE', value: 'FALTANTE' },
+    { label: 'NO_LLEGO', value: 'NO_LLEGO' },
+    { label: 'SIN_REGISTRO', value: 'SIN_REGISTRO' }
+  ];
+
 
   ngOnInit(): void {
     this.listarCompletos([3, 2]);
