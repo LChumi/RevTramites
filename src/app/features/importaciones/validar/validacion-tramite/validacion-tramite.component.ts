@@ -182,7 +182,8 @@ export default class ValidacionTramiteComponent implements OnInit {
   closeUpdate(){
     this.cantidad = 0;
     this.novedad = '';
-    this.prodId = ''
+    this.prodId = '';
+    this.editProductView = false;
   }
 
 }

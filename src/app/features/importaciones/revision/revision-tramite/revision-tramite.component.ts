@@ -356,8 +356,8 @@ export default class RevisionTramiteComponent implements OnInit {
   }
 
   copyToClipboard(barcode: string) {
+    this.barra = barcode
     navigator.clipboard.writeText(barcode).then(() => {
-      this.barra = barcode
       this.messageService.add({
         severity: 'info',
         summary: 'Copiado',
