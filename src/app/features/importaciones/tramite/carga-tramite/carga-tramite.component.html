@@ -1,24 +1,16 @@
 <div class="grid grid-nogutter">
   <div class="col-12">
     <span class="text-900 font-bold text-4xl">Trámites</span>
-  </div>
-  <div class="col-12 mt-4">
-    <span class="text-900 block font-bold text-xl">Carga de archivo productos por llegar a Bodega </span>
-  </div>
-  <div class="col-12 mt-4">
-    <ul class="flex list-none flex-wrap">
-      <li class="flex align-items-center text-primary mr-2">Carga Tramite<i
-        class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
-      <li class="flex align-items-center text-500 mr-2">Información<i
-        class="pi pi-chevron-right text-500 text-xs ml-2"></i></li>
-      <li class="flex align-items-center text-500 mr-2">Lista productos</li>
-    </ul>
-    <!-- Botón alineado a la derecha con ancho ajustado -->
-    <div class="flex justify-content-end mt-3">
-      <button pButton pRipple type="button" (click)="visibleSidebarEmails = true" icon="pi pi-address-book"
-              class="p-button-rounded p-button-outlined"></button>
-    </div>
+    <div class="flex items-center mt-3">
+      <span class="text-900 font-bold text-xl">Carga de archivo productos por llegar a Bodega</span>
 
+      <button pButton pRipple type="button" (click)="visibleSidebarEmails = true" icon="pi pi-address-book"
+              class="p-button-rounded p-button-outlined ml-auto" style="width: auto; min-width: 40px;">
+      </button>
+    </div>
+  </div>
+
+  <div class="col-12">
     @if (loading) {
       <div class="flex align-items-center justify-content-center" style="height: 100%;">
         <i class="pi pi-spin pi-spinner" style="font-size: 4rem; color: blue;"></i>
