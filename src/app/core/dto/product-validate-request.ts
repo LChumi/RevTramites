@@ -1,4 +1,6 @@
 export interface ProductValidateRequest {
   productId: string,
-  cantidad:  number
+  cantidad:  number,
+  usuario: string,
+  novedad: string
 }

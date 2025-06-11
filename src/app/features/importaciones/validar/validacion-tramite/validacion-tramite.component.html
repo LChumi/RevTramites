@@ -163,7 +163,9 @@
                 </div>
               </td>
               <td>{{ producto.usuarioRevision }}</td>
-              <td></td>
+              <td>
+                <button pButton pRipple type="button" icon="pi pi-box" (click)="selectProduct(producto)"></button>
+              </td>
             </tr>
           </ng-template>
         </p-table>
@@ -209,5 +211,51 @@
       </tr>
     </ng-template>
   </p-table>
+</p-dialog>
+
+
+<p-dialog
+  header="Ingresar Novedad"
+  [(visible)]="editProductView"
+  [modal]="true"
+  [style]="{ width: '25rem' }"
+  showEffect="fade">
+
+  <ng-template pTemplate="header">
+    <div class="inline-flex align-items-center justify-content-center gap-2">
+      <p-avatar
+        icon="pi pi-ticket"
+        shape="circle" />
+      <span class="font-bold white-space-nowrap">
+        Agregar Novedad
+      </span>
+    </div>
+  </ng-template>
+  <span class="p-text-secondary block mb-5">Actualizar las cantidades, Bultos en el tramite {{bultos}}</span>
+  <div class="flex align-items-center gap-3 mb-3">
+    <label for="cantidad" class="font-semibold w-6rem">
+      Cantidad validada
+    </label>
+    <input pInputText id="cantidad" class="flex-auto" autocomplete="off" [(ngModel)]="cantidad"/>
+  </div>
+  <div class="flex align-items-center gap-3 mb-3">
+    <label for="cantidad" class="font-semibold w-6rem">
+      Ingresar Obsrvacion
+    </label>
+    <input pInputText id="cantidad" class="flex-auto" autocomplete="off" [(ngModel)]="novedad"/>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Cancelar"
+      [text]="true"
+      severity="secondary"
+      (onClick)="editProductView = false" />
+    <p-button
+      label="Actualizar"
+      [outlined]="true"
+      severity="secondary"
+      (onClick)="updateProduct()"
+    />
+  </ng-template>
 
 </p-dialog>

@@ -21,6 +21,8 @@ import {FormsModule} from '@angular/forms';
 import {ContenedoresService} from '@services/contenedores.service';
 import {ToolbarModule} from 'primeng/toolbar';
 import {converToExcel} from '@utils/excel-utils';
+import {AvatarModule} from 'primeng/avatar';
+import {ProductValidateRequest} from '@dtos/product-validate-request';
 
 @Component({
   standalone: true,
@@ -39,7 +41,8 @@ import {converToExcel} from '@utils/excel-utils';
     TableModule,
     ToggleButtonModule,
     FormsModule,
-    ToolbarModule
+    ToolbarModule,
+    AvatarModule
   ],
   styles: ``
 })
@@ -61,6 +64,11 @@ export default class ValidacionTramiteComponent implements OnInit {
   loading: boolean = false;
   vistaTramites = true
   display = false;
+  editProductView = false;
+  cantidad!: number
+  novedad!: string
+  private prodId: string = ''
+  protected bultos: number = 0
 
   estadoOptions = [
     { label: 'Estados', value: null},
@@ -69,7 +77,6 @@ export default class ValidacionTramiteComponent implements OnInit {
     { label: 'NO_LLEGO', value: 'NO_LLEGO' },
     { label: 'SIN_REGISTRO', value: 'SIN_REGISTRO' }
   ];
-
 
   ngOnInit(): void {
     this.listarCompletos([3, 2]);
@@ -139,6 +146,43 @@ export default class ValidacionTramiteComponent implements OnInit {
   regresar() {
     this.vistaTramites = true
     this.display = false;
+  }
+
+  selectProduct(producto:Producto){
+    this.editProductView=true
+    this.prodId=producto.id
+    this.bultos=producto.bultos
+  }
+
+  updateProduct(){
+
+    if (!this.cantidad || this.cantidad == 0 || !this.prodId){
+      this.messageService.add({severity: 'warn', summary: 'La cantidad no puede ser 0 o nula',})
+      return
+    }
+
+    const request: ProductValidateRequest = {
+      productId: this.prodId,
+      cantidad: this.cantidad,
+      usuario: this.user,
+      novedad: this.novedad
+    }
+
+    this.revisionService.updateProductWithValidation(request).subscribe({
+      next: value => {
+        this.revisiones = [...this.revisiones.filter(p => p.id !== value.id), value]
+        this.cantidad = 0;
+        this.novedad = '';
+      }, error : err => {
+        this.messageService.add({severity: 'error', summary: 'Ocurrio un problema ', detail: err})
+      }
+    })
+  }
+
+  closeUpdate(){
+    this.cantidad = 0;
+    this.novedad = '';
+    this.prodId = ''
   }
 
 }
