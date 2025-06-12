@@ -284,8 +284,10 @@
 
 </p-dialog>
 
+@if (muestraReport) {
+  <p-dialog header="Reporte de Muestras" [(visible)]="muestraReport" [modal]="true" [style]="{width: '70vw'}">
+    <app-muestras-report [tramite]="tramiteId" [contenedor]="contenedorId"></app-muestras-report>
+  </p-dialog>
+}
 
-<p-dialog header="Reporte de Muestras" [(visible)]="muestraReport" [modal]="true" [style]="{width: '70vw'}">
-  <app-muestras-report [tramite]="tramiteId" [contenedor]="contenedorId"></app-muestras-report>
-</p-dialog>
 <p-scrollTop></p-scrollTop>

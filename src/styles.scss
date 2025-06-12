@@ -16,3 +16,38 @@ $gutter: 1rem; //for primeflex grid system
 @import "../public/styles/flags/flags.css";
 @import "../public/styles/badges.scss";
 @import "../public/styles/code.scss";
+
+.pdf-print-style {
+  width: 1024px;
+  max-width: 1024px;
+  font-size: 13px;
+  padding: 24px;
+  background: white;
+  color: #000;
+
+  * {
+    color: #000 !important;
+    background: none !important;
+    box-shadow: none !important;
+  }
+
+  table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    word-break: break-word;
+    padding: 6px;
+    font-size: 12px;
+  }
+
+  .p-togglebutton {
+    pointer-events: none;
+  }
+
+  .p-checkbox {
+    pointer-events: none;
+  }
+}
