@@ -24,6 +24,7 @@ import {DialogModule} from 'primeng/dialog';
 import {MuestraRequest} from '@models/muestra-request';
 import {ScrollTopModule} from 'primeng/scrolltop';
 import {ToolbarModule} from 'primeng/toolbar';
+import {MuestrasReportComponent} from '@shared/component/muestras-report/muestras-report.component';
 
 @Component({
   standalone: true,
@@ -44,6 +45,7 @@ import {ToolbarModule} from 'primeng/toolbar';
     DialogModule,
     ScrollTopModule,
     ToolbarModule,
+    MuestrasReportComponent,
   ],
   templateUrl: './muestra.component.html',
   styles: ``
@@ -51,6 +53,7 @@ import {ToolbarModule} from 'primeng/toolbar';
 export default class MuestraComponent implements OnInit {
   @ViewChild('cajaInput') cajaInput!: ElementRef<HTMLInputElement>;
   @ViewChild('muestraInput') muestraInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('report') report!: ElementRef;
 
   private tramiteService = inject(TramiteService);
   private contenedorService = inject(ContenedoresService)
@@ -67,9 +70,10 @@ export default class MuestraComponent implements OnInit {
   status = true;
   display = false;
   tramiteExist = false;
+  muestraReport = false
   loading = false;
-  private tramiteId: string = '';
-  private contenedorId: string = '';
+  protected tramiteId: string = '';
+  protected contenedorId: string = '';
 
   ngOnInit(): void {
     this.listarCompletos([2, 3, 4]);
@@ -224,16 +228,10 @@ export default class MuestraComponent implements OnInit {
     this.listarMuestras(this.tramiteId, this.contenedorId)
   }
 
-  completed() {
-    setTimeout(() => {
-      this.regresar()
-      this.listarCompletos([3, 2, 4]);
-    }, 3000)
+  verReporte(){
+    this.muestraReport=true
   }
 
-  imprimir(){
-    window.print()
-  }
 
   protected readonly scroll = scroll;
 }

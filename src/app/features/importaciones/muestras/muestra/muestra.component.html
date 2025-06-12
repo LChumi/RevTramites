@@ -101,7 +101,7 @@
                   </div>
                 </ng-template>
                 <ng-template pTemplate="right">
-                  <button pButton pRipple label="Imprimir" icon="pi pi-print" (click)="imprimir()"></button>
+                  <button pButton pRipple label="Imprimir" icon="pi pi-print" (click)="verReporte()"></button>
                 </ng-template>
               </p-toolbar>
             </ng-template>
@@ -282,5 +282,10 @@
     </ng-template>
   </p-table>
 
+</p-dialog>
+
+
+<p-dialog header="Reporte de Muestras" [(visible)]="muestraReport" [modal]="true" [style]="{width: '70vw'}">
+  <app-muestras-report [tramite]="tramiteId" [contenedor]="contenedorId"></app-muestras-report>
 </p-dialog>
 <p-scrollTop></p-scrollTop>
