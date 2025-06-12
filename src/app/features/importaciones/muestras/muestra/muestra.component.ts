@@ -23,6 +23,7 @@ import {ContenedoresService} from '@services/contenedores.service';
 import {DialogModule} from 'primeng/dialog';
 import {MuestraRequest} from '@models/muestra-request';
 import {ScrollTopModule} from 'primeng/scrolltop';
+import {ToolbarModule} from 'primeng/toolbar';
 
 @Component({
   standalone: true,
@@ -42,6 +43,7 @@ import {ScrollTopModule} from 'primeng/scrolltop';
     ProcesoTramitePipe,
     DialogModule,
     ScrollTopModule,
+    ToolbarModule,
   ],
   templateUrl: './muestra.component.html',
   styles: ``
@@ -174,7 +176,7 @@ export default class MuestraComponent implements OnInit {
 
         if (allComplete) {
           this.muestras = result;
-          this.completed();
+
           this.messageService.add({severity: 'info', summary: 'Muestras Validadas'});
         } else {
           // Si hay incompletas, actualizar la lista para mostrarlas primero
@@ -227,6 +229,10 @@ export default class MuestraComponent implements OnInit {
       this.regresar()
       this.listarCompletos([3, 2, 4]);
     }, 3000)
+  }
+
+  imprimir(){
+    window.print()
   }
 
   protected readonly scroll = scroll;

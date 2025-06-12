@@ -88,6 +88,22 @@
 
             <ng-template pTemplate="caption">
               <h3>Lista de Muestras</h3>
+              <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                  <div class="my-2">
+                    <button (click)="validate()"
+                            pButton
+                            pRipple
+                            icon="pi pi-verified"
+                            label="Finalizar Muestras"
+                            class="p-button-rounded p-button-info">
+                    </button>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="right">
+                  <button pButton pRipple label="Imprimir" icon="pi pi-print" (click)="imprimir()"></button>
+                </ng-template>
+              </p-toolbar>
             </ng-template>
 
             <ng-template pTemplate="header">
@@ -110,7 +126,15 @@
                 <td>{{ muestra.nombre }}</td>
                 <td class="p-text-center" [ngStyle]="{'width': '50px'}">{{ muestra.cantidadMuestra }}</td>
                 <td>
-
+                  <p-toggleButton
+                    disabled="true"
+                    [(ngModel)]="muestra.statusMuestra"
+                    onLabel="Coincide"
+                    offLabel="No Coincide"
+                    onIcon="pi pi-check"
+                    offIcon="pi pi-times"
+                    styleClass="w-9rem"
+                    ariaLabel="Muestra"/>
                 </td>
                 <td [ngStyle]="{'width': '50px'}">{{ muestra.barcode }}</td>
                 <td class="p-text-center p-col-1 p-col-fixed">{{ muestra.barraMuestra }}</td>
@@ -119,13 +143,6 @@
             </ng-template>
 
           </p-table>
-          <button (click)="validate()"
-                  pButton
-                  pRipple
-                  icon="pi pi-verified"
-                  label="Finalizar Muestras"
-                  class="p-button-rounded p-button-info">
-          </button>
         </div>
       } @else {
         @if (loading) {
