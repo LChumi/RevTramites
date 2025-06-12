@@ -91,6 +91,7 @@
               <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                   <div class="my-2">
+                    @if (!productsValidate){
                     <button (click)="validate()"
                             pButton
                             pRipple
@@ -98,10 +99,13 @@
                             label="Finalizar Muestras"
                             class="p-button-rounded p-button-info">
                     </button>
+                    }
                   </div>
                 </ng-template>
                 <ng-template pTemplate="right">
-                  <button pButton pRipple label="Imprimir" icon="pi pi-print" (click)="verReporte()"></button>
+                  @if (productsValidate){
+                  <button pButton pRipple label="GenerarPdf" icon="pi pi-file-pdf" (click)="verReporte()"></button>
+                  }
                 </ng-template>
               </p-toolbar>
             </ng-template>
@@ -285,7 +289,8 @@
 </p-dialog>
 
 @if (muestraReport) {
-  <p-dialog header="Reporte de Muestras" [(visible)]="muestraReport" [modal]="true" [style]="{width: '70vw'}">
+  <p-dialog header="Reporte de Muestras" [(visible)]="muestraReport" [modal]="true" [style]="{width: '70vw'}"
+  (onHide)="regresar()">
     <app-muestras-report [tramite]="tramiteId" [contenedor]="contenedorId"></app-muestras-report>
   </p-dialog>
 }

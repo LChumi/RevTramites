@@ -72,6 +72,7 @@ export default class MuestraComponent implements OnInit {
   tramiteExist = false;
   muestraReport = false
   loading = false;
+  productsValidate = false;
   protected tramiteId: string = '';
   protected contenedorId: string = '';
 
@@ -106,6 +107,8 @@ export default class MuestraComponent implements OnInit {
     this.tramiteExist = false;
     this.muestras = [];
     this.tramiteId = '';
+    this.productsValidate = false;
+    this.muestraReport = false;
   }
 
   focusNext(_currentInput: HTMLInputElement, nextInput: HTMLInputElement) {
@@ -180,7 +183,7 @@ export default class MuestraComponent implements OnInit {
 
         if (allComplete) {
           this.muestras = result;
-
+          this.productsValidate = true;
           this.messageService.add({severity: 'info', summary: 'Muestras Validadas'});
         } else {
           // Si hay incompletas, actualizar la lista para mostrarlas primero
