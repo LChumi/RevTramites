@@ -77,9 +77,6 @@ export default class InicioComponent implements OnInit {
   fecha: any;
   hora: any;
 
-  total: any;
-  percentage: any;
-
   loading = false;
   isLoadingGraficos = true;
   display = false;
@@ -101,6 +98,14 @@ export default class InicioComponent implements OnInit {
 
   getTramites() {
     this.tramiteService.getTramiestWeek().subscribe({
+      next: data => {
+        this.tramites = data;
+      }
+    })
+  }
+
+  getTramitesMonth() {
+    this.tramiteService.getTramiestMonth().subscribe({
       next: data => {
         this.tramites = data;
       }

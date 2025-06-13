@@ -70,4 +70,8 @@ export class TramiteService {
   getPercentage(tramite: string, contenedor: string): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/percentage/package/${tramite}/${contenedor}`)
   }
+
+  getTramiestMonth(): Observable<Tramite[]>{
+    return this.http.get<Tramite[]>(`${this.baseUrl}/month`);
+  }
 }
