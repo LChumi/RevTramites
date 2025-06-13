@@ -8,6 +8,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {FormsModule} from '@angular/forms';
+import {MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-muestras-report',
@@ -141,7 +142,7 @@ export class MuestrasReportComponent implements OnInit, OnChanges {
         const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`Muestras Tramite ${this.tramite}`);
+        pdf.save(`Tramite_${this.tramite}_Contenedor_${this.contenedor}`);
 
         document.body.removeChild(container);
       });

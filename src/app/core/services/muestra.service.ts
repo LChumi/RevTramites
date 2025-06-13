@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Producto} from '@models/producto';
 import {MuestraRequest} from '@models/muestra-request';
+import {ProductValidateRequest} from '@dtos/product-validate-request';
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +27,9 @@ export class MuestraService {
 
   getMuestras(tramite: string, contenedor: string): Observable<Producto[]> {
     return this.http.get<Producto[]>(`${this.baseUrl}/productos/${tramite}/${contenedor}`);
+  }
+
+  updateProductWithValidation(request: ProductValidateRequest): Observable<Producto>{
+    return this.http.put<Producto>(`${this.baseUrl}/producto/validate`, request)
   }
 }

@@ -3,7 +3,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {FormsModule} from '@angular/forms';
 import {TramiteService} from '@services/tramite.service';
 import {Tramite} from '@models/tramite';
-import {MessageService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {MuestraService} from '@services/muestra.service';
 import {TableModule} from 'primeng/table';
 import {NgStyle} from '@angular/common';
@@ -25,6 +25,10 @@ import {MuestraRequest} from '@models/muestra-request';
 import {ScrollTopModule} from 'primeng/scrolltop';
 import {ToolbarModule} from 'primeng/toolbar';
 import {MuestrasReportComponent} from '@shared/component/muestras-report/muestras-report.component';
+import {AvatarModule} from 'primeng/avatar';
+import {ProductValidateRequest} from '@dtos/product-validate-request';
+import {ToastModule} from 'primeng/toast';
+import {ProgressBarModule} from 'primeng/progressbar';
 
 @Component({
   standalone: true,
@@ -46,6 +50,9 @@ import {MuestrasReportComponent} from '@shared/component/muestras-report/muestra
     ScrollTopModule,
     ToolbarModule,
     MuestrasReportComponent,
+    AvatarModule,
+    ToastModule,
+    ProgressBarModule,
   ],
   templateUrl: './muestra.component.html',
   styles: ``
@@ -53,12 +60,12 @@ import {MuestrasReportComponent} from '@shared/component/muestras-report/muestra
 export default class MuestraComponent implements OnInit {
   @ViewChild('cajaInput') cajaInput!: ElementRef<HTMLInputElement>;
   @ViewChild('muestraInput') muestraInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('report') report!: ElementRef;
 
   private tramiteService = inject(TramiteService);
   private contenedorService = inject(ContenedoresService)
   private messageService = inject(MessageService);
-  private muestraService = inject(MuestraService)
+  private muestraService = inject(MuestraService);
+  private confirmationService = inject(ConfirmationService)
 
   tramites: Tramite[] = [];
   muestras: Producto[] = []
@@ -73,6 +80,7 @@ export default class MuestraComponent implements OnInit {
   muestraReport = false
   loading = false;
   productsValidate = false;
+  pdfLoading = false;
   protected tramiteId: string = '';
   protected contenedorId: string = '';
 
@@ -232,7 +240,41 @@ export default class MuestraComponent implements OnInit {
   }
 
   verReporte(){
+    this.pdfLoading = true;
     this.muestraReport=true
+
+    setTimeout(() => {
+      this.pdfLoading = false;
+    }, 5000);
+  }
+
+  validateProduc(p: Producto) {
+    this.confirmationService.confirm({
+      message: '¿Producto sin Registro validar?',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-circle',
+      accept: () => {
+        this.updateProduct(p)
+      }
+    })
+  }
+
+  updateProduct(p:Producto){
+    const  request: ProductValidateRequest = {
+      productId: p.id,
+      cantidad: 0,
+      usuario:this.user,
+      novedad: ''
+    }
+
+    this.muestraService.updateProductWithValidation(request).subscribe({
+      next: value => {
+        this.muestras = [...this.muestras.filter(p => p.id !== value.id), value]
+        this.messageService.add({severity: 'info', summary: 'Producto Validado', detail: 'Se agrego la validacion producto sin muestra'})
+      }, error : err => {
+        this.messageService.add({severity: 'error', summary: 'Ocurrio un problema ', detail: err})
+      }
+    })
   }
 
 

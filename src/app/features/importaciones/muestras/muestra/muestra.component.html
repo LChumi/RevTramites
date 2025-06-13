@@ -145,7 +145,7 @@
                 <td class="p-text-center p-col-1 p-col-fixed">{{ muestra.barraMuestra }}</td>
                 <td class="p-text-center p-col-1">{{ muestra.usuarioMuestra }}</td>
                 <th>
-
+                  <button pButton pRipple type="button" icon="pi pi-box" (click)="validateProduc(muestra)"></button>
                 </th>
               </tr>
             </ng-template>
@@ -293,9 +293,27 @@
 </p-dialog>
 
 @if (muestraReport) {
-  <p-dialog header="Reporte de Muestras" [(visible)]="muestraReport" [modal]="true" [style]="{width: '70vw'}"
-  (onHide)="regresar()">
+  <p-dialog header="Reporte de Muestras"
+            showEffect="fade"
+            [(visible)]="muestraReport"
+            [modal]="true"
+            [closable]="false"
+            [style]="{width: '70rem'}"
+            [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+            [maximizable]="true">
+    @if (pdfLoading){
+      <div class="w-full p-3">
+        <p-progressBar class="w-full" mode="indeterminate"></p-progressBar>
+      </div>
+      <div class="flex flex-column align-items-center gap-3 w-full p-3">
+        <p class="text-lg font-bold text-center text-blue-500">Generando PDF...</p>
+      </div>
+
+    }
     <app-muestras-report [tramite]="tramiteId" [contenedor]="contenedorId"></app-muestras-report>
+    <ng-template pTemplate="footer">
+      <button pButton icon="pi pi-home" (click)="regresar()" label="Regresar a inicio" class="p-button-outlined"></button>
+    </ng-template>
   </p-dialog>
 }
 
