@@ -8,7 +8,6 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {FormsModule} from '@angular/forms';
-import {MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-muestras-report',
@@ -51,7 +50,7 @@ export class MuestrasReportComponent implements OnInit, OnChanges {
   listarMuestras(tramiteId: string, contenedor: string) {
     this.muestraService.getMuestras(tramiteId, contenedor).subscribe({
       next: (result) => {
-        this.muestras = result
+        this.muestras = result.sort((a, b) => a.id1.localeCompare(b.id1, undefined, {numeric: true}));
         setTimeout(() => {
           this.generarPdf()
         }, 2000)

@@ -117,6 +117,7 @@ export default class MuestraComponent implements OnInit {
     this.tramiteId = '';
     this.productsValidate = false;
     this.muestraReport = false;
+    this.listarCompletos([2, 3, 4]);
   }
 
   focusNext(_currentInput: HTMLInputElement, nextInput: HTMLInputElement) {
