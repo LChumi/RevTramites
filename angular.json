@@ -17,6 +17,13 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "allowedCommonJsDependencies": [
+              "canvg",
+              "html2canvas",
+              "rgbcolor",
+              "core-js",
+              "raf"
+            ],
             "outputPath": "dist/rev-tramites",
             "index": "src/index.html",
             "browser": "src/main.ts",

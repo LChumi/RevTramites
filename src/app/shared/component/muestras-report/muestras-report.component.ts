@@ -68,70 +68,25 @@ export class MuestrasReportComponent implements OnInit, OnChanges {
   generarPdf(): void {
     const element = this.report.nativeElement;
 
-    // Clonamos el nodo del DOM
+    // Clonamos como ya lo haces
     const cloned = element.cloneNode(true) as HTMLElement;
     cloned.style.width = '1024px';
-    cloned.style.maxWidth = '1024px';
-    cloned.style.fontSize = '12px';
     cloned.classList.add('pdf-print-style');
 
-    // Función para reemplazar clases md:* en todo el clon
-    const activateMdClasses = (root: HTMLElement) => {
-      // Recorrer todos los elementos dentro del clon + el clon mismo
-      const elems = root.querySelectorAll('*');
-      // Añadimos el clon también para procesarlo
-      const allElems = [root, ...Array.from(elems)];
-
-      allElems.forEach(el => {
-        const classes = Array.from(el.classList);
-        classes.forEach(cls => {
-          if (cls.startsWith('md:')) {
-            // Quitar la clase con md:
-            el.classList.remove(cls);
-
-            // Quitar clase móvil equivalente (solo las comunes)
-            // Ejemplos básicos, amplía si tienes más casos
-            if (cls === 'md:flex-row') {
-              el.classList.remove('flex-column');
-              el.classList.add('flex-row');
-            } else if (cls === 'md:align-items-center') {
-              el.classList.remove('align-items-start');
-              el.classList.add('align-items-center');
-            } else if (cls === 'md:justify-content-between') {
-              // no se suele tener versión móvil que quitar
-              el.classList.add('justify-content-between');
-            } else if (cls === 'md:mt-0') {
-              el.classList.remove('mt-5');
-              el.classList.add('mt-0');
-            } else if (cls === 'md:text-right') {
-              el.classList.remove('text-left');
-              el.classList.add('text-right');
-            } else {
-              // Si quieres, puedes agregar más reglas aquí para más clases
-              // Por defecto solo quitar md: y agregar la clase sin md:
-              const newClass = cls.replace('md:', '');
-              el.classList.add(newClass);
-            }
-          }
-        });
-      });
-    };
-
-    activateMdClasses(cloned);
-
-    // Agregamos al body oculto para renderizar
     const container = document.createElement('div');
     container.style.position = 'fixed';
     container.style.top = '-9999px';
     container.appendChild(cloned);
     document.body.appendChild(container);
 
+    // 1) Esperar render
     setTimeout(() => {
       html2canvas(cloned, {
-        scale: 3,
+        scale: 3, // Alta calidad
         useCORS: true
       }).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
+
         const pdf = new jsPDF({
           orientation: 'portrait',
           unit: 'mm',
@@ -139,14 +94,31 @@ export class MuestrasReportComponent implements OnInit, OnChanges {
         });
 
         const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        const pdfHeight = pdf.internal.pageSize.getHeight();
 
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`Tramite_${this.tramite}_Contenedor_${this.contenedor}`);
+        const imgWidth = pdfWidth;
+        const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+        let heightLeft = imgHeight;
+        let position = 0;
+
+        // 2) Agregar primera página
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight;
+
+        // 3) Agregar páginas extras
+        while (heightLeft > 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+          heightLeft -= pdfHeight;
+        }
+
+        pdf.save(`Tramite_${this.tramite}_Contenedor_${this.contenedor}.pdf`);
 
         document.body.removeChild(container);
       });
-    }, 2000);
+    }, 500);
   }
 
 
