@@ -245,7 +245,7 @@ export default class MuestraComponent implements OnInit {
 
     setTimeout(() => {
       this.pdfLoading = false;
-    }, 5000);
+    }, 8000);
   }
 
   validateProduc(p: Producto) {
