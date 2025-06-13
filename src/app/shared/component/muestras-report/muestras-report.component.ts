@@ -53,7 +53,7 @@ export class MuestrasReportComponent implements OnInit, OnChanges {
         this.muestras = result
         setTimeout(() => {
           this.generarPdf()
-        }, 3000)
+        }, 2000)
       }
     })
   }
@@ -145,7 +145,7 @@ export class MuestrasReportComponent implements OnInit, OnChanges {
 
         document.body.removeChild(container);
       });
-    }, 100);
+    }, 2000);
   }
 
 
