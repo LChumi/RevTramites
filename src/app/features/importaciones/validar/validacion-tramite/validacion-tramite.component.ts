@@ -71,11 +71,11 @@ export default class ValidacionTramiteComponent implements OnInit {
   protected bultos: number = 0
 
   estadoOptions = [
-    { label: 'Estados', value: null},
-    { label: 'SOBRANTE', value: 'SOBRANTE' },
-    { label: 'FALTANTE', value: 'FALTANTE' },
-    { label: 'NO_LLEGO', value: 'NO_LLEGO' },
-    { label: 'SIN_REGISTRO', value: 'SIN_REGISTRO' }
+    {label: 'Estados', value: null},
+    {label: 'SOBRANTE', value: 'SOBRANTE'},
+    {label: 'FALTANTE', value: 'FALTANTE'},
+    {label: 'NO_LLEGO', value: 'NO_LLEGO'},
+    {label: 'SIN_REGISTRO', value: 'SIN_REGISTRO'}
   ];
 
   ngOnInit(): void {
@@ -148,15 +148,15 @@ export default class ValidacionTramiteComponent implements OnInit {
     this.display = false;
   }
 
-  selectProduct(producto:Producto){
-    this.editProductView=true
-    this.prodId=producto.id
-    this.bultos=producto.bultos
+  selectProduct(producto: Producto) {
+    this.editProductView = true
+    this.prodId = producto.id
+    this.bultos = producto.bultos
   }
 
-  updateProduct(){
+  updateProduct() {
 
-    if (!this.cantidad || this.cantidad == 0 || !this.prodId){
+    if (!this.cantidad || this.cantidad == 0 || !this.prodId) {
       this.messageService.add({severity: 'warn', summary: 'La cantidad no puede ser 0 o nula',})
       return
     }
@@ -173,17 +173,17 @@ export default class ValidacionTramiteComponent implements OnInit {
         this.revisiones = [...this.revisiones.filter(p => p.id !== value.id), value]
         this.cantidad = 0;
         this.novedad = '';
-      }, error : err => {
+      }, error: err => {
         this.messageService.add({severity: 'error', summary: 'Ocurrio un problema ', detail: err})
       }
     })
   }
 
-  completar(){
+  completar() {
     this.cantidad = this.bultos
   }
 
-  closeUpdate(){
+  closeUpdate() {
     this.cantidad = 0;
     this.novedad = '';
     this.prodId = '';

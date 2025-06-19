@@ -14,11 +14,11 @@ export class EstadoColorPipe implements PipeTransform {
     'faltante': {'background-color': '#d4c294', 'color': 'white'},
     'agregado': {'background-color': '#c0c248', 'color': 'black'},
     'retirado': {'background-color': '#d49894', 'color': 'white'},
-    'registrado': { 'background-color': '#ADD8E6', 'color': 'black' },     // celeste suave
-    'proceso':  { 'background-color': '#1E90FF', 'color': 'white' },     // azul tipo "dodger blue", menos oscuro
-    'descargado':   { 'background-color': '#228B22', 'color': 'white' },     // verde tipo "forest green"
-    'muestra':    { 'background-color': '#7CFC00', 'color': 'black' },     // "lawn green", más legible
-    'finalizado': { 'background-color': '#FFD700', 'color': 'black' }      // dorado (queda muy bien)
+    'registrado': {'background-color': '#ADD8E6', 'color': 'black'},
+    'proceso': {'background-color': '#1E90FF', 'color': 'white'},
+    'descargado': {'background-color': '#228B22', 'color': 'white'},
+    'muestra': {'background-color': '#7CFC00', 'color': 'black'},
+    'finalizado': {'background-color': '#FFD700', 'color': 'black'}
 
   };
 

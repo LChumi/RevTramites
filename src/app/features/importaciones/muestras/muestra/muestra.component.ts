@@ -240,9 +240,9 @@ export default class MuestraComponent implements OnInit {
     this.listarMuestras(this.tramiteId, this.contenedorId)
   }
 
-  verReporte(){
+  verReporte() {
     this.pdfLoading = true;
-    this.muestraReport=true
+    this.muestraReport = true
 
     setTimeout(() => {
       this.pdfLoading = false;
@@ -260,19 +260,23 @@ export default class MuestraComponent implements OnInit {
     })
   }
 
-  updateProduct(p:Producto){
-    const  request: ProductValidateRequest = {
+  updateProduct(p: Producto) {
+    const request: ProductValidateRequest = {
       productId: p.id,
       cantidad: 0,
-      usuario:this.user,
+      usuario: this.user,
       novedad: ''
     }
 
     this.muestraService.updateProductWithValidation(request).subscribe({
       next: value => {
         this.muestras = [...this.muestras.filter(p => p.id !== value.id), value]
-        this.messageService.add({severity: 'info', summary: 'Producto Validado', detail: 'Se agrego la validacion producto sin muestra'})
-      }, error : err => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Producto Validado',
+          detail: 'Se agrego la validacion producto sin muestra'
+        })
+      }, error: err => {
         this.messageService.add({severity: 'error', summary: 'Ocurrio un problema ', detail: err})
       }
     })

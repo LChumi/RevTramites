@@ -91,20 +91,20 @@
               <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                   <div class="my-2">
-                    @if (!productsValidate){
-                    <button (click)="validate()"
-                            pButton
-                            pRipple
-                            icon="pi pi-verified"
-                            label="Finalizar Muestras"
-                            class="p-button-rounded p-button-info">
-                    </button>
+                    @if (!productsValidate) {
+                      <button (click)="validate()"
+                              pButton
+                              pRipple
+                              icon="pi pi-verified"
+                              label="Finalizar Muestras"
+                              class="p-button-rounded p-button-info">
+                      </button>
                     }
                   </div>
                 </ng-template>
                 <ng-template pTemplate="right">
-                  @if (productsValidate){
-                  <button pButton pRipple label="GenerarPdf" icon="pi pi-file-pdf" (click)="verReporte()"></button>
+                  @if (productsValidate) {
+                    <button pButton pRipple label="GenerarPdf" icon="pi pi-file-pdf" (click)="verReporte()"></button>
                   }
                 </ng-template>
               </p-toolbar>
@@ -301,7 +301,7 @@
             [style]="{width: '70rem'}"
             [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
             [maximizable]="true">
-    @if (pdfLoading){
+    @if (pdfLoading) {
       <div class="w-full p-3">
         <p-progressBar class="w-full" mode="indeterminate"></p-progressBar>
       </div>
@@ -312,7 +312,8 @@
     }
     <app-muestras-report [tramite]="tramiteId" [contenedor]="contenedorId"></app-muestras-report>
     <ng-template pTemplate="footer">
-      <button pButton icon="pi pi-home" (click)="regresar()" label="Regresar a inicio" class="p-button-outlined"></button>
+      <button pButton icon="pi pi-home" (click)="regresar()" label="Regresar a inicio"
+              class="p-button-outlined"></button>
     </ng-template>
   </p-dialog>
 }

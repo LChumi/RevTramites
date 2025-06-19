@@ -44,7 +44,7 @@
                   <div class="flex align-items-center mt-2">
                         <span class="font-semibold flex-grow-1"
                               [ngStyle]="tramite.proceso | procesoTramite | estadoColor">
-                          @if ((tramite.proceso | procesoTramite )=== 'Proceso') {
+                          @if ((tramite.proceso | procesoTramite) === 'Proceso') {
                             <i class="pi pi-clock mr-2"></i>
                           } @else {
                             <i class="pi pi-check mr-2"></i>
@@ -71,7 +71,7 @@
                       <div class="flex align-items-center">
                             <span class="font-semibold flex-grow-1"
                                   [ngStyle]="tramite.proceso | procesoTramite | estadoColor">
-                              @if ((tramite.proceso | procesoTramite )=== 'Proceso') {
+                              @if ((tramite.proceso | procesoTramite) === 'Proceso') {
                                 <i class="pi pi-clock mr-2"></i>
                               } @else {
                                 <i class="pi pi-check mr-2"></i>
@@ -100,7 +100,7 @@
 
         </p-dataView>
       } @else {
-        <h4>Productos escaneados {{revisiones.length}}</h4>
+        <h4>Productos escaneados {{ revisiones.length }}</h4>
         <p-toolbar styleClass="mb-4">
           <ng-template pTemplate="left">
             <div class="my-2">
@@ -144,7 +144,7 @@
                   </p-columnFilter>
 
                 </div>
-                </th>
+              </th>
               <th>Usuario</th>
               <th>Novedad</th>
             </tr>
@@ -225,13 +225,13 @@
     <div class="inline-flex align-items-center justify-content-center gap-2">
       <p-avatar
         icon="pi pi-ticket"
-        shape="circle" />
+        shape="circle"/>
       <span class="font-bold white-space-nowrap">
         Agregar Novedad
       </span>
     </div>
   </ng-template>
-  <span class="p-text-secondary block mb-5">Actualizar las cantidades, Bultos en el tramite {{bultos}}</span>
+  <span class="p-text-secondary block mb-5">Actualizar las cantidades, Bultos en el tramite {{ bultos }}</span>
   <div class="flex align-items-center gap-3 mb-3">
     <label for="cantidad" class="font-semibold w-6rem">
       Cantidad validada
@@ -255,7 +255,7 @@
       label="Cancelar"
       [text]="true"
       severity="secondary"
-      (onClick)="closeUpdate()" />
+      (onClick)="closeUpdate()"/>
     <p-button
       label="Actualizar"
       [outlined]="true"

@@ -42,9 +42,10 @@
                   <!-- Información del trámite -->
                   <div class="flex-1">
                     <div class="text-xl font-semibold mb-2 text-primary">Trámite {{ tramite.id }}</div>
-                    <div class="mb-2 text-secondary text-900">N° de contenedores: {{ tramite.contenedoresIds.length }}</div>
-                    <div class="mb-2 text-secondary text-500">Llegada al Puerto {{tramite.fechaLlegada}}</div>
-                    <div class="mb-2 text-secondary text-500">Llegada a la Bodega {{tramite.fechaArribo}}</div>
+                    <div class="mb-2 text-secondary text-900">N° de contenedores: {{ tramite.contenedoresIds.length }}
+                    </div>
+                    <div class="mb-2 text-secondary text-500">Llegada al Puerto {{ tramite.fechaLlegada }}</div>
+                    <div class="mb-2 text-secondary text-500">Llegada a la Bodega {{ tramite.fechaArribo }}</div>
                     <div class="flex align-items-center gap-2 px-2 py-1 border-round text-sm"
                          style="max-width: fit-content;"
                          [ngStyle]="tramite.proceso | procesoTramite | estadoColor">
@@ -172,7 +173,7 @@
 } @else {
   <div class="card">
     <p>No tienes trámites pendientes de descarga. ¡Puedes continuar con tu gestión sin preocupaciones!</p>
-    <button pButton pRipple  icon="pi pi-calendar-clock" label="Tramites del Mes"
+    <button pButton pRipple icon="pi pi-calendar-clock" label="Tramites del Mes"
             class="p-button-rounded p-button-secondary p-button-text" (click)="getTramitesMonth()"></button>
   </div>
 }

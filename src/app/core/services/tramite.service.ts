@@ -47,7 +47,7 @@ export class TramiteService {
     return this.http.get<Tramite[]>(`${this.baseUrl}/filtros`, {params});
   }
 
-  updateDate(fechaArribo: any, horaArribo: any, tramiteId: string){
+  updateDate(fechaArribo: any, horaArribo: any, tramiteId: string) {
     let params = new HttpParams();
     params = params.set('fechaArribo', fechaArribo);
     params = params.set('horaArribo', horaArribo);
@@ -59,7 +59,7 @@ export class TramiteService {
     return this.http.get<Contenedor>(`${this.baseUrl}/contenedor/${tramiteId}/${contenedorId}`);
   }
 
-  getTramiestWeek(): Observable<Tramite[]>{
+  getTramiestWeek(): Observable<Tramite[]> {
     return this.http.get<Tramite[]>(`${this.baseUrl}/week`);
   }
 
@@ -71,7 +71,7 @@ export class TramiteService {
     return this.http.get<number>(`${this.baseUrl}/percentage/package/${tramite}/${contenedor}`)
   }
 
-  getTramiestMonth(): Observable<Tramite[]>{
+  getTramiestMonth(): Observable<Tramite[]> {
     return this.http.get<Tramite[]>(`${this.baseUrl}/month`);
   }
 }
