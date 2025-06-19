@@ -7,13 +7,13 @@ import {Pipe, PipeTransform} from '@angular/core';
 export class EstadoColorPipe implements PipeTransform {
 
   private estados: { [key: string]: any } = {
-    'completo': {'background-color': 'green', 'color': 'white'},
-    'sin_registro': {'background-color': 'tomato', 'color': 'white'},
-    'no_llego': {'background-color': 'yellow', 'color': 'black'},
-    'sobrante': {'background-color': 'purple', 'color': 'white'},
-    'faltante': {'background-color': 'orange', 'color': 'white'},
-    'agregado': {'background-color': 'yellow', 'color': 'black'},
-    'retirado': {'background-color': 'red', 'color': 'white'},
+    'completo': {'background-color': '#9ceb9b', 'color': 'white'},
+    'sin_registro': {'background-color': '#ebc99b', 'color': 'white'},
+    'no_llego': {'background-color': '#e8e49e', 'color': 'black'},
+    'sobrante': {'background-color': '#c294d4', 'color': 'white'},
+    'faltante': {'background-color': '#d4c294', 'color': 'white'},
+    'agregado': {'background-color': '#c0c248', 'color': 'black'},
+    'retirado': {'background-color': '#d49894', 'color': 'white'},
     'registrado': { 'background-color': '#ADD8E6', 'color': 'black' },     // celeste suave
     'proceso':  { 'background-color': '#1E90FF', 'color': 'white' },     // azul tipo "dodger blue", menos oscuro
     'descargado':   { 'background-color': '#228B22', 'color': 'white' },     // verde tipo "forest green"

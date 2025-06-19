@@ -179,6 +179,10 @@ export default class ValidacionTramiteComponent implements OnInit {
     })
   }
 
+  completar(){
+    this.cantidad = this.bultos
+  }
+
   closeUpdate(){
     this.cantidad = 0;
     this.novedad = '';

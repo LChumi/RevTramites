@@ -240,6 +240,12 @@
   </div>
   <div class="flex align-items-center gap-3 mb-3">
     <label for="cantidad" class="font-semibold w-6rem">
+      Completo
+    </label>
+    <button class="p-button-success" pButton pRipple type="button" icon="pi pi-check" (click)="completar()"></button>
+  </div>
+  <div class="flex align-items-center gap-3 mb-3">
+    <label for="cantidad" class="font-semibold w-6rem">
       Ingresar Obsrvacion
     </label>
     <input pInputText id="cantidad" class="flex-auto" autocomplete="off" [(ngModel)]="novedad"/>
