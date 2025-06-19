@@ -156,8 +156,8 @@ export default class ValidacionTramiteComponent implements OnInit {
 
   updateProduct() {
 
-    if (!this.cantidad || this.cantidad == 0 || !this.prodId) {
-      this.messageService.add({severity: 'warn', summary: 'La cantidad no puede ser 0 o nula',})
+    if (!this.prodId) {
+      this.messageService.add({severity: 'warn', summary: 'El producto no fue bien seleccionado vuelva a seleccionarlo ',})
       return
     }
 
