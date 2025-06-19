@@ -171,8 +171,8 @@ export default class ValidacionTramiteComponent implements OnInit {
     this.revisionService.updateProductWithValidation(request).subscribe({
       next: value => {
         this.revisiones = [...this.revisiones.filter(p => p.id !== value.id), value]
-        this.cantidad = 0;
-        this.novedad = '';
+        this.closeUpdate()
+        this.messageService.add({severity: 'info', summary: 'Producto corregido', detail: 'Se registro la novedad del producto '})
       }, error: err => {
         this.messageService.add({severity: 'error', summary: 'Ocurrio un problema ', detail: err})
       }
