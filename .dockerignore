@@ -1,5 +1,50 @@
-node_modules
-dist
-.git
-.gitignore
-Dockerfile
+# Angular output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Node dependencies
+/node_modules
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# IDEs and editors
+/.idea
+/.vscode
+/.project
+/.classpath
+/.c9
+/.settings
+*.sublime-workspace
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Git
+/.git
+/.gitignore
+
+# Coverage and tests
+/coverage
+/tests
+/spec
+/e2e
+testem.log
+
+# Cache
+/.angular/cache
+/.sass-cache
+
+# Miscellaneous
+/connect.lock
+/libpeerconnection.log
+/typings
+*.md
+
+# Docker envs (optional)
+.env
+docker-compose*.yml
