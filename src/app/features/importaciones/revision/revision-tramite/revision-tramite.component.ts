@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {InputTextModule} from 'primeng/inputtext';
 import {InputGroupModule} from 'primeng/inputgroup';
@@ -8,7 +8,7 @@ import {RevisionService} from '@services/revision.service';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {Table, TableModule} from 'primeng/table';
 import {Ripple} from 'primeng/ripple';
-import {NgStyle} from '@angular/common';
+import {isPlatformBrowser, NgStyle} from '@angular/common';
 import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
 import {forkJoin, of, switchMap} from 'rxjs';
 import {Tramite} from '@models/tramite';
@@ -45,6 +45,7 @@ export default class RevisionTramiteComponent implements OnInit {
   private revisionService = inject(RevisionService)
   private messageService = inject(MessageService)
   private confirmationService = inject(ConfirmationService)
+  private platformId = inject(PLATFORM_ID)
 
   user: any;
   tramiteId: string = '';
@@ -61,7 +62,9 @@ export default class RevisionTramiteComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarPendientes([1, 2]);
-    this.user = sessionStorage.getItem("username")
+    if (isPlatformBrowser(this.platformId)){
+      this.user = sessionStorage.getItem("username")
+    }
   }
 
   blockUnlockContainer(tramiteId: string, containerId: string) {

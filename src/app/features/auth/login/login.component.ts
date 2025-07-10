@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ButtonDirective} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
@@ -7,6 +7,7 @@ import {Ripple} from 'primeng/ripple';
 import {Router} from '@angular/router';
 import {LoginRequest} from '@dtos/login-request';
 import {AuthService} from '@services/auth.service';
+import {isPlatformBrowser} from '@angular/common';
 
 @Component({
   imports: [
@@ -24,13 +25,22 @@ import {AuthService} from '@services/auth.service';
 export default class LoginComponent implements OnInit {
 
   loginForm!: FormGroup
+
   private fb = inject(FormBuilder)
   private router = inject(Router)
   private autService = inject(AuthService)
+  private platformId = inject(PLATFORM_ID);
+
   submitted = false;
+  isBrowser = false;
 
   ngOnInit(): void {
-    this.getSession()
+    this.isBrowser = isPlatformBrowser(this.platformId);
+
+    if (this.isBrowser){
+      this.getSession()
+    }
+
     this.loginForm = this.fb.group({
       usuario: ['', Validators.required],
       password: ['', Validators.required]
@@ -50,10 +60,13 @@ export default class LoginComponent implements OnInit {
 
     this.autService.login(user).subscribe({
       next: usuario => {
+        if (this.isBrowser) {
         const nombres = usuario.usr_nombre.split(' ');
         const nombre = nombres[0]; // Primer nombre
         const segundoNombre = nombres.length > 2 ? nombres[2] : nombres.length > 1 ? nombres[1] : ''; // Segundo nombre, si existe
         sessionStorage.setItem("username", nombre + (segundoNombre ? ' ' + segundoNombre : ''));
+        }
+
         this.loginForm.reset();
         this.submitted = true;
         this.goToDashboard()

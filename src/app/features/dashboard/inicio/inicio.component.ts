@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {getCurrentDateNow, getCurrentTime, horaFormateada} from '@utils/date-utils';
 import {TramiteService} from '@services/tramite.service';
 import {Tramite} from '@models/tramite';
@@ -7,7 +7,7 @@ import {Producto} from '@models/producto';
 import {DataViewModule} from 'primeng/dataview';
 import {ProcesoTramitePipe} from '@shared/pipes/proceso-tramite.pipe';
 import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
-import {NgClass, NgStyle} from '@angular/common';
+import {isPlatformBrowser, NgClass, NgStyle} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {RatingModule} from 'primeng/rating';
 import {TagModule} from 'primeng/tag';
@@ -57,6 +57,7 @@ export default class InicioComponent implements OnInit {
 
   private tramiteService = inject(TramiteService)
   private contenedorService = inject(ContenedoresService)
+  private platformId = inject(PLATFORM_ID)
 
   chartProductoHistorialData: any;
   chartProductoHistorialOptions: any;
@@ -91,7 +92,10 @@ export default class InicioComponent implements OnInit {
   }
 
   getInfo() {
-    this.nombre = sessionStorage.getItem('username');
+    if (isPlatformBrowser(this.platformId)) {
+      this.nombre = sessionStorage.getItem('username');
+    }
+
     this.fecha = getCurrentDateNow();
     this.hora = getCurrentTime();
   }

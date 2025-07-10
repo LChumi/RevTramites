@@ -9,9 +9,7 @@ import {NgOptimizedImage} from '@angular/common';
   selector: 'app-sidebar',
   standalone: true,
   imports: [
-    RouterLink,
     MenuComponent,
-    NgOptimizedImage
   ],
   templateUrl: './sidebar.component.html',
   styles: ``

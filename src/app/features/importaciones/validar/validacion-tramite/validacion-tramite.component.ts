@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, PLATFORM_ID, ViewChild} from '@angular/core';
 import {TramiteService} from '@services/tramite.service';
 import {RevisionService} from '@services/revision.service';
 import {Tramite} from '@models/tramite';
@@ -9,7 +9,7 @@ import {DropdownModule} from 'primeng/dropdown';
 import {MessageService} from 'primeng/api';
 import {InputTextModule} from 'primeng/inputtext';
 import {ProcesoTramitePipe} from '@shared/pipes/proceso-tramite.pipe';
-import {NgStyle} from '@angular/common';
+import {isPlatformBrowser, NgStyle} from '@angular/common';
 import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
 import {Button, ButtonDirective} from 'primeng/button';
 import {Contenedor} from '@models/contenedor';
@@ -54,6 +54,7 @@ export default class ValidacionTramiteComponent implements OnInit {
   private revisionService = inject(RevisionService)
   private messageService = inject(MessageService)
   private contenedoresService = inject(ContenedoresService)
+  private platformId = inject(PLATFORM_ID)
 
   user: any;
   tramiteId: string = '';
@@ -80,7 +81,10 @@ export default class ValidacionTramiteComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarCompletos([3, 2]);
-    this.user = sessionStorage.getItem("username")
+    if (isPlatformBrowser(this.platformId)) {
+      this.user = sessionStorage.getItem("username")
+    }
+
   }
 
   listarCompletos(processes: number[]): void {

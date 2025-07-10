@@ -1,4 +1,14 @@
-import {Component, ElementRef, inject, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  PLATFORM_ID,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {MuestraService} from '@services/muestra.service';
 import {Producto} from '@models/producto';
 import {getCurrentDateNow, getCurrentTime} from '@utils/date-utils';
@@ -8,6 +18,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {FormsModule} from '@angular/forms';
+import {isPlatformBrowser} from '@angular/common';
 
 @Component({
   selector: 'app-muestras-report',
@@ -29,6 +40,7 @@ export class MuestrasReportComponent implements OnInit, OnChanges {
   @Input() contenedor!: string;
 
   private muestraService = inject(MuestraService)
+  private platformId = inject(PLATFORM_ID)
 
   muestras: Producto[] = []
   nombre: any
@@ -59,7 +71,10 @@ export class MuestrasReportComponent implements OnInit, OnChanges {
   }
 
   getInfo() {
-    this.nombre = sessionStorage.getItem('username');
+    if (isPlatformBrowser(this.platformId)) {
+      this.nombre = sessionStorage.getItem('username');
+    }
+
     this.fecha = getCurrentDateNow();
     this.hora = getCurrentTime();
   }

@@ -1,4 +1,4 @@
-import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, OnInit, PLATFORM_ID, ViewChild} from '@angular/core';
 import {InputTextModule} from 'primeng/inputtext';
 import {FormsModule} from '@angular/forms';
 import {TramiteService} from '@services/tramite.service';
@@ -6,7 +6,7 @@ import {Tramite} from '@models/tramite';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {MuestraService} from '@services/muestra.service';
 import {TableModule} from 'primeng/table';
-import {NgStyle} from '@angular/common';
+import {isPlatformBrowser, NgStyle} from '@angular/common';
 import {Button, ButtonDirective} from 'primeng/button';
 import {Ripple} from 'primeng/ripple';
 import {ErrorResponse} from '@dtos/error-response';
@@ -66,6 +66,7 @@ export default class MuestraComponent implements OnInit {
   private messageService = inject(MessageService);
   private muestraService = inject(MuestraService);
   private confirmationService = inject(ConfirmationService)
+  private platformId = inject(PLATFORM_ID)
 
   tramites: Tramite[] = [];
   muestras: Producto[] = []
@@ -86,7 +87,10 @@ export default class MuestraComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarCompletos([2, 3, 4]);
-    this.user = sessionStorage.getItem("username")
+    if (isPlatformBrowser(this.platformId)){
+      this.user = sessionStorage.getItem("username")
+    }
+
   }
 
   listarCompletos(processes: number[]): void {
