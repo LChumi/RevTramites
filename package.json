@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:RevTramites": "node dist/rev-tramites/server/server.mjs"
+    "serve:ssr:RevTramites": "node dist/rev-tramites/server/server.mjs",
+    "build:ssr": "ng build --configuration production && ng run RevTramites:server:production"
   },
   "private": true,
   "dependencies": {
