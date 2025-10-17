@@ -6,9 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr:RevTramites": "node dist/rev-tramites/server/server.mjs",
-    "build:ssr": "ng build --configuration production && ng run RevTramites:server:production"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
@@ -24,7 +22,6 @@
     "@angular/ssr": "^18.2.14",
     "@ngx-translate/core": "^16.0.4",
     "chart.js": "^3.3.2",
-    "express": "^4.18.2",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.1",
     "primeflex": "^3.3.1",

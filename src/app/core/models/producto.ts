@@ -1,3 +1,5 @@
+import {ProductoCantidad} from '@models/producto-cantidad';
+
 export interface Producto {
   id:              string;
   barcode:         string;
@@ -20,6 +22,8 @@ export interface Producto {
   barraSistema:    string;
   diferencia:      number;
   secuencia:       number;
+
+  cantidades:      ProductoCantidad[];
 
   //Datos revision
   cantidadRevision:           number;
