@@ -1,5 +1,5 @@
 import {Component, inject, OnInit, PLATFORM_ID} from '@angular/core';
-import {getCurrentDateNow, getCurrentTime, horaFormateada} from '@utils/date-utils';
+import {getCurrentDate, getCurrentDateNow, getCurrentTime, horaFormateada} from '@utils/date-utils';
 import {TramiteService} from '@services/tramite.service';
 import {Tramite} from '@models/tramite';
 import {Contenedor} from '@models/contenedor';
@@ -22,6 +22,8 @@ import {ChartDataset, ChartOptions} from 'chart.js';
 import {Ripple} from 'primeng/ripple';
 import {ToolbarModule} from 'primeng/toolbar';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {CalendarModule} from 'primeng/calendar';
+import {MessageService} from 'primeng/api';
 
 interface XYPoint {
   x: number;
@@ -48,15 +50,17 @@ interface XYPoint {
     ButtonDirective,
     Ripple,
     ToolbarModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    CalendarModule
   ],
   templateUrl: './inicio.component.html',
   styles: ``
 })
 export default class InicioComponent implements OnInit {
 
-  private tramiteService = inject(TramiteService)
-  private contenedorService = inject(ContenedoresService)
+  private tramiteService = inject(TramiteService);
+  private contenedorService = inject(ContenedoresService);
+  private messageService = inject(MessageService);
   private platformId = inject(PLATFORM_ID)
 
   chartProductoHistorialData: any;
@@ -77,6 +81,8 @@ export default class InicioComponent implements OnInit {
   nombre: any
   fecha: any;
   hora: any;
+  fechaInicio: any;
+  fechaFin: any;
 
   loading = false;
   isLoadingGraficos = true;
@@ -149,6 +155,42 @@ export default class InicioComponent implements OnInit {
         this.display = false;
       }
     });
+  }
+
+  find(){
+    const formatetedDateStart = getCurrentDate(this.fechaInicio)
+    const formatetedDateEnd = getCurrentDate(this.fechaFin)
+
+    let count = 0;
+    if (formatetedDateEnd) count++;
+    if (formatetedDateStart) count++;
+
+    if (count < 1) {
+      this.loading = false;
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Campos vacíos',
+        detail: 'Por favor, ingrese un valor en al menos un campo.'
+      });
+      return
+    }
+
+    this.tramiteService.buscar(
+      undefined,
+      undefined,
+      formatetedDateStart,
+      formatetedDateEnd,
+    ).subscribe({
+      next: (data) => {
+        if (data && data.length > 0) {
+          this.tramites = data
+        }else{
+          this.tramites =[]
+          this.messageService.add({severity: 'warn', summary: 'Sin datos', detail: 'No se encontraron trámites.'});
+        }
+      }
+    })
+
   }
 
   listarProducto(tramiteId: string) {

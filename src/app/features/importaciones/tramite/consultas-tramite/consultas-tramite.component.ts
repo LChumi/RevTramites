@@ -200,5 +200,4 @@ export default class ConsultasTramiteComponent {
   exportToExcel() {
     converToExcel(this.productos, this.tramiteId)
   }
-
 }

@@ -10,6 +10,25 @@
     </div>
   </div>
 </div>
+<div class="card">
+  <p>Consulta los tramites</p>
+  <div class="grid p-fluid" (keydown.enter)="find()">
+    <div class="grid formgrid">
+      <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+        <label for="id" class="text-900 font-semibold">Fecha Inicio</label>
+        <p-calendar dateFormat="dd-mm-yy" inputId="fecha"
+                    [(ngModel)]="fechaInicio"></p-calendar>
+      </div>
+      <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+        <label for="id" class="text-900 font-semibold">Fecha Fin</label>
+        <p-calendar dateFormat="dd-mm-yy" inputId="fechaFin"
+                    [(ngModel)]="fechaFin"></p-calendar>
+      </div>
+    </div>
+  </div>
+  <button pButton pRipple icon="pi pi-calendar-clock" label="Tramites del Mes"
+          class="p-button-rounded p-button-secondary p-button-text" (click)="getTramitesMonth()"></button>
+</div>
 
 @if (tramites.length > 0) {
   @if (!display) {
@@ -170,12 +189,6 @@
 
     </section>
   }
-} @else {
-  <div class="card">
-    <p>No tienes trámites pendientes de descarga. ¡Puedes continuar con tu gestión sin preocupaciones!</p>
-    <button pButton pRipple icon="pi pi-calendar-clock" label="Tramites del Mes"
-            class="p-button-rounded p-button-secondary p-button-text" (click)="getTramitesMonth()"></button>
-  </div>
 }
 
 <p-scrollTop></p-scrollTop>
