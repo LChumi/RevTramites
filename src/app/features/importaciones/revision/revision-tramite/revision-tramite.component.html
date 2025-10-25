@@ -6,12 +6,7 @@
     <span class="text-900 block font-bold text-xl">Escaneo de importaciones</span>
   </div>
   <div class="col-12 mt-4">
-
-    @if (loading) {
-      <div class="flex align-items-center justify-content-center" style="height: 100%;">
-        <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: blue;"></i>
-      </div>
-    } @else {
+    @defer {
       @if (tramites.length > 0) {
         @if (!tramiteExist) {
           <div class="mt-2">
@@ -262,6 +257,10 @@
           <p>No tienes trámites pendientes de descarga. ¡Puedes continuar con tu gestión sin preocupaciones!</p>
         </div>
       }
+    } @loading (minimum 1000ms){
+      <div class="flex align-items-center justify-content-center" style="height: 100%;">
+        <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: blue;"></i>
+      </div>
     }
   </div>
 </div>

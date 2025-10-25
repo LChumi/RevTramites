@@ -12,14 +12,14 @@
 </div>
 <div class="card">
   <p>Consulta los tramites</p>
-  <div class="grid p-fluid" (keydown.enter)="find()">
+  <div class="formgroup-inline" (keydown.enter)="find()">
     <div class="grid formgrid">
-      <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+      <div class="field">
         <label for="id" class="text-900 font-semibold">Fecha Inicio</label>
         <p-calendar dateFormat="dd-mm-yy" inputId="fecha"
                     [(ngModel)]="fechaInicio"></p-calendar>
       </div>
-      <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+      <div class="field">
         <label for="id" class="text-900 font-semibold">Fecha Fin</label>
         <p-calendar dateFormat="dd-mm-yy" inputId="fechaFin"
                     [(ngModel)]="fechaFin"></p-calendar>
