@@ -1,5 +1,11 @@
 import {Component, inject, OnInit, PLATFORM_ID} from '@angular/core';
-import {getCurrentDate, getCurrentDateNow, getCurrentTime, horaFormateada} from '@utils/date-utils';
+import {
+  getCurrentDate,
+  getCurrentDateNow,
+  getCurrentTime,
+  getDateFormattedNow,
+  horaFormateada
+} from '@utils/date-utils';
 import {TramiteService} from '@services/tramite.service';
 import {Tramite} from '@models/tramite';
 import {Contenedor} from '@models/contenedor';
@@ -90,7 +96,8 @@ export default class InicioComponent implements OnInit {
   tramiteId: string = '';
 
   constructor() {
-    this.getInfo()
+    this.getInfo();
+    this.fechaFin = getDateFormattedNow();
   }
 
   ngOnInit(): void {

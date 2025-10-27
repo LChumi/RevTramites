@@ -1,4 +1,6 @@
 // Devuelve la fecha actual en formato YYYY-MM-DD
+import {formatDate} from '@angular/common';
+
 export function getCurrentDate(fecha: any): any {
   if (!fecha) {
     return null;
@@ -53,4 +55,9 @@ export function horaFormateada(horaStr: string | null | undefined): number {
 
   const [h, m, s] = hora;
   return h + m / 100; // Divide por 100 para mantener el formato adecuado
+}
+
+export function getDateFormattedNow() {
+  const date = new Date();
+  return formatDate(date, 'dd-MM-YYYY', 'en-US');
 }
