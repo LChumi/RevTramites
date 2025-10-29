@@ -155,42 +155,48 @@ export default class ConsultasTramiteComponent {
   }
 
   updateDate(id: string) {
-    this.sending = true
-    this.fechaArribo = getCurrentDate(this.fechaArribo)
-    this.horaArribo = getTime(this.horaArribo)
-    this.tramiteService.updateDate(this.fechaArribo, this.horaArribo, id).subscribe({
-      next: data => {
-        if (data.status) {
-          this.messageService.add({
-            severity: 'info',
-            summary: `${data.info}, Fecha de arribo agregada`,
-            detail: 'Se actualizo la fecha de arribo, se envio notificacion a los usuarios'
-          });
-          this.cerrarModal(id)
-        } else {
-          this.messageService.add({
-            severity: 'warn',
-            summary: 'Observacion',
-            detail: 'Se encontro un problema al actualizar la fecha de arribo'
-          });
+
+    if (this.fechaArribo && this.horaArribo){
+      this.sending = true
+      this.fechaArribo = getCurrentDate(this.fechaArribo)
+      this.horaArribo = getTime(this.horaArribo)
+      this.tramiteService.updateDate(this.fechaArribo, this.horaArribo, id).subscribe({
+        next: data => {
+          if (data.status) {
+            this.messageService.add({
+              severity: 'info',
+              summary: `${data.info}, Fecha de arribo agregada`,
+              detail: 'Se actualizo la fecha de arribo, se envio notificacion a los usuarios'
+            });
+            this.cerrarModal(id)
+          } else {
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Observacion',
+              detail: 'Se encontro un problema al actualizar la fecha de arribo'
+            });
+            this.cerrarModal(id)
+          }
+        },
+        error: err => {
+          this.messageService.add({severity: 'error', summary: 'Error', detail: 'Ocurrio un problema en el servidor'});
           this.cerrarModal(id)
         }
-      },
-      error: err => {
-        this.messageService.add({severity: 'error', summary: 'Error', detail: 'Ocurrio un problema en el servidor'});
-        this.cerrarModal(id)
-      }
-    })
+      })
+    }else {
+      this.messageService.add({severity: 'warn', summary: 'Llene los campos por favor', detail: 'Ingrese los datos'});
+    }
   }
 
   mostrarModal(tramiteId: string) {
     this.modalVisibility[tramiteId] = true;
-    this.horaArribo = getCurrentTime()
   }
 
   cerrarModal(tramiteId: string) {
     this.modalVisibility[tramiteId] = false;
     this.sending = false
+    this.fechaArribo = null
+    this.horaArribo = null
   }
 
   onGlobalFilter(table: Table, event: Event) {
