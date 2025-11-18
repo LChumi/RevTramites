@@ -54,9 +54,10 @@
         @if (contenedor && tramiteId) {
           <p-fileUpload
             name="demo[]"
-            url="https://www.primefaces.org/cdn/api/upload.php"
-            (onUpload)="onUpload($event)"
+            [customUpload]="true"
+            (uploadHandler)="onUpload($event)"
             [multiple]="false"
+            [auto]="false"
             accept=".xlsx"
             [maxFileSize]="20971520"
             mode="advanced" chooseLabel="Seleccionar Archivo" uploadLabel="Subir">

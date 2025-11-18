@@ -20,6 +20,9 @@ import {playAlert} from '@utils/audio-utils';
 import {RevisionRequest} from '@models/revision-request';
 import {Producto} from '@models/producto';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {AvatarModule} from 'primeng/avatar';
+import {DialogModule} from 'primeng/dialog';
+import {ProductValidateRequest} from '@dtos/product-validate-request';
 
 @Component({
   imports: [
@@ -33,7 +36,9 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
     EstadoColorPipe,
     ToolbarModule,
     ToggleButtonModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    AvatarModule,
+    DialogModule
   ],
   templateUrl: './revision-tramite.component.html',
   standalone: true,
@@ -59,6 +64,11 @@ export default class RevisionTramiteComponent implements OnInit {
   tramite: Tramite | null = null;
   loading: boolean = false;
   status: boolean = true;
+  editProductView = false;
+  cantidad!: number
+  novedad!: string
+  protected bultos: number = 0
+  private prodId: string = ''
 
   ngOnInit(): void {
     this.listarPendientes([1, 2]);
@@ -367,6 +377,48 @@ export default class RevisionTramiteComponent implements OnInit {
     }).catch(err => {
       console.error("Error al copiar: ", err);
     });
+  }
+
+  completar() {
+    this.cantidad = this.bultos
+  }
+
+  closeUpdate() {
+    this.cantidad = 0;
+    this.novedad = '';
+    this.prodId = '';
+    this.editProductView = false;
+  }
+
+  updateProduct() {
+
+    if (!this.prodId) {
+      this.messageService.add({severity: 'warn', summary: 'El producto no fue bien seleccionado vuelva a seleccionarlo ',})
+      return
+    }
+
+    const request: ProductValidateRequest = {
+      productId: this.prodId,
+      cantidad: this.cantidad,
+      usuario: this.user,
+      novedad: this.novedad
+    }
+
+    this.revisionService.updateProductWithValidation(request).subscribe({
+      next: value => {
+        this.revisiones = [...this.revisiones.filter(p => p.id !== value.id), value]
+        this.closeUpdate()
+        this.messageService.add({severity: 'info', summary: 'Producto corregido', detail: 'Se registro la novedad del producto '})
+      }, error: err => {
+        this.messageService.add({severity: 'error', summary: 'Ocurrio un problema ', detail: err})
+      }
+    })
+  }
+
+  selectProduct(producto: Producto) {
+    this.editProductView = true
+    this.prodId = producto.id
+    this.bultos = producto.bultos
   }
 
 }

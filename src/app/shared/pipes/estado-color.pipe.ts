@@ -8,6 +8,7 @@ export class EstadoColorPipe implements PipeTransform {
 
   private estados: { [key: string]: any } = {
     'completo': {'background-color': '#9ceb9b', 'color': 'white'},
+    'incompleto': {'background-color': '#d4c294', 'color': 'white'},
     'sin_registro': {'background-color': '#ebc99b', 'color': 'white'},
     'no_llego': {'background-color': '#e8e49e', 'color': 'black'},
     'sobrante': {'background-color': '#c294d4', 'color': 'white'},

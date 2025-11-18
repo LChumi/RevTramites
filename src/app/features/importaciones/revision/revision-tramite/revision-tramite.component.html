@@ -164,7 +164,7 @@
             <div class="mt-2">
               @if (revision) {
                 <div class="card">
-                  <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3">Ultima barra
+                  <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3 uppercase">Ultima barra
                     escaneada {{ revision.nombre }}
                   </div>
                   <ul class="list-none p-0 m-0">
@@ -212,6 +212,7 @@
                     <th>Nombre</th>
                     <th pSortableColumn="cantidad">Cant. Escaneada</th>
                     <th pSortableColumn="estado">Estado</th>
+                    <th>Novedad</th>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-producto>
@@ -226,13 +227,12 @@
                     </td>
 
                     <td class="p-text-center p-col-1 p-col-fixed">{{ producto.nombre }}</td>
-                    <td class="p-text-center p-col-1"
-                        [ngStyle]="{'width': '50px'}">{{ producto.cantidadRevision }}
+                    <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}"> {{ producto.cantidadRevision }} </td>
+                    <td class="p-text-center p-col-1 p-col-fixed">
+                      <span [ngStyle]="producto.estadoRevision | estadoColor"> {{ producto.estadoRevision }} </span>
                     </td>
                     <td class="p-text-center p-col-1 p-col-fixed">
-                      <span [ngStyle]="producto.estadoRevision | estadoColor">
-                        {{ producto.estadoRevision }}
-                      </span>
+                      <button pButton pRipple type="button" icon="pi pi-box" (click)="selectProduct(producto)"></button>
                     </td>
                   </tr>
                 </ng-template>
@@ -248,7 +248,6 @@
               label="Validar Tramite"
               class="p-button-rounded">
             </button>
-
           }
         }
       } @else {
@@ -265,3 +264,55 @@
   </div>
 </div>
 <p-confirmDialog key="confirmDialog"></p-confirmDialog>
+
+<p-dialog
+  header="Ingresar Novedad"
+  [(visible)]="editProductView"
+  [modal]="true"
+  [style]="{ width: '25rem' }"
+  showEffect="fade">
+
+  <ng-template pTemplate="header">
+    <div class="inline-flex align-items-center justify-content-center gap-2">
+      <p-avatar
+        icon="pi pi-ticket"
+        shape="circle"/>
+      <span class="font-bold white-space-nowrap">
+        Agregar Novedad
+      </span>
+    </div>
+  </ng-template>
+  <span class="p-text-secondary block mb-5">Actualizar las cantidades, Bultos en el tramite {{ bultos }}</span>
+  <div class="flex align-items-center gap-3 mb-3">
+    <label for="cantidad" class="font-semibold w-6rem">
+      Cantidad validada
+    </label>
+    <input pInputText id="cantidad" class="flex-auto" autocomplete="off" [(ngModel)]="cantidad"/>
+  </div>
+  <div class="flex align-items-center gap-3 mb-3">
+    <label for="cantidad" class="font-semibold w-6rem">
+      Completo
+    </label>
+    <button class="p-button-success" pButton pRipple type="button" icon="pi pi-check" (click)="completar()"></button>
+  </div>
+  <div class="flex align-items-center gap-3 mb-3">
+    <label for="cantidad" class="font-semibold w-6rem">
+      Ingresar Obsrvacion
+    </label>
+    <input pInputText id="cantidad" class="flex-auto" autocomplete="off" [(ngModel)]="novedad"/>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Cancelar"
+      [text]="true"
+      severity="secondary"
+      (onClick)="closeUpdate()"/>
+    <p-button
+      label="Actualizar"
+      [outlined]="true"
+      severity="secondary"
+      (onClick)="updateProduct()"
+    />
+  </ng-template>
+
+</p-dialog>
