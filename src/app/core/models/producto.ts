@@ -31,6 +31,10 @@ export interface Producto {
   estadoRevision:             string;
   usuarioRevision:            string;
   historialRevision:          string[];
+  observacionRevision:        string[];
+
+  novedad:                string[];
+  usrValida:              string;
 
   //Datos Muestras
   barraMuestra:           string;

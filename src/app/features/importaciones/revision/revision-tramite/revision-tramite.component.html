@@ -69,7 +69,6 @@
                             <th></th>
                             <th>N contenedor</th>
                             <th>Usuario Bloquea</th>
-                            <th></th>
                             <th>Cont finalizado</th>
                           </tr>
                         </ng-template>
@@ -80,29 +79,17 @@
                                 type="button"
                                 pButton
                                 pRipple
-                                (click)="buscarTramite(tramite.id, contenedor.contenedorId)"
-                                [hidden]="contenedor.finalizado || contenedor.bloqueado"
-                                [disabled]="contenedor.finalizado || contenedor.bloqueado"
+                                (click)="blockUnlockContainer(tramite.id,contenedor.contenedorId, true)"
+                                [hidden]="contenedor.finalizado"
+                                [disabled]="contenedor.finalizado"
                                 [ngStyle]="{'border-color': contenedor.bloqueado ? 'rgba(150,150,150,0.86)' : 'rgba(50,150,250,0.74)', 'color': 'black'}"
                                 class="p-button-rounded p-button-outlined"
                                 icon="pi pi-chevron-right"></button>
                             </td>
-                            <td>{{ contenedor.contenedorId }}</td>
-                            <td>{{ contenedor.usrBloquea }}</td>
-                            <td>
-                                <span class="flex">
-                                  <button
-                                    (click)="blockUnlockContainer(tramite.id,contenedor.contenedorId)"
-                                    pButton
-                                    pRipple
-                                    [hidden]="contenedor.finalizado"
-                                    [disabled]="contenedor.finalizado"
-                                    [icon]="getIcon(contenedor)"
-                                    [ngStyle]="{'background-color': contenedor.bloqueado ? 'rgba(150,150,150,0.86)' : 'rgba(50,150,250,0.74)', 'color': 'white'}"
-                                    class="mr-2">
-                                  </button>
-                                </span>
+                            <td>{{ contenedor.contenedorId }}
+                              <i [ngClass]="getIcon(contenedor)" style="line-height: 1.25"></i>
                             </td>
+                            <td>{{ contenedor.usrBloquea }}</td>
                             <td>
                               <p-toggleButton
                                 disabled="true"
