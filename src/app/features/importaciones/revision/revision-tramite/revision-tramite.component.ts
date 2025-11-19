@@ -23,6 +23,7 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {AvatarModule} from 'primeng/avatar';
 import {DialogModule} from 'primeng/dialog';
 import {ProductValidateRequest} from '@dtos/product-validate-request';
+import {ProductoCantidad} from '@models/producto-cantidad';
 
 @Component({
   imports: [
@@ -43,7 +44,31 @@ import {ProductValidateRequest} from '@dtos/product-validate-request';
   ],
   templateUrl: './revision-tramite.component.html',
   standalone: true,
-  styles: ``
+  styles: `
+    .contenedor-icon {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .contenedor-icon i {
+      font-size: 1.2rem;
+    }
+    .icon-i {
+      border: 1px solid #ccc;
+      border-radius: 50%;
+      padding: 6px;
+      background-color: #f5f5f5;
+    }
+    .icon-success {
+      color: #004080;
+    }
+    .icon-warning {
+      color: rgb(227, 126, 63);
+    }
+    .icon-info {
+      color: #56b7e1;
+    }
+  `
 })
 export default class RevisionTramiteComponent implements OnInit {
 
@@ -59,6 +84,7 @@ export default class RevisionTramiteComponent implements OnInit {
   barra: string = '';
   tramiteExist: boolean = false;
   revisiones: Producto[] = [];
+  cantidades: ProductoCantidad[] = [];
   tramites: Tramite[] = [];
   contenedor: Contenedor | null = null;
   revision: Producto | null = null;
@@ -209,6 +235,19 @@ export default class RevisionTramiteComponent implements OnInit {
     })
   }
 
+  getCantidades(){
+    this.revisionService.getCantidades(this.tramiteId, this.containerId, this.barra).subscribe(
+      {
+        next: (results) => {
+          if (results.length > 0){
+            this.cantidades = results;
+
+          }
+        }
+      }
+    )
+  }
+
   addProduct() {
     const request: RevisionRequest = {
       tramiteId: this.tramiteId,
@@ -296,6 +335,14 @@ export default class RevisionTramiteComponent implements OnInit {
       return contenedor.bloqueado ? 'pi pi-lock' : 'pi pi-lock-open';
     }
   }
+  getIconColor(contenedor: Contenedor): string {
+    if (contenedor.finalizado) {
+      return 'icon-success'; // verde
+    } else {
+      return contenedor.bloqueado ? 'icon-warning' : 'icon-info';
+    }
+  }
+
 
   contenedoresPorTramite: { [key: string]: Contenedor[] } = {}
 

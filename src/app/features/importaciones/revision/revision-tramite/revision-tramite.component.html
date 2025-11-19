@@ -86,8 +86,11 @@
                                 class="p-button-rounded p-button-outlined"
                                 icon="pi pi-chevron-right"></button>
                             </td>
-                            <td>{{ contenedor.contenedorId }}
-                              <i [ngClass]="getIcon(contenedor)" style="line-height: 1.25"></i>
+                            <td>
+                              <span class="contenedor-icon">
+                                {{ contenedor.contenedorId }}
+                                <i class="icon-i" [ngClass]="[getIcon(contenedor), getIconColor(contenedor)]"></i>
+                              </span>
                             </td>
                             <td>{{ contenedor.usrBloquea }}</td>
                             <td>
