@@ -131,11 +131,11 @@
             </p-toolbar>
             <div class="grid p-fluid mt-3">
               <div class="field mb-2 lg:col-6 lg:mb-0">
-            <span class="p-float-label">
-              <input autocomplete="off" type="text" id="barra" pInputText [(ngModel)]="barra"
-                     (keydown.enter)="escaneo()">
-              <label for="barra">Barra</label>
-            </span>
+                <span class="p-float-label">
+                  <input autocomplete="off" type="text" id="barra" pInputText [(ngModel)]="barra"
+                         (keydown.enter)="escaneo()">
+                  <label for="barra">Barra</label>
+                </span>
               </div>
               <div class="field mb-2 lg:col-6 lg:mb-0">
                 <p-toggleButton
@@ -305,4 +305,72 @@
     />
   </ng-template>
 
+</p-dialog>
+<p-dialog
+  [(visible)]="productCantView"
+  [modal]="true"
+  [style]="{with: '30rem'}"
+  (onHide)="closeModalCant()"
+
+  showEffect="fade">
+  <ng-template pTemplate="header">
+    <div class="inline-flex align-items-center justify-content-center gap-2">
+      <p-avatar icon="pi pi-box"
+                shape="circle"/>
+      <span class="font-bold white-space-nowrap">
+        Producto con variacion de bultos
+      </span>
+    </div>
+  </ng-template>
+  @defer {
+    @if (bultoSelected) {
+      <div class="grid p-fluid mt-3">
+        <div class="field mb-2 lg:col-6 lg:mb-0">
+                <span class="p-float-label">
+                  <input autocomplete="off" type="text" id="barra" pInputText [(ngModel)]="barra"
+                         (keydown.enter)="addProduct()">
+                  <label for="barra">Barra</label>
+                </span>
+        </div>
+        <div class="field mb-2 lg:col-6 lg:mb-0">
+          <p-toggleButton
+            [(ngModel)]="status"
+            onLabel="Agregando"
+            offLabel="Retirando"
+            onIcon="pi pi-spin pi-spinner-dotted"
+            offIcon="pi pi-minus-circle"
+            styleClass="w-9rem"
+            ariaLabel="status"/>
+        </div>
+      </div>
+      @if (revision) {
+        <div class="card">
+          <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3 uppercase">{{ revision.nombre }}</div>
+          <ul class="list-none p-0 m-0">
+            <li
+              class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border">
+              <div class="flex align-items-center flex-1">
+                <div>
+                  <strong>Barra:</strong>{{ revision.barcode }}
+                </div>
+              </div>
+              <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
+                <div class="flex align-items-center">
+                  <strong>Cantidad:</strong> {{ revision.cantidadRevision }}
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      }
+    } @else {
+      @for (cantidad of cantidades; track $index) {
+        <p-button
+          label="Bultos: {{cantidad.cantidad}} - Cxb: {{cantidad.cxb}}"
+          styleClass="p-button-outlined p-button-sm w-full mb-2"
+          (click)="selectedCant(cantidad)">
+        </p-button>
+      }
+    }
+  }
 </p-dialog>

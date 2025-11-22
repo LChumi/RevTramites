@@ -4,4 +4,7 @@ export interface RevisionRequest {
   barra:      string;
   usuario:    string;
   status:     boolean;
+  cantidad:   number;
+  cxb:        number;
+  obsCxb:     string;
 }

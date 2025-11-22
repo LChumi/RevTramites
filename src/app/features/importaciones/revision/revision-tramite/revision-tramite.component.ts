@@ -92,10 +92,16 @@ export default class RevisionTramiteComponent implements OnInit {
   loading: boolean = false;
   status: boolean = true;
   editProductView = false;
+  productCantView = false;
+  bultoSelected: boolean = false;
   cantidad!: number
   novedad!: string
   protected bultos: number = 0
   private prodId: string = ''
+
+  cantBultoSelect:  any;
+  cxbBultoSelec:    any;
+  obsCxb:           any;
 
   ngOnInit(): void {
     this.listarPendientes([1, 2]);
@@ -214,7 +220,7 @@ export default class RevisionTramiteComponent implements OnInit {
     this.revisionService.productExist(this.tramiteId, this.containerId, this.barra).subscribe({
       next: (exist) => {
         if (exist.status) {
-          this.addProduct()
+          this.getCantidades()
         } else {
           playAlert()
           this.confirmationService.confirm({
@@ -241,7 +247,9 @@ export default class RevisionTramiteComponent implements OnInit {
         next: (results) => {
           if (results.length > 0){
             this.cantidades = results;
-
+            this.productCantView = true
+          } else {
+            this.addProduct()
           }
         }
       }
@@ -254,7 +262,10 @@ export default class RevisionTramiteComponent implements OnInit {
       contenedor: this.containerId,
       barra: this.barra,
       usuario: this.user,
-      status: this.status
+      status: this.status,
+      cantidad: this.cantBultoSelect,
+      cxb: this.cxbBultoSelec,
+      obsCxb: this.obsCxb
     };
 
     this.revisionService.updateQuantity(request).pipe(
@@ -440,5 +451,20 @@ export default class RevisionTramiteComponent implements OnInit {
     this.prodId = producto.id
     this.bultos = producto.bultos
   }
+
+  selectedCant(cant: ProductoCantidad){
+    this.bultoSelected = true
+    this.cantBultoSelect = cant.cantidad
+    this.cxbBultoSelec = cant.cxb
+    this.barra = ''
+  }
+
+  closeModalCant(){
+    this.bultoSelected = false
+    this.cantBultoSelect = null
+    this.cxbBultoSelec = null
+    this.barra = ''
+  }
+
 
 }
