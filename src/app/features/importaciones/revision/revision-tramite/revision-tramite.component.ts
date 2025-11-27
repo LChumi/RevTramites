@@ -110,7 +110,7 @@ export default class RevisionTramiteComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarPendientes([1, 2]);
-    if (isPlatformBrowser(this.platformId)){
+    if (isPlatformBrowser(this.platformId)) {
       this.user = sessionStorage.getItem("username")
     }
   }
@@ -125,10 +125,28 @@ export default class RevisionTramiteComponent implements OnInit {
           return;
         }
 
-        const actions: Record<string, {severity: string, summary: string, detail: string, update?: boolean, buscar?: boolean}> = {
-          bloqueado:   { severity: 'info',    summary: 'Éxito', detail: 'El contenedor se bloqueó correctamente', update: true, buscar: true },
-          desbloqueado:{ severity: 'success', summary: 'Info',  detail: 'El contenedor se desbloqueó correctamente', update: true, buscar: true },
-          finalizado:  { severity: 'info',    summary: 'Info',  detail: 'El contenedor ya está finalizado', update: true }
+        const actions: Record<string, {
+          severity: string,
+          summary: string,
+          detail: string,
+          update?: boolean,
+          buscar?: boolean
+        }> = {
+          bloqueado: {
+            severity: 'info',
+            summary: 'Éxito',
+            detail: 'El contenedor se bloqueó correctamente',
+            update: true,
+            buscar: true
+          },
+          desbloqueado: {
+            severity: 'success',
+            summary: 'Info',
+            detail: 'El contenedor se desbloqueó correctamente',
+            update: true,
+            buscar: true
+          },
+          finalizado: {severity: 'info', summary: 'Info', detail: 'El contenedor ya está finalizado', update: true}
         };
 
         const action = actions[response.info];
@@ -146,7 +164,7 @@ export default class RevisionTramiteComponent implements OnInit {
   }
 
   private showMessage(severity: string, summary: string, detail: string) {
-    this.messageService.add({ severity, summary, detail });
+    this.messageService.add({severity, summary, detail});
   }
 
   buscarTramite(tramiteId: string, containerId: string) {
@@ -246,11 +264,11 @@ export default class RevisionTramiteComponent implements OnInit {
     })
   }
 
-  getCantidades(){
+  getCantidades() {
     this.revisionService.getCantidades(this.tramiteId, this.containerId, this.barra).subscribe(
       {
         next: (results) => {
-          if (results.length > 0){
+          if (results.length > 0) {
             this.cantidades = results;
             this.productCantView = true
           } else {
@@ -263,14 +281,14 @@ export default class RevisionTramiteComponent implements OnInit {
 
   addProduct() {
 
-    if (this.productCantView){
-      if (this.barra != this.barraSelected){
+    if (this.productCantView) {
+      if (this.barra != this.barraSelected) {
         playAlert()
-        this.showMessage('warn' , 'Barra no pertenece', 'La barra seleccionada no pertenece al bulto seleccionado cierre la venta y registre la barra nuevamente')
+        this.showMessage('warn', 'Barra no pertenece', 'La barra seleccionada no pertenece al bulto seleccionado cierre la venta y registre la barra nuevamente')
         this.barra = ''
         return;
       }
-      if (this.cxbAdd){
+      if (this.cxbAdd) {
         if (this.cxbNov === 0) {
           this.showMessage('warn', 'CXB sin valor definido', 'El valor digitado no puede ser 0 ')
           return;
@@ -312,7 +330,7 @@ export default class RevisionTramiteComponent implements OnInit {
           this.revisiones = [this.revision, ...restantes];
           this.status = true
         }
-        if (this.cxbAdd){
+        if (this.cxbAdd) {
           this.closeModalCant()
         }
 
