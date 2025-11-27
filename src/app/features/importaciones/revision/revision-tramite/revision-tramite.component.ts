@@ -82,6 +82,7 @@ export default class RevisionTramiteComponent implements OnInit {
   tramiteId: string = '';
   containerId: string = '';
   barra: string = '';
+  barraSelected: string = '';
   tramiteExist: boolean = false;
   revisiones: Producto[] = [];
   cantidades: ProductoCantidad[] = [];
@@ -93,6 +94,7 @@ export default class RevisionTramiteComponent implements OnInit {
   status: boolean = true;
   editProductView = false;
   productCantView = false;
+  cxbAdd = false;
   bultoSelected: boolean = false;
   cantidad!: number
   novedad!: string
@@ -102,6 +104,7 @@ export default class RevisionTramiteComponent implements OnInit {
   cantBultoSelect:  any;
   cxbBultoSelec:    any;
   obsCxb:           any;
+  cxbNov:           number=0;
 
   ngOnInit(): void {
     this.listarPendientes([1, 2]);
@@ -257,6 +260,22 @@ export default class RevisionTramiteComponent implements OnInit {
   }
 
   addProduct() {
+
+    if (this.productCantView){
+      if (this.barra != this.barraSelected){
+        playAlert()
+        this.showMessage('warn' , 'Barra no pertenece', 'La barra seleccionada no pertenece al bulto seleccionado cierre la venta y registre la barra nuevamente')
+        this.barra = ''
+        return;
+      }
+      if (this.cxbAdd){
+        if (this.cxbNov === 0) {
+          this.showMessage('warn', 'CXB sin valor definido', 'El valor digitado no puede ser 0 ')
+          return;
+        }
+      }
+    }
+
     const request: RevisionRequest = {
       tramiteId: this.tramiteId,
       contenedor: this.containerId,
@@ -265,7 +284,8 @@ export default class RevisionTramiteComponent implements OnInit {
       status: this.status,
       cantidad: this.cantBultoSelect,
       cxb: this.cxbBultoSelec,
-      obsCxb: this.obsCxb
+      obsCxb: this.obsCxb,
+      cxbNov: this.cxbNov,
     };
 
     this.revisionService.updateQuantity(request).pipe(
@@ -290,6 +310,9 @@ export default class RevisionTramiteComponent implements OnInit {
           this.revisiones = [this.revision, ...restantes];
           this.status = true
         }
+        if (this.cxbAdd){
+          this.closeModalCant()
+        }
 
       },
       error: err => {
@@ -301,6 +324,7 @@ export default class RevisionTramiteComponent implements OnInit {
         })
         this.barra = '';
         this.status = true;
+        this.closeModalCant()
       }
     });
   }
@@ -353,7 +377,6 @@ export default class RevisionTramiteComponent implements OnInit {
       return contenedor.bloqueado ? 'icon-warning' : 'icon-info';
     }
   }
-
 
   contenedoresPorTramite: { [key: string]: Contenedor[] } = {}
 
@@ -419,10 +442,10 @@ export default class RevisionTramiteComponent implements OnInit {
     this.novedad = '';
     this.prodId = '';
     this.editProductView = false;
+    this.cxbNov = 0;
   }
 
   updateProduct() {
-
     if (!this.prodId) {
       this.messageService.add({severity: 'warn', summary: 'El producto no fue bien seleccionado vuelva a seleccionarlo ',})
       return
@@ -453,6 +476,7 @@ export default class RevisionTramiteComponent implements OnInit {
   }
 
   selectedCant(cant: ProductoCantidad){
+    this.barraSelected = this.barra
     this.bultoSelected = true
     this.cantBultoSelect = cant.cantidad
     this.cxbBultoSelec = cant.cxb
@@ -460,10 +484,20 @@ export default class RevisionTramiteComponent implements OnInit {
   }
 
   closeModalCant(){
+    this.productCantView = false
     this.bultoSelected = false
     this.cantBultoSelect = null
     this.cxbBultoSelec = null
     this.barra = ''
+    this.barraSelected = ''
+    this.cxbAdd = false
+  }
+
+  nuevaCant(){
+    this.barraSelected = this.barra
+    this.cantBultoSelect = 0
+    this.cxbBultoSelec = 0
+    this.cxbAdd = true
   }
 
 

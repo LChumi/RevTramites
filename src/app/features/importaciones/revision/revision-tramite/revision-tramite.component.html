@@ -363,7 +363,23 @@
           </ul>
         </div>
       }
-    } @else {
+    } @else if (cxbAdd){
+      <div class="card">
+        <div class=" text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3 ">Digite el valor CXB a registrar</div>
+        <div class="field mb-2 lg:col-6 lg:mb-0">
+                <span class="p-float-label">
+                  <input autocomplete="off" type="number" id="cxbNew" pInputText [(ngModel)]="cxbNov">
+                  <label for="cxbNew">Cxb</label>
+                </span>
+          <p-button
+            label="Agregar CXB" class="p-button-secondary"
+            (click)="addProduct()"
+          ></p-button>
+        </div>
+
+      </div>
+
+    }@else {
       @for (cantidad of cantidades; track $index) {
         <p-button
           label="Bultos: {{cantidad.cantidad}} - Cxb: {{cantidad.cxb}}"
@@ -371,6 +387,12 @@
           (click)="selectedCant(cantidad)">
         </p-button>
       }
+      <p-button
+        label="Agregar Novedad en bulto"
+        styleClass="p-button-outlined p-button-sm w-full mb-2"
+        (click)="nuevaCant()"
+      >
+      </p-button>
     }
   }
 </p-dialog>

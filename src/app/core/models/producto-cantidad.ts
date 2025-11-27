@@ -3,5 +3,6 @@ export interface ProductoCantidad {
   cxb:          number;
   observacion:  string;
   cantRevision: number;
+  cxbRevision:  number;
   status:       boolean;
 }

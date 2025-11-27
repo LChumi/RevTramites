@@ -7,4 +7,5 @@ export interface RevisionRequest {
   cantidad:   number;
   cxb:        number;
   obsCxb:     string;
+  cxbNov:     number;
 }
