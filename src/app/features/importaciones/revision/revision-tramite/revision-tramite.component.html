@@ -325,22 +325,50 @@
   @defer {
     @if (bultoSelected) {
       <div class="grid p-fluid mt-3">
-        <div class="field mb-2 lg:col-6 lg:mb-0">
-                <span class="p-float-label">
-                  <input autocomplete="off" type="text" id="barra" pInputText [(ngModel)]="barra"
-                         (keydown.enter)="addProduct()">
-                  <label for="barra">Barra</label>
-                </span>
+        <!-- Input Barra -->
+        <div class="col-12 md:col-6">
+          <div class="field">
+      <span class="p-float-label">
+        <input
+          autocomplete="off"
+          type="text"
+          id="barra"
+          pInputText
+          [(ngModel)]="barra"
+          (keydown.enter)="addProduct()"
+        />
+        <label for="barra">Barra</label>
+      </span>
+          </div>
         </div>
-        <div class="field mb-2 lg:col-6 lg:mb-0">
+
+        <!-- Input CXB Revision -->
+        <div class="col-12 md:col-6">
+          <div class="field">
+      <span class="p-float-label">
+        <input
+          autocomplete="off"
+          type="number"
+          id="cxbObs"
+          pInputText
+          [(ngModel)]="cxbRevision"
+        />
+        <label for="cxbObs">CXB Revisión</label>
+      </span>
+          </div>
+        </div>
+
+        <!-- Toggle Button -->
+        <div class="col-12 flex justify-content-center mt-3">
           <p-toggleButton
             [(ngModel)]="status"
             onLabel="Agregando"
             offLabel="Retirando"
             onIcon="pi pi-spin pi-spinner-dotted"
             offIcon="pi pi-minus-circle"
-            styleClass="w-9rem"
-            ariaLabel="status"/>
+            styleClass="w-12 md:w-9rem"
+            ariaLabel="status"
+          />
         </div>
       </div>
       @if (revision) {

@@ -107,6 +107,7 @@ export default class RevisionTramiteComponent implements OnInit {
   cxbBultoSelec:    any;
   obsCxb:           any;
   cxbNov:           number=0;
+  cxbRevision:      number = 0;
 
   ngOnInit(): void {
     this.listarPendientes([1, 2]);
@@ -306,6 +307,7 @@ export default class RevisionTramiteComponent implements OnInit {
       cxb: this.cxbBultoSelec,
       obsCxb: this.obsCxb,
       cxbNov: this.cxbNov,
+      cxbRevision: this.cxbRevision,
     };
 
     this.revisionService.updateQuantity(request).pipe(
