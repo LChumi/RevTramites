@@ -24,6 +24,7 @@ import {AvatarModule} from 'primeng/avatar';
 import {DialogModule} from 'primeng/dialog';
 import {ProductValidateRequest} from '@dtos/product-validate-request';
 import {ProductoCantidad} from '@models/producto-cantidad';
+import {CardModule} from 'primeng/card';
 
 @Component({
   imports: [
@@ -40,7 +41,8 @@ import {ProductoCantidad} from '@models/producto-cantidad';
     ConfirmDialogModule,
     AvatarModule,
     DialogModule,
-    NgClass
+    NgClass,
+    CardModule
   ],
   templateUrl: './revision-tramite.component.html',
   standalone: true,
@@ -499,6 +501,5 @@ export default class RevisionTramiteComponent implements OnInit {
     this.cxbBultoSelec = 0
     this.cxbAdd = true
   }
-
 
 }
