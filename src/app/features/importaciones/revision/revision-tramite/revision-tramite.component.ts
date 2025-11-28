@@ -10,7 +10,7 @@ import {Table, TableModule} from 'primeng/table';
 import {Ripple} from 'primeng/ripple';
 import {isPlatformBrowser, NgClass, NgStyle} from '@angular/common';
 import {EstadoColorPipe} from '@shared/pipes/estado-color.pipe';
-import {forkJoin, of, switchMap} from 'rxjs';
+import {EMPTY, forkJoin, of, switchMap} from 'rxjs';
 import {Tramite} from '@models/tramite';
 import {ToolbarModule} from 'primeng/toolbar';
 import {converToExcel} from '@utils/excel-utils';
@@ -194,7 +194,7 @@ export default class RevisionTramiteComponent implements OnInit {
             }
 
             if (container.bloqueado) {
-              return of([]);
+              return EMPTY;
             }
 
             // Solo si pasa todo, se intenta bloquear
@@ -206,7 +206,11 @@ export default class RevisionTramiteComponent implements OnInit {
         );
       })
     ).subscribe({
-      next: revisiones => this.revisiones = revisiones,
+      next: revisiones => {
+        this.revisiones = revisiones
+        console.log('Tramite' , tramiteId , ' contenedor ', containerId)
+        console.log(revisiones)
+      },
       error: err => {
         console.error('Error en buscarTramite:', err);
         this.showMessage('error', 'Error', 'Ocurrió un error al procesar el trámite');
