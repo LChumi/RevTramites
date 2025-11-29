@@ -70,6 +70,30 @@ import {CardModule} from 'primeng/card';
     .icon-info {
       color: #56b7e1;
     }
+    .estado-icon {
+      width: 16px;      /* ajusta aquí el tamaño exacto que quieres */
+      height: 16px;
+      flex-shrink: 0;   /* que no se deforme por el flex */
+      display: inline-block;
+    }
+
+    .estado-icon path {
+      fill: currentColor; /* para que herede el color del texto si quieres */
+    }
+
+    /* Si quieres forzar colores específicos: */
+    .estado-icon--ok {
+      color: #16a34a; /* verde */
+    }
+
+    .estado-icon--extra {
+      color: #7c3aed; /* morado */
+    }
+
+    .estado-icon--warning {
+      color: #f97316; /* naranja */
+    }
+
   `
 })
 export default class RevisionTramiteComponent implements OnInit {
@@ -104,10 +128,13 @@ export default class RevisionTramiteComponent implements OnInit {
   private prodId: string = ''
 
   cantBultoSelect:  any;
+
   cxbBultoSelec:    any;
+  prodSelect:       any;
   obsCxb:           any;
   cxbNov:           number=0;
   cxbRevision:      number = 0;
+  cantRevisionValue: any;
 
   ngOnInit(): void {
     this.listarPendientes([1, 2]);
@@ -208,8 +235,6 @@ export default class RevisionTramiteComponent implements OnInit {
     ).subscribe({
       next: revisiones => {
         this.revisiones = revisiones
-        console.log('Tramite' , tramiteId , ' contenedor ', containerId)
-        console.log(revisiones)
       },
       error: err => {
         console.error('Error en buscarTramite:', err);
@@ -248,6 +273,7 @@ export default class RevisionTramiteComponent implements OnInit {
     this.revisionService.productExist(this.tramiteId, this.containerId, this.barra).subscribe({
       next: (exist) => {
         if (exist.status) {
+          this.prodSelect = exist.info
           this.getCantidades()
         } else {
           playAlert()
@@ -335,6 +361,7 @@ export default class RevisionTramiteComponent implements OnInit {
           const restantes = revisiones.filter(p => p.id !== this.revision?.id);
           this.revisiones = [this.revision, ...restantes];
           this.status = true
+          this.cxbRevision = 0
         }
         if (this.cxbAdd) {
           this.closeModalCant()
@@ -366,6 +393,7 @@ export default class RevisionTramiteComponent implements OnInit {
           next: (status) => {
             if (status.status) {
               this.messageService.add({severity: 'success', summary: 'Éxito', detail: status.info});
+              this.validate(this.containerId)
             } else {
               this.messageService.add({severity: 'info', summary: 'Info', detail: status.info});
             }
@@ -517,6 +545,7 @@ export default class RevisionTramiteComponent implements OnInit {
     this.barra = ''
     this.barraSelected = ''
     this.cxbAdd = false
+    this.prodSelect = null
   }
 
   nuevaCant(){
@@ -526,4 +555,22 @@ export default class RevisionTramiteComponent implements OnInit {
     this.cxbAdd = true
   }
 
+  validate(contenedorId: any) {
+    this.revisionService.processProductRevision(this.tramiteId, contenedorId).subscribe({
+      next: (result) => {
+        this.revisiones = result;
+        this.messageService.add({severity: 'info', summary: 'Muestra Validadas',})
+      },
+      error: (err) => {
+        this.messageService.add({severity: 'error', summary: 'Ocurrio un problema ',})
+      }
+    })
+  }
+
+  getCantRevision(producto: Producto): number {
+    const encontrado = producto.cantidades.find(
+      c => c.cantidad === this.cantBultoSelect && c.cxb === this.cxbBultoSelec
+    );
+    return encontrado ? encontrado.cantRevision : 0;
+  }
 }
