@@ -2,13 +2,14 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {LoginRequest} from '@dtos/login-request';
 import {Observable} from 'rxjs';
+import {environment} from '@environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private baseUrl = 'http://192.168.112.36:7569/usuarios'
+  private baseUrl = environment.apiLogin + 'usuarios';
   private http = inject(HttpClient)
 
   constructor() {
