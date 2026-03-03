@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import {PrimeNGConfig} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {NotificationToastComponent} from '@shared/component/notification-toast/notification-toast.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ToastModule, ConfirmDialogModule],
+  imports: [RouterOutlet, ToastModule, ConfirmDialogModule, NotificationToastComponent],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.scss'

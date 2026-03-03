@@ -8,6 +8,7 @@ import {Router} from '@angular/router';
 import {LoginRequest} from '@dtos/login-request';
 import {AuthService} from '@services/auth.service';
 import {isPlatformBrowser} from '@angular/common';
+import {NotificacionService} from '@services/ws/notificacion.service';
 
 @Component({
   imports: [
@@ -30,6 +31,7 @@ export default class LoginComponent implements OnInit {
   private router = inject(Router)
   private autService = inject(AuthService)
   private platformId = inject(PLATFORM_ID);
+  private notificacionService= inject(NotificacionService);
 
   submitted = false;
   isBrowser = false;
@@ -65,6 +67,7 @@ export default class LoginComponent implements OnInit {
         const nombre = nombres[0]; // Primer nombre
         const segundoNombre = nombres.length > 2 ? nombres[2] : nombres.length > 1 ? nombres[1] : ''; // Segundo nombre, si existe
         sessionStorage.setItem("username", nombre + (segundoNombre ? ' ' + segundoNombre : ''));
+        this.notificacionService.connect(usuario.usr_id)
         }
 
         this.loginForm.reset();
