@@ -2,6 +2,7 @@ import {Component, ElementRef, inject, ViewChild} from '@angular/core';
 import {LayoutService} from '@shared/component/services/layout.service';
 import {ButtonDirective} from 'primeng/button';
 import {Router} from '@angular/router';
+import {NotificacionService} from '@services/ws/notificacion.service';
 
 @Component({
   selector: 'app-topbar',
@@ -17,6 +18,7 @@ export class TopbarComponent {
 
   private layoutService = inject(LayoutService)
   private router= inject(Router);
+  private notificacionService = inject(NotificacionService);
 
   constructor() {
   }
@@ -27,6 +29,7 @@ export class TopbarComponent {
 
   logout() {
     sessionStorage.clear();
+    this.notificacionService.disconnect("tramites")
     this.router.navigate(['login']).then(r => {});
   }
 

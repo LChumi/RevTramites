@@ -43,7 +43,7 @@ export class NotificacionService implements OnDestroy {
         const current = this.messageSubject.value;
         this.messageSubject.next([
           ...current.slice(-this.MAX_MESSAGES),
-          `[${channel}] ${message}`
+          message
         ]);
       });
 
