@@ -71,6 +71,7 @@ export class NotificacionService implements OnDestroy {
     this.sockets.get(channel)?.complete();
     this.sockets.delete(channel);
     this.subscriptions.delete(channel);
+    console.log("Conexion ws finalizada")
   }
 
   ngOnDestroy() {
