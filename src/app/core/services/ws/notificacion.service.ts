@@ -29,7 +29,18 @@ export class NotificacionService implements OnDestroy {
 
     const socket$ = webSocket<string>({
       url,
-      deserializer: msg => msg.data
+      deserializer: msg => msg.data,
+      openObserver:{
+        next: () => console.log(`WS conectado al canal ${channel}`)
+      },
+      closeObserver: {
+        next: () => {
+          console.log(`WS cerrado en canal ${channel}`);
+          this.sockets.delete(channel);
+          this.subscriptions.delete(channel);
+          this.connect(channel);
+        }
+      }
     });
 
     const sub = socket$
