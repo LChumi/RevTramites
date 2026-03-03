@@ -67,7 +67,8 @@ export default class LoginComponent implements OnInit {
         const nombre = nombres[0]; // Primer nombre
         const segundoNombre = nombres.length > 2 ? nombres[2] : nombres.length > 1 ? nombres[1] : ''; // Segundo nombre, si existe
         sessionStorage.setItem("username", nombre + (segundoNombre ? ' ' + segundoNombre : ''));
-        this.notificacionService.connect(usuario.usr_id)
+        this.notificacionService.init(usuario.usr_id)
+        this.notificacionService.connect('tramites')
         }
 
         this.loginForm.reset();
