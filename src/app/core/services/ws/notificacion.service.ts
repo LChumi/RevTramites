@@ -15,6 +15,7 @@ export class NotificacionService implements OnDestroy {
 
   private readonly MAX_MESSAGES = 100;
   private username!: string;
+  private manualClose = new Set<string>();
 
   init(username: string) {
     this.username = username;
@@ -36,9 +37,15 @@ export class NotificacionService implements OnDestroy {
       closeObserver: {
         next: () => {
           console.log(`WS cerrado en canal ${channel}`);
+
           this.sockets.delete(channel);
           this.subscriptions.delete(channel);
-          this.connect(channel);
+
+          if (!this.manualClose.has(channel)) {
+            this.connect(channel); // solo reconecta si NO fue manual
+          } else {
+            this.manualClose.delete(channel);
+          }
         }
       }
     });
@@ -67,11 +74,14 @@ export class NotificacionService implements OnDestroy {
   }
 
   disconnect(channel: string) {
+    this.manualClose.add(channel);
+
     this.subscriptions.get(channel)?.unsubscribe();
     this.sockets.get(channel)?.complete();
     this.sockets.delete(channel);
     this.subscriptions.delete(channel);
-    console.log("Conexion ws finalizada")
+
+    console.log("Conexion ws finalizada");
   }
 
   ngOnDestroy() {
