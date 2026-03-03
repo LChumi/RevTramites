@@ -136,7 +136,6 @@ export default class RevisionTramiteComponent implements OnInit {
   obsCxb:           any;
   cxbNov:           number=0;
   cxbRevision:      number = 0;
-  cantRevisionValue: any;
 
   ngOnInit(): void {
     this.listarPendientes([1, 2]);
@@ -183,9 +182,8 @@ export default class RevisionTramiteComponent implements OnInit {
         if (action) {
           this.showMessage(action.severity, action.summary, action.detail);
           const notification = `El usuario ${this.user} ha ${response.info} el contenedor del tramite ${tramiteId}`;
-          this.notificacionService.send("tramite", notification.toUpperCase())
+          this.notificacionService.send("tramites", notification.toUpperCase())
 
-          console.log(notification.toUpperCase())
           if (action.update) this.updateContenedores(tramiteId, containerId);
           if (action.buscar && process) this.buscarTramite(tramiteId, containerId);
         }

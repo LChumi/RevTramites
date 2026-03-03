@@ -1,6 +1,8 @@
-import {Injectable, OnDestroy} from '@angular/core';
+import {inject, Injectable, OnDestroy} from '@angular/core';
 import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
 import {BehaviorSubject, retry, Subscription, timer} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {BroadcastRequest} from '@models/broadcast-request';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +18,9 @@ export class NotificacionService implements OnDestroy {
   private readonly MAX_MESSAGES = 100;
   private username!: string;
   private manualClose = new Set<string>();
+
+  private urlWs = 'http://192.168.112.245:8082/ws/notify/broadcast'
+  private http = inject(HttpClient)
 
   init(username: string) {
     this.username = username;
@@ -69,8 +74,17 @@ export class NotificacionService implements OnDestroy {
     this.subscriptions.set(channel, sub);
   }
 
-  send(channel: string, message: string) {
+  sendWs(channel: string, message: string) {
     this.sockets.get(channel)?.next(message);
+  }
+
+  send(channel: string, message: string){
+    const request: BroadcastRequest = {
+      cannal : channel,
+      message : message,
+    }
+
+    return this.http.post(`${this.urlWs}`, request)
   }
 
   disconnect(channel: string) {
