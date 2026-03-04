@@ -1,6 +1,6 @@
 import {inject, Injectable, OnDestroy} from '@angular/core';
 import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
-import {BehaviorSubject, retry, Subscription, timer} from 'rxjs';
+import {retry, Subject, Subscription, timer} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {BroadcastRequest} from '@models/broadcast-request';
 
@@ -12,14 +12,14 @@ export class NotificacionService implements OnDestroy {
   private sockets = new Map<string, WebSocketSubject<string>>();
   private subscriptions = new Map<string, Subscription>();
 
-  private messageSubject = new BehaviorSubject<string[]>([]);
+  private messageSubject = new Subject<string>();
   message$ = this.messageSubject.asObservable();
 
   private readonly MAX_MESSAGES = 100;
   private username!: string;
   private manualClose = new Set<string>();
 
-  private urlWs = 'http://192.168.112.245:8082/ws/notify/broadcast'
+  private urlWs = 'http://localhost:8082/ws/notify/broadcast'
   private http = inject(HttpClient)
 
   init(username: string) {
@@ -31,7 +31,7 @@ export class NotificacionService implements OnDestroy {
     if (this.sockets.has(channel)) return;
 
     const url =
-      `ws://192.168.112.245:8082/ws/notify?user=${this.username}&canal=${channel}`;
+      `ws://localhost:8082/ws/notify?user=${this.username}&canal=${channel}`;
 
     const socket$ = webSocket<string>({
       url,
@@ -63,11 +63,7 @@ export class NotificacionService implements OnDestroy {
         })
       )
       .subscribe(message => {
-        const current = this.messageSubject.value;
-        this.messageSubject.next([
-          ...current.slice(-this.MAX_MESSAGES),
-          message
-        ]);
+        this.messageSubject.next(message);
       });
 
     this.sockets.set(channel, socket$);

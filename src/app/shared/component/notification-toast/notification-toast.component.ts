@@ -22,17 +22,14 @@ export class NotificationToastComponent implements OnInit , OnDestroy{
 
   ngOnInit(): void {
     this.sub = this.notificacionSevrice.message$
-      .subscribe(messages => {
-        const last = messages[messages.length - 1];
-        if (last) {
-          this.service.add({
-            key: 'ntf',
-            severity: 'info',
-            summary: 'Notificación',
-            detail: last,
-            life: 3000
-          });
-        }
+      .subscribe(message => {
+        this.service.add({
+          key: 'ntf',
+          severity: 'info',
+          summary: 'Notificación',
+          detail: message,
+          life: 3000
+        });
       });
   }
 

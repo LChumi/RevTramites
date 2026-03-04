@@ -28,9 +28,15 @@ export class TopbarComponent {
   }
 
   logout() {
+    const user = sessionStorage.getItem("username")
+    if (user) {
+      const message = `El usuario ${user} cerro la sesion`
+      this.notificacionService.send("tramites", message.toUpperCase())
+    }
     sessionStorage.clear();
-    this.notificacionService.disconnect("tramites")
-    this.router.navigate(['login']).then(r => {});
+    this.router.navigate(['login']).then(r => {
+      this.notificacionService.disconnect("tramites")
+    });
   }
 
 }
