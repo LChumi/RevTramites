@@ -19,7 +19,7 @@ export class NotificacionService implements OnDestroy {
   private username!: string;
   private manualClose = new Set<string>();
 
-  private urlWs = 'http://localhost:8082/ws/notify/broadcast'
+  private urlWs = 'http://192.168.112.245:8082/ws/notify/broadcast'
   private http = inject(HttpClient)
 
   init(username: string) {
@@ -31,7 +31,7 @@ export class NotificacionService implements OnDestroy {
     if (this.sockets.has(channel)) return;
 
     const url =
-      `ws://localhost:8082/ws/notify?user=${this.username}&canal=${channel}`;
+      `ws://192.168.112.245:8082/ws/notify?user=${this.username}&canal=${channel}`;
 
     const socket$ = webSocket<string>({
       url,
