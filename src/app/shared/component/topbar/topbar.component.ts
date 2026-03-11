@@ -2,7 +2,7 @@ import {Component, ElementRef, inject, ViewChild} from '@angular/core';
 import {LayoutService} from '@shared/component/services/layout.service';
 import {ButtonDirective} from 'primeng/button';
 import {Router} from '@angular/router';
-import {NotificacionService} from '@services/ws/notificacion.service';
+import {WsService} from '@services/ws/ws.service';
 
 @Component({
   selector: 'app-topbar',
@@ -18,7 +18,7 @@ export class TopbarComponent {
 
   private layoutService = inject(LayoutService)
   private router= inject(Router);
-  private notificacionService = inject(NotificacionService);
+  private notificacionService = inject(WsService);
 
   constructor() {
   }

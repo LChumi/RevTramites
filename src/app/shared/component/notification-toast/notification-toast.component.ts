@@ -1,6 +1,6 @@
 import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {ToastModule} from 'primeng/toast';
-import {NotificacionService} from '@services/ws/notificacion.service';
+import {WsService} from '@services/ws/ws.service';
 import {MessageService} from 'primeng/api';
 import {Subscription} from 'rxjs';
 import {filter} from 'rxjs/operators';
@@ -16,14 +16,14 @@ import {filter} from 'rxjs/operators';
 })
 export class NotificationToastComponent implements OnInit , OnDestroy{
 
-  private notificacionService = inject(NotificacionService)
+  private ws = inject(WsService)
   private messageService = inject(MessageService)
 
   private sub?: Subscription;
 
   ngOnInit() {
 
-    this.sub = this.notificacionService.message$
+    this.sub = this.ws.channel$('tramites')
       .pipe(filter(m => !!m?.message))
       .subscribe(msg => {
 
@@ -33,9 +33,8 @@ export class NotificationToastComponent implements OnInit , OnDestroy{
           summary: `Canal: ${msg.channel}`,
           detail: msg.message,
           life: 3000
-        });
-
-      });
+        })
+      })
 
   }
 

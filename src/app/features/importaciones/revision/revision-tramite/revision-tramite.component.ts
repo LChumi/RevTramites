@@ -25,7 +25,7 @@ import {DialogModule} from 'primeng/dialog';
 import {ProductValidateRequest} from '@dtos/product-validate-request';
 import {ProductoCantidad} from '@models/producto-cantidad';
 import {CardModule} from 'primeng/card';
-import {NotificacionService} from '@services/ws/notificacion.service';
+import {WsService} from '@services/ws/ws.service';
 
 @Component({
   imports: [
@@ -103,7 +103,7 @@ export default class RevisionTramiteComponent implements OnInit {
   private revisionService = inject(RevisionService)
   private messageService = inject(MessageService)
   private confirmationService = inject(ConfirmationService)
-  private notificacionService = inject(NotificacionService)
+  private wsService = inject(WsService)
   private platformId = inject(PLATFORM_ID)
 
   user: any;
@@ -182,7 +182,7 @@ export default class RevisionTramiteComponent implements OnInit {
         if (action) {
           this.showMessage(action.severity, action.summary, action.detail);
           const notification = `El usuario ${this.user} ha ${response.info} el contenedor del tramite ${tramiteId}`;
-          this.notificacionService.send("tramites", notification.toUpperCase())
+          this.wsService.sendApi("tramites", notification.toUpperCase())
 
           if (action.update) this.updateContenedores(tramiteId, containerId);
           if (action.buscar && process) this.buscarTramite(tramiteId, containerId);
