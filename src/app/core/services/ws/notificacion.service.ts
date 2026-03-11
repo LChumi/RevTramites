@@ -31,7 +31,7 @@ export class NotificacionService implements OnDestroy {
     if (this.sockets.has(channel)) return;
 
     const url =
-      `wss://apis.cumpleanos.com.ec/ws/notify?user=${this.username}&canal=${channel}`;
+      `ws://192.168.112.245:8081/ws/notify?user=${this.username}&canal=${channel}`;
 
     const socket$ = webSocket<string>({
       url,
