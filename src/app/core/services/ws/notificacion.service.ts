@@ -4,23 +4,32 @@ import {retry, Subject, Subscription, timer} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {BroadcastRequest} from '@models/broadcast-request';
 
+export interface  WsMessage {
+  channel: string;
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class NotificacionService implements OnDestroy {
 
-  private sockets = new Map<string, WebSocketSubject<string>>();
+  private sockets = new Map<string, WebSocketSubject<any>>();
   private subscriptions = new Map<string, Subscription>();
 
-  private messageSubject = new Subject<string>();
+  private manualClose = new Set<string>();
+  private reconnectAttempts = new Map<string, number>();
+
+  private messageSubject = new Subject<WsMessage>();
   message$ = this.messageSubject.asObservable();
 
-  private readonly MAX_MESSAGES = 100;
   private username!: string;
-  private manualClose = new Set<string>();
 
-  private urlWs = 'https://apis.cumpleanos.com.ec/ws/notify/broadcast'
   private http = inject(HttpClient)
+
+  private httpBase = 'http://192.168.112.245:8082/ws/notify/broadcast'
+  private wsBase = 'ws://192.168.112.245:8082/ws/notify';
+
 
   init(username: string) {
     this.username = username;
@@ -30,41 +39,64 @@ export class NotificacionService implements OnDestroy {
 
     if (this.sockets.has(channel)) return;
 
-    const url =
-      `ws://192.168.112.245:8081/ws/notify?user=${this.username}&canal=${channel}`;
+    const url = `${this.wsBase}?user=${this.username}&canal=${channel}`;
 
-    const socket$ = webSocket<string>({
+    const socket$ = webSocket<any>({
       url,
-      deserializer: msg => msg.data,
-      openObserver:{
-        next: () => console.log(`WS conectado al canal ${channel}`)
+      deserializer: msg => {
+        try {
+          return JSON.parse(msg.data);
+        } catch {
+          return msg.data; // si no es JSON, devuelve el texto tal cual
+        }
       },
+
+      openObserver: {
+        next: () => {
+          console.log(`WS conectado canal ${channel}`);
+          this.reconnectAttempts.set(channel, 0);
+        }
+      },
+
       closeObserver: {
         next: () => {
-          console.log(`WS cerrado en canal ${channel}`);
+
+          console.log(`WS cerrado canal ${channel}`);
 
           this.sockets.delete(channel);
           this.subscriptions.delete(channel);
 
-          if (!this.manualClose.has(channel)) {
-            this.connect(channel); // solo reconecta si NO fue manual
-          } else {
+          if (this.manualClose.has(channel)) {
             this.manualClose.delete(channel);
+            return;
           }
+
+          const attempt = (this.reconnectAttempts.get(channel) ?? 0) + 1;
+          this.reconnectAttempts.set(channel, attempt);
+
+          const delay = Math.min(2000 * Math.pow(2, attempt), 30000);
+
+          console.log(`Reintentando ${channel} en ${delay} ms`);
+
+          setTimeout(() => this.connect(channel), delay);
+
         }
       }
     });
 
-    const sub = socket$
-      .pipe(
-        retry({
-          count: 5,
-          delay: () => timer(500)
-        })
-      )
-      .subscribe(message => {
-        this.messageSubject.next(message);
-      });
+    const sub = socket$.subscribe({
+      next: msg => {
+
+        if (!msg?.message) return;
+
+        this.messageSubject.next({
+          channel,
+          message: msg.message
+        });
+
+      },
+      error: err => console.error('WS error', err)
+    });
 
     this.sockets.set(channel, socket$);
     this.subscriptions.set(channel, sub);
@@ -77,24 +109,27 @@ export class NotificacionService implements OnDestroy {
   send(channel: string, message: string){
     const request: BroadcastRequest = {
       cannal : channel,
-      message : message,
+      message,
     }
 
-    return this.http.post(`${this.urlWs}`, request)
+    return this.http.post(`${this.httpBase}`, request)
   }
 
   disconnect(channel: string) {
+
     this.manualClose.add(channel);
 
     this.subscriptions.get(channel)?.unsubscribe();
     this.sockets.get(channel)?.complete();
+
     this.sockets.delete(channel);
     this.subscriptions.delete(channel);
 
-    console.log("Conexion ws finalizada");
+    console.log(`WS desconectado canal ${channel}`);
   }
 
   ngOnDestroy() {
     this.sockets.forEach((_, channel) => this.disconnect(channel));
   }
+
 }

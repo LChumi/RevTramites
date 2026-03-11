@@ -3,6 +3,7 @@ import {ToastModule} from 'primeng/toast';
 import {NotificacionService} from '@services/ws/notificacion.service';
 import {MessageService} from 'primeng/api';
 import {Subscription} from 'rxjs';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-notification-toast',
@@ -15,22 +16,27 @@ import {Subscription} from 'rxjs';
 })
 export class NotificationToastComponent implements OnInit , OnDestroy{
 
-  private notificacionSevrice = inject(NotificacionService)
-  private service = inject(MessageService)
+  private notificacionService = inject(NotificacionService)
+  private messageService = inject(MessageService)
 
   private sub?: Subscription;
 
-  ngOnInit(): void {
-    this.sub = this.notificacionSevrice.message$
-      .subscribe(message => {
-        this.service.add({
+  ngOnInit() {
+
+    this.sub = this.notificacionService.message$
+      .pipe(filter(m => !!m?.message))
+      .subscribe(msg => {
+
+        this.messageService.add({
           key: 'ntf',
           severity: 'info',
-          summary: 'Notificación',
-          detail: message,
+          summary: `Canal: ${msg.channel}`,
+          detail: msg.message,
           life: 3000
         });
+
       });
+
   }
 
   ngOnDestroy(): void {
