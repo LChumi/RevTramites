@@ -1,4 +1,4 @@
 export interface BroadcastRequest {
-  cannal: string,
+  channel: string,
   message: string,
 }

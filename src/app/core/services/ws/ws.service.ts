@@ -14,6 +14,7 @@ export class WsService implements OnDestroy {
   private socket$?: WebSocketSubject<WsMessage>;
 
   private reconnectAttempts = 0;
+  private manualClose = false;
 
   private messageSubject = new Subject<WsMessage>();
   messages$ = this.messageSubject.asObservable();
@@ -27,6 +28,7 @@ export class WsService implements OnDestroy {
 
   init(username: string){
     this.username = username;
+    this.manualClose = false;
     this.connect();
   }
 
@@ -50,6 +52,8 @@ export class WsService implements OnDestroy {
         next: () => {
           console.log('WS cerrado');
 
+          if (this.manualClose) return;
+
           const delay = Math.min(2000 * Math.pow(2, this.reconnectAttempts++), 30000);
 
           console.log(`Reintentando en ${delay} ms`);
@@ -71,7 +75,7 @@ export class WsService implements OnDestroy {
 
   sendApi(channel: string, message: string){
     const request: BroadcastRequest = {
-      cannal : channel,
+      channel,
       message,
     }
 
@@ -86,6 +90,17 @@ export class WsService implements OnDestroy {
   private$(user: string){
     return this.messages$
       .pipe(filter(msg => msg.target === user))
+  }
+
+  disconnect() {
+
+    this.manualClose = true;
+
+    this.socket$?.complete();
+    this.socket$ = undefined;
+
+    console.log('WS cerrado manualmente');
+
   }
 
   ngOnDestroy() {
