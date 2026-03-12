@@ -20,21 +20,29 @@ export class WsService implements OnDestroy {
   messages$ = this.messageSubject.asObservable();
 
   private username!: string;
+  private wsUrl!: string;
 
   private wsBase = `ws://192.168.112.245:8082/ws/chat`
   private httpBase = `http://192.168.112.245:8082/ws/broadcast`;
 
   private http = inject(HttpClient)
 
-  init(username: string){
+  init(username: string, channels: string[] = []) {
     this.username = username;
+
+    const params = new URLSearchParams();
+    params.append('user', username);
+
+    channels.forEach(c => params.append('channel', c));
+
+    this.wsUrl = `${this.wsBase}?${params.toString()}`;
+
     this.manualClose = false;
-    this.connect();
+
+    this.connect(this.wsUrl);
   }
 
-  private connect() {
-
-    const url = `${this.wsBase}?user=${this.username}`;
+  private connect(url: string) {
 
     this.socket$ = webSocket<WsMessage>({
       url,
@@ -58,13 +66,16 @@ export class WsService implements OnDestroy {
 
           console.log(`Reintentando en ${delay} ms`);
 
-          setTimeout(() => this.connect(), delay);
+          setTimeout(() => this.connect(this.wsUrl), delay);
         }
       }
     });
 
     this.socket$.subscribe({
-      next: msg => this.messageSubject.next(msg),
+      next: msg => {
+        console.log("WS mensaje", msg);
+        this.messageSubject.next(msg);
+      },
       error: err => console.error('WS error', err)
     });
   }
