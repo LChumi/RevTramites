@@ -160,7 +160,7 @@ export class MenuitemComponent implements OnInit, OnDestroy{
   }
 
   updateActiveStateFromRoute() {
-    let activeRoute = this.router.isActive(this.item.routerLink[0], {
+    let activeRoute = this.router.isActive(this.item.routerLink, {
       paths: 'exact',
       queryParams: 'ignored',
       matrixParams: 'ignored',
