@@ -9,6 +9,8 @@ import {LoginRequest} from '@dtos/login-request';
 import {AuthService} from '@services/auth.service';
 import {isPlatformBrowser} from '@angular/common';
 import {WsService} from '@services/ws/ws.service';
+import {UsersService} from '@services/users.service';
+import {UsuarioBod} from '@dtos/usuario-bod';
 
 @Component({
   imports: [
@@ -30,8 +32,9 @@ export default class LoginComponent implements OnInit {
   private fb = inject(FormBuilder)
   private router = inject(Router)
   private autService = inject(AuthService)
+  private userService = inject(UsersService)
   private platformId = inject(PLATFORM_ID);
-  private notificacionService= inject(WsService);
+  private notificacionService = inject(WsService);
 
   submitted = false;
   isBrowser = false;
@@ -39,7 +42,7 @@ export default class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.isBrowser = isPlatformBrowser(this.platformId);
 
-    if (this.isBrowser){
+    if (this.isBrowser) {
       this.getSession()
     }
 
@@ -64,18 +67,32 @@ export default class LoginComponent implements OnInit {
       next: usuario => {
         console.log(usuario);
         if (this.isBrowser) {
-        const nombres = usuario.usr_nombre.split(' ');
-        const nombre = nombres[0]; // Primer nombre
-        const segundoNombre = nombres.length > 2 ? nombres[2] : nombres.length > 1 ? nombres[1] : ''; // Segundo nombre, si existe
-        sessionStorage.setItem("username", nombre + (segundoNombre ? ' ' + segundoNombre : ''));
-        this.notificacionService.init(usuario.usr_id, ['tramites']);
+          const nombres = usuario.usr_nombre.split(' ');
+          const nombre = nombres[0]; // Primer nombre
+          const segundoNombre = nombres.length > 2 ? nombres[2] : nombres.length > 1 ? nombres[1] : ''; // Segundo nombre, si existe
+          sessionStorage.setItem("username", nombre + (segundoNombre ? ' ' + segundoNombre : ''));
+          this.upsertUser(user)
         }
 
         this.loginForm.reset();
         this.submitted = true;
         this.goToDashboard()
-      },error: err => {
+      }, error: err => {
         console.error('Error en login', err);
+      }
+    })
+  }
+
+  private upsertUser(u: any) {
+    const user: UsuarioBod = {
+      nombre: u.usr_nombre,
+      id: null,
+      idUsuario: u.usr_id,
+      roles: ['public']
+    }
+    this.userService.upsert(user).subscribe({
+      next: usuario => {
+        this.notificacionService.init(user.idUsuario, user.roles);
       }
     })
   }

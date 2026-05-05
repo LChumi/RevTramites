@@ -1,5 +1,5 @@
 export interface UsuarioBod {
-  id: string;
+  id: any;
   idUsuario: string;
   nombre: string;
   roles: string[];

@@ -15,7 +15,7 @@ export class UsersService {
   constructor() { }
 
   upsert(user: UsuarioBod): Observable<UsuarioBod>{
-    return this.http.post<UsuarioBod>(`${this.url}/upser`, user);
+    return this.http.post<UsuarioBod>(`${this.url}/upsert`, user);
   }
 
   getUser(idUsuario:string): Observable<UsuarioBod>{
