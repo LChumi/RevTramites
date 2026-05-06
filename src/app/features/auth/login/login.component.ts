@@ -65,13 +65,23 @@ export default class LoginComponent implements OnInit {
 
     this.autService.login(user).subscribe({
       next: usuario => {
-        console.log(usuario);
         if (this.isBrowser) {
           const nombres = usuario.usr_nombre.split(' ');
           const nombre = nombres[0]; // Primer nombre
           const segundoNombre = nombres.length > 2 ? nombres[2] : nombres.length > 1 ? nombres[1] : ''; // Segundo nombre, si existe
           sessionStorage.setItem("username", nombre + (segundoNombre ? ' ' + segundoNombre : ''));
-          this.upsertUser(user)
+          sessionStorage.setItem("usrId", usuario.usr_id);
+          const user: UsuarioBod = {
+            id: null,
+            nombre: usuario.usr_nombre,
+            idUsuario: usuario.usr_id,
+            roles: ['public']
+          }
+          this.userService.upsert(user).subscribe({
+            next: usr => {
+              this.notificacionService.init(usr.idUsuario, usr.roles);
+            }
+          })
         }
 
         this.loginForm.reset();
@@ -79,20 +89,6 @@ export default class LoginComponent implements OnInit {
         this.goToDashboard()
       }, error: err => {
         console.error('Error en login', err);
-      }
-    })
-  }
-
-  private upsertUser(u: any) {
-    const user: UsuarioBod = {
-      nombre: u.usr_nombre,
-      id: null,
-      idUsuario: u.usr_id,
-      roles: ['public']
-    }
-    this.userService.upsert(user).subscribe({
-      next: usuario => {
-        this.notificacionService.init(user.idUsuario, user.roles);
       }
     })
   }

@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {MenuitemComponent} from '@shared/component/menuitem/menuitem.component';
+import {MenuService} from '@services/menu.service';
 
 @Component({
   selector: 'app-menu',
@@ -12,63 +13,19 @@ import {MenuitemComponent} from '@shared/component/menuitem/menuitem.component';
 })
 export class MenuComponent implements OnInit{
 
+  private menuService = inject(MenuService)
+
   model: any[] =[]
 
   ngOnInit(): void {
-    this.model = [
-      {
-        label: 'Tramites',
-        icon: 'pi pi-th-large',
-        items: [
-          {
-            label: 'Carga Tramites',
-            icon: 'pi pi-th-large',
-            route: ['/'],
-            items: [
-              {
-                label: 'Carga de Tramites por llegar',
-                icon: 'pi pi-upload',
-                routerLink: '/icep/bodega/tramite/carga-contenedores',
-              },
-              {
-                label: 'Consultas',
-                icon: 'pi pi-fw pi-search',
-                routerLink: '/icep/bodega/tramite/consultas',
-              }
-            ]
-          },
-          {
-            label: 'Revision',
-            icon: 'pi pi-sliders-h',
-            route: ['/'],
-            items: [
-              {
-                label: 'Escaneo de Productos',
-                icon: 'pi pi-barcode',
-                routerLink: '/icep/bodega/revision/contenedor',
-              },
-              {
-                label: 'Validar Contenedores',
-                icon: 'pi pi-check',
-                routerLink: '/icep/bodega/revision/validar',
-              }
-            ]
-          },
-          {
-            label: 'Muestras',
-            icon: 'pi pi-list',
-            route: ['/'],
-            items: [
-              {
-              label: 'Muestras por ingresar',
-              icon: 'pi pi-window-maximize',
-              routerLink: '/icep/bodega/muestra/envio-muestras',
-            }
-              ]
-          },
-        ]
-      },
-    ]
+    const usrId = sessionStorage.getItem('usrId');
+    if (usrId){
+      this.menuService.getMenu(usrId).subscribe({
+        next: menu => {
+          this.model = menu;
+        }
+      })
+    }
   }
 
 }
