@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import {importacionesRoutes} from '@features/importaciones/importacionesRoutes';
 import {authGuard} from '@guards/auth.guard';
 import {LayoutComponent} from '@shared/component/layout/layout.component';
+import {BodegasComponent} from '@features/bodegas/bodegas.component';
 
 export const routes: Routes = [
   {
@@ -16,10 +17,14 @@ export const routes: Routes = [
         ]
       },
       {
-        path: 'bodega', component: LayoutComponent,
+        path: 'tramites', component: LayoutComponent,
         canActivate:[authGuard],
         canActivateChild:[authGuard],
         children: importacionesRoutes
+      },
+      {
+        path: 'bodegas', loadComponent: () => import('@features/bodegas/bodegas.component')
+          .then(m => m.BodegasComponent)
       },
       {path: '', redirectTo: 'auth', pathMatch: "full"},
       {path: '**', redirectTo: 'auth', pathMatch: "full"}

@@ -70,7 +70,9 @@ export default class LoginComponent implements OnInit {
           const nombre = nombres[0]; // Primer nombre
           const segundoNombre = nombres.length > 2 ? nombres[2] : nombres.length > 1 ? nombres[1] : ''; // Segundo nombre, si existe
           sessionStorage.setItem("username", nombre + (segundoNombre ? ' ' + segundoNombre : ''));
+          sessionStorage.setItem("usercode", usuario.usr_codigo)
           sessionStorage.setItem("usrId", usuario.usr_id);
+          sessionStorage.setItem("idEmpresa",String(usuario.usr_empresa_def))
           const user: UsuarioBod = {
             id: null,
             nombre: usuario.usr_nombre,
@@ -103,7 +105,7 @@ export default class LoginComponent implements OnInit {
   }
 
   goToDashboard() {
-    this.router.navigate(['icep', 'bodega', 'dashboard']).then(r => {
+    this.router.navigate(['icep', 'tramites', 'dashboard']).then(r => {
     });
   }
 

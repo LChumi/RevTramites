@@ -1,0 +1,83 @@
+<div class="flex flex-column align-items-center min-h-screen p-4">
+
+  <!-- Título -->
+  <div class="mb-4">
+    <h1 class="text-4xl font-bold text-center text-800 m-0">LISTA DE BODEGAS</h1>
+  </div>
+
+  <!-- Grid de tarjetas -->
+  <div class="grid w-full" style="max-width: 1500px;">
+
+    @for (bodega of listaBodegas; track $index) {
+      <div class="col-12 sm:col-6 md:col-4 lg:col-3">
+        <div class="bodega-card" (click)="BodegaSelecccionada(bodega)">
+          <img src="/images/bodega.jpg" alt="Bodega" />
+          <div class="bodega-card-overlay">
+            <span class="text-white font-semibold text-xl">{{ bodega.bod_nombre }}</span>
+          </div>
+        </div>
+      </div>
+    }
+
+  </div>
+
+  <p-divider class="w-full" [style]="{ 'max-width': '1500px' }"></p-divider>
+
+  <!-- Botón generar pedido -->
+  <div class="flex justify-content-center mt-3">
+    <p-button
+      label="Generar archivo de pedidos"
+      icon="pi pi-file-export"
+      iconPos="right"
+      severity="info"
+      (onClick)="showModal = true"
+    />
+  </div>
+
+</div>
+
+<!-- Modal de Pedido -->
+<p-dialog
+  header="Generar Pedido"
+  [(visible)]="showModal"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '420px' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="flex flex-column gap-4 pt-2">
+
+    <div class="p-inputgroup">
+      <span class="p-inputgroup-addon">
+        <i class="pi pi-hashtag"></i>
+      </span>
+      <p-inputNumber
+        [(ngModel)]="codigo"
+        [useGrouping]="false"
+        placeholder="Número de pedido"
+        class="w-full"
+      />
+    </div>
+
+    <div class="flex justify-content-center gap-3">
+      <p-button
+        icon="pi pi-file-excel"
+        label="Excel"
+        severity="success"
+        [disabled]="downloading"
+        [loading]="downloading"
+        (onClick)="descargarExcel()"
+      />
+      <p-button
+        icon="pi pi-file-pdf"
+        label="PDF"
+        severity="danger"
+        [disabled]="downloading"
+        [loading]="downloading"
+        (onClick)="descargarPdf()"
+      />
+    </div>
+
+  </div>
+</p-dialog>
