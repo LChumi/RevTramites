@@ -105,7 +105,7 @@ export default class LoginComponent implements OnInit {
   }
 
   goToDashboard() {
-    this.router.navigate(['icep', 'tramites', 'dashboard']).then(r => {
+    this.router.navigate(['tramites', 'dashboard']).then(r => {
     });
   }
 

@@ -34,7 +34,7 @@ export class TopbarComponent {
       this.wsService.sendApi("tramites", message.toUpperCase())
     }
     sessionStorage.clear();
-    this.router.navigate(['login']).then(r => {
+    this.router.navigate(['auth', 'login']).then(r => {
       this.wsService.disconnect()
     });
   }

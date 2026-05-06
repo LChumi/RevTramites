@@ -22,7 +22,7 @@ import {Bodega} from '@dtos/bodega';
   templateUrl: './bodegas.component.html',
   styleUrl: './bodegas.component.scss'
 })
-export class BodegasComponent implements OnInit {
+export default class BodegasComponent implements OnInit {
 
   private bodegaService = inject(BodegaService)
 
