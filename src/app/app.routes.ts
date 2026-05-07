@@ -32,18 +32,16 @@ export const routes: Routes = [
         path: 'bodegas',
         loadComponent: () => import('@features/bodegas/bodegas.component')
       },
+      {
+      path: 'observaciones',
+        loadComponent: () => import('@features/observacion-producto/observacion-producto.component')
+      },
 
       // Importaciones
       {
         path: 'tramites',
         children: importacionesRoutes
       },
-
-      // Agregar más módulos fácilmente
-      // {
-      //   path: 'ventas',
-      //   children: ventasRoutes
-      // },
 
       { path: '', redirectTo: 'bodegas', pathMatch: 'full' },
       { path: '**', redirectTo: 'bodegas', pathMatch: 'full' }

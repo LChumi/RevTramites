@@ -1,0 +1,352 @@
+<div class="page-wrapper">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-user">
+      <p-avatar
+        [label]="usuariosessionStorage?.charAt(0)?.toUpperCase()"
+        shape="circle"
+        styleClass="user-avatar"
+      />
+      <span class="username">{{ usuariosessionStorage }}</span>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+
+    <!-- HEADER SECTION -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Observaciones {{bodNombre}}</h1>
+        <p class="page-subtitle">Productos con observaciones y novedades</p>
+      </div>
+      <div class="header-actions">
+        <p-button
+          label="Agregar Observación"
+          icon="pi pi-plus"
+          (onClick)="abrirVentana()"
+        />
+      </div>
+    </div>
+
+    <!-- STATS CARDS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon stat-icon--all"><i class="pi pi-list"></i></div>
+        <div class="stat-body">
+          <span class="stat-label">Total</span>
+          <span class="stat-value">{{ totalObservaciones }}</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon stat-icon--ok"><i class="pi pi-check"></i></div>
+        <div class="stat-body">
+          <span class="stat-label">Corregidas</span>
+          <span class="stat-value">{{ totalCorregidas }}</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon stat-icon--warn"><i class="pi pi-clock"></i></div>
+        <div class="stat-body">
+          <span class="stat-label">Pendientes</span>
+          <span class="stat-value">{{ totalPendientes }}</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon stat-icon--danger"><i class="pi pi-exclamation-circle"></i></div>
+        <div class="stat-body">
+          <span class="stat-label">Antiguas</span>
+          <span class="stat-value">{{ totalAntiguas }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTER TABS -->
+    <div class="filter-bar">
+      <div class="filter-chips">
+        <p-chip
+          label="Todos"
+          icon="pi pi-list"
+          [styleClass]="colorSeleccionado === 'todos' ? 'chip-active chip-all' : 'chip-inactive'"
+          (click)="colorSeleccionado = 'todos'; seleccionarColor()"
+        />
+        <p-chip
+          label="Corregidas"
+          icon="pi pi-check"
+          [styleClass]="colorSeleccionado === 'verde' ? 'chip-active chip-ok' : 'chip-inactive'"
+          (click)="colorSeleccionado = 'verde'; seleccionarColor()"
+        />
+        <p-chip
+          label="Sin corrección (mes)"
+          icon="pi pi-exclamation-triangle"
+          [styleClass]="colorSeleccionado === 'tomate' ? 'chip-active chip-warn' : 'chip-inactive'"
+          (click)="colorSeleccionado = 'tomate'; seleccionarColor()"
+        />
+        <p-chip
+          label="Antiguas"
+          icon="pi pi-exclamation-circle"
+          [styleClass]="colorSeleccionado === 'rojo' ? 'chip-active chip-danger' : 'chip-inactive'"
+          (click)="colorSeleccionado = 'rojo'; seleccionarColor()"
+        />
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <p-card styleClass="table-card">
+      <p-table
+        [value]="observaciones | filtroColor: colorSeleccionado"
+        [paginator]="true"
+        [rows]="15"
+        [rowsPerPageOptions]="[10, 15, 25, 50]"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} observaciones"
+        [rowHover]="true"
+        styleClass="p-datatable-sm p-datatable-gridlines"
+        selectionMode="single"
+        (onRowSelect)="selecionarObservacion($event.data)"
+        responsiveLayout="scroll"
+        [scrollable]="true"
+        scrollHeight="flex"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="min-width:110px">
+              Fecha
+            </th>
+            <th pSortableColumn="usuario" style="min-width:130px">
+              Responsable <p-sortIcon field="usuario" />
+            </th>
+            <th pSortableColumn="item" style="min-width:100px">
+              Ítem <p-sortIcon field="item" />
+            </th>
+            <th style="min-width:200px">Descripción</th>
+            <th style="min-width:80px; text-align:right">
+              Stock
+            </th>
+            <th style="min-width:80px; text-align:right">Físico</th>
+            <th style="min-width:90px; text-align:right">
+              Diferencia
+            </th>
+            <th style="min-width:140px">Resp. Solución</th>
+            <th style="min-width:200px">Detalle</th>
+            <th style="min-width:110px">Fecha Sol.</th>
+            <th style="min-width:120px">Ubic. Bulto</th>
+            <th style="min-width:120px">Ubic. Unidades</th>
+            <th style="min-width:110px; text-align:center">Estado</th>
+            <th
+              pFrozenColumn
+              alignFrozen="right"
+              style="min-width:80px; text-align:center"
+            >
+              Acción
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-obs>
+          <tr [ngClass]="tieneCorreccion(obs)" class="table-row">
+            <td>
+              <span class="date-badge">{{ obs.fecha }}</span>
+            </td>
+            <td>{{ obs.usuario || '—' }}</td>
+            <td>
+              <code class="item-code">{{ obs.item || '—' }}</code>
+            </td>
+            <td class="desc-cell">{{ obs.descripcion || '—' }}</td>
+            <td style="text-align:right; font-variant-numeric: tabular-nums">{{ obs.stock || '—' }}</td>
+            <td style="text-align:right; font-variant-numeric: tabular-nums">{{ obs.detalle || '—' }}</td>
+            <td style="text-align:right">
+              <span
+                class="diff-badge"
+                [class.diff-neg]="obs.diferencia < 0"
+                [class.diff-pos]="obs.diferencia > 0"
+              >
+                {{ obs.diferencia || '—' }}
+              </span>
+            </td>
+            <td>{{ obs.correccion?.usuario || '—' }}</td>
+            <td class="desc-cell">{{ obs.correccion?.detalle || '—' }}</td>
+            <td>{{ obs.correccion?.fecha || '—' }}</td>
+            <td>{{ obs.bulto || '—' }}</td>
+            <td>{{ obs.unidad || '—' }}</td>
+            <td style="text-align:center">
+              @if (obs.correccion) {
+                <p-tag
+                  value="Corregido"
+                  severity="success"
+                  icon="pi pi-check"
+                  [rounded]="true"
+                />
+              }
+              @if (!obs.correccion && isRecent(obs.fecha)){
+                <p-tag
+                  value="Pendiente"
+                  severity="warning"
+                  icon="pi pi-clock"
+                  [rounded]="true"
+                />
+              }
+
+              @if (!obs.correccion && !isRecent(obs.fecha)) {
+                <p-tag
+                  value="Antigua"
+                  severity="danger"
+                  icon="pi pi-exclamation-circle"
+                  [rounded]="true"
+                />
+              }
+
+
+            </td>
+            <td
+              pFrozenColumn
+              alignFrozen="right"
+              style="text-align:center; background: var(--surface-card)"
+            >
+              <p-button
+                icon="pi pi-comment"
+                size="small"
+                [rounded]="true"
+                [text]="true"
+                severity="info"
+                pTooltip="Agregar novedad"
+                tooltipPosition="left"
+                (onClick)="$event.stopPropagation(); selecionarObservacion(obs); abrirVentanaCorreccion()"
+              />
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="14" class="empty-state">
+              <i class="pi pi-inbox" style="font-size: 2.5rem; color: var(--text-color-secondary);"></i>
+              <p>No hay observaciones para mostrar</p>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+
+  </div>
+</div>
+
+<!-- =============================== -->
+<!-- DIALOG: NUEVA OBSERVACIÓN -->
+<!-- =============================== -->
+<p-dialog
+  header="Nueva Observación"
+  [(visible)]="vistaAddObservacion"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '560px' }"
+  styleClass="obs-dialog"
+  (onHide)="cerrarVentana()"
+>
+  <div class="dialog-body">
+    <!-- Búsqueda de producto -->
+    <div class="field-group">
+      <label class="field-label">Producto</label>
+      <div class="search-row">
+        <input
+          pInputText
+          type="text"
+          [(ngModel)]="barraItem"
+          placeholder="Código de ítem o barra..."
+          (keyup.enter)="mostrarProducto()"
+          style="text-transform: uppercase; flex: 1;"
+        />
+        <p-button icon="pi pi-search" [outlined]="true" (onClick)="mostrarProducto()" pTooltip="Buscar" />
+      </div>
+    </div>
+
+    <!-- Info del producto -->
+    @if (producto?.nombre){
+      <div  class="product-card">
+        <div class="product-info">
+          <div class="product-avatar">
+            <i class="pi pi-box" style="font-size:1.5rem"></i>
+          </div>
+          <div class="product-details">
+            <span class="product-name">{{ producto.nombre }}</span>
+            <div class="product-meta">
+              <span class="meta-tag">Ítem: {{ producto.proId1 }}</span>
+              <span class="meta-tag">Barra: {{ producto.proId }}</span>
+              <span class="meta-tag meta-tag--stock">Stock: {{ producto.stockReal }}</span>
+            </div>
+          </div>
+          <div class="product-img">
+            <img [src]="imageUrl" alt="Producto" />
+          </div>
+        </div>
+      </div>
+    }
+
+    <p-divider />
+
+    <!-- Campos del formulario -->
+    <div class="form-grid">
+      <div class="field">
+        <label class="field-label" for="obs-fisico">Físico encontrado</label>
+        <input
+          pInputText
+          id="obs-fisico"
+          type="text"
+          [(ngModel)]="detalleOb"
+          placeholder="Cantidad física u observación..."
+          style="text-transform: uppercase; width: 100%"
+        />
+      </div>
+      <div class="field">
+        <label class="field-label" for="obs-diferencia">Diferencia</label>
+        <input
+          pInputText
+          id="obs-diferencia"
+          type="text"
+          [(ngModel)]="diferencia"
+          placeholder="Diferencia respecto al stock..."
+          style="text-transform: uppercase; width: 100%"
+        />
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button label="Cancelar" icon="pi pi-times" severity="secondary" [outlined]="true" (onClick)="cerrarVentana()" />
+    <p-button label="Guardar Observación" icon="pi pi-save" (onClick)="guardarObservacion()" />
+  </ng-template>
+</p-dialog>
+
+<!-- =============================== -->
+<!-- DIALOG: NUEVA NOVEDAD/CORRECCIÓN -->
+<!-- =============================== -->
+<p-dialog
+  header="Registrar Novedad"
+  [(visible)]="vistaCorreccion"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '440px' }"
+  (onHide)="cerrarVentanaCorreccion()"
+>
+  <div class="dialog-body">
+    <div class="field">
+      <label class="field-label" for="novedad-input">Descripción de la novedad</label>
+      <textarea
+        pInputTextarea
+        id="novedad-input"
+        [(ngModel)]="novedad"
+        placeholder="Ingrese la corrección o novedad..."
+        [rows]="4"
+        [autoResize]="true"
+        style="text-transform: uppercase; width: 100%"
+      ></textarea>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button label="Cancelar" icon="pi pi-times" severity="secondary" [outlined]="true" (onClick)="cerrarVentanaCorreccion()" />
+    <p-button label="Guardar Novedad" icon="pi pi-save" severity="success" (onClick)="agregarCorreccion()" />
+  </ng-template>
+</p-dialog>

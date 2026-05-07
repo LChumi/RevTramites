@@ -16,14 +16,14 @@ export class ProductoObservacionService {
   constructor() { }
 
   saveProduct(observacion: ProductoObservacion): Observable<ProductoObservacion> {
-    return this.http.post<ProductoObservacion>(`${this.baseUrl}/observacion/guardar`, observacion)
+    return this.http.post<ProductoObservacion>(`${this.baseUrl}observacion/guardar`, observacion)
   }
 
   listObservaciones(bodega: any):Observable<ProductoObservacion[]> {
-    return this.http.get<ProductoObservacion[]>(`${this.baseUrl}/observacion/listar/${bodega}`)
+    return this.http.get<ProductoObservacion[]>(`${this.baseUrl}observacion/listar/${bodega}`)
   }
 
   addCorrecion(request: CorreccionRequest): Observable<ProductoObservacion>{
-    return this.http.put<ProductoObservacion>(`${this.baseUrl}/observacion/agregar-correccion`, request)
+    return this.http.put<ProductoObservacion>(`${this.baseUrl}observacion/agregar-correccion`, request)
   }
 }
