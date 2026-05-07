@@ -7,6 +7,7 @@ import {CardModule} from 'primeng/card';
 import {NgOptimizedImage} from '@angular/common';
 import {BodegaService} from '@services/bodega.service';
 import {Bodega} from '@dtos/bodega';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-bodegas',
@@ -25,6 +26,7 @@ import {Bodega} from '@dtos/bodega';
 export default class BodegasComponent implements OnInit {
 
   private bodegaService = inject(BodegaService)
+  private router = inject(Router);
 
   listaBodegas!: Bodega[];
   showModal: boolean = false;
@@ -53,8 +55,10 @@ export default class BodegasComponent implements OnInit {
 
   }
 
-  BodegaSelecccionada(bodega:any){
-
+  bodegaSelecccionada(bodega:Bodega){
+    sessionStorage.setItem('bodId', String(bodega.bod_codigo) );
+    sessionStorage.setItem('bodega', bodega.bod_nombre);
+    this.router.navigate(['observaciones']).then(r => {});
   }
 
   listarBodegas() {

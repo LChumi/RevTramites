@@ -10,7 +10,7 @@
 
     @for (bodega of listaBodegas; track $index) {
       <div class="col-12 sm:col-6 md:col-4 lg:col-3">
-        <div class="bodega-card" (click)="BodegaSelecccionada(bodega)">
+        <div class="bodega-card" (click)="bodegaSelecccionada(bodega)">
           <img ngSrc="/images/bodega.jpg" alt="Bodega" height="500" width="809"/>
           <div class="bodega-card-overlay">
             <span class="text-white font-semibold text-xl">{{ bodega.bod_nombre }}</span>

@@ -1,4 +1,5 @@
 import {ProductoObservacion} from '@models/producto-observacion';
+import {environment} from '@environments/environment';
 
 export function  tieneCorreccion(observacion: ProductoObservacion) {
   const hoy = new Date();
@@ -25,4 +26,11 @@ export function  tieneCorreccion(observacion: ProductoObservacion) {
 export function convertirStringAFecha(fechaString: string): Date {
   const [dia, mes, anio] = fechaString.split('-').map(Number);
   return new Date(anio, mes-1 , dia);
+}
+
+const imageUrl = environment.imagesUrl;
+
+export function getUrlImage(sku: string): string {
+  if (!sku) return `${imageUrl}/default`;
+  return `${imageUrl}/${sku}`;
 }

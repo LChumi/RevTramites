@@ -104,7 +104,6 @@
         [rowHover]="true"
         styleClass="p-datatable-sm p-datatable-gridlines"
         selectionMode="single"
-        (onRowSelect)="selecionarObservacion($event.data)"
         responsiveLayout="scroll"
         [scrollable]="true"
         scrollHeight="flex"
@@ -239,7 +238,7 @@
   [modal]="true"
   [draggable]="false"
   [resizable]="false"
-  [style]="{ width: '560px' }"
+  [style]="{ width: '560px', maxWidth: '95vw' }"
   styleClass="obs-dialog"
   (onHide)="cerrarVentana()"
 >
@@ -261,7 +260,7 @@
     </div>
 
     <!-- Info del producto -->
-    @if (producto?.nombre) {
+    @if (producto) {
       <div class="product-card">
         <div class="product-info">
           <div class="product-avatar">
@@ -276,7 +275,7 @@
             </div>
           </div>
           <div class="product-img">
-            <img [src]="imageUrl" alt="Producto"/>
+            <img [src]="getUrlImage(producto.proId)" alt="Producto" />
           </div>
         </div>
       </div>

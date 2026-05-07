@@ -14,10 +14,14 @@ import {NgClass} from '@angular/common';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {ProductoCorreccion} from '@dtos/producto-correccion';
 import {CorreccionRequest} from '@dtos/correccion-request';
-import {tieneCorreccion} from '@utils/observaciones-utils';
+import {getUrlImage, tieneCorreccion} from '@utils/observaciones-utils';
 import {FiltroColorPipe} from '@shared/pipes/filtro-color.pipe';
 import {TooltipModule} from 'primeng/tooltip';
 import {InputTextModule} from 'primeng/inputtext';
+import {ProductoSis} from '@dtos/producto-sis';
+import {ProductoSisService} from '@services/producto-sis.service';
+import {MessageService} from 'primeng/api';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-observacion-producto',
@@ -44,9 +48,11 @@ import {InputTextModule} from 'primeng/inputtext';
 export default class ObservacionProductoComponent implements OnInit {
 
   private observacionService = inject(ProductoObservacionService);
+  private productoService = inject(ProductoSisService);
+  private messageService = inject(MessageService);
 
   observaciones: ProductoObservacion[] = [];
-  producto: any;
+  producto: ProductoSis | null = null;
   observacion: ProductoObservacion = {} as ProductoObservacion;
   observacionSeleccionada!: ProductoObservacion
   request!: CorreccionRequest
@@ -59,32 +65,46 @@ export default class ObservacionProductoComponent implements OnInit {
   colorSeleccionado!: string;
   totalObservaciones!: number;
   novedad!: string;
-  bodNombre: string = '';
+  bodNombre= sessionStorage.getItem('bodega') ?? '';
 
-  bodegasessionStorage = sessionStorage.getItem('bodId') ?? '';
+  bodId = sessionStorage.getItem('bodId') ?? '';
   usuariosessionStorage = sessionStorage.getItem('username') ?? '';
 
   imageUrl: string = '';
 
   ngOnInit() {
+    if (this.bodId == '' || this.usuariosessionStorage == ''){
+      this.messageService.add({severity: 'warn', summary: 'Usuario sin bodega', detail: 'Usuario si bodega ni sesión'})
+      return;
+    }
     this.listarObservaciones()
   }
-
-  logout() {
-
-  }
-
-  descargarExcel() {
-  }
-
 
   seleccionarColor() {
   }
 
-  selecionarObservacion(event: any) {
+  selecionarObservacion(obs: ProductoObservacion) {
+    this.observacionSeleccionada = obs;
   }
 
   mostrarProducto() {
+    if (!this.barraItem) {
+      this.messageService.add({severity: 'warn', summary:'Ingrese Barra o Item'})
+      return;
+    }
+
+    this.barraItem = this.barraItem.toLocaleUpperCase();
+
+    this.productoService.getProducto(this.bodId, this.barraItem).subscribe({
+      next: producto => {
+        this.producto = producto;
+      },
+      error: error => {
+        this.messageService.add({severity: 'error', summary: 'Producto no encontrado'})
+        this.barraItem = '';
+        this.producto = null
+      }
+    })
 
   }
 
@@ -114,9 +134,8 @@ export default class ObservacionProductoComponent implements OnInit {
   }
 
   listarObservaciones() {
-    this.observacionService.listObservaciones(2).subscribe({
+    this.observacionService.listObservaciones(this.bodId).subscribe({
       next: data => {
-        console.log(data);
         this.observaciones = data;
       }
     })
@@ -147,4 +166,5 @@ export default class ObservacionProductoComponent implements OnInit {
   }
 
   protected readonly tieneCorreccion = tieneCorreccion;
+  protected readonly getUrlImage = getUrlImage;
 }
