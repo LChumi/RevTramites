@@ -59,12 +59,12 @@ export default class ObservacionProductoComponent implements OnInit {
   colorSeleccionado!: string;
   totalObservaciones!: number;
   novedad!: string;
-  bodNombre: string='';
+  bodNombre: string = '';
 
   bodegasessionStorage = sessionStorage.getItem('bodId') ?? '';
   usuariosessionStorage = sessionStorage.getItem('username') ?? '';
 
-  imageUrl: string='';
+  imageUrl: string = '';
 
   ngOnInit() {
     this.listarObservaciones()
@@ -74,18 +74,21 @@ export default class ObservacionProductoComponent implements OnInit {
 
   }
 
-  descargarExcel(){}
+  descargarExcel() {
+  }
 
 
-  seleccionarColor(){}
+  seleccionarColor() {
+  }
 
-  selecionarObservacion(event:any){}
+  selecionarObservacion(event: any) {
+  }
 
-  mostrarProducto(){
+  mostrarProducto() {
 
   }
 
-  guardarObservacion(){
+  guardarObservacion() {
 
   }
 
@@ -93,21 +96,24 @@ export default class ObservacionProductoComponent implements OnInit {
 
     this.vistaAddObservacion = true;
   }
+
   cerrarVentana() {
     this.vistaAddObservacion = false;
   }
+
   abrirVentanaCorreccion() {
     this.vistaCorreccion = true;
   }
+
   cerrarVentanaCorreccion() {
     this.vistaCorreccion = false;
   }
 
-  agregarCorreccion(){
+  agregarCorreccion() {
 
   }
 
-  listarObservaciones(){
+  listarObservaciones() {
     this.observacionService.listObservaciones(2).subscribe({
       next: data => {
         console.log(data);
@@ -122,18 +128,20 @@ export default class ObservacionProductoComponent implements OnInit {
   }
 
   isRecent(fecha: string): boolean {
-      const d = new Date(fecha);
-      const now = new Date();
-      const diff = (now.getTime() - d.getTime()) / 86400000;
-      return diff <= 30;
+    const d = new Date(fecha);
+    const now = new Date();
+    const diff = (now.getTime() - d.getTime()) / 86400000;
+    return diff <= 30;
   }
 
   get totalCorregidas() {
     return this.observaciones.filter(o => o.correccion).length;
   }
+
   get totalPendientes() {
     return this.observaciones.filter(o => !o.correccion && this.isRecent(o.fecha)).length;
   }
+
   get totalAntiguas() {
     return this.observaciones.filter(o => !o.correccion && !this.isRecent(o.fecha)).length;
   }

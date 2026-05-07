@@ -18,7 +18,7 @@
     <!-- HEADER SECTION -->
     <div class="page-header">
       <div>
-        <h1 class="page-title">Observaciones {{bodNombre}}</h1>
+        <h1 class="page-title">Observaciones {{ bodNombre }}</h1>
         <p class="page-subtitle">Productos con observaciones y novedades</p>
       </div>
       <div class="header-actions">
@@ -111,14 +111,17 @@
       >
         <ng-template pTemplate="header">
           <tr>
+            <th style="min-width:110px; text-align:center">Estado</th>
             <th style="min-width:110px">
               Fecha
             </th>
             <th pSortableColumn="usuario" style="min-width:130px">
-              Responsable <p-sortIcon field="usuario" />
+              Responsable
+              <p-sortIcon field="usuario"/>
             </th>
             <th pSortableColumn="item" style="min-width:100px">
-              Ítem <p-sortIcon field="item" />
+              Ítem
+              <p-sortIcon field="item"/>
             </th>
             <th style="min-width:200px">Descripción</th>
             <th style="min-width:80px; text-align:right">
@@ -133,7 +136,6 @@
             <th style="min-width:110px">Fecha Sol.</th>
             <th style="min-width:120px">Ubic. Bulto</th>
             <th style="min-width:120px">Ubic. Unidades</th>
-            <th style="min-width:110px; text-align:center">Estado</th>
             <th
               pFrozenColumn
               alignFrozen="right"
@@ -146,6 +148,32 @@
 
         <ng-template pTemplate="body" let-obs>
           <tr [ngClass]="tieneCorreccion(obs)" class="table-row">
+            <td style="text-align:center">
+              @if (obs.correccion) {
+                <p-tag
+                  value="Corregido"
+                  severity="success"
+                  icon="pi pi-check"
+                  [rounded]="true"
+                />
+              }
+              @if (!obs.correccion && isRecent(obs.fecha)) {
+                <p-tag
+                  value="Pendiente"
+                  severity="warning"
+                  icon="pi pi-clock"
+                  [rounded]="true"
+                />
+              }
+              @if (!obs.correccion && !isRecent(obs.fecha)) {
+                <p-tag
+                  value="Antigua"
+                  severity="danger"
+                  icon="pi pi-exclamation-circle"
+                  [rounded]="true"
+                />
+              }
+            </td>
             <td>
               <span class="date-badge">{{ obs.fecha }}</span>
             </td>
@@ -170,35 +198,6 @@
             <td>{{ obs.correccion?.fecha || '—' }}</td>
             <td>{{ obs.bulto || '—' }}</td>
             <td>{{ obs.unidad || '—' }}</td>
-            <td style="text-align:center">
-              @if (obs.correccion) {
-                <p-tag
-                  value="Corregido"
-                  severity="success"
-                  icon="pi pi-check"
-                  [rounded]="true"
-                />
-              }
-              @if (!obs.correccion && isRecent(obs.fecha)){
-                <p-tag
-                  value="Pendiente"
-                  severity="warning"
-                  icon="pi pi-clock"
-                  [rounded]="true"
-                />
-              }
-
-              @if (!obs.correccion && !isRecent(obs.fecha)) {
-                <p-tag
-                  value="Antigua"
-                  severity="danger"
-                  icon="pi pi-exclamation-circle"
-                  [rounded]="true"
-                />
-              }
-
-
-            </td>
             <td
               pFrozenColumn
               alignFrozen="right"
@@ -257,13 +256,13 @@
           (keyup.enter)="mostrarProducto()"
           style="text-transform: uppercase; flex: 1;"
         />
-        <p-button icon="pi pi-search" [outlined]="true" (onClick)="mostrarProducto()" pTooltip="Buscar" />
+        <p-button icon="pi pi-search" [outlined]="true" (onClick)="mostrarProducto()" pTooltip="Buscar"/>
       </div>
     </div>
 
     <!-- Info del producto -->
-    @if (producto?.nombre){
-      <div  class="product-card">
+    @if (producto?.nombre) {
+      <div class="product-card">
         <div class="product-info">
           <div class="product-avatar">
             <i class="pi pi-box" style="font-size:1.5rem"></i>
@@ -277,44 +276,42 @@
             </div>
           </div>
           <div class="product-img">
-            <img [src]="imageUrl" alt="Producto" />
+            <img [src]="imageUrl" alt="Producto"/>
           </div>
         </div>
       </div>
+      <p-divider/>
+      <!-- Campos del formulario -->
+      <div class="form-grid">
+        <div class="field">
+          <label class="field-label" for="obs-fisico">Físico encontrado</label>
+          <input
+            pInputText
+            id="obs-fisico"
+            type="text"
+            [(ngModel)]="detalleOb"
+            placeholder="Cantidad física u observación..."
+            style="text-transform: uppercase; width: 100%"
+          />
+        </div>
+        <div class="field">
+          <label class="field-label" for="obs-diferencia">Diferencia</label>
+          <input
+            pInputText
+            id="obs-diferencia"
+            type="text"
+            [(ngModel)]="diferencia"
+            placeholder="Diferencia respecto al stock..."
+            style="text-transform: uppercase; width: 100%"
+          />
+        </div>
+      </div>
     }
-
-    <p-divider />
-
-    <!-- Campos del formulario -->
-    <div class="form-grid">
-      <div class="field">
-        <label class="field-label" for="obs-fisico">Físico encontrado</label>
-        <input
-          pInputText
-          id="obs-fisico"
-          type="text"
-          [(ngModel)]="detalleOb"
-          placeholder="Cantidad física u observación..."
-          style="text-transform: uppercase; width: 100%"
-        />
-      </div>
-      <div class="field">
-        <label class="field-label" for="obs-diferencia">Diferencia</label>
-        <input
-          pInputText
-          id="obs-diferencia"
-          type="text"
-          [(ngModel)]="diferencia"
-          placeholder="Diferencia respecto al stock..."
-          style="text-transform: uppercase; width: 100%"
-        />
-      </div>
-    </div>
   </div>
 
   <ng-template pTemplate="footer">
-    <p-button label="Cancelar" icon="pi pi-times" severity="secondary" [outlined]="true" (onClick)="cerrarVentana()" />
-    <p-button label="Guardar Observación" icon="pi pi-save" (onClick)="guardarObservacion()" />
+    <p-button label="Cancelar" icon="pi pi-times" severity="secondary" [outlined]="true" (onClick)="cerrarVentana()"/>
+    <p-button label="Guardar Observación" icon="pi pi-save" (onClick)="guardarObservacion()"/>
   </ng-template>
 </p-dialog>
 
@@ -346,7 +343,8 @@
   </div>
 
   <ng-template pTemplate="footer">
-    <p-button label="Cancelar" icon="pi pi-times" severity="secondary" [outlined]="true" (onClick)="cerrarVentanaCorreccion()" />
-    <p-button label="Guardar Novedad" icon="pi pi-save" severity="success" (onClick)="agregarCorreccion()" />
+    <p-button label="Cancelar" icon="pi pi-times" severity="secondary" [outlined]="true"
+              (onClick)="cerrarVentanaCorreccion()"/>
+    <p-button label="Guardar Novedad" icon="pi pi-save" severity="success" (onClick)="agregarCorreccion()"/>
   </ng-template>
 </p-dialog>
