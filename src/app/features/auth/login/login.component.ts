@@ -77,7 +77,7 @@ export default class LoginComponent implements OnInit {
             id: null,
             nombre: usuario.usr_nombre,
             idUsuario: usuario.usr_id,
-            roles: ['public']
+            roles: ['PUBLIC']
           }
           this.userService.upsert(user).subscribe({
             next: usr => {
