@@ -53,12 +53,10 @@ export default class ObservacionProductoComponent implements OnInit {
 
   observaciones: ProductoObservacion[] = [];
   producto: ProductoSis | null = null;
-  observacion: ProductoObservacion = {} as ProductoObservacion;
   observacionSeleccionada!: ProductoObservacion
   request!: CorreccionRequest
   detalleOb!: string;
   diferencia: string = '';
-  correccion!: ProductoCorreccion;
   barraItem!: string;
   vistaAddObservacion = false;
   imagenAmpliada = false;
@@ -111,16 +109,51 @@ export default class ObservacionProductoComponent implements OnInit {
   }
 
   guardarObservacion() {
+    if (!this.detalleOb) {
+      this.messageService.add({severity: 'warn', summary:'Ingrese Barra o Item'})
+      return;
+    }
+
+    if (this.producto){
+      const observacion: ProductoObservacion = {
+        idBodega: this.bodId,
+        fecha:null,
+        item: this.producto.proId1,
+        descripcion: this.producto.nombre,
+        bulto: this.producto.bulto,
+        cxb: this.producto.cxb,
+        stock: this.producto.stockReal,
+        precio: this.producto.pvp,
+        detalle: this.detalleOb.toUpperCase(),
+        diferencia: this.diferencia ? this.diferencia.toUpperCase(): null,
+        usuario: this.usuariosessionStorage
+      }
+
+      this.observacionService.saveProduct(observacion).subscribe({
+        next: producto => {
+          this.listarObservaciones();
+          this.detalleOb = '';
+          this.diferencia = '';
+          this.cerrarVentana();
+          this.messageService.add({severity: 'success', summary: 'Observacion guardada'})
+        }, error: error => {
+          this.detalleOb = '';
+          this.diferencia = '';
+          this.messageService.add({severity: 'error', summary: 'Ingreso no valido'})
+        }
+      })
+    }
 
   }
 
   abrirVentana() {
-
     this.vistaAddObservacion = true;
   }
 
   cerrarVentana() {
     this.vistaAddObservacion = false;
+    this.producto = null;
+    this.barraItem = ''
   }
 
   abrirVentanaCorreccion() {
@@ -129,10 +162,35 @@ export default class ObservacionProductoComponent implements OnInit {
 
   cerrarVentanaCorreccion() {
     this.vistaCorreccion = false;
+    this.novedad = '';
   }
 
   agregarCorreccion() {
+    if (!this.novedad){
+      this.messageService.add({severity: 'warn', summary:'Ingrese la novedad'})
+    }
 
+    if (this.observacionSeleccionada){
+      const obs: ProductoCorreccion ={
+        detalle: this.novedad,
+        usuario: this.usuariosessionStorage
+      }
+      const request: CorreccionRequest ={
+        idProducto: this.observacionSeleccionada.id,
+        correccion: obs
+      }
+
+      this.observacionService.addCorrecion(request).subscribe({
+        next: producto => {
+          this.listarObservaciones();
+          this.cerrarVentanaCorreccion();
+          this.messageService.add({severity: 'success', summary: 'Correcion agregada', detail: `CORRECCION AGREGADA AL ITEM ${producto.item}`})
+        }, error: error => {
+          this.messageService.add({severity: 'error', summary: 'Novedad no registrada', detail: 'Producto no encontrado'})
+          this.novedad = ''
+        }
+      })
+    }
   }
 
   listarObservaciones() {

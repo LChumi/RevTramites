@@ -126,9 +126,9 @@
             <th style="min-width:80px; text-align:right">
               Stock
             </th>
-            <th style="min-width:80px; text-align:right">Físico</th>
+            <th style="min-width:80px; text-align:right">Observacion</th>
             <th style="min-width:90px; text-align:right">
-              Diferencia
+                Incidencia
             </th>
             <th style="min-width:140px">Resp. Solución</th>
             <th style="min-width:200px">Detalle</th>
@@ -181,7 +181,7 @@
               <code class="item-code">{{ obs.item || '—' }}</code>
             </td>
             <td class="desc-cell">{{ obs.descripcion || '—' }}</td>
-            <td style="text-align:right; font-variant-numeric: tabular-nums">{{ obs.stock || '—' }}</td>
+            <td style="text-align:right; font-variant-numeric: tabular-nums">{{ obs.stock || '0' }}</td>
             <td style="text-align:right; font-variant-numeric: tabular-nums">{{ obs.detalle || '—' }}</td>
             <td style="text-align:right">
               <span
@@ -322,7 +322,9 @@
 
   <ng-template pTemplate="footer">
     <p-button label="Cancelar" icon="pi pi-times" severity="secondary" [outlined]="true" (onClick)="cerrarVentana()"/>
-    <p-button label="Guardar Observación" icon="pi pi-save" (onClick)="guardarObservacion()"/>
+    @if (producto){
+      <p-button label="Guardar Observación" icon="pi pi-save" (onClick)="guardarObservacion()"/>
+    }
   </ng-template>
 </p-dialog>
 
@@ -341,7 +343,7 @@
   <div class="dialog-body">
     <div class="field">
       @if (observacionSeleccionada) {
-        <label class="field-label" for="novedad-input">Producto {{observacionSeleccionada.detalle}}</label>
+        <label class="field-label" for="novedad-input">PRODUCTO: {{observacionSeleccionada.descripcion}}</label>
       }
       <textarea
         pInputTextarea

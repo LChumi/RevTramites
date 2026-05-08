@@ -1,5 +1,5 @@
 export interface ProductoCorreccion {
   usuario: string;
-  fecha: string;
+  fecha?: any;
   detalle: string;
 }
