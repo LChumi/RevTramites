@@ -11,6 +11,7 @@ import {isPlatformBrowser} from '@angular/common';
 import {WsService} from '@services/ws/ws.service';
 import {UsersService} from '@services/users.service';
 import {UsuarioBod} from '@dtos/usuario-bod';
+import {MessageService} from 'primeng/api';
 
 @Component({
   imports: [
@@ -35,6 +36,7 @@ export default class LoginComponent implements OnInit {
   private userService = inject(UsersService)
   private platformId = inject(PLATFORM_ID);
   private notificacionService = inject(WsService);
+  private messageService = inject(MessageService)
   private roles: string[] =[]
 
   submitted = false;
@@ -84,6 +86,7 @@ export default class LoginComponent implements OnInit {
             next: usr => {
               this.notificacionService.init(usr.idUsuario, usr.roles);
               this.roles=usr.roles;
+              this.messageService.add({severity: 'info', detail: `BIENVENIDO ${usr.nombre}`})
             }
           })
         }
@@ -92,7 +95,7 @@ export default class LoginComponent implements OnInit {
         this.submitted = true;
         this.goToDashboard()
       }, error: err => {
-        console.error('Error en login', err);
+        this.messageService.add({severity: 'warn', summary: 'Usuario no autenticado'})
       }
     })
   }
