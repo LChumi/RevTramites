@@ -61,6 +61,7 @@ export default class ObservacionProductoComponent implements OnInit {
   correccion!: ProductoCorreccion;
   barraItem!: string;
   vistaAddObservacion = false;
+  imagenAmpliada = false;
   vistaCorreccion = false;
   colorSeleccionado!: string;
   totalObservaciones!: number;
@@ -85,6 +86,7 @@ export default class ObservacionProductoComponent implements OnInit {
 
   selecionarObservacion(obs: ProductoObservacion) {
     this.observacionSeleccionada = obs;
+    console.log(this.observacionSeleccionada)
   }
 
   mostrarProducto() {
@@ -139,11 +141,6 @@ export default class ObservacionProductoComponent implements OnInit {
         this.observaciones = data;
       }
     })
-  }
-
-  private convertirStringAFecha(fechaString: string): Date {
-    const [dia, mes, anio] = fechaString.split('-').map(Number);
-    return new Date(anio, mes - 1, dia);
   }
 
   isRecent(fecha: string): boolean {

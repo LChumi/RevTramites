@@ -263,21 +263,33 @@
     @if (producto) {
       <div class="product-card">
         <div class="product-info">
-          <div class="product-avatar">
-            <i class="pi pi-box" style="font-size:1.5rem"></i>
+          <!-- imagen clickeable -->
+          <div class="product-img" (click)="imagenAmpliada = true">
+            <img [src]="getUrlImage(producto.proId)" alt="Producto" />
+            <span class="img-zoom-hint"><i class="pi pi-search-plus"></i></span>
           </div>
+
+          <!-- datos del producto -->
           <div class="product-details">
             <span class="product-name">{{ producto.nombre }}</span>
             <div class="product-meta">
-              <span class="meta-tag">Ítem: {{ producto.proId1 }}</span>
-              <span class="meta-tag">Barra: {{ producto.proId }}</span>
-              <span class="meta-tag meta-tag--stock">Stock: {{ producto.stockReal }}</span>
+              <span class="meta-tag"><i class="pi pi-tag"></i> {{ producto.proId1 }}</span>
+              <span class="meta-tag"><i class="pi pi-barcode"></i> {{ producto.proId }}</span>
+              <span class="meta-tag meta-tag--stock"><i class="pi pi-box"></i> Stock: {{ producto.stockReal }}</span>
             </div>
           </div>
-          <div class="product-img">
-            <img [src]="getUrlImage(producto.proId)" alt="Producto" />
-          </div>
         </div>
+        @if (imagenAmpliada) {
+          <div class="img-overlay" (click)="imagenAmpliada = false">
+            <div class="img-overlay-box" (click)="$event.stopPropagation()">
+              <button class="img-overlay-close" (click)="imagenAmpliada = false">
+                <i class="pi pi-times"></i>
+              </button>
+              <img [src]="getUrlImage(producto.proId)" alt="Producto" />
+              <span class="img-overlay-name">{{ producto.nombre }}</span>
+            </div>
+          </div>
+        }
       </div>
       <p-divider/>
       <!-- Campos del formulario -->
@@ -294,13 +306,13 @@
           />
         </div>
         <div class="field">
-          <label class="field-label" for="obs-diferencia">Diferencia</label>
+          <label class="field-label" for="obs-diferencia">Diferencia o Dañados</label>
           <input
             pInputText
             id="obs-diferencia"
             type="text"
             [(ngModel)]="diferencia"
-            placeholder="Diferencia respecto al stock..."
+            placeholder="Cantidad Dañados o Diferencia respecto al stock"
             style="text-transform: uppercase; width: 100%"
           />
         </div>
@@ -328,7 +340,9 @@
 >
   <div class="dialog-body">
     <div class="field">
-      <label class="field-label" for="novedad-input">Descripción de la novedad</label>
+      @if (observacionSeleccionada) {
+        <label class="field-label" for="novedad-input">Producto {{observacionSeleccionada.detalle}}</label>
+      }
       <textarea
         pInputTextarea
         id="novedad-input"
