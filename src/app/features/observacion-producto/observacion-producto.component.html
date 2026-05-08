@@ -128,7 +128,7 @@
             </th>
             <th style="min-width:80px; text-align:right">Observacion</th>
             <th style="min-width:90px; text-align:right">
-                Incidencia
+              Incidencia
             </th>
             <th style="min-width:140px">Resp. Solución</th>
             <th style="min-width:200px">Detalle</th>
@@ -265,7 +265,7 @@
         <div class="product-info">
           <!-- imagen clickeable -->
           <div class="product-img" (click)="imagenAmpliada = true">
-            <img [src]="getUrlImage(producto.proId)" alt="Producto" />
+            <img [src]="getUrlImage(producto.proId)" alt="Producto"/>
             <span class="img-zoom-hint"><i class="pi pi-search-plus"></i></span>
           </div>
 
@@ -285,7 +285,7 @@
               <button class="img-overlay-close" (click)="imagenAmpliada = false">
                 <i class="pi pi-times"></i>
               </button>
-              <img [src]="getUrlImage(producto.proId)" alt="Producto" />
+              <img [src]="getUrlImage(producto.proId)" alt="Producto"/>
               <span class="img-overlay-name">{{ producto.nombre }}</span>
             </div>
           </div>
@@ -322,7 +322,7 @@
 
   <ng-template pTemplate="footer">
     <p-button label="Cancelar" icon="pi pi-times" severity="secondary" [outlined]="true" (onClick)="cerrarVentana()"/>
-    @if (producto){
+    @if (producto) {
       <p-button label="Guardar Observación" icon="pi pi-save" (onClick)="guardarObservacion()"/>
     }
   </ng-template>
@@ -343,7 +343,7 @@
   <div class="dialog-body">
     <div class="field">
       @if (observacionSeleccionada) {
-        <label class="field-label" for="novedad-input">PRODUCTO: {{observacionSeleccionada.descripcion}}</label>
+        <label class="field-label" for="novedad-input">PRODUCTO: {{ observacionSeleccionada.descripcion }}</label>
       }
       <textarea
         pInputTextarea

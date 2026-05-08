@@ -64,7 +64,7 @@ export default class ObservacionProductoComponent implements OnInit {
   colorSeleccionado!: string;
   totalObservaciones!: number;
   novedad!: string;
-  bodNombre= sessionStorage.getItem('bodega') ?? '';
+  bodNombre = sessionStorage.getItem('bodega') ?? '';
 
   bodId = sessionStorage.getItem('bodId') ?? '';
   usuariosessionStorage = sessionStorage.getItem('username') ?? '';
@@ -72,7 +72,7 @@ export default class ObservacionProductoComponent implements OnInit {
   imageUrl: string = '';
 
   ngOnInit() {
-    if (this.bodId == '' || this.usuariosessionStorage == ''){
+    if (this.bodId == '' || this.usuariosessionStorage == '') {
       this.messageService.add({severity: 'warn', summary: 'Usuario sin bodega', detail: 'Usuario si bodega ni sesión'})
       return;
     }
@@ -89,7 +89,7 @@ export default class ObservacionProductoComponent implements OnInit {
 
   mostrarProducto() {
     if (!this.barraItem) {
-      this.messageService.add({severity: 'warn', summary:'Ingrese Barra o Item'})
+      this.messageService.add({severity: 'warn', summary: 'Ingrese Barra o Item'})
       return;
     }
 
@@ -110,14 +110,14 @@ export default class ObservacionProductoComponent implements OnInit {
 
   guardarObservacion() {
     if (!this.detalleOb) {
-      this.messageService.add({severity: 'warn', summary:'Ingrese Barra o Item'})
+      this.messageService.add({severity: 'warn', summary: 'Ingrese Barra o Item'})
       return;
     }
 
-    if (this.producto){
+    if (this.producto) {
       const observacion: ProductoObservacion = {
         idBodega: this.bodId,
-        fecha:null,
+        fecha: null,
         item: this.producto.proId1,
         descripcion: this.producto.nombre,
         bulto: this.producto.bulto,
@@ -125,7 +125,7 @@ export default class ObservacionProductoComponent implements OnInit {
         stock: this.producto.stockReal,
         precio: this.producto.pvp,
         detalle: this.detalleOb.toUpperCase(),
-        diferencia: this.diferencia ? this.diferencia.toUpperCase(): null,
+        diferencia: this.diferencia ? this.diferencia.toUpperCase() : null,
         usuario: this.usuariosessionStorage
       }
 
@@ -166,16 +166,16 @@ export default class ObservacionProductoComponent implements OnInit {
   }
 
   agregarCorreccion() {
-    if (!this.novedad){
-      this.messageService.add({severity: 'warn', summary:'Ingrese la novedad'})
+    if (!this.novedad) {
+      this.messageService.add({severity: 'warn', summary: 'Ingrese la novedad'})
     }
 
-    if (this.observacionSeleccionada){
-      const obs: ProductoCorreccion ={
+    if (this.observacionSeleccionada) {
+      const obs: ProductoCorreccion = {
         detalle: this.novedad,
         usuario: this.usuariosessionStorage
       }
-      const request: CorreccionRequest ={
+      const request: CorreccionRequest = {
         idProducto: this.observacionSeleccionada.id,
         correccion: obs
       }
@@ -184,9 +184,17 @@ export default class ObservacionProductoComponent implements OnInit {
         next: producto => {
           this.listarObservaciones();
           this.cerrarVentanaCorreccion();
-          this.messageService.add({severity: 'success', summary: 'Correcion agregada', detail: `CORRECCION AGREGADA AL ITEM ${producto.item}`})
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Correcion agregada',
+            detail: `CORRECCION AGREGADA AL ITEM ${producto.item}`
+          })
         }, error: error => {
-          this.messageService.add({severity: 'error', summary: 'Novedad no registrada', detail: 'Producto no encontrado'})
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Novedad no registrada',
+            detail: 'Producto no encontrado'
+          })
           this.novedad = ''
         }
       })
