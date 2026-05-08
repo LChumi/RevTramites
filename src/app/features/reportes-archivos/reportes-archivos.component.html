@@ -1,0 +1,56 @@
+<!-- page header -->
+<div class="flex align-items-center gap-2 mb-2">
+  <i class="pi pi-download text-xl text-500"></i>
+  <h2 class="m-0 text-xl font-medium">Descarga de archivos</h2>
+</div>
+<p class="mt-0 mb-4 text-sm text-500">Genera y descarga reportes por sección</p>
+
+<!-- grid de cards -->
+<div class="grid">
+
+  <!-- Card activa: Pedidos web -->
+  <div class="col-12 md:col-6 lg:col-4">
+    <p-card>
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center gap-3 p-3 pb-0">
+          <div class="flex align-items-center justify-content-center border-round"
+               style="width:40px; height:40px; background:#E6F1FB;">
+            <i class="pi pi-shopping-cart" style="color:#185FA5;"></i>
+          </div>
+          <div>
+            <p class="m-0 font-medium">Pedidos web</p>
+            <p class="m-0 text-xs text-500">Descarga por código de pedido</p>
+          </div>
+        </div>
+      </ng-template>
+
+      <div class="flex flex-column gap-3">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon"><i class="pi pi-hashtag"></i></span>
+          <p-inputNumber [(ngModel)]="codigo" [useGrouping]="false"
+                         placeholder="Número de pedido" class="w-full" />
+        </div>
+        <div class="flex gap-2">
+          <p-button label="Excel" icon="pi pi-file-excel" severity="success"
+                    styleClass="flex-1" [disabled]="downloading || !codigo"
+                    [loading]="downloading" (onClick)="descargarExcel()" />
+          <p-button label="PDF" icon="pi pi-file-pdf" severity="danger"
+                    styleClass="flex-1" [disabled]="downloading || !codigo"
+                    [loading]="downloading" (onClick)="descargarPdf()" />
+        </div>
+      </div>
+
+      <ng-template pTemplate="footer">
+        <span class="text-xs text-400">
+          <i class="pi pi-info-circle mr-1"></i>
+          El archivo se genera desde el pedido registrado
+        </span>
+      </ng-template>
+    </p-card>
+  </div>
+
+  <!-- Cards futuras — mismo patrón, solo cambias ícono, título y botones -->
+
+</div>
+
+<p-toast />

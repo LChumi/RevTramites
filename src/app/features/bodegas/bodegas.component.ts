@@ -1,6 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {DividerModule} from 'primeng/divider';
-import {Button} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
 import {PaginatorModule} from 'primeng/paginator';
 import {CardModule} from 'primeng/card';
@@ -14,7 +13,6 @@ import {Router} from '@angular/router';
   standalone: true,
   imports: [
     DividerModule,
-    Button,
     DialogModule,
     PaginatorModule,
     CardModule,
@@ -29,9 +27,6 @@ export default class BodegasComponent implements OnInit {
   private router = inject(Router);
 
   listaBodegas!: Bodega[];
-  showModal: boolean = false;
-  codigo: string ='';
-  downloading=false;
   id_usuario: string= ''
   id_empresa: any
 
@@ -45,14 +40,6 @@ export default class BodegasComponent implements OnInit {
       alert('Vuelva a iniciar sesión')
     }
     this.listarBodegas()
-  }
-
-  descargarExcel(){
-
-  }
-
-  descargarPdf(){
-
   }
 
   bodegaSelecccionada(bodega:Bodega){

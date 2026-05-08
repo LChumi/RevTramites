@@ -48,6 +48,10 @@ export const routes: Routes = [
       {
         path:'dashboard', component: HomeComponent
       },
+      {
+        path:'archivos-reportes',
+        loadComponent: () => import('@features/reportes-archivos/reportes-archivos.component')
+      },
 
       // Importaciones
       {
