@@ -35,6 +35,7 @@ export default class LoginComponent implements OnInit {
   private userService = inject(UsersService)
   private platformId = inject(PLATFORM_ID);
   private notificacionService = inject(WsService);
+  private roles: string[] =[]
 
   submitted = false;
   isBrowser = false;
@@ -82,6 +83,7 @@ export default class LoginComponent implements OnInit {
           this.userService.upsert(user).subscribe({
             next: usr => {
               this.notificacionService.init(usr.idUsuario, usr.roles);
+              this.roles=usr.roles;
             }
           })
         }
@@ -105,8 +107,11 @@ export default class LoginComponent implements OnInit {
   }
 
   goToDashboard() {
-    this.router.navigate(['tramites', 'dashboard']).then(r => {
-    });
+    if (this.roles.includes('TRAMITES')){
+      this.router.navigate(['tramites', 'dashboard']).then(r => {});
+    } else {
+      this.router.navigate(['dashboard']).then(r => {});
+    }
   }
 
 }

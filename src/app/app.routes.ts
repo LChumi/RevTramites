@@ -2,6 +2,7 @@ import {Routes} from '@angular/router';
 import {importacionesRoutes} from '@features/importaciones/importacionesRoutes';
 import {authGuard} from '@guards/auth.guard';
 import {LayoutComponent} from '@shared/component/layout/layout.component';
+import {HomeComponent} from '@features/dashboard/home/home.component';
 
 export const routes: Routes = [
   // Redirige raíz a login
@@ -44,6 +45,9 @@ export const routes: Routes = [
         path: 'observaciones',
         loadComponent: () => import('@features/observacion-producto/observacion-producto.component')
       },
+      {
+        path:'dashboard', component: HomeComponent
+      },
 
       // Importaciones
       {
@@ -51,8 +55,8 @@ export const routes: Routes = [
         children: importacionesRoutes
       },
 
-      {path: '', redirectTo: 'bodegas', pathMatch: 'full'},
-      {path: '**', redirectTo: 'bodegas', pathMatch: 'full'}
+      {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+      {path: '**', redirectTo: 'dashboard', pathMatch: 'full'}
     ]
   },
 
