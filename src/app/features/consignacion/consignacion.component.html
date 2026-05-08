@@ -1,0 +1,138 @@
+<div class="p-5 flex justify-content-center">
+
+  <div class="w-full lg:w-8">
+
+    <p-card>
+
+      <!-- HEADER -->
+      <div class="text-center mb-5">
+
+        <h2 class="m-0 text-primary">
+          Generar Consignación
+        </h2>
+
+        <span class="text-600">
+          Complete los datos para generar la transacción
+        </span>
+
+      </div>
+
+      <!-- FORM -->
+      <div class="grid">
+
+        <!-- CONSIGNACION -->
+        <div class="col-12 md:col-6">
+
+          <label class="font-semibold block mb-2">
+            Consignación
+          </label>
+
+          <p-dropdown
+            [options]="relaciones"
+            [(ngModel)]="consignacionSeleccionada"
+            optionLabel="consignacion.nombre"
+            placeholder="Seleccione"
+            styleClass="w-full"
+            (onChange)="onChangeConsignacion()">
+
+            <ng-template let-item pTemplate="item">
+              {{ item.consignacion.nombre }}
+            </ng-template>
+
+            <ng-template let-item pTemplate="selectedItem">
+              {{ item?.consignacion?.nombre || 'Seleccione' }}
+            </ng-template>
+
+          </p-dropdown>
+
+        </div>
+
+        <!-- BODEGA -->
+        <div class="col-12 md:col-6">
+
+          <label class="font-semibold block mb-2">
+            Bodega Destino
+          </label>
+
+          <p-dropdown
+            [options]="bodegaDestino"
+            [(ngModel)]="bodFin"
+            optionLabel="nombre"
+            optionValue="codigo"
+            placeholder="Seleccione"
+            styleClass="w-full">
+          </p-dropdown>
+
+        </div>
+
+        <!-- CCO -->
+        <div class="col-12 md:col-6">
+
+          <label class="font-semibold block mb-2">
+            CCO
+          </label>
+
+          <input
+            pInputText
+            type="text"
+            class="w-full"
+            [(ngModel)]="cco">
+
+        </div>
+
+        <!-- BOTON -->
+        <div class="col-12 md:col-6 flex align-items-end">
+
+          <p-button
+            label="Generar Consignación"
+            icon="pi pi-upload"
+            severity="primary"
+            styleClass="w-full"
+            (onClick)="generarConsignacion()">
+          </p-button>
+
+        </div>
+
+      </div>
+
+    </p-card>
+
+    <!-- LOADING -->
+    @if (generando) {
+
+      <div class="flex flex-column align-items-center justify-content-center py-6 gap-3">
+
+        <p-progressSpinner></p-progressSpinner>
+
+        <span class="text-600">
+          Generando consignación...
+        </span>
+
+      </div>
+
+    }
+
+    <!-- RESULTADO -->
+    @if (codigoGenerado && !generando) {
+
+      <p-card class="mt-4 border-1 border-green-300">
+
+        <div class="flex flex-column align-items-center gap-3">
+
+          <span class="text-600 font-medium">
+            Transacción generada
+          </span>
+
+          <div class="text-3xl font-bold text-green-500">
+            {{ codigoGenerado }}
+          </div>
+
+        </div>
+
+      </p-card>
+
+    }
+
+  </div>
+
+</div>

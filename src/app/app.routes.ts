@@ -37,6 +37,10 @@ export const routes: Routes = [
         loadComponent: () => import('@features/confiteria/confiteria.component')
       },
       {
+        path: 'consignacion',
+        loadComponent: () => import('@features/consignacion/consignacion.component')
+      },
+      {
         path: 'observaciones',
         loadComponent: () => import('@features/observacion-producto/observacion-producto.component')
       },
