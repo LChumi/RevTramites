@@ -1,11 +1,11 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 import {importacionesRoutes} from '@features/importaciones/importacionesRoutes';
 import {authGuard} from '@guards/auth.guard';
 import {LayoutComponent} from '@shared/component/layout/layout.component';
 
 export const routes: Routes = [
   // Redirige raíz a login
-  { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
+  {path: '', redirectTo: 'auth/login', pathMatch: 'full'},
 
   // Auth (sin layout)
   {
@@ -15,8 +15,8 @@ export const routes: Routes = [
         path: 'login',
         loadComponent: () => import('@features/auth/login/login.component')
       },
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
-      { path: '**', redirectTo: 'login', pathMatch: 'full' }
+      {path: '', redirectTo: 'login', pathMatch: 'full'},
+      {path: '**', redirectTo: 'login', pathMatch: 'full'}
     ]
   },
 
@@ -37,7 +37,7 @@ export const routes: Routes = [
         loadComponent: () => import('@features/confiteria/confiteria.component')
       },
       {
-      path: 'observaciones',
+        path: 'observaciones',
         loadComponent: () => import('@features/observacion-producto/observacion-producto.component')
       },
 
@@ -47,10 +47,10 @@ export const routes: Routes = [
         children: importacionesRoutes
       },
 
-      { path: '', redirectTo: 'bodegas', pathMatch: 'full' },
-      { path: '**', redirectTo: 'bodegas', pathMatch: 'full' }
+      {path: '', redirectTo: 'bodegas', pathMatch: 'full'},
+      {path: '**', redirectTo: 'bodegas', pathMatch: 'full'}
     ]
   },
 
-  { path: '**', redirectTo: 'auth/login', pathMatch: 'full' }
+  {path: '**', redirectTo: 'auth/login', pathMatch: 'full'}
 ];

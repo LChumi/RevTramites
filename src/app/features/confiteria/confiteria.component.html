@@ -95,8 +95,18 @@
 
         <p-table
           [value]="listaProductos"
+          [paginator]="true"
+          [rows]="15"
+          [rowsPerPageOptions]="[10, 15, 25, 50]"
+          [showCurrentPageReport]="true"
+          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} observaciones"
+          [rowHover]="true"
+          styleClass="p-datatable-sm p-datatable-gridlines"
+          selectionMode="single"
           responsiveLayout="scroll"
-          styleClass="p-datatable-sm p-datatable-striped">
+          [scrollable]="true"
+          scrollHeight="flex"
+        >
 
           <ng-template pTemplate="header">
 
