@@ -62,7 +62,6 @@ export default class ObservacionProductoComponent implements OnInit {
   imagenAmpliada = false;
   vistaCorreccion = false;
   colorSeleccionado!: string;
-  totalObservaciones!: number;
   novedad!: string;
   bodNombre = sessionStorage.getItem('bodega') ?? '';
 
@@ -226,6 +225,10 @@ export default class ObservacionProductoComponent implements OnInit {
 
   get totalAntiguas() {
     return this.observaciones.filter(o => !o.correccion && !this.isRecent(o.fecha)).length;
+  }
+
+  get totalObservaciones() {
+    return this.observaciones.length;
   }
 
   protected readonly tieneCorreccion = tieneCorreccion;
