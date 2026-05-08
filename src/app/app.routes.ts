@@ -33,6 +33,10 @@ export const routes: Routes = [
         loadComponent: () => import('@features/bodegas/bodegas.component')
       },
       {
+        path: 'confiteria',
+        loadComponent: () => import('@features/confiteria/confiteria.component')
+      },
+      {
       path: 'observaciones',
         loadComponent: () => import('@features/observacion-producto/observacion-producto.component')
       },
