@@ -113,7 +113,7 @@ export default class LoginComponent implements OnInit {
     if (this.roles.includes('TRAMITES')){
       this.router.navigate(['tramites', 'dashboard']).then(r => {});
     } else {
-      this.router.navigate(['dashboard']).then(r => {});
+      this.router.navigate(['erp','dashboard']).then(r => {});
     }
   }
 

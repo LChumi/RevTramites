@@ -11,13 +11,13 @@ export const authGuard: CanActivateFn = (route, state) => {
       return true;
     } else {
       const router = inject(Router)
-      router.navigate(['/icep/auth']).then(r => {
+      router.navigate(['/auth']).then(r => {
       });
     }
     return true;
   } else {
     const router = inject(Router)
-    router.navigate(['/icep/auth']).then(r => {
+    router.navigate(['/auth']).then(r => {
     });
     return false;
   }

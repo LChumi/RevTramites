@@ -45,7 +45,7 @@ export default class BodegasComponent implements OnInit {
   bodegaSelecccionada(bodega:Bodega){
     sessionStorage.setItem('bodId', String(bodega.bod_codigo) );
     sessionStorage.setItem('bodega', bodega.bod_nombre);
-    this.router.navigate(['observaciones']).then(r => {});
+    this.router.navigate(['erp', 'observaciones']).then(r => {});
   }
 
   listarBodegas() {
