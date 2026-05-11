@@ -111,8 +111,9 @@
         <ng-template pTemplate="header">
           <tr>
             <th style="min-width:110px; text-align:center">Estado</th>
-            <th style="min-width:110px">
+            <th pSortableColumn="fecha" style="min-width:110px">
               Fecha
+              <p-sortIcon field="fecha"/>
             </th>
             <th pSortableColumn="usuario" style="min-width:130px">
               Responsable
