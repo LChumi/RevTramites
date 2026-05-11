@@ -171,7 +171,7 @@ export default class ObservacionProductoComponent implements OnInit {
 
     if (this.observacionSeleccionada) {
       const obs: ProductoCorreccion = {
-        detalle: this.novedad,
+        detalle: this.novedad.toUpperCase(),
         usuario: this.usuariosessionStorage
       }
       const request: CorreccionRequest = {
