@@ -9,7 +9,7 @@ import {environment} from '@environments/environment';
 })
 export class AuthService {
 
-  private baseUrl = environment.apiLogin + 'usuarios';
+  private baseUrl = environment.apiOracle + 'usuarios';
   private http = inject(HttpClient)
 
   constructor() {

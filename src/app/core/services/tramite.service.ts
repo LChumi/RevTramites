@@ -11,7 +11,7 @@ import {Contenedor} from '@models/contenedor';
   providedIn: 'root'
 })
 export class TramiteService {
-  private baseUrl = environment.apiUrlBase + 'tramite';
+  private baseUrl = environment.apiMongo + 'tramite';
   private http = inject(HttpClient)
 
   constructor() {

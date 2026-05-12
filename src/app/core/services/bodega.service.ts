@@ -9,7 +9,7 @@ import {Bodega} from '@dtos/bodega';
 })
 export class BodegaService {
 
-  private baseUrl = environment.apiLogin + 'bodegas/'
+  private baseUrl = environment.apiOracle + 'bodegas/'
   private http = inject(HttpClient);
 
   constructor() { }

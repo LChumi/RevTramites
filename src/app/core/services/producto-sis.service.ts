@@ -10,7 +10,7 @@ import {ConfiteriaRepor} from '@dtos/confiteria-repor';
 })
 export class ProductoSisService {
 
-  private url = environment.apiLogin +'producto'
+  private url = environment.apiOracle +'producto'
   private http = inject(HttpClient);
 
   constructor() { }

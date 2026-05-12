@@ -10,7 +10,7 @@ import {ConsignacionResponse} from '@dtos/consignacion-response';
 })
 export class ConsignacionService {
 
-  private baseUrl = environment.apiLogin + 'consignacion/';
+  private baseUrl = environment.apiOracle + 'consignacion/';
   private http = inject(HttpClient);
 
   constructor() { }

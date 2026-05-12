@@ -9,7 +9,7 @@ import {MenuItem} from '@dtos/menu-item';
 })
 export class MenuService {
 
-  private baseUrl = environment.apiUrlBase + 'menu';
+  private baseUrl = environment.apiMongo + 'menu';
   private http = inject(HttpClient)
 
   constructor() { }

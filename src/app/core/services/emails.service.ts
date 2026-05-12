@@ -10,7 +10,7 @@ import {Destinatario} from '@models/destinatario';
 })
 export class EmailsService {
 
-  private baseUrl = environment.apiUrlBase + 'email';
+  private baseUrl = environment.apiMongo + 'email';
   private http = inject(HttpClient)
 
   constructor() { }

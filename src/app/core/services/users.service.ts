@@ -9,7 +9,7 @@ import {Observable} from 'rxjs';
 })
 export class UsersService {
 
-  private url = environment.apiUrlBase + 'usuario_bod';
+  private url = environment.apiMongo + 'usuario_bod';
   private http = inject(HttpClient)
 
   constructor() { }

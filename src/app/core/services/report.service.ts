@@ -8,7 +8,7 @@ import {catchError, mapTo, Observable, tap, throwError} from 'rxjs';
 })
 export class ReportService {
 
-  private readonly baseUrl = `${environment.apiLogin}reports/report/pedido`;
+  private readonly baseUrl = `${environment.apiOracle}reports/report/pedido`;
   private readonly http = inject(HttpClient);
 
   getPdfReport(codigo: string): Observable<Blob> {

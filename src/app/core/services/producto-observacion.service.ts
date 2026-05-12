@@ -10,7 +10,7 @@ import {CorreccionRequest} from '@dtos/correccion-request';
 })
 export class ProductoObservacionService {
 
-  private baseUrl = environment.apiUrlBase;
+  private baseUrl = environment.apiMongo;
   private http = inject(HttpClient);
 
   constructor() { }

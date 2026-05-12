@@ -9,7 +9,7 @@ import {Tramite} from '@models/tramite';
 })
 export class FileService {
 
-  private baseUrl = environment.apiUrlBase + 'file';
+  private baseUrl = environment.apiMongo + 'file';
   private http = inject(HttpClient)
 
   constructor() {

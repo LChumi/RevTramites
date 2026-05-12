@@ -11,7 +11,7 @@ import {ReposicionConfiteria} from '@dtos/reposicion-confiteria';
 })
 export class ConfiteriaService {
 
-  private baseUrl = environment.apiUrlBase + 'confiteria';
+  private baseUrl = environment.apiMongo + 'confiteria';
   private http = inject(HttpClient)
 
   constructor() { }

@@ -14,7 +14,7 @@ import {ProductoCantidad} from '@models/producto-cantidad';
 })
 export class RevisionService {
 
-  private baseUrl = environment.apiUrlBase + 'revision';
+  private baseUrl = environment.apiMongo + 'revision';
   private http = inject(HttpClient)
 
   constructor() {

@@ -11,7 +11,7 @@ import {ProductValidateRequest} from '@dtos/product-validate-request';
 })
 export class MuestraService {
 
-  private baseUrl = environment.apiUrlBase + 'muestra';
+  private baseUrl = environment.apiMongo + 'muestra';
   private http = inject(HttpClient)
 
   constructor() {
