@@ -25,6 +25,7 @@ export const routes: Routes = [
       { path: 'consignacion', loadComponent: () => import('@features/consignacion/consignacion.component') },
       { path: 'observaciones', loadComponent: () => import('@features/observacion-producto/observacion-producto.component') },
       { path: 'archivos-reportes', loadComponent: () => import('@features/reportes-archivos/reportes-archivos.component') },
+      {path: 'recepcion-almacenes', loadComponent: () => import('@features/recepcion-almacenes/recepcion-almacenes.component')},
       { path: 'tramites', children: importacionesRoutes },
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
