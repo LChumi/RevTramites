@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
   templateUrl: './recepcion-finalizados.component.html',
   styles: ``
 })
-export class RecepcionFinalizadosComponent {
+export default class RecepcionFinalizadosComponent {
 
 }

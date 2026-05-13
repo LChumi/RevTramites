@@ -23,11 +23,11 @@ export const recepcionAlmacenesRoutes: Routes = [
           import('@features/recepcion-almacenes/recepcion-registrados/recepcion-registrados.component')
       },
 
-      /*{
+      {
         path: 'finalizados',
         loadComponent: () =>
           import('@features/recepcion-almacenes/recepcion-finalizados/recepcion-finalizados.component')
-      }*/
+      }
     ]
   },
 ]

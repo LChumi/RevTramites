@@ -78,8 +78,4 @@ export class RecepcionSidebarComponent implements OnInit {
       }
     ];
   }
-
-  navigate(route: string) {
-    this.router.navigate([route]).then(r => {});
-  }
 }
