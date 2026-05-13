@@ -4,24 +4,25 @@ import {Observable} from 'rxjs';
 import {ProductosPendientes} from '@dtos/recepcion-almacenes/productos-pendientes';
 import {HttpClient} from '@angular/common/http';
 import {ComprobantesCcoRequest} from '@dtos/recepcion-almacenes/comprobantes-cco-request';
+import {Comprobantes} from '@dtos/recepcion-almacenes/comprobantes';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class RecpcionAlmacenesService {
+export class RecepcionAlmacenesService {
 
-  private baseUrl = `${environment.apiAssist}assist/recepcion`
+  private baseUrl = `${environment.apiAssist}assist`
   private http = inject(HttpClient);
 
   constructor() { }
 
-  getComprobantesByEmpresa(empresa: number): Observable<ProductosPendientes>{
-    return this.http.get<ProductosPendientes>(`${this.baseUrl}/recepcion/${empresa}/empresa`);
+  getComprobantesByEmpresa(empresa: number): Observable<Comprobantes[]>{
+    return this.http.get<Comprobantes[]>(`${this.baseUrl}/recepcion/${empresa}/empresa`);
   }
 
-  getComprobantesByBodega(bodega: number): Observable<ProductosPendientes>{
-    return this.http.get<ProductosPendientes>(`${this.baseUrl}/recepcion/${bodega}/bodega`);
+  getComprobantesByBodega(bodega: number): Observable<Comprobantes[]>{
+    return this.http.get<Comprobantes[]>(`${this.baseUrl}/recepcion/${bodega}/bodega`);
   }
 
   getListProductos(request: ComprobantesCcoRequest): Observable<ProductosPendientes[]>{
