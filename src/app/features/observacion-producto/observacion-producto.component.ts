@@ -209,9 +209,15 @@ export default class ObservacionProductoComponent implements OnInit {
   }
 
   isRecent(fecha: string): boolean {
-    const d = new Date(fecha);
+
+    const [day, month, year] = fecha.split('-').map(Number);
+
+    const d = new Date(year, month - 1, day);
+
     const now = new Date();
+
     const diff = (now.getTime() - d.getTime()) / 86400000;
+
     return diff <= 30;
   }
 

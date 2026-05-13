@@ -127,7 +127,7 @@ export default class ConfiteriaComponent {
     }
 
     const proveedor = pedidosValidos[0].cliNombre
-    const user = sessionStorage.getItem("usuario");
+    const user = sessionStorage.getItem("username");
 
     if (user) {
       const repo: ReposicionConfiteria = {

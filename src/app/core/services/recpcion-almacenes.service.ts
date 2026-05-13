@@ -17,13 +17,15 @@ export class RecpcionAlmacenesService {
   constructor() { }
 
   getComprobantesByEmpresa(empresa: number): Observable<ProductosPendientes>{
-    return this.http.get<ProductosPendientes>(`${this.baseUrl}/recepcion/${empresa}/comprobantes`);
+    return this.http.get<ProductosPendientes>(`${this.baseUrl}/recepcion/${empresa}/empresa`);
+  }
+
+  getComprobantesByBodega(bodega: number): Observable<ProductosPendientes>{
+    return this.http.get<ProductosPendientes>(`${this.baseUrl}/recepcion/${bodega}/bodega`);
   }
 
   getListProductos(request: ComprobantesCcoRequest): Observable<ProductosPendientes[]>{
     return this.http.post<ProductosPendientes[]>(`${this.baseUrl}/recepcion/productos`, request)
   }
-
-
 
 }
