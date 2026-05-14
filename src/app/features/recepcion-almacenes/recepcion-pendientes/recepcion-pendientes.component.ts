@@ -43,10 +43,11 @@ export default class RecepcionPendientesComponent implements OnInit {
   productView = false
 
   usuario = sessionStorage.getItem('usercode') ?? '';
+  usrId = sessionStorage.getItem('usrId') ?? '';
   empresa = sessionStorage.getItem('idEmpresa') ?? '';
 
   ngOnInit(): void {
-    if (this.usuario == '' || this.empresa == ''){
+    if (this.usuario == '' || this.empresa == '' || this.usrId == ''){
       alert("Vuelva a iniciar sesion")
     }
     this.listarBodegas();
@@ -91,13 +92,22 @@ export default class RecepcionPendientesComponent implements OnInit {
     }
     const ccoCodigos: number[] = this.selectedComprobantes.map(c => c.ccoComproba);
 
+    const emp = Number(this.empresa);
+    if (isNaN(emp)) {
+      console.error("El valor no es numérico");
+    }
+
+
     const request : ComprobantesCcoRequest = {
+      bodega: this.selectedBodega.bod_codigo,
+      usuario: this.usrId,
+      empresa: emp,
       ccoCodigos
     }
 
     this.productView = true;
 
-    this.recepcionService
+    /*this.recepcionService
       .getListProductos(request)
       .subscribe({
         next: (result) => {
@@ -110,7 +120,7 @@ export default class RecepcionPendientesComponent implements OnInit {
             detail: error.message,
           })
         }
-      })
+      })*/
 
 
   }

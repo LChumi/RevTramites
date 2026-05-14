@@ -26,7 +26,7 @@ export class RecepcionAlmacenesService {
   }
 
   getListProductos(request: ComprobantesCcoRequest): Observable<ProductosPendientes[]>{
-    return this.http.post<ProductosPendientes[]>(`${this.baseUrl}/recepcion/productos`, request)
+    return this.http.post<ProductosPendientes[]>(`${this.baseUrl}/recepcion/crear-revision`, request)
   }
 
 }
