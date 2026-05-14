@@ -5,6 +5,7 @@ import {ProductosPendientes} from '@dtos/recepcion-almacenes/productos-pendiente
 import {HttpClient} from '@angular/common/http';
 import {ComprobantesCcoRequest} from '@dtos/recepcion-almacenes/comprobantes-cco-request';
 import {Comprobantes} from '@dtos/recepcion-almacenes/comprobantes';
+import {ServiceResponse} from '@dtos/service-response';
 
 
 @Injectable({
@@ -25,8 +26,8 @@ export class RecepcionAlmacenesService {
     return this.http.get<Comprobantes[]>(`${this.baseUrl}/recepcion/${bodega}/bodega`);
   }
 
-  getListProductos(request: ComprobantesCcoRequest): Observable<ProductosPendientes[]>{
-    return this.http.post<ProductosPendientes[]>(`${this.baseUrl}/recepcion/crear-revision`, request)
+  initRevision(request: ComprobantesCcoRequest): Observable<ServiceResponse>{
+    return this.http.post<ServiceResponse>(`${this.baseUrl}/recepcion/crear-revision`, request)
   }
 
 }

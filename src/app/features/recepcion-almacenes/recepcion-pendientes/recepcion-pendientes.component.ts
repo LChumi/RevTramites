@@ -9,6 +9,7 @@ import {DatePipe} from '@angular/common';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {ComprobantesCcoRequest} from '@dtos/recepcion-almacenes/comprobantes-cco-request';
 import {MessageService} from 'primeng/api';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-recepcion-pendientes',
@@ -28,6 +29,7 @@ export default class RecepcionPendientesComponent implements OnInit {
   recepcionService = inject(RecepcionAlmacenesService);
   bodegaService = inject(BodegaService);
   messageService = inject(MessageService);
+  private router = inject(Router);
 
   bodegas: any[] = [];
 
@@ -40,14 +42,13 @@ export default class RecepcionPendientesComponent implements OnInit {
   selectedBodega: any;
 
   loading = false;
-  productView = false
 
   usuario = sessionStorage.getItem('usercode') ?? '';
   usrId = sessionStorage.getItem('usrId') ?? '';
   empresa = sessionStorage.getItem('idEmpresa') ?? '';
 
   ngOnInit(): void {
-    if (this.usuario == '' || this.empresa == '' || this.usrId == ''){
+    if (this.usuario == '' || this.empresa == '' || this.usrId == '') {
       alert("Vuelva a iniciar sesion")
     }
     this.listarBodegas();
@@ -98,20 +99,24 @@ export default class RecepcionPendientesComponent implements OnInit {
     }
 
 
-    const request : ComprobantesCcoRequest = {
+    const request: ComprobantesCcoRequest = {
       bodega: this.selectedBodega.bod_codigo,
       usuario: this.usrId,
       empresa: emp,
       ccoCodigos
     }
 
-    this.productView = true;
-
-    /*this.recepcionService
-      .getListProductos(request)
+    this.recepcionService
+      .initRevision(request)
       .subscribe({
         next: (result) => {
-          this.productos = result;
+          if (result.success) {
+            this.messageService.add({
+              severity: 'success',
+              summary: result.message,
+            })
+            this.router.navigate(['erp','recepcion-almacenes','registrados']).then(r => {});
+          }
         },
         error: (error) => {
           this.messageService.add({
@@ -120,9 +125,7 @@ export default class RecepcionPendientesComponent implements OnInit {
             detail: error.message,
           })
         }
-      })*/
-
-
+      })
   }
 
 }
