@@ -26,26 +26,23 @@ import {Router} from '@angular/router';
   styles: ``
 })
 export default class RecepcionPendientesComponent implements OnInit {
-  recepcionService = inject(RecepcionAlmacenesService);
-  bodegaService = inject(BodegaService);
-  messageService = inject(MessageService);
+
+  private recepcionService = inject(RecepcionAlmacenesService);
+  private bodegaService = inject(BodegaService);
+  private messageService = inject(MessageService);
   private router = inject(Router);
 
   bodegas: any[] = [];
-
   comprobantes: any[] = [];
-
   selectedComprobantes: any[] = [];
-
   productos: any[] = [];
-
   selectedBodega: any;
 
   loading = false;
 
-  usuario = sessionStorage.getItem('usercode') ?? '';
-  usrId = sessionStorage.getItem('usrId') ?? '';
-  empresa = sessionStorage.getItem('idEmpresa') ?? '';
+  private usuario = sessionStorage.getItem('usercode') ?? '';
+  private usrId = sessionStorage.getItem('usrId') ?? '';
+  private empresa = sessionStorage.getItem('idEmpresa') ?? '';
 
   ngOnInit(): void {
     if (this.usuario == '' || this.empresa == '' || this.usrId == '') {
@@ -84,6 +81,8 @@ export default class RecepcionPendientesComponent implements OnInit {
   }
 
   listarFacturas(){
+    this.loading = true;
+
     const emp = Number(this.empresa);
     if (isNaN(emp)) {
       console.error("El valor no es numérico");
@@ -99,15 +98,18 @@ export default class RecepcionPendientesComponent implements OnInit {
           // Si ya tiene datos, fusiona
           this.comprobantes = [...this.comprobantes, ...result];
         }
+        this.loading = false;
       }, error: (error) => {
         console.log(error);
+        this.loading = false;
       }
     })
   }
 
   procesarSeleccionados() {
 
-    console.log(this.selectedComprobantes);
+    this.loading = true;
+
 
     if (this.selectedComprobantes.length === 0) {
       alert("Lista vacia")
@@ -137,10 +139,11 @@ export default class RecepcionPendientesComponent implements OnInit {
               severity: 'success',
               summary: result.message,
             })
-            this.router.navigate(['erp','recepcion-almacenes','registrados']).then(r => {});
+            this.router.navigate(['erp','recepcion-almacenes','registrados']).then(r => {this.loading = false;});
           }
         },
         error: (error) => {
+          this.loading = false;
           this.messageService.add({
             severity: 'error',
             summary: 'Error en el servicio ',

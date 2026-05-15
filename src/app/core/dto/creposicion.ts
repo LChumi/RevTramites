@@ -1,0 +1,57 @@
+export interface Creposicion {
+  id:                CreposicionID;
+  usuario:           string;
+  observacion:       string;
+  fecha:             any;
+  estado:            number;
+  finalizado:        number;
+  usrLiquida:        any;
+  tipo:              number;
+  urgente:           number;
+  cliDirEntrega:     string;
+  latitud:           number;
+  longitud:          number;
+  subtotal:          number;
+  descuento:         number;
+  porcimpuesto:      number;
+  valImpuesto:       number;
+  total:             number;
+  subtotal0:         number;
+  descuento0:        number;
+  ubicacion:         string;
+  referencia:        string;
+  transporte:        number;
+  secuencia:         number;
+  nroSolicitud:      string;
+  nroFactura:        string;
+  peso:              number;
+  estadoGar:         number;
+  transportista:     string;
+  tipoTransporte:    boolean;
+  linkDatos:         string;
+  linkFactura:       string;
+  linkFoto:          string;
+  tipoRetiro:        number;
+  referenciaEntrega: string;
+  codigoPostal:      string;
+  logError:          string;
+  ccomproba:         any;
+  empleadoId:        number;
+  empleado:          any;
+  bodegaId:          number;
+  gondolaId:         any;
+  bodegaFinId:       any;
+  bodegaFin:         any;
+  empresaGrupo:      any;
+  clienteId:         any;
+  cliente:           any;
+  productoId:        any;
+  producto:          any;
+  almacenId:         number;
+  pfechaFac:         any;
+}
+
+export interface CreposicionID {
+  codigo:  number;
+  empresa: number;
+}

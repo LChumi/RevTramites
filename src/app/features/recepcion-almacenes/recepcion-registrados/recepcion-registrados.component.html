@@ -1,1 +1,57 @@
-<p>recepcion-registrados works!</p>
+<div class="card">
+
+  <h3>Registrados</h3>
+
+  <br><br>
+  @if (loading) {
+    <div class="flex justify-content-center py-6">
+
+      <p-progressSpinner></p-progressSpinner>
+
+    </div>
+  } @else {
+    <p-table
+      [value]="registrados"
+      dataKey="ccoComproba"
+      [paginator]="true"
+      [rows]="10">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Comprobante</th>
+          <th>Almacen</th>
+          <th>Tipo</th>
+          <th>Fecha</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-cco>
+        <tr>
+          <td>{{ cco.comprobante }}</td>
+          <td>{{ cco.bodNombre }}</td>
+          <td>{{ cco.tipo }}</td>
+          <td>{{ cco.fechaFac | date:'mediumDate' }}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="14" class="empty-state">
+            <i class="pi pi-inbox" style="font-size: 2.5rem; color: var(--text-color-secondary);"></i>
+            <p>No hay pedidos para mostrar</p>
+          </td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+
+    <br>
+
+    <p-button
+      label="Procesar seleccionados"
+      icon="pi pi-check"
+    >
+    </p-button>
+  }
+
+</div>
