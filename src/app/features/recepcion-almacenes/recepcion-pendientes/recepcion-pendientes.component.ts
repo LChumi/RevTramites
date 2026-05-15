@@ -122,11 +122,13 @@ export default class RecepcionPendientesComponent implements OnInit {
       console.error("El valor no es numérico");
     }
 
+    const obs = this.selectedComprobantes.map(c => c.comprobante).join(', ');
 
     const request: ComprobantesCcoRequest = {
       bodega: this.selectedBodega.bod_codigo,
       usuario: this.usrId,
       empresa: emp,
+      observacion: obs,
       ccoCodigos
     }
 
