@@ -12,25 +12,26 @@
   } @else {
     <p-table
       [value]="registrados"
-      dataKey="ccoComproba"
       [paginator]="true"
       [rows]="10">
 
       <ng-template pTemplate="header">
         <tr>
-          <th>Comprobante</th>
-          <th>Almacen</th>
-          <th>Tipo</th>
+          <th>Id</th>
+          <th>Usuario</th>
+          <th>observacion</th>
           <th>Fecha</th>
+          <th>Almacen</th>
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-cco>
+      <ng-template pTemplate="body" let-crepo>
         <tr>
-          <td>{{ cco.comprobante }}</td>
-          <td>{{ cco.bodNombre }}</td>
-          <td>{{ cco.tipo }}</td>
-          <td>{{ cco.fechaFac | date:'mediumDate' }}</td>
+          <td>{{ crepo.id.codigo }}</td>
+          <td>{{ crepo.usuario }}</td>
+          <td>{{ crepo.observacion }}</td>
+          <td>{{ crepo.fecha | date:'mediumDate' }}</td>
+          <td>{{ crepo.almacen.nombre}}</td>
         </tr>
       </ng-template>
 
