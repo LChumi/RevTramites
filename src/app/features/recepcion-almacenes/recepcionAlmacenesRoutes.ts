@@ -19,8 +19,18 @@ export const recepcionAlmacenesRoutes: Routes = [
 
       {
         path: 'registrados',
-        loadComponent: () =>
-          import('@features/recepcion-almacenes/recepcion-registrados/recepcion-registrados.component')
+        children:[
+          {
+            path: '',
+            loadComponent: () =>
+              import('@features/recepcion-almacenes/recepcion-registrados/recepcion-registrados.component')
+          },
+          {
+            path: 'scaneo/:id',
+            loadComponent: () =>
+              import('@features/recepcion-almacenes/recepcion-scaneo/recepcion-scaneo.component')
+          }
+        ]
       },
 
       {

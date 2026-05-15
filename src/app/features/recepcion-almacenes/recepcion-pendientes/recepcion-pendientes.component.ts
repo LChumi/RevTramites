@@ -26,7 +26,7 @@ import {SidebarService} from '@services/state/sidebar.service';
   templateUrl: './recepcion-pendientes.component.html',
   styles: ``
 })
-export default class RecepcionPendientesComponent implements OnInit {
+export default class RecepcionPendientesComponent implements OnInit{
 
   private recepcionService = inject(RecepcionAlmacenesService);
   private bodegaService = inject(BodegaService);
@@ -59,6 +59,7 @@ export default class RecepcionPendientesComponent implements OnInit {
       .subscribe({
         next: (result) => {
           this.bodegas = result;
+          this.sidebarService.update({pendientes: this.comprobantes.length})
         }
       });
   }

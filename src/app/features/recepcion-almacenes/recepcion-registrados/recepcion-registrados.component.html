@@ -12,12 +12,16 @@
   } @else {
     <p-table
       [value]="registrados"
+      [responsiveLayout]="'scroll'"
       [paginator]="true"
-      [rows]="10">
+      [rowsPerPageOptions]="[10,30,50]"
+      [rows]="10"
+    >
 
       <ng-template pTemplate="header">
         <tr>
-          <th>Id</th>
+          <th></th>
+          <th>N° Revision</th>
           <th>Usuario</th>
           <th>observacion</th>
           <th>Fecha</th>
@@ -27,6 +31,9 @@
 
       <ng-template pTemplate="body" let-crepo>
         <tr>
+          <td>
+            <button type="button" pButton pRipple class="p-button-text p-button-rounded p-button-plain" icon="pi pi-chevron-right"></button>
+          </td>
           <td>{{ crepo.id.codigo }}</td>
           <td>{{ crepo.usuario }}</td>
           <td>{{ crepo.observacion }}</td>

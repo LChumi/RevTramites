@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {Button} from "primeng/button";
+import {Button, ButtonDirective} from "primeng/button";
 import {DatePipe} from "@angular/common";
 import {DropdownModule} from "primeng/dropdown";
 import {PrimeTemplate} from "primeng/api";
@@ -8,18 +8,22 @@ import {TableModule} from "primeng/table";
 import {CreposicionService} from '@services/creposicion.service';
 import {Creposicion} from '@dtos/creposicion';
 import {SidebarService} from '@services/state/sidebar.service';
+import {Ripple} from 'primeng/ripple';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-recepcion-registrados',
   standalone: true,
-    imports: [
-        Button,
-        DatePipe,
-        DropdownModule,
-        PrimeTemplate,
-        ProgressSpinnerModule,
-        TableModule
-    ],
+  imports: [
+    Button,
+    DatePipe,
+    DropdownModule,
+    PrimeTemplate,
+    ProgressSpinnerModule,
+    TableModule,
+    ButtonDirective,
+    Ripple
+  ],
   templateUrl: './recepcion-registrados.component.html',
   styles: ``
 })
@@ -29,9 +33,9 @@ export default class RecepcionRegistradosComponent implements OnInit {
   private usrId = sessionStorage.getItem('usrId') ?? '';
   private empresa = sessionStorage.getItem('idEmpresa') ?? '';
   private sidebarService = inject(SidebarService)
+  private router = inject(Router);
 
   registrados: Creposicion[] = [];
-  seleccionarRegistrado: any;
 
   loading = false;
 
@@ -49,6 +53,11 @@ export default class RecepcionRegistradosComponent implements OnInit {
         this.sidebarService.update({registrados: this.registrados.length})
       }
     })
+  }
+
+  seleccionarRevision(c: Creposicion){
+
+    this.router.navigate(['scaneo', c.id.codigo]).then(r => {})
   }
 
 }
