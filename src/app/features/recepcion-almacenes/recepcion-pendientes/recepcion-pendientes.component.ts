@@ -10,6 +10,7 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {ComprobantesCcoRequest} from '@dtos/recepcion-almacenes/comprobantes-cco-request';
 import {MessageService} from 'primeng/api';
 import {Router} from '@angular/router';
+import {SidebarService} from '@services/state/sidebar.service';
 
 @Component({
   selector: 'app-recepcion-pendientes',
@@ -31,6 +32,7 @@ export default class RecepcionPendientesComponent implements OnInit {
   private bodegaService = inject(BodegaService);
   private messageService = inject(MessageService);
   private router = inject(Router);
+  private sidebarService = inject(SidebarService)
 
   bodegas: any[] = [];
   comprobantes: any[] = [];
@@ -73,6 +75,7 @@ export default class RecepcionPendientesComponent implements OnInit {
         next: (result) => {
           this.comprobantes = result;
           this.loading = false;
+          this.sidebarService.update({pendientes: this.comprobantes.length})
         },
         error: (error) => {
           this.loading = false
@@ -99,6 +102,7 @@ export default class RecepcionPendientesComponent implements OnInit {
           this.comprobantes = [...this.comprobantes, ...result];
         }
         this.loading = false;
+        this.sidebarService.update({pendientes: this.comprobantes.length})
       }, error: (error) => {
         console.log(error);
         this.loading = false;

@@ -2,6 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {MenuItem} from 'primeng/api';
 import {Router} from '@angular/router';
 import {MenuModule} from 'primeng/menu';
+import {SidebarService} from '@services/state/sidebar.service';
 
 @Component({
   selector: 'app-recepcion-sidebar',
@@ -15,15 +16,11 @@ import {MenuModule} from 'primeng/menu';
 export class RecepcionSidebarComponent implements OnInit {
 
   private router = inject(Router)
-  url: string =''
+  private sidebarService = inject(SidebarService)
+  private url: string =''
 
+  private badgeValues: any ={}
   items: MenuItem[]=[];
-
-  badgeValues = {
-    pendientes: 0,
-    registrados: 0,
-    finalizados: 0
-  };
 
   constructor() {
     this.url = this.router.url;
@@ -36,11 +33,10 @@ export class RecepcionSidebarComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.badgeValues = {
-      pendientes: 12,
-      registrados: 5,
-      finalizados: 30
-    };
+    this.sidebarService.badgeValues$.subscribe(values => {
+      this.badgeValues = values;
+      this.loadSidebar();
+    });
 
     this.loadSidebar();
   }
@@ -51,6 +47,7 @@ export class RecepcionSidebarComponent implements OnInit {
       {
         label: 'Pendientes',
         icon: 'pi pi-clock',
+        badge: String(this.badgeValues.pendientes),
         routerLink: '/erp/recepcion-almacenes/pendientes',
         styleClass: this.url.includes('pendientes')
           ? 'active-menu'

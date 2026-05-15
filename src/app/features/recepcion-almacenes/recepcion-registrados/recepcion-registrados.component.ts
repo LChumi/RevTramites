@@ -7,6 +7,7 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {TableModule} from "primeng/table";
 import {CreposicionService} from '@services/creposicion.service';
 import {Creposicion} from '@dtos/creposicion';
+import {SidebarService} from '@services/state/sidebar.service';
 
 @Component({
   selector: 'app-recepcion-registrados',
@@ -27,6 +28,7 @@ export default class RecepcionRegistradosComponent implements OnInit {
   private creposicionService = inject(CreposicionService);
   private usrId = sessionStorage.getItem('usrId') ?? '';
   private empresa = sessionStorage.getItem('idEmpresa') ?? '';
+  private sidebarService = inject(SidebarService)
 
   registrados: Creposicion[] = [];
   seleccionarRegistrado: any;
@@ -44,6 +46,7 @@ export default class RecepcionRegistradosComponent implements OnInit {
     this.creposicionService.getCreposicionByUser(8, this.usrId, 0).subscribe({
       next: (result) => {
         this.registrados= result;
+        this.sidebarService.update({registrados: this.registrados.length})
       }
     })
   }
