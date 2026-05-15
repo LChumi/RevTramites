@@ -83,6 +83,28 @@ export default class RecepcionPendientesComponent implements OnInit {
       });
   }
 
+  listarFacturas(){
+    const emp = Number(this.empresa);
+    if (isNaN(emp)) {
+      console.error("El valor no es numérico");
+    }
+
+    this.recepcionService
+      .getComprobantesByEmpresaAndTipo(emp, 1).subscribe({
+      next: (result) => {
+        if (!this.comprobantes || this.comprobantes.length === 0) {
+          // Si está vacío, asigna directamente
+          this.comprobantes = result;
+        } else {
+          // Si ya tiene datos, fusiona
+          this.comprobantes = [...this.comprobantes, ...result];
+        }
+      }, error: (error) => {
+        console.log(error);
+      }
+    })
+  }
+
   procesarSeleccionados() {
 
     console.log(this.selectedComprobantes);

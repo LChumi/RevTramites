@@ -10,6 +10,14 @@
     (onChange)="listarComprobantes()">
   </p-dropdown>
 
+  @if (selectedBodega) {
+    <p-button
+      label="Listar Facturas"
+      icon="pi pi-"
+      (onClick)="listarFacturas()">
+    </p-button>
+  }
+
   <br><br>
   @if (loading) {
     <div class="flex justify-content-center py-6">

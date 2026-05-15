@@ -18,8 +18,8 @@ export class RecepcionAlmacenesService {
 
   constructor() { }
 
-  getComprobantesByEmpresa(empresa: number): Observable<Comprobantes[]>{
-    return this.http.get<Comprobantes[]>(`${this.baseUrl}/recepcion/${empresa}/empresa`);
+  getComprobantesByEmpresaAndTipo(empresa: number, tipo:number): Observable<Comprobantes[]>{
+    return this.http.get<Comprobantes[]>(`${this.baseUrl}/recepcion/${empresa}/empresa/${tipo}`);
   }
 
   getComprobantesByBodega(bodega: number): Observable<Comprobantes[]>{
