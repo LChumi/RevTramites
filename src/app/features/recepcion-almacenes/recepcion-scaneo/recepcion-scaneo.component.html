@@ -39,10 +39,34 @@
       @if(dreposicion){
         <div class="card">
           <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3 uppercase">Ultima barra
-            escaneada {{ dreposicion. }}
+            escaneada {{ dreposicion.barra}}
           </div>
+          <ul class="list-none p-0 m-0">
+            <li
+              class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border">
+              <div class="flex align-items-center flex-1">
+                <div>
+                  <strong>Barra: </strong>{{ dreposicion.barra }}
+                </div>
+              </div>
+              <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
+                <div class="flex align-items-center">
+                  <strong>Cantidad:</strong> {{ dreposicion.cantApr }}
+                </div>
+              </div>
+              <div class="flex align-items-center sm:justify-content-end">
+                <div>
+                  <strong>Estado: </strong>
+                  <p-tag
+                    [value]="getEstado(dreposicion)"
+                    [severity]="getSeverity(dreposicion)">
+                  </p-tag>
+                </div>
+              </div>
+            </li>
+          </ul>
         </div>
+      }
     </div>
   }
-
 </div>

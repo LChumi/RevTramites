@@ -10,6 +10,8 @@ import {ToolbarModule} from 'primeng/toolbar';
 import {InputTextModule} from 'primeng/inputtext';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Dreposicion} from '@dtos/dreposicion';
+import {TagModule} from 'primeng/tag';
+import {RevisionProductoRequest} from '@dtos/revision-producto-request';
 
 @Component({
   selector: 'app-recepcion-scaneo',
@@ -21,7 +23,8 @@ import {Dreposicion} from '@dtos/dreposicion';
     ToolbarModule,
     InputTextModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    TagModule
   ],
   templateUrl: './recepcion-scaneo.component.html',
   styles: ``
@@ -73,5 +76,26 @@ export default class RecepcionScaneoComponent implements OnInit{
   }
 
   escaneo(){
+    const req: RevisionProductoRequest = {
+      barra: this.barra,
+      usuario:
+    }
   }
+
+  getEstado(d: Dreposicion | null): string {
+    if (!d) return '';
+    if (d.cantSol === d.cantApr) return 'Completo';
+    if (d.cantSol > d.cantApr) return 'Faltante';
+    if (d.cantSol < d.cantApr) return 'Sobrante';
+    return '';
+  }
+
+  getSeverity(d: Dreposicion | null): "info" | "success" | "warning" | "danger" | "secondary" | "contrast" | undefined {
+    if (!d) return "info";
+    if (d.cantSol === d.cantApr) return "success";   // verde
+    if (d.cantSol > d.cantApr) return "warning";     // amarillo
+    if (d.cantSol < d.cantApr) return "danger";      // rojo
+    return "info";
+  }
+
 }
