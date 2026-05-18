@@ -9,13 +9,12 @@ import {CreposicionService} from '@services/creposicion.service';
 import {Creposicion} from '@dtos/creposicion';
 import {SidebarService} from '@services/state/sidebar.service';
 import {Ripple} from 'primeng/ripple';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-recepcion-registrados',
   standalone: true,
   imports: [
-    Button,
     DatePipe,
     DropdownModule,
     PrimeTemplate,
@@ -34,6 +33,7 @@ export default class RecepcionRegistradosComponent implements OnInit {
   private empresa = sessionStorage.getItem('idEmpresa') ?? '';
   private sidebarService = inject(SidebarService)
   private router = inject(Router);
+  private route = inject(ActivatedRoute)
 
   registrados: Creposicion[] = [];
 
@@ -56,8 +56,7 @@ export default class RecepcionRegistradosComponent implements OnInit {
   }
 
   seleccionarRevision(c: Creposicion){
-
-    this.router.navigate(['scaneo', c.id.codigo]).then(r => {})
+    this.router.navigate(['scaneo', c.id.codigo], {relativeTo: this.route}).then(r =>{})
   }
 
 }

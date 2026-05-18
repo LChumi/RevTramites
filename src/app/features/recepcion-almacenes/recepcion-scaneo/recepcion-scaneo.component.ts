@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-recepcion-scaneo',
@@ -7,6 +8,13 @@ import { Component } from '@angular/core';
   templateUrl: './recepcion-scaneo.component.html',
   styles: ``
 })
-export default class RecepcionScaneoComponent {
+export default class RecepcionScaneoComponent implements OnInit{
 
+  private route = inject(ActivatedRoute)
+
+  id!: string;
+
+  ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get('id') ?? '';
+  }
 }

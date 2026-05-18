@@ -32,7 +32,7 @@
       <ng-template pTemplate="body" let-crepo>
         <tr>
           <td>
-            <button type="button" pButton pRipple class="p-button-text p-button-rounded p-button-plain" icon="pi pi-chevron-right"></button>
+            <button (click)="seleccionarRevision(crepo)" type="button" pButton pRipple class="p-button-text p-button-rounded p-button-plain" icon="pi pi-chevron-right"></button>
           </td>
           <td>{{ crepo.id.codigo }}</td>
           <td>{{ crepo.usuario }}</td>
@@ -54,12 +54,6 @@
     </p-table>
 
     <br>
-
-    <p-button
-      label="Procesar seleccionados"
-      icon="pi pi-check"
-    >
-    </p-button>
   }
 
 </div>
