@@ -1,0 +1,48 @@
+<div class="grid grid-nogutter">
+  <div class="col-12">
+    <span class="text-900 font-bold text-4xl">Revision</span>
+  </div>
+  <div class="col-12 mt-4">
+    <span class="text-900 block font-bold text-xl">Escaneo de productos</span>
+  </div>
+
+  @if (reposicion){
+    <div class="col-12 mt-4">
+      <div class="col-12">
+        <hr>
+        <span>Detalle: {{ reposicion.observacion }}</span>
+      </div>
+
+      <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+          <div class="my-2">
+            <button pButton pRipple label="Seleccionar otro Tramite" icon="pi pi-chevron-left"
+                    class="p-button-outlined" (click)="nuevoEscaneo()"></button>
+          </div>
+        </ng-template>
+      </p-toolbar>
+
+      <div class="grid p-fluid mt-3">
+        <div class="field mb-2 lg:col-6 lg:mb-0">
+                <span class="p-float-label">
+                  <input autocomplete="off" type="text" id="barra" pInputText [(ngModel)]="barra"
+                         (keydown.enter)="escaneo()">
+                  <label for="barra">Barra</label>
+                </span>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (revisiones.length > 0) {
+    <div class="mt-2">
+      @if(dreposicion){
+        <div class="card">
+          <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3 uppercase">Ultima barra
+            escaneada {{ dreposicion. }}
+          </div>
+        </div>
+    </div>
+  }
+
+</div>
