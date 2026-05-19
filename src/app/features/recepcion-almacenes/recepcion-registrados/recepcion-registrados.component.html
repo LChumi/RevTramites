@@ -1,59 +1,56 @@
-<div class="card">
+<h3>Registrados</h3>
 
-  <h3>Registrados</h3>
+<br><br>
+@if (loading) {
+  <div class="flex justify-content-center py-6">
 
-  <br><br>
-  @if (loading) {
-    <div class="flex justify-content-center py-6">
+    <p-progressSpinner></p-progressSpinner>
 
-      <p-progressSpinner></p-progressSpinner>
+  </div>
+} @else {
+  <p-table
+    [value]="registrados"
+    [responsiveLayout]="'scroll'"
+    [paginator]="true"
+    [rowsPerPageOptions]="[10,30,50]"
+    [rows]="10"
+  >
 
-    </div>
-  } @else {
-    <p-table
-      [value]="registrados"
-      [responsiveLayout]="'scroll'"
-      [paginator]="true"
-      [rowsPerPageOptions]="[10,30,50]"
-      [rows]="10"
-    >
+    <ng-template pTemplate="header">
+      <tr>
+        <th></th>
+        <th>N° Revision</th>
+        <th>Usuario</th>
+        <th>observacion</th>
+        <th>Fecha</th>
+        <th>Almacen</th>
+      </tr>
+    </ng-template>
 
-      <ng-template pTemplate="header">
-        <tr>
-          <th></th>
-          <th>N° Revision</th>
-          <th>Usuario</th>
-          <th>observacion</th>
-          <th>Fecha</th>
-          <th>Almacen</th>
-        </tr>
-      </ng-template>
+    <ng-template pTemplate="body" let-crepo>
+      <tr>
+        <td>
+          <button (click)="seleccionarRevision(crepo)" type="button" pButton pRipple
+                  class="p-button-text p-button-rounded p-button-plain" icon="pi pi-chevron-right"></button>
+        </td>
+        <td>{{ crepo.id.codigo }}</td>
+        <td>{{ crepo.usuario }}</td>
+        <td>{{ crepo.observacion }}</td>
+        <td>{{ crepo.fecha | date:'mediumDate' }}</td>
+        <td>{{ crepo.almacen.nombre }}</td>
+      </tr>
+    </ng-template>
 
-      <ng-template pTemplate="body" let-crepo>
-        <tr>
-          <td>
-            <button (click)="seleccionarRevision(crepo)" type="button" pButton pRipple class="p-button-text p-button-rounded p-button-plain" icon="pi pi-chevron-right"></button>
-          </td>
-          <td>{{ crepo.id.codigo }}</td>
-          <td>{{ crepo.usuario }}</td>
-          <td>{{ crepo.observacion }}</td>
-          <td>{{ crepo.fecha | date:'mediumDate' }}</td>
-          <td>{{ crepo.almacen.nombre}}</td>
-        </tr>
-      </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="14" class="empty-state">
+          <i class="pi pi-inbox" style="font-size: 2.5rem; color: var(--text-color-secondary);"></i>
+          <p>No hay pedidos para mostrar</p>
+        </td>
+      </tr>
+    </ng-template>
 
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="14" class="empty-state">
-            <i class="pi pi-inbox" style="font-size: 2.5rem; color: var(--text-color-secondary);"></i>
-            <p>No hay pedidos para mostrar</p>
-          </td>
-        </tr>
-      </ng-template>
+  </p-table>
 
-    </p-table>
-
-    <br>
-  }
-
-</div>
+  <br>
+}
