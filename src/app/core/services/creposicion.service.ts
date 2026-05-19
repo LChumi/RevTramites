@@ -12,11 +12,15 @@ export class CreposicionService {
   private baseUrl = `${environment.apiAssist}models/creposicion`
   private http = inject(HttpClient)
 
-  getCreposicionByUser(tipo: number, usuario:string, finalizado: number): Observable<Creposicion[]>{
+  getCreposicionByUser(tipo: number, usuario: string, finalizado: number): Observable<Creposicion[]> {
     return this.http.get<Creposicion[]>(`${this.baseUrl}/list-user/${tipo}/${usuario}/${finalizado}`)
   }
 
-  getById(id: CreposicionID):Observable<Creposicion>{
+  getById(id: CreposicionID): Observable<Creposicion> {
     return this.http.post<Creposicion>(`${this.baseUrl}/get-by-id`, id)
+  }
+
+  updateRecepcionFinalizado(id: CreposicionID): Observable<Creposicion> {
+    return this.http.post<Creposicion>(`${this.baseUrl}/revision-finalizado`, id)
   }
 }

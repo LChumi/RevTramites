@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {MessageService, PrimeTemplate} from 'primeng/api';
+import {ConfirmationService, MessageService, PrimeTemplate} from 'primeng/api';
 import {DreposicionService} from '@services/dreposicion.service';
 import {Creposicion, CreposicionID} from '@dtos/creposicion';
 import {CreposicionService} from '@services/creposicion.service';
@@ -15,6 +15,8 @@ import {RevisionProductoRequest} from '@dtos/revision-producto-request';
 import {TableModule} from 'primeng/table';
 import {NgStyle} from '@angular/common';
 import {ToggleButtonModule} from 'primeng/togglebutton';
+import {playAlert} from '@utils/audio-utils';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-recepcion-scaneo',
@@ -30,7 +32,8 @@ import {ToggleButtonModule} from 'primeng/togglebutton';
     TagModule,
     TableModule,
     NgStyle,
-    ToggleButtonModule
+    ToggleButtonModule,
+    ConfirmDialogModule
   ],
   templateUrl: './recepcion-scaneo.component.html',
   styles: ``
@@ -42,6 +45,7 @@ export default class RecepcionScaneoComponent implements OnInit{
   private router = inject(Router)
   private dreposicionService = inject(DreposicionService)
   private creposicionService = inject(CreposicionService)
+  private confirmationService = inject(ConfirmationService)
 
   private empresa = sessionStorage.getItem('idEmpresa') ?? '';
   private usuariosessionStorage = sessionStorage.getItem('username') ?? '';
@@ -53,6 +57,7 @@ export default class RecepcionScaneoComponent implements OnInit{
   id!: string;
   cantidad!: number
   shouldAdd = true
+  loading = false
 
   ngOnInit(): void {
     this.reposicion= null
@@ -101,19 +106,37 @@ export default class RecepcionScaneoComponent implements OnInit{
       .subscribe({
 
         next: value => {
+          if (value){
+            // quitar si ya existe
+            this.revisiones = this.revisiones.filter(
+              r => r.productoId !== value.productoId
+            );
 
-          // quitar si ya existe
-          this.revisiones = this.revisiones.filter(
-            r => r.productoId !== value.productoId
-          );
+            // si quedó en 0 no mostrar
+            if (value.cantApr >= 0) {
+              // agregar arriba
+              this.revisiones.unshift(value);
+            }
 
-          // si quedó en 0 no mostrar
-          if (value.cantApr > 0) {
-            // agregar arriba
-            this.revisiones.unshift(value);
+            this.dreposicion = value
+            this.barra= ''
+          } else {
+            playAlert()
+            this.confirmationService.confirm({
+              message: 'Producto no encontrado en el registro ¿Desea agregar?',
+              header: 'Confirmación',
+              icon: 'pi pi-spin pi-spinner-dotted',
+              defaultFocus: `none`,
+              accept: () => {
+                this.addProduct(req);
+                this.barra = '';
+              },
+              reject: () => {
+                this.barra = '';
+              },
+              key: 'confirmProduct'
+            })
           }
-
-          this.barra= ''
         }
       });
   }
@@ -135,17 +158,61 @@ export default class RecepcionScaneoComponent implements OnInit{
   }
 
   finalizarVerificacion(){
+    this.loading = true
+    const emp = Number(this.empresa);
+    const idC = Number(this.id);
+    if (isNaN(emp) || isNaN(idC)) {
+      console.error("El valor no es numérico");
+    }
+
+    const id: CreposicionID ={
+      codigo: idC,
+      empresa: emp
+    }
+
+    this.creposicionService.updateRecepcionFinalizado(id).subscribe({
+      next: value => {
+        if (value.finalizado ===1){
+          this.messageService.add({
+            severity: 'success', summary: 'Revision finalizado', detail: 'Revision guardada puede continuar'
+          })
+          this.router.navigate(['erp', 'recepcion-almacenes', 'finalizados']).then(r =>{})
+        }
+        this.loading = false
+      }, error: err => {
+        this.loading = false
+      }
+    })
 
   }
 
   private getScaneados(crepo: number) {
+    this.loading = true
     this.dreposicionService.getListaDreposicion(crepo).subscribe({
       next: value => {
         console.log(value)
         // Filtrar solo los que tengan cantApr > 0
         this.revisiones = value.filter(d => d.cantApr > 0);
+        this.loading = false
       }
     });
+  }
+
+  private addProduct(req: RevisionProductoRequest) {
+    this.loading= true
+    this.dreposicionService.saveNewProductRevision(req).subscribe({
+      next: value => {
+        if (value){
+          this.revisiones.unshift(value);
+          this.dreposicion = value
+          this.loading = false
+        }
+      },
+      error: err => {
+        this.messageService.add({severity: 'error', summary: 'Producto no existe', detail: `${err.message}`})
+        this.loading = false
+      }
+    })
   }
 
 }

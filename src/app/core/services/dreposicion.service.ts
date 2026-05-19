@@ -21,4 +21,8 @@ export class DreposicionService {
     return this.http.post<Dreposicion>(`${this.baseUrl}/getByBarra`, revision)
   }
 
+  saveNewProductRevision(revision: RevisionProductoRequest): Observable<Dreposicion>{
+    return this.http.post<Dreposicion>(`${this.baseUrl}/saveByBarra`, revision)
+  }
+
 }

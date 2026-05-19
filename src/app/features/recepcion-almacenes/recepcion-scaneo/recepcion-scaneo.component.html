@@ -6,134 +6,149 @@
     <span class="text-900 block font-bold text-xl">Escaneo de productos</span>
   </div>
 
-  @if (reposicion){
-    <div class="col-12 mt-4">
-      <div class="col-12">
-        <hr>
-        <span>Detalle: {{ reposicion.observacion }}</span>
-      </div>
+  @if (loading) {
 
-      <p-toolbar styleClass="mb-4">
-        <ng-template pTemplate="left">
-          <div class="my-2">
-            <button pButton pRipple label="Seleccionar otra revision" icon="pi pi-chevron-left"
-                    class="p-button-outlined" (click)="nuevoEscaneo()"></button>
-          </div>
-        </ng-template>
-      </p-toolbar>
-      <div class="grid p-fluid mt-3">
-        <div class="field mb-2 lg:col-6 lg:mb-0">
+    <div class="flex justify-center items-center h-40">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+
+  } @else {
+    @if (reposicion){
+      <div class="col-12 mt-4">
+        <div class="col-12">
+          <hr>
+          <span>Detalle: {{ reposicion.observacion }}</span>
+        </div>
+
+        <p-toolbar styleClass="mb-4">
+          <ng-template pTemplate="left">
+            <div class="my-2">
+              <button pButton pRipple label="Seleccionar otra revision" icon="pi pi-chevron-left"
+                      class="p-button-outlined" (click)="nuevoEscaneo()"></button>
+            </div>
+          </ng-template>
+        </p-toolbar>
+        <div class="grid p-fluid mt-3">
+          <div class="field mb-2 lg:col-6 lg:mb-0">
                 <span class="p-float-label">
                   <input autocomplete="off" type="text" id="barra" pInputText [(ngModel)]="barra"
                          (keydown.enter)="escaneo()">
                   <label for="barra">Barra</label>
                 </span>
-        </div>
-        <div class="field mb-2 lg:col-6 lg:mb-0">
-          <p-toggleButton
-            [(ngModel)]="shouldAdd"
-            onLabel="Agregando"
-            offLabel="Retirando"
-            onIcon="pi pi-spin pi-spinner-dotted"
-            offIcon="pi pi-minus-circle"
-            styleClass="w-9rem"
-            ariaLabel="status"/>
-        </div>
-      </div>
-    </div>
-  }
-
-  @if (revisiones.length > 0) {
-    <div class="col-12 mt-4">
-      @if(dreposicion){
-        <div class="card">
-          <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3 uppercase">Ultima barra
-            escaneada {{ dreposicion.barra}}
           </div>
-          <ul class="list-none p-0 m-0">
-            <li
-              class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border">
-              <div class="flex align-items-center flex-1">
-                <div>
-                  <strong>Barra: </strong>{{ dreposicion.barra }}
-                </div>
-              </div>
-              <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
-                <div class="flex align-items-center">
-                  <strong>Cantidad:</strong> {{ dreposicion.cantApr }}
-                </div>
-              </div>
-              <div class="flex align-items-center sm:justify-content-end">
-                <div>
-                  <strong>Estado: </strong>
-                  <p-tag
-                    [value]="getEstado(dreposicion)"
-                    [severity]="getSeverity(dreposicion)">
-                  </p-tag>
-                </div>
-              </div>
-            </li>
-          </ul>
+          <div class="field mb-2 lg:col-6 lg:mb-0">
+            <p-toggleButton
+              [(ngModel)]="shouldAdd"
+              onLabel="Agregando"
+              offLabel="Retirando"
+              onIcon="pi pi-spin pi-spinner-dotted"
+              offIcon="pi pi-minus-circle"
+              styleClass="w-9rem"
+              ariaLabel="status"/>
+          </div>
         </div>
-      }
-
-      <div class="mt-2">
-        <p-table
-          [value]="revisiones"
-          responsiveLayout="scroll"
-          [paginator]="true"
-          [rows]="20"
-          styleClass="p-datatable-gridlines"
-          [rowsPerPageOptions]="[20,50,100]">
-          <ng-template pTemplate="caption">
-            <h4>Lista de Productos pitados</h4>
-            <small>Productos pitados: {{ revisiones.length }} </small>
-          </ng-template>
-
-          <ng-template pTemplate="header">
-            <tr>
-              <th pSortableColumn="barra">Barra</th>
-              <th>Nombre</th>
-              <th pSortableColumn="cantidad">Cant. Escaneada</th>
-              <th pSortableColumn="estado">Estado</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-producto>
-            <tr>
-              <td class="p-text-center p-col-1 p-col-fixed">
-                <div class="flex align-items-center gap-2">
-                  <span>{{ producto.barcode }}</span>
-                </div>
-              </td>
-              <td class="p-text-center p-col-1 p-col-fixed">{{producto.producto}}</td>
-              <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}"> {{ producto.cantApr }}</td>
-              <td class="p-text-center p-col-1 p-col-fixed">
-                <p-tag
-                  [value]="getEstado(producto)"
-                  [severity]="getSeverity(producto)">
-                </p-tag>
-              </td>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="emptymessage">
-            <tr>
-              <td colspan="14" class="empty-state">
-                <i class="pi pi-inbox" style="font-size: 2.5rem; color: var(--text-color-secondary);"></i>
-                <p>No hay items escaneados aun</p>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-        <button
-          pButton
-          pRipple
-          (click)="finalizarVerificacion()"
-          type="button"
-          label="Finalizar Verificacion"
-          class="p-button-rounded">
-        </button>
       </div>
-    </div>
+      <p-confirmDialog key="confirmProduct"></p-confirmDialog>
+    }
 
+    @if (revisiones.length > 0) {
+      <div class="col-12 mt-4">
+        @if(dreposicion){
+          <div class="card">
+            <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3 uppercase">Ultima barra
+              escaneada {{ dreposicion.barra}}
+            </div>
+            <ul class="list-none p-0 m-0">
+              <li
+                class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border">
+                <div class="flex align-items-center flex-1">
+                  <div>
+                    <strong>Barra: </strong>{{ dreposicion.barra }}
+                  </div>
+                </div>
+                <div class="flex align-items-center flex-1">
+                  <div>
+                    <strong>Producto: </strong>{{ dreposicion.producto }}
+                  </div>
+                </div>
+                <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
+                  <div class="flex align-items-center">
+                    <strong>Cantidad:</strong> {{ dreposicion.cantApr }}
+                  </div>
+                </div>
+                <div class="flex align-items-center sm:justify-content-end">
+                  <div>
+                    <strong>Estado: </strong>
+                    <p-tag
+                      [value]="getEstado(dreposicion)"
+                      [severity]="getSeverity(dreposicion)">
+                    </p-tag>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        }
+
+        <div class="mt-2">
+          <p-table
+            [value]="revisiones"
+            responsiveLayout="scroll"
+            [paginator]="true"
+            [rows]="20"
+            styleClass="p-datatable-gridlines"
+            [rowsPerPageOptions]="[20,50,100]">
+            <ng-template pTemplate="caption">
+              <h4>Lista de Productos pitados</h4>
+              <small>Productos pitados: {{ revisiones.length }} </small>
+            </ng-template>
+
+            <ng-template pTemplate="header">
+              <tr>
+                <th pSortableColumn="barra">Barra</th>
+                <th>Nombre</th>
+                <th pSortableColumn="cantidad">Cant. Escaneada</th>
+                <th pSortableColumn="estado">Estado</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-producto>
+              <tr>
+                <td class="p-text-center p-col-1 p-col-fixed">
+                  <div class="flex align-items-center gap-2">
+                    <span>{{ producto.barra }}</span>
+                  </div>
+                </td>
+                <td class="p-text-center p-col-1 p-col-fixed">{{producto.producto}}</td>
+                <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}"> {{ producto.cantApr }}</td>
+                <td class="p-text-center p-col-1 p-col-fixed">
+                  <p-tag
+                    [value]="getEstado(producto)"
+                    [severity]="getSeverity(producto)">
+                  </p-tag>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="14" class="empty-state">
+                  <i class="pi pi-inbox" style="font-size: 2.5rem; color: var(--text-color-secondary);"></i>
+                  <p>No hay items escaneados aun</p>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <button
+            pButton
+            pRipple
+            (click)="finalizarVerificacion()"
+            type="button"
+            label="Finalizar Verificacion"
+            class="p-button-rounded">
+          </button>
+        </div>
+      </div>
+
+    }
   }
+
 </div>
