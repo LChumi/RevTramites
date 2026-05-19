@@ -40,7 +40,7 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
   templateUrl: './recepcion-scaneo.component.html',
   styles: ``
 })
-export default class RecepcionScaneoComponent implements OnInit{
+export default class RecepcionScaneoComponent implements OnInit {
 
   private route = inject(ActivatedRoute)
   private messageService = inject(MessageService)
@@ -62,11 +62,13 @@ export default class RecepcionScaneoComponent implements OnInit{
   loading = false
 
   ngOnInit(): void {
-    this.reposicion= null
+    this.reposicion = null
     this.id = this.route.snapshot.paramMap.get('id') ?? '';
-    if (this.id === '' || this.empresa === ''){
-      this.messageService.add({severity: 'warn', summary:'Ruta sin valores'})
-      this.router.navigate(['auth', 'login']).then(r => {return})
+    if (this.id === '' || this.empresa === '') {
+      this.messageService.add({severity: 'warn', summary: 'Ruta sin valores'})
+      this.router.navigate(['auth', 'login']).then(r => {
+        return
+      })
     }
 
     const emp = Number(this.empresa);
@@ -75,15 +77,19 @@ export default class RecepcionScaneoComponent implements OnInit{
       console.error("El valor no es numérico");
     }
 
-    const id: CreposicionID ={
+    const id: CreposicionID = {
       codigo: idC,
       empresa: emp
     }
 
     this.creposicionService.getById(id).subscribe({
       next: (result) => {
-        if (result.finalizado === 1){
-          this.messageService.add({severity: 'warn', summary:'Revision ya finalizada', detail: 'Esta revision ya fue finalizada seleccione otra'})
+        if (result.finalizado === 1) {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Revision ya finalizada',
+            detail: 'Esta revision ya fue finalizada seleccione otra'
+          })
           this.nuevoEscaneo()
         } else {
           this.reposicion = result
@@ -94,8 +100,9 @@ export default class RecepcionScaneoComponent implements OnInit{
     })
   }
 
-  nuevoEscaneo(){
-    this.router.navigate(['erp', 'recepcion-almacenes', 'registrados']).then(r =>{})
+  nuevoEscaneo() {
+    this.router.navigate(['erp', 'recepcion-almacenes', 'registrados']).then(r => {
+    })
   }
 
   escaneo() {
@@ -113,7 +120,7 @@ export default class RecepcionScaneoComponent implements OnInit{
       .subscribe({
 
         next: value => {
-          if (value){
+          if (value) {
             // quitar si ya existe
             this.revisiones = this.revisiones.filter(
               r => r.productoId !== value.productoId
@@ -126,7 +133,7 @@ export default class RecepcionScaneoComponent implements OnInit{
             }
 
             this.dreposicion = value
-            this.barra= ''
+            this.barra = ''
           } else {
             playAlert()
             this.confirmationService.confirm({
@@ -164,7 +171,7 @@ export default class RecepcionScaneoComponent implements OnInit{
     return "info";
   }
 
-  finalizarVerificacion(){
+  finalizarVerificacion() {
     this.confirmationService.confirm({
       message: 'Al finalizar la revisión, los cambios se guardarán y esta acción no podrá ser revertida ni modificada.',
       header: 'Confirmación',
@@ -192,13 +199,13 @@ export default class RecepcionScaneoComponent implements OnInit{
     });
   }
 
-  private finalizarCreposicon(){
+  private finalizarCreposicon() {
     const emp = Number(this.empresa);
     const idC = Number(this.id);
     if (isNaN(emp) || isNaN(idC)) {
       console.error("El valor no es numérico");
     }
-    const id: CreposicionID ={
+    const id: CreposicionID = {
       codigo: idC,
       empresa: emp
     }
@@ -207,11 +214,12 @@ export default class RecepcionScaneoComponent implements OnInit{
       next: value => {
         console.log(value)
 
-        if (value.finalizado ===1){
+        if (value.finalizado === 1) {
           this.messageService.add({
             severity: 'success', summary: 'Revision finalizado', detail: 'Revision guardada puede continuar'
           })
-          this.router.navigate(['erp', 'recepcion-almacenes', 'finalizados']).then(r =>{})
+          this.router.navigate(['erp', 'recepcion-almacenes', 'finalizados']).then(r => {
+          })
         }
         this.loading = false
       }, error: err => {
@@ -221,10 +229,10 @@ export default class RecepcionScaneoComponent implements OnInit{
   }
 
   private addProduct(req: RevisionProductoRequest) {
-    this.loading= true
+    this.loading = true
     this.dreposicionService.saveNewProductRevision(req).subscribe({
       next: value => {
-        if (value){
+        if (value) {
           this.revisiones.unshift(value);
           this.dreposicion = value
           this.loading = false
