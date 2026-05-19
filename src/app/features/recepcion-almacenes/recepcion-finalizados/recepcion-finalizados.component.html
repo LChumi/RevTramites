@@ -1,1 +1,86 @@
-<p>recepcion-finalizados works!</p>
+<div class="card">
+
+  <h3>Finalizados</h3>
+
+  <br><br>
+
+  <p-table
+    [value]="registrados"
+    dataKey="id.codigo"
+    [expandedRowKeys]="expandedRows"
+    (onRowExpand)="onRowExpand($event)"
+    (onRowCollapse)="onRowCollapse($event)">
+    <ng-template pTemplate="header">
+      <tr>
+        <th></th>
+        <th>N° Revision</th>
+        <th>Usuario</th>
+        <th>observacion</th>
+        <th>Fecha</th>
+        <th>Almacen</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-row let-expanded="expanded">
+      <tr>
+        <td>
+          <p-button
+            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+            [pRowToggler]="row"
+            [text]="true" [rounded]="true" size="small"/>
+        </td>
+        <td>{{ row.id.codigo }}</td>
+        <td>{{ row.usuario }}</td>
+        <td>{{ row.observacion }}</td>
+        <td>{{ row.fecha | date:'mediumDate' }}</td>
+        <td>{{ row.almacen.nombre}}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="rowexpansion" let-row>
+      <tr>
+        <td colspan="6">
+          @if (loadingMap[row.id.codigo]) {
+            <div class="flex justify-content-center p-3">
+              <p-progressSpinner strokeWidth="4" [style]="{width:'30px', height:'30px'}"/>
+            </div>
+          }
+
+          @if (!loadingMap[row.id.codigo] && productosMap[row.id.codigo]){
+            <p-table
+              [value]="productosMap[row.id.codigo]"
+              styleClass="p-datatable-sm"
+              responsiveLayout="scroll">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="barra">Barra</th>
+                  <th>Nombre</th>
+                  <th pSortableColumn="cantidad">Cant. Escaneada</th>
+                  <th pSortableColumn="estado">Estado</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-producto>
+                <tr>
+                  <td class="p-text-center p-col-1 p-col-fixed">
+                    <div class="flex align-items-center gap-2">
+                      <span>{{ producto.barra }}</span>
+                    </div>
+                  </td>
+                  <td class="p-text-center p-col-1 p-col-fixed">{{ producto.producto }}</td>
+                  <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}"> {{ producto.cantApr }}</td>
+                  <td class="p-text-center p-col-1 p-col-fixed">
+                    <p-tag
+                      [value]="getEstadoRecepcion(producto)"
+                      [severity]="getSeverityRecepcion(producto)">
+                    </p-tag>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          }
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+</div>

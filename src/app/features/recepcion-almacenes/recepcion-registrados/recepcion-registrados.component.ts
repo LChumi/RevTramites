@@ -46,7 +46,7 @@ export default class RecepcionRegistradosComponent implements OnInit {
     this.listarRegistrados();
   }
 
-  listarRegistrados(){
+  private listarRegistrados(){
     this.creposicionService.getCreposicionByUser(8, this.usrId, 0).subscribe({
       next: (result) => {
         this.registrados= result;

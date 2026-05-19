@@ -18,6 +18,7 @@ import {ToggleButtonModule} from 'primeng/togglebutton';
 import {playAlert} from '@utils/audio-utils';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {getEstado, getSeverity} from '@utils/recepcion-utils';
 
 @Component({
   selector: 'app-recepcion-scaneo',
@@ -155,22 +156,6 @@ export default class RecepcionScaneoComponent implements OnInit {
       });
   }
 
-  getEstado(d: Dreposicion | null): string {
-    if (!d) return '';
-    if (d.cantSol === d.cantApr) return 'Completo';
-    if (d.cantSol > d.cantApr) return 'Faltante';
-    if (d.cantSol < d.cantApr) return 'Sobrante';
-    return '';
-  }
-
-  getSeverity(d: Dreposicion | null): "info" | "success" | "warning" | "danger" | "secondary" | "contrast" | undefined {
-    if (!d) return "info";
-    if (d.cantSol === d.cantApr) return "success";   // verde
-    if (d.cantSol > d.cantApr) return "warning";     // amarillo
-    if (d.cantSol < d.cantApr) return "danger";      // rojo
-    return "info";
-  }
-
   finalizarVerificacion() {
     this.confirmationService.confirm({
       message: 'Al finalizar la revisión, los cambios se guardarán y esta acción no podrá ser revertida ni modificada.',
@@ -245,4 +230,6 @@ export default class RecepcionScaneoComponent implements OnInit {
     })
   }
 
+  protected readonly getEstado = getEstado;
+  protected readonly getSeverity = getSeverity;
 }
