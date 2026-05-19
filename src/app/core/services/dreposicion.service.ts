@@ -13,12 +13,12 @@ export class DreposicionService {
   private baseUrl = `${environment.apiAssist}models/dreposicion`
   private http = inject(HttpClient)
 
-  getListaDreposicion(creposicion:number):Observable<Dreposicion>{
-    return this.http.get<Dreposicion>(`${this.baseUrl}/get/${creposicion}`)
+  getListaDreposicion(creposicion:number):Observable<Dreposicion[]>{
+    return this.http.get<Dreposicion[]>(`${this.baseUrl}/get/${creposicion}`)
   }
 
   quantityAdded(revision: RevisionProductoRequest): Observable<Dreposicion>{
-    return this.http.post<Dreposicion>(`${this.baseUrl}/dreposicion/getByBarra`, revision)
+    return this.http.post<Dreposicion>(`${this.baseUrl}/getByBarra`, revision)
   }
 
 }

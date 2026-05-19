@@ -21,7 +21,6 @@ import {InputTextModule} from 'primeng/inputtext';
 import {ProductoSis} from '@dtos/producto-sis';
 import {ProductoSisService} from '@services/producto-sis.service';
 import {MessageService} from 'primeng/api';
-import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-observacion-producto',

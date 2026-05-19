@@ -12,6 +12,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Dreposicion} from '@dtos/dreposicion';
 import {TagModule} from 'primeng/tag';
 import {RevisionProductoRequest} from '@dtos/revision-producto-request';
+import {TableModule} from 'primeng/table';
+import {NgStyle} from '@angular/common';
+import {ToggleButtonModule} from 'primeng/togglebutton';
 
 @Component({
   selector: 'app-recepcion-scaneo',
@@ -24,7 +27,10 @@ import {RevisionProductoRequest} from '@dtos/revision-producto-request';
     InputTextModule,
     ReactiveFormsModule,
     FormsModule,
-    TagModule
+    TagModule,
+    TableModule,
+    NgStyle,
+    ToggleButtonModule
   ],
   templateUrl: './recepcion-scaneo.component.html',
   styles: ``
@@ -38,12 +44,15 @@ export default class RecepcionScaneoComponent implements OnInit{
   private creposicionService = inject(CreposicionService)
 
   private empresa = sessionStorage.getItem('idEmpresa') ?? '';
+  private usuariosessionStorage = sessionStorage.getItem('username') ?? '';
 
   reposicion: Creposicion | null = null;
   dreposicion: Dreposicion | null = null;
   revisiones: Dreposicion[] = []
   barra!: string
   id!: string;
+  cantidad!: number
+  shouldAdd = true
 
   ngOnInit(): void {
     this.reposicion= null
@@ -68,18 +77,45 @@ export default class RecepcionScaneoComponent implements OnInit{
       next: (result) => {
         this.reposicion = result
         this.messageService.add({severity: 'info', summary: result.observacion})
+        this.getScaneados(idC);
       }
     })
   }
 
   nuevoEscaneo(){
+    this.router.navigate(['erp', 'recepcion-almacenes', 'registrados']).then(r =>{})
   }
 
-  escaneo(){
+  escaneo() {
+
     const req: RevisionProductoRequest = {
       barra: this.barra,
-      usuario:
-    }
+      usuario: this.usuariosessionStorage,
+      creposicion: Number(this.id),
+      empresa: Number(this.empresa),
+      cantidad: this.cantidad,
+      shouldAdd: this.shouldAdd
+    };
+
+    this.dreposicionService.quantityAdded(req)
+      .subscribe({
+
+        next: value => {
+
+          // quitar si ya existe
+          this.revisiones = this.revisiones.filter(
+            r => r.productoId !== value.productoId
+          );
+
+          // si quedó en 0 no mostrar
+          if (value.cantApr > 0) {
+            // agregar arriba
+            this.revisiones.unshift(value);
+          }
+
+          this.barra= ''
+        }
+      });
   }
 
   getEstado(d: Dreposicion | null): string {
@@ -96,6 +132,20 @@ export default class RecepcionScaneoComponent implements OnInit{
     if (d.cantSol > d.cantApr) return "warning";     // amarillo
     if (d.cantSol < d.cantApr) return "danger";      // rojo
     return "info";
+  }
+
+  finalizarVerificacion(){
+
+  }
+
+  private getScaneados(crepo: number) {
+    this.dreposicionService.getListaDreposicion(crepo).subscribe({
+      next: value => {
+        console.log(value)
+        // Filtrar solo los que tengan cantApr > 0
+        this.revisiones = value.filter(d => d.cantApr > 0);
+      }
+    });
   }
 
 }
