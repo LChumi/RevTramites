@@ -7,7 +7,7 @@ import {Button} from 'primeng/button';
 import {DatePipe, NgStyle} from '@angular/common';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {TagModule} from 'primeng/tag';
-import {getEstado, getEstadoRecepcion, getSeverity, getSeverityRecepcion} from '@utils/recepcion-utils';
+import {getEstadoRecepcion, getSeverityRecepcion} from '@utils/recepcion-utils';
 import {DreposicionService} from '@services/dreposicion.service';
 
 @Component({
@@ -24,7 +24,7 @@ import {DreposicionService} from '@services/dreposicion.service';
   templateUrl: './recepcion-finalizados.component.html',
   styles: ``
 })
-export default class RecepcionFinalizadosComponent implements OnInit{
+export default class RecepcionFinalizadosComponent implements OnInit {
 
   private creposicionService = inject(CreposicionService);
   private dreposicionService = inject(DreposicionService);
@@ -46,13 +46,33 @@ export default class RecepcionFinalizadosComponent implements OnInit{
     this.listarFinalizados();
   }
 
-  private listarFinalizados(){
-      this.creposicionService.getCreposicionByUser(8, this.usrId, 1).subscribe({
+  private listarFinalizados() {
+    const usuariosPermitidos = [
+      'NCERON',
+      'CMERCHAN',
+      'LCHUMI'
+    ];
+
+    if (usuariosPermitidos.includes(this.usrId)) {
+      this.creposicionService.listFinalizados(8, 1).subscribe({
         next: (result) => {
-          this.registrados= result;
+          this.registrados = result;
           this.sidebarService.update({finalizados: this.registrados.length})
+        },
+        error: (error) => {
+          console.log(error)
         }
       })
+    } else {
+      this.creposicionService.getCreposicionByUser(8, this.usrId, 1).subscribe({
+        next: (result) => {
+          this.registrados = result;
+          this.sidebarService.update({finalizados: this.registrados.length})
+        }, error: error => {
+          console.log(error)
+        }
+      })
+    }
   }
 
   onRowExpand(event: any) {

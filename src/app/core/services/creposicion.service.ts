@@ -24,4 +24,8 @@ export class CreposicionService {
     return this.http.put<Creposicion>(`${this.baseUrl}/revision-finalizado`, id)
   }
 
+  listFinalizados(tipo: number, finalizado: number): Observable<Creposicion[]> {
+    return this.http.get<Creposicion[]>(`${this.baseUrl}/list-finalizados/${tipo}/${finalizado}`)
+  }
+
 }
