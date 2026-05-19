@@ -21,6 +21,7 @@ export class CreposicionService {
   }
 
   updateRecepcionFinalizado(id: CreposicionID): Observable<Creposicion> {
-    return this.http.post<Creposicion>(`${this.baseUrl}/revision-finalizado`, id)
+    return this.http.put<Creposicion>(`${this.baseUrl}/revision-finalizado`, id)
   }
+
 }

@@ -17,6 +17,7 @@ import {NgStyle} from '@angular/common';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {playAlert} from '@utils/audio-utils';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-recepcion-scaneo',
@@ -33,7 +34,8 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
     TableModule,
     NgStyle,
     ToggleButtonModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    ProgressSpinnerModule
   ],
   templateUrl: './recepcion-scaneo.component.html',
   styles: ``
@@ -80,9 +82,14 @@ export default class RecepcionScaneoComponent implements OnInit{
 
     this.creposicionService.getById(id).subscribe({
       next: (result) => {
-        this.reposicion = result
-        this.messageService.add({severity: 'info', summary: result.observacion})
-        this.getScaneados(idC);
+        if (result.finalizado === 1){
+          this.messageService.add({severity: 'warn', summary:'Revision ya finalizada', detail: 'Esta revision ya fue finalizada seleccione otra'})
+          this.nuevoEscaneo()
+        } else {
+          this.reposicion = result
+          this.messageService.add({severity: 'info', summary: result.observacion})
+          this.getScaneados(idC);
+        }
       }
     })
   }
@@ -158,13 +165,39 @@ export default class RecepcionScaneoComponent implements OnInit{
   }
 
   finalizarVerificacion(){
+    this.confirmationService.confirm({
+      message: 'Al finalizar la revisión, los cambios se guardarán y esta acción no podrá ser revertida ni modificada.',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      defaultFocus: 'none',
+      accept: () => {
+        this.finalizarCreposicon()
+      },
+      reject: () => {
+        this.barra = '';
+      },
+      key: 'confirmProduct'
+    })
     this.loading = true
+  }
+
+  private getScaneados(crepo: number) {
+    this.loading = true
+    this.dreposicionService.getListaDreposicion(crepo).subscribe({
+      next: value => {
+        // Filtrar solo los que tengan cantApr > 0
+        this.revisiones = value.filter(d => d.cantApr > 0);
+        this.loading = false
+      }
+    });
+  }
+
+  private finalizarCreposicon(){
     const emp = Number(this.empresa);
     const idC = Number(this.id);
     if (isNaN(emp) || isNaN(idC)) {
       console.error("El valor no es numérico");
     }
-
     const id: CreposicionID ={
       codigo: idC,
       empresa: emp
@@ -172,6 +205,8 @@ export default class RecepcionScaneoComponent implements OnInit{
 
     this.creposicionService.updateRecepcionFinalizado(id).subscribe({
       next: value => {
+        console.log(value)
+
         if (value.finalizado ===1){
           this.messageService.add({
             severity: 'success', summary: 'Revision finalizado', detail: 'Revision guardada puede continuar'
@@ -183,19 +218,6 @@ export default class RecepcionScaneoComponent implements OnInit{
         this.loading = false
       }
     })
-
-  }
-
-  private getScaneados(crepo: number) {
-    this.loading = true
-    this.dreposicionService.getListaDreposicion(crepo).subscribe({
-      next: value => {
-        console.log(value)
-        // Filtrar solo los que tengan cantApr > 0
-        this.revisiones = value.filter(d => d.cantApr > 0);
-        this.loading = false
-      }
-    });
   }
 
   private addProduct(req: RevisionProductoRequest) {
