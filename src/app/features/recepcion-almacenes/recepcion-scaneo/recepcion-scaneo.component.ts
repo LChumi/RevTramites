@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ConfirmationService, MessageService, PrimeTemplate} from 'primeng/api';
 import {DreposicionService} from '@services/dreposicion.service';
@@ -41,7 +41,10 @@ import {getEstado, getSeverity} from '@utils/recepcion-utils';
   templateUrl: './recepcion-scaneo.component.html',
   styles: ``
 })
-export default class RecepcionScaneoComponent implements OnInit {
+export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('barraInput')
+  barraInput!: ElementRef<HTMLInputElement>;
 
   private route = inject(ActivatedRoute)
   private messageService = inject(MessageService)
@@ -72,6 +75,7 @@ export default class RecepcionScaneoComponent implements OnInit {
       })
     }
 
+
     const emp = Number(this.empresa);
     const idC = Number(this.id);
     if (isNaN(emp) || isNaN(idC)) {
@@ -82,6 +86,7 @@ export default class RecepcionScaneoComponent implements OnInit {
       codigo: idC,
       empresa: emp
     }
+
 
     this.creposicionService.getById(id).subscribe({
       next: (result) => {
@@ -101,9 +106,21 @@ export default class RecepcionScaneoComponent implements OnInit {
     })
   }
 
+  ngAfterViewInit(): void {
+    this.focusInput();
+  }
+
   nuevoEscaneo() {
     this.router.navigate(['erp', 'recepcion-almacenes', 'registrados']).then(r => {
     })
+  }
+
+  focusInput() {
+
+    setTimeout(() => {
+      this.barraInput?.nativeElement?.focus();
+    }, 100);
+
   }
 
   escaneo() {
@@ -144,14 +161,17 @@ export default class RecepcionScaneoComponent implements OnInit {
               defaultFocus: `none`,
               accept: () => {
                 this.addProduct(req);
+                this.focusInput();
                 this.barra = '';
               },
               reject: () => {
+                this.focusInput();
                 this.barra = '';
               },
               key: 'confirmProduct'
             })
           }
+          this.focusInput();
         }
       });
   }
