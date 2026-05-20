@@ -117,9 +117,9 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
 
   focusInput() {
 
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       this.barraInput?.nativeElement?.focus();
-    }, 100);
+    });
 
   }
 
@@ -152,6 +152,7 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
 
             this.dreposicion = value
             this.barra = ''
+            this.focusInput();
           } else {
             playAlert()
             this.confirmationService.confirm({
@@ -161,12 +162,12 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
               defaultFocus: `none`,
               accept: () => {
                 this.addProduct(req);
-                this.focusInput();
                 this.barra = '';
+                this.focusInput();
               },
               reject: () => {
-                this.focusInput();
                 this.barra = '';
+                this.focusInput();
               },
               key: 'confirmProduct'
             })
@@ -187,6 +188,7 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
       },
       reject: () => {
         this.barra = '';
+        this.focusInput();
       },
       key: 'confirmProduct'
     })
