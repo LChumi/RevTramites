@@ -1,83 +1,108 @@
 <h3>Finalizados</h3>
 
-<br><br>
-
 <p-table
   [value]="registrados"
   dataKey="id.codigo"
-  [expandedRowKeys]="expandedRows"
-  (onRowExpand)="onRowExpand($event)"
-  (onRowCollapse)="onRowCollapse($event)">
+  styleClass="p-datatable-sm p-datatable-striped">
   <ng-template pTemplate="header">
     <tr>
-      <th></th>
-      <th>N° Revision</th>
+      <th pSortableColumn="id.codigo">N° Revisión <p-sortIcon field="id.codigo"/></th>
       <th>Usuario</th>
-      <th>observacion</th>
-      <th>Fecha</th>
-      <th>Almacen</th>
+      <th>Observación</th>
+      <th pSortableColumn="fecha">Fecha <p-sortIcon field="fecha"/></th>
+      <th>Almacén</th>
+      <th class="text-center" style="width: 8rem">Acciones</th>
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="body" let-row let-expanded="expanded">
+  <ng-template pTemplate="body" let-row>
     <tr>
+      <td class="font-semibold text-primary">{{ row.id.codigo }}</td>
       <td>
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-user text-500 text-sm"></i>
+          <span>{{ row.usuario }}</span>
+        </div>
+      </td>
+      <td>
+        <span class="text-500 text-sm white-space-nowrap overflow-hidden text-overflow-ellipsis"
+              style="max-width: 200px; display: block;">
+          {{ row.observacion || '—' }}
+        </span>
+      </td>
+      <td>
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-calendar text-500 text-sm"></i>
+          <span>{{ row.fecha | date:'mediumDate' }}</span>
+        </div>
+      </td>
+      <td>
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-building text-500 text-sm"></i>
+          <span>{{ row.almacen.nombre }}</span>
+        </div>
+      </td>
+      <td class="text-center">
         <p-button
-          [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
-          [pRowToggler]="row"
-          [text]="true" [rounded]="true" size="small"/>
+          icon="pi pi-file-pdf"
+          label="Reporte"
+          size="small"
+          severity="info"
+          [text]="true"
+          (onClick)="abrirReporte(row)"/>
       </td>
-      <td>{{ row.id.codigo }}</td>
-      <td>{{ row.usuario }}</td>
-      <td>{{ row.observacion }}</td>
-      <td>{{ row.fecha | date:'mediumDate' }}</td>
-      <td>{{ row.almacen.nombre }}</td>
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="rowexpansion" let-row>
+  <ng-template pTemplate="emptymessage">
     <tr>
-      <td colspan="6">
-        @if (loadingMap[row.id.codigo]) {
-          <div class="flex justify-content-center p-3">
-            <p-progressSpinner strokeWidth="4" [style]="{width:'30px', height:'30px'}"/>
-          </div>
-        }
-
-        @if (!loadingMap[row.id.codigo] && productosMap[row.id.codigo]) {
-          <p-table
-            [value]="productosMap[row.id.codigo]"
-            styleClass="p-datatable-sm"
-            responsiveLayout="scroll">
-            <ng-template pTemplate="header">
-              <tr>
-                <th pSortableColumn="barra">Barra</th>
-                <th>Nombre</th>
-                <th pSortableColumn="cantidad">Cant. Escaneada</th>
-                <th pSortableColumn="observacion">Estado<p-sortIcon field="observacion"/></th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-producto>
-              <tr>
-                <td class="p-text-center p-col-1 p-col-fixed">
-                  <div class="flex align-items-center gap-2">
-                    <span>{{ producto.barra }}</span>
-                  </div>
-                </td>
-                <td class="p-text-center p-col-1 p-col-fixed">{{ producto.producto }}</td>
-                <td class="p-text-center p-col-1" [ngStyle]="{'width': '50px'}"> {{ producto.cantApr }}</td>
-                <td class="p-text-center p-col-1 p-col-fixed">
-                  <p-tag
-                    [value]="getEstadoRecepcion(producto)"
-                    [severity]="getSeverityRecepcion(producto)">
-                  </p-tag>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
-        }
+      <td colspan="6" class="text-center text-500 py-6">
+        <i class="pi pi-inbox text-4xl mb-3 block"></i>
+        No hay revisiones finalizadas
       </td>
     </tr>
   </ng-template>
-
 </p-table>
+
+<!-- Dialog Reporte -->
+<p-dialog
+  header="Visualización de productos verificados"
+  [(visible)]="revReport"
+  [modal]="true"
+  [closable]="false"
+  [style]="{ width: '70rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '95vw' }"
+  [maximizable]="true">
+
+  @if (pdfLoading) {
+    <div class="flex flex-column align-items-center gap-3 py-6">
+      <p-progressSpinner strokeWidth="3" [style]="{ width: '48px', height: '48px' }"/>
+      <span class="text-primary font-semibold">Cargando datos del reporte...</span>
+      <p-progressBar class="w-full" mode="indeterminate" [style]="{ height: '4px' }"/>
+    </div>
+  }
+
+  @if (!pdfLoading && creposicionSeleccionada) {
+    <app-revision-report
+      #reporteRef
+      [creposicion]="creposicionSeleccionada"
+      [productos]="productosSeleccionados"/>
+  }
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-between align-items-center w-full flex-wrap gap-2">
+      <p-button
+        icon="pi pi-times"
+        label="Cerrar"
+        severity="secondary"
+        [outlined]="true"
+        (onClick)="cerrarReporte()"/>
+      <p-button
+        icon="pi pi-file-pdf"
+        label="Generar PDF"
+        severity="danger"
+        [disabled]="pdfLoading"
+        (onClick)="reporteRef.generarPdf()"/>
+    </div>
+  </ng-template>
+</p-dialog>

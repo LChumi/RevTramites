@@ -1,14 +1,19 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {CreposicionService} from '@services/creposicion.service';
 import {Creposicion} from '@dtos/creposicion';
 import {SidebarService} from '@services/state/sidebar.service';
 import {TableModule} from 'primeng/table';
 import {Button} from 'primeng/button';
-import {DatePipe, NgStyle} from '@angular/common';
+import {DatePipe} from '@angular/common';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {TagModule} from 'primeng/tag';
-import {getEstadoRecepcion, getSeverityRecepcion} from '@utils/recepcion-utils';
 import {DreposicionService} from '@services/dreposicion.service';
+import {DialogModule} from 'primeng/dialog';
+import {ProgressBarModule} from 'primeng/progressbar';
+import {
+  RevisionReportComponent
+} from '@features/recepcion-almacenes/recepcion-finalizados/components/revision-report/revision-report.component';
+import {Dreposicion} from '@dtos/dreposicion';
 
 @Component({
   selector: 'app-recepcion-finalizados',
@@ -19,7 +24,9 @@ import {DreposicionService} from '@services/dreposicion.service';
     DatePipe,
     ProgressSpinnerModule,
     TagModule,
-    NgStyle
+    DialogModule,
+    ProgressBarModule,
+    RevisionReportComponent
   ],
   templateUrl: './recepcion-finalizados.component.html',
   styles: ``
@@ -30,71 +37,76 @@ export default class RecepcionFinalizadosComponent implements OnInit {
   private dreposicionService = inject(DreposicionService);
   private usrId = sessionStorage.getItem('usrId') ?? '';
   private empresa = sessionStorage.getItem('idEmpresa') ?? '';
-  private sidebarService = inject(SidebarService)
+  private sidebarService = inject(SidebarService);
+
+  @ViewChild('reporteRef') reporteRef!: RevisionReportComponent;
 
   registrados: Creposicion[] = [];
-  expandedRows: { [key: string]: boolean } = {};
-  productosMap: { [crepoId: number]: any[] } = {}; // cache por fila
-  loadingMap: { [crepoId: number]: boolean } = {};
+  productosMap: { [crepoId: number]: Dreposicion[] } = {};
 
-  loading = false
+  creposicionSeleccionada!: Creposicion;
+  productosSeleccionados: Dreposicion[] = [];
+  revReport = false;
+  pdfLoading = false;
+  loading = false;
 
   ngOnInit(): void {
     if (this.empresa == '' || this.usrId == '') {
-      alert("Vuelva a iniciar sesion")
+      alert('Vuelva a iniciar sesion');
     }
     this.listarFinalizados();
   }
 
   private listarFinalizados() {
-    const usuariosPermitidos = [
-      'NCERON',
-      'CMERCHAN',
-      'LCHUMI'
-    ];
+    const usuariosPermitidos = ['NCERON', 'CMERCHAN', 'LCHUMI'];
 
     if (usuariosPermitidos.includes(this.usrId)) {
       this.creposicionService.listFinalizados(8, 1).subscribe({
         next: (result) => {
           this.registrados = result;
-          this.sidebarService.update({finalizados: this.registrados.length})
+          this.sidebarService.update({ finalizados: this.registrados.length });
         },
-        error: (error) => {
-          console.log(error)
-        }
-      })
+        error: (error) => console.log(error)
+      });
     } else {
       this.creposicionService.getCreposicionByUser(8, this.usrId, 1).subscribe({
         next: (result) => {
           this.registrados = result;
-          this.sidebarService.update({finalizados: this.registrados.length})
-        }, error: error => {
-          console.log(error)
-        }
-      })
+          this.sidebarService.update({ finalizados: this.registrados.length });
+        },
+        error: (error) => console.log(error)
+      });
     }
   }
 
-  onRowExpand(event: any) {
-    const crepo = event.data;
+  abrirReporte(row: Creposicion): void {
+    this.creposicionSeleccionada = row;
+    this.revReport = true;
 
-    if (this.productosMap[crepo.id.codigo]) return;
+    // Si ya está en caché no vuelve a llamar al servicio
+    if (this.productosMap[row.id.codigo]) {
+      this.productosSeleccionados = this.productosMap[row.id.codigo];
+      return;
+    }
 
-    this.loadingMap[crepo.id.codigo] = true;
+    this.pdfLoading = true;
 
-    this.dreposicionService.getListaDreposicion(crepo.id.codigo).subscribe({
+    this.dreposicionService.getListaDreposicion(row.id.codigo).subscribe({
       next: (value) => {
-        this.productosMap[crepo.id.codigo] = value;
-        this.loadingMap[crepo.id.codigo] = false;
+        this.productosMap[row.id.codigo] = value;
+        this.productosSeleccionados = value;
+        this.pdfLoading = false;
+      },
+      error: (error) => {
+        console.log(error);
+        this.pdfLoading = false;
       }
     });
   }
 
-  onRowCollapse(event: any) {
-    const crepo = event.data;
-    delete this.expandedRows[crepo.id.codigo];
+  cerrarReporte(): void {
+    this.revReport = false;
+    this.productosSeleccionados = [];
+    this.pdfLoading = false;
   }
-
-  protected readonly getEstadoRecepcion = getEstadoRecepcion;
-  protected readonly getSeverityRecepcion = getSeverityRecepcion;
 }
