@@ -86,8 +86,14 @@
         <div class="grid p-fluid mt-3">
           <div class="field col-12 md:col-8">
             <span class="p-float-label">
-              <input #barraInput autocomplete="off" type="text" id="barra" pInputText [(ngModel)]="barra" (keydown.enter)="escaneo()">
-              <label for="barra">Barra</label>
+              <div class="p-inputgroup">
+                <input #barraInput autocomplete="off" type="text" id="barra" pInputText
+                       [(ngModel)]="barra" (keydown.enter)="escaneo()">
+                <label for="barra">Barra</label>
+                <button pButton type="button" icon="pi pi-check"
+                        class="p-button-outlined p-button-sm"
+                        (click)="escaneo()"></button>
+              </div>
             </span>
           </div>
           <div class="field col-12 md:col-4">
