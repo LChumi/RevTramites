@@ -2,8 +2,13 @@
   <div class="card py-8 px-6 md:px-8 overflow-auto">
     @if (creposicion) {
       <div class="mt-5 mb-8 flex flex-column">
-        <div class="mb-3 text-2xl font-medium">REVISION {{ creposicion.id.codigo }} </div>
-        <span class="mb-2">RESPONSABLE: {{ creposicion.usuario }}</span>
+        <div class="mb-3 text-2xl font-medium">
+          REVISION {{ creposicion.id.codigo }}
+          <span class="ml-3 text-sm text-500">
+            ({{ getPorcentajeCompleto() }}% completado)
+          </span>
+        </div>
+        <span class="mb-2 font-semibold">RESPONSABLE: {{ creposicion.usuario }}</span>
         <span class="mb-2 uppercase">FECHA: {{ creposicion.fecha | date:'mediumDate' }}</span>
         <span>{{ creposicion.observacion }}</span>
       </div>

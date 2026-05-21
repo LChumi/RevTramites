@@ -33,6 +33,15 @@ export class RevisionReportComponent implements OnInit{
 
   ngOnInit(): void {}
 
+  getPorcentajeCompleto(): number {
+    if (!this.productos || this.productos.length === 0) {
+      return 0;
+    }
+    const completos = this.productos.filter(p => p.observacion === 'COMPLETO').length;
+    return Math.round((completos / this.productos.length) * 100);
+  }
+
+
   generarPdf(): void {
     screenshotPdfUtil(this.report, `Revision_${this.creposicion.id.codigo}`);
   }
