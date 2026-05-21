@@ -26,7 +26,7 @@ import {SidebarService} from '@services/state/sidebar.service';
   templateUrl: './recepcion-pendientes.component.html',
   styles: ``
 })
-export default class RecepcionPendientesComponent implements OnInit{
+export default class RecepcionPendientesComponent implements OnInit {
 
   private recepcionService = inject(RecepcionAlmacenesService);
   private bodegaService = inject(BodegaService);
@@ -84,7 +84,7 @@ export default class RecepcionPendientesComponent implements OnInit{
       });
   }
 
-  listarFacturas(){
+  listarFacturas() {
     this.loading = true;
 
     const emp = Number(this.empresa);
@@ -129,11 +129,13 @@ export default class RecepcionPendientesComponent implements OnInit{
 
     const obs = this.selectedComprobantes.map(c => c.comprobante).join(', ');
 
+    const observacion = obs.length > 255 ? obs.substring(0, 200) : obs;
+
     const request: ComprobantesCcoRequest = {
       bodega: this.selectedBodega.bod_codigo,
       usuario: this.usrId,
       empresa: emp,
-      observacion: obs,
+      observacion: observacion,
       ccoCodigos
     }
 
@@ -146,7 +148,9 @@ export default class RecepcionPendientesComponent implements OnInit{
               severity: 'success',
               summary: 'Recepcion Creada',
             })
-            this.router.navigate(['erp','recepcion-almacenes','registrados', 'scaneo', result.message]).then(r => {this.loading = false;});
+            this.router.navigate(['erp', 'recepcion-almacenes', 'registrados', 'scaneo', result.message]).then(r => {
+              this.loading = false;
+            });
           }
         },
         error: (error) => {

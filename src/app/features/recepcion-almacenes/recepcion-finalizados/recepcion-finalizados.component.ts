@@ -64,7 +64,7 @@ export default class RecepcionFinalizadosComponent implements OnInit {
       this.creposicionService.listFinalizados(8, 1).subscribe({
         next: (result) => {
           this.registrados = result;
-          this.sidebarService.update({ finalizados: this.registrados.length });
+          this.sidebarService.update({finalizados: this.registrados.length});
         },
         error: (error) => console.log(error)
       });
@@ -72,7 +72,7 @@ export default class RecepcionFinalizadosComponent implements OnInit {
       this.creposicionService.getCreposicionByUser(8, this.usrId, 1).subscribe({
         next: (result) => {
           this.registrados = result;
-          this.sidebarService.update({ finalizados: this.registrados.length });
+          this.sidebarService.update({finalizados: this.registrados.length});
         },
         error: (error) => console.log(error)
       });

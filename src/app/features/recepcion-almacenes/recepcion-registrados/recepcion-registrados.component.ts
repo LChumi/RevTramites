@@ -46,17 +46,18 @@ export default class RecepcionRegistradosComponent implements OnInit {
     this.listarRegistrados();
   }
 
-  private listarRegistrados(){
+  private listarRegistrados() {
     this.creposicionService.getCreposicionByUser(8, this.usrId, 0).subscribe({
       next: (result) => {
-        this.registrados= result;
+        this.registrados = result;
         this.sidebarService.update({registrados: this.registrados.length})
       }
     })
   }
 
-  seleccionarRevision(c: Creposicion){
-    this.router.navigate(['scaneo', c.id.codigo], {relativeTo: this.route}).then(r =>{})
+  seleccionarRevision(c: Creposicion) {
+    this.router.navigate(['scaneo', c.id.codigo], {relativeTo: this.route}).then(r => {
+    })
   }
 
 }

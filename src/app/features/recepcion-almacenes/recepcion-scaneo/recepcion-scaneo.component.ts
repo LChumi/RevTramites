@@ -61,7 +61,7 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
   revisiones: Dreposicion[] = []
   barra!: string
   id!: string;
-  cantidad: number | null= null
+  cantidad: number | null = null
   shouldAdd = true
   loading = false
 
@@ -170,7 +170,7 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
 
             this.dreposicion = value
             this.barra = ''
-            this.cantidad=null
+            this.cantidad = null
             this.focusInput();
           } else {
             playAlert()
@@ -182,12 +182,12 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
               accept: () => {
                 this.addProduct(req);
                 this.barra = '';
-                this.cantidad=null
+                this.cantidad = null
                 this.focusInput();
               },
               reject: () => {
                 this.barra = '';
-                this.cantidad=null
+                this.cantidad = null
                 this.focusInput();
               },
               key: 'confirmProduct'
@@ -209,7 +209,7 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
       },
       reject: () => {
         this.barra = '';
-        this.cantidad=null
+        this.cantidad = null
         this.focusInput();
       },
       key: 'confirmProduct'

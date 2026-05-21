@@ -164,7 +164,7 @@ export default class InicioComponent implements OnInit {
     });
   }
 
-  find(){
+  find() {
     const formatetedDateStart = getCurrentDate(this.fechaInicio)
     const formatetedDateEnd = getCurrentDate(this.fechaFin)
 
@@ -191,8 +191,8 @@ export default class InicioComponent implements OnInit {
       next: (data) => {
         if (data && data.length > 0) {
           this.tramites = data
-        }else{
-          this.tramites =[]
+        } else {
+          this.tramites = []
           this.messageService.add({severity: 'warn', summary: 'Sin datos', detail: 'No se encontraron trámites.'});
         }
       }
