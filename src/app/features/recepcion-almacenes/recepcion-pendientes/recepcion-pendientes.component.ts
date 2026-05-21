@@ -144,9 +144,9 @@ export default class RecepcionPendientesComponent implements OnInit{
           if (result.success) {
             this.messageService.add({
               severity: 'success',
-              summary: result.message,
+              summary: 'Recepcion Creada',
             })
-            this.router.navigate(['erp','recepcion-almacenes','registrados']).then(r => {this.loading = false;});
+            this.router.navigate(['erp','recepcion-almacenes','registrados', 'scaneo', result.message]).then(r => {this.loading = false;});
           }
         },
         error: (error) => {

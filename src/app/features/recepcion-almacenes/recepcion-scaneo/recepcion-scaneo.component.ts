@@ -60,7 +60,6 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
   dreposicion: Dreposicion | null = null;
   revisiones: Dreposicion[] = []
   barra!: string
-  cantidas!: string
   id!: string;
   cantidad: number | null= null
   shouldAdd = true

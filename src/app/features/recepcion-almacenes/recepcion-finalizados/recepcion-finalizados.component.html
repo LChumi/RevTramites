@@ -11,6 +11,8 @@
       <th>Observación</th>
       <th pSortableColumn="fecha">Fecha <p-sortIcon field="fecha"/></th>
       <th>Almacén</th>
+      <th>Hora Inicio</th>
+      <th>Hora Fin</th>
       <th class="text-center" style="width: 8rem">Acciones</th>
     </tr>
   </ng-template>
@@ -40,6 +42,18 @@
         <div class="flex align-items-center gap-2">
           <i class="pi pi-building text-500 text-sm"></i>
           <span>{{ row.almacen.nombre }}</span>
+        </div>
+      </td>
+      <td>
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-clock text-500 text-sm"></i>
+          <span>{{ row.creaFecha | date:'HH:mm' }}</span>
+        </div>
+      </td>
+      <td>
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-clock text-500 text-sm"></i>
+          <span>{{ row.modFecha | date:'HH:mm' }}</span>
         </div>
       </td>
       <td class="text-center">
