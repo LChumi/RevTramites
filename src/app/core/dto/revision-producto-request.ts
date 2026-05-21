@@ -3,6 +3,6 @@ export interface RevisionProductoRequest {
   creposicion: number;
   empresa:     number;
   usuario:     string;
-  cantidad:    number;
+  cantidad?:    any;
   shouldAdd:   boolean;
 }

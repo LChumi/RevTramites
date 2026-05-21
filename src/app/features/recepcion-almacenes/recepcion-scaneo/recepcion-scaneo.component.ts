@@ -60,8 +60,9 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
   dreposicion: Dreposicion | null = null;
   revisiones: Dreposicion[] = []
   barra!: string
+  cantidas!: string
   id!: string;
-  cantidad!: number
+  cantidad: number | null= null
   shouldAdd = true
   loading = false
 
@@ -125,12 +126,30 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
 
   escaneo() {
 
+    let cantidadValida: number | null = null;
+
+    if (this.cantidad != null) {
+      if (this.cantidad > 0) {
+        cantidadValida = this.cantidad;   // solo valores positivos
+      } else if (this.cantidad === 0) {
+        cantidadValida = null;            // si es 0, pasa como null
+      } else {
+        // valores negativos no permitidos
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Cantidad inválida',
+          detail: 'No se permiten valores negativos'
+        });
+        return; // salir sin enviar request
+      }
+    }
+
     const req: RevisionProductoRequest = {
       barra: this.barra,
       usuario: this.usuariosessionStorage,
       creposicion: Number(this.id),
       empresa: Number(this.empresa),
-      cantidad: this.cantidad,
+      cantidad: cantidadValida,
       shouldAdd: this.shouldAdd
     };
 
@@ -152,6 +171,7 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
 
             this.dreposicion = value
             this.barra = ''
+            this.cantidad=null
             this.focusInput();
           } else {
             playAlert()
@@ -163,10 +183,12 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
               accept: () => {
                 this.addProduct(req);
                 this.barra = '';
+                this.cantidad=null
                 this.focusInput();
               },
               reject: () => {
                 this.barra = '';
+                this.cantidad=null
                 this.focusInput();
               },
               key: 'confirmProduct'
@@ -188,6 +210,7 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
       },
       reject: () => {
         this.barra = '';
+        this.cantidad=null
         this.focusInput();
       },
       key: 'confirmProduct'

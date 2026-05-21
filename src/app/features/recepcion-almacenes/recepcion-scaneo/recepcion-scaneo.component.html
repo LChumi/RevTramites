@@ -13,14 +13,69 @@
     </div>
 
   } @else {
+    @if (dreposicion) {
+      <div class="text-600 text-xs font-semibold uppercase letter-spacing-1 mt-5 mb-2 px-2 py-2 border-bottom-2 border-primary-200 surface-ground border-round-top">
+        Última barra escaneada
+      </div>
+      <ul class="list-none p-0 m-0">
+        <li class="surface-card border-round-lg border-1 surface-border shadow-1 p-3 mb-2">
+          <div class="flex flex-column gap-2 md:flex-row md:align-items-center md:gap-3">
+
+            <!-- Producto -->
+            <div class="flex align-items-center gap-2 flex-1 min-w-0">
+              <div class="min-w-0">
+                <div class="text-xs text-500 uppercase mb-1">Producto</div>
+                <div class="font-semibold text-900">
+                  {{ dreposicion.producto }}
+                </div>
+              </div>
+            </div>
+
+            <div class="hidden md:block border-right-1 surface-border" style="height: 2rem;"></div>
+
+            <!-- Barra -->
+            <div class="flex align-items-center gap-2 flex-1 min-w-0">
+              <div class="min-w-0">
+                <div class="text-xs text-500 uppercase mb-1">Código de barra</div>
+                <div class="font-semibold text-900 white-space-nowrap overflow-hidden text-overflow-ellipsis">
+                  {{ dreposicion.barra }}
+                </div>
+              </div>
+            </div>
+
+            <div class="hidden md:block border-right-1 surface-border" style="height: 2rem;"></div>
+
+            <!-- Cantidad -->
+            <div class="flex align-items-center gap-2">
+              <div>
+                <div class="text-xs text-500 uppercase mb-1">Cantidad</div>
+                <div class="font-bold text-primary text-lg">
+                  {{ dreposicion.cantApr }}
+                </div>
+              </div>
+            </div>
+
+            <div class="hidden md:block border-right-1 surface-border" style="height: 2rem;"></div>
+
+            <!-- Estado -->
+            <div class="flex align-items-center md:justify-content-end">
+              <div>
+                <div class="text-xs text-500 uppercase mb-1 hidden md:block">Estado</div>
+                <p-tag
+                  [value]="getEstado(dreposicion)"
+                  [severity]="getSeverity(dreposicion)"
+                  styleClass="text-xs px-2 py-1">
+                </p-tag>
+              </div>
+            </div>
+
+          </div>
+        </li>
+      </ul>
+    }
     @if (reposicion) {
       <div class="col-12 mt-4">
-        <div class="col-12">
-          <hr>
-          <span>Detalle: {{ reposicion.observacion }}</span>
-        </div>
-
-        <p-toolbar styleClass="mb-4">
+                <p-toolbar styleClass="mb-4">
           <ng-template pTemplate="left">
             <div class="my-2">
               <button pButton pRipple label="Seleccionar otra revision" icon="pi pi-chevron-left"
@@ -29,14 +84,21 @@
           </ng-template>
         </p-toolbar>
         <div class="grid p-fluid mt-3">
-          <div class="field mb-2 lg:col-6 lg:mb-0">
-                <span class="p-float-label">
-                  <input #barraInput autocomplete="off" type="text" id="barra" pInputText [(ngModel)]="barra"
-                         (keydown.enter)="escaneo()">
-                  <label for="barra">Barra</label>
-                </span>
+          <div class="field col-12 md:col-8">
+            <span class="p-float-label">
+              <input #barraInput autocomplete="off" type="text" id="barra" pInputText [(ngModel)]="barra" (keydown.enter)="escaneo()">
+              <label for="barra">Barra</label>
+            </span>
           </div>
-          <div class="field mb-2 lg:col-6 lg:mb-0">
+          <div class="field col-12 md:col-4">
+            <span class="p-float-label">
+              <input autocomplete="off" type="number" id="cantidad" pInputText [(ngModel)]="cantidad" class="w-6rem">
+              <label for="cantidad">Cantidad</label>
+            </span>
+          </div>
+
+          <!-- Toggle ocupa 12 en móvil, 6 en desktop -->
+          <div class="field col-12 md:col-6">
             <p-toggleButton
               [(ngModel)]="shouldAdd"
               onLabel="Agregando"
@@ -47,49 +109,12 @@
               ariaLabel="status"/>
           </div>
         </div>
+
       </div>
     }
 
     @if (revisiones.length > 0) {
       <div class="col-12 mt-4">
-        @if (dreposicion) {
-          <div class="card">
-            <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3 uppercase">Ultima
-              barra
-              escaneada {{ dreposicion.barra }}
-            </div>
-            <ul class="list-none p-0 m-0">
-              <li
-                class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border">
-                <div class="flex align-items-center flex-1">
-                  <div>
-                    <strong>Barra: </strong>{{ dreposicion.barra }}
-                  </div>
-                </div>
-                <div class="flex align-items-center flex-1">
-                  <div>
-                    <strong>Producto: </strong>{{ dreposicion.producto }}
-                  </div>
-                </div>
-                <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
-                  <div class="flex align-items-center">
-                    <strong>Cantidad:</strong> {{ dreposicion.cantApr }}
-                  </div>
-                </div>
-                <div class="flex align-items-center sm:justify-content-end">
-                  <div>
-                    <strong>Estado: </strong>
-                    <p-tag
-                      [value]="getEstado(dreposicion)"
-                      [severity]="getSeverity(dreposicion)">
-                    </p-tag>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        }
-
         <div class="mt-2">
           <p-table
             [value]="revisiones"
@@ -147,7 +172,6 @@
           </button>
         </div>
       </div>
-
     }
   }
 
