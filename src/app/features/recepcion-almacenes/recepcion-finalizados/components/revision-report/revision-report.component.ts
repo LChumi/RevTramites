@@ -46,6 +46,14 @@ export class RevisionReportComponent implements OnInit{
     screenshotPdfUtil(this.report, `Revision_${this.creposicion.id.codigo}`);
   }
 
+  getTotalCantApr(): number {
+    if (!this.productos || this.productos.length === 0) {
+      return 0;
+    }
+    return this.productos.reduce((sum, p) => sum + (p.cantApr || 0), 0);
+  }
+
+
   protected readonly getEstadoRecepcion = getEstadoRecepcion;
   protected readonly getSeverityRecepcion = getSeverityRecepcion;
 }

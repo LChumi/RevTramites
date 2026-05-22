@@ -51,6 +51,7 @@ export interface Creposicion {
   pfechaFac:         any;
   creaFecha:         any;
   modFecha:          any;
+  almacen:           any;
 }
 
 export interface CreposicionID {
