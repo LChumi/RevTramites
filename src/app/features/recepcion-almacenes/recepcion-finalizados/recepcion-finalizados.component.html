@@ -87,10 +87,10 @@
   header="Visualización de productos verificados"
   [(visible)]="revReport"
   [modal]="true"
-  [closable]="false"
+  [closable]="true"
   [style]="{ width: '70rem' }"
   [breakpoints]="{ '1199px': '75vw', '575px': '95vw' }"
-  [maximizable]="true">
+  (onHide)="cerrarReporte()">
 
   @if (pdfLoading) {
     <div class="flex flex-column align-items-center gap-3 py-6">
@@ -120,7 +120,7 @@
         label="Generar PDF"
         severity="danger"
         [disabled]="pdfLoading"
-        (onClick)="reporteRef.generarPdf()"/>
+        (onClick)="generarPdf()"/>
     </div>
   </ng-template>
 </p-dialog>

@@ -106,4 +106,18 @@ export default class RecepcionFinalizadosComponent implements OnInit {
     this.productosSeleccionados = [];
     this.pdfLoading = false;
   }
+
+  generarPdf() {
+    this.pdfLoading = true; // activa el loading
+
+    // llamas al método del hijo
+    this.reporteRef.generarPdf();
+
+    // simulas un tiempo de carga (ej. 2 segundos)
+    setTimeout(() => {
+      this.pdfLoading = false; // desactiva el loading
+    }, 5000);
+  }
+
+
 }
