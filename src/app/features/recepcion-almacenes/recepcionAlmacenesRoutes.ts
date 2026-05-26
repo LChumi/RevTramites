@@ -19,7 +19,7 @@ export const recepcionAlmacenesRoutes: Routes = [
       {
         path: 'dashboard',
         loadComponent: () =>
-          import('@features/recepcion-almacenes/recepcepcion-dashboard/recepcepcion-dashboard.component')
+          import('@features/recepcion-almacenes/recepcion-dashboard/recepcion-dashboard.component')
       },
       {
         path: 'registrados',
@@ -39,8 +39,18 @@ export const recepcionAlmacenesRoutes: Routes = [
 
       {
         path: 'finalizados',
-        loadComponent: () =>
-          import('@features/recepcion-almacenes/recepcion-finalizados/recepcion-finalizados.component')
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('@features/recepcion-almacenes/recepcion-finalizados/recepcion-finalizados.component')
+          },
+          {
+            path:'editar/:id',
+            loadComponent: () =>
+              import('@features/recepcion-almacenes/recepcion-finalizados/components/revision-edit/revision-edit.component')
+          }
+        ]
       }
     ]
   },

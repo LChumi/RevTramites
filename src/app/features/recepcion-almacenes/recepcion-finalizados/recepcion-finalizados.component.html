@@ -17,7 +17,7 @@
       <th>Almacén</th>
       <th>Hora Inicio</th>
       <th>Hora Fin</th>
-      <th class="text-center" style="width: 8rem">Acciones</th>
+      <th class="text-center" style="width: 12rem">Acciones</th>
     </tr>
   </ng-template>
 
@@ -60,7 +60,9 @@
           <span>{{ row.modFecha | date:'HH:mm' }}</span>
         </div>
       </td>
-      <td class="text-center">
+      <td class="text-center flex justify-content-center gap-2">
+
+        <!-- REPORTE -->
         <p-button
           icon="pi pi-file-pdf"
           label="Reporte"
@@ -68,6 +70,18 @@
           severity="info"
           [text]="true"
           (onClick)="abrirReporte(row)"/>
+
+        <!-- MODIFICAR -->
+        @if (puedeModificar()) {
+          <p-button
+            icon="pi pi-pencil"
+            label="Modificar"
+            size="small"
+            severity="warning"
+            [text]="true"
+            (onClick)="editarReposicion(row)"/>
+        }
+
       </td>
     </tr>
   </ng-template>

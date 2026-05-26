@@ -29,10 +29,10 @@ interface ResumenUsuario {
     DatePipe,
     ButtonDirective
   ],
-  templateUrl: './recepcepcion-dashboard.component.html',
+  templateUrl: './recepcion-dashboard.component.html',
   styles: ``
 })
-export default class RecepcepcionDashboardComponent implements OnInit {
+export default class RecepcionDashboardComponent implements OnInit {
   private creposicionService = inject(CreposicionService);
   private dreposicionService = inject(DreposicionService);
 

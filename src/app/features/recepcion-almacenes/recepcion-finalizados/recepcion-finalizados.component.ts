@@ -14,6 +14,7 @@ import {
   RevisionReportComponent
 } from '@features/recepcion-almacenes/recepcion-finalizados/components/revision-report/revision-report.component';
 import {Dreposicion} from '@dtos/dreposicion';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-recepcion-finalizados',
@@ -35,6 +36,8 @@ export default class RecepcionFinalizadosComponent implements OnInit {
 
   private creposicionService = inject(CreposicionService);
   private dreposicionService = inject(DreposicionService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute)
   private usrId = sessionStorage.getItem('usrId') ?? '';
   private empresa = sessionStorage.getItem('idEmpresa') ?? '';
 
@@ -49,6 +52,9 @@ export default class RecepcionFinalizadosComponent implements OnInit {
   pdfLoading = false;
   loading = false;
 
+  usuariosPermitidos = ['NCERON', 'CMERCHAN', 'LCHUMI'];
+
+
   ngOnInit(): void {
     if (this.empresa == '' || this.usrId == '') {
       alert('Vuelva a iniciar sesion');
@@ -57,9 +63,7 @@ export default class RecepcionFinalizadosComponent implements OnInit {
   }
 
   private listarFinalizados() {
-    const usuariosPermitidos = ['NCERON', 'CMERCHAN', 'LCHUMI'];
-
-    if (usuariosPermitidos.includes(this.usrId)) {
+    if (this.usuariosPermitidos.includes(this.usrId)) {
       this.creposicionService.listFinalizados(8, 1).subscribe({
         next: (result) => {
           this.registrados = result;
@@ -110,13 +114,21 @@ export default class RecepcionFinalizadosComponent implements OnInit {
   generarPdf() {
     this.pdfLoading = true; // activa el loading
 
-    // llamas al método del hijo
+    // llamas al metodo del hijo
     this.reporteRef.generarPdf();
 
-    // simulas un tiempo de carga (ej. 2 segundos)
     setTimeout(() => {
       this.pdfLoading = false; // desactiva el loading
     }, 5000);
+  }
+
+  puedeModificar(): boolean {
+    return this.usuariosPermitidos.includes(this.usrId);
+  }
+
+  editarReposicion(row: Creposicion): void {
+    this.router.navigate(['editar', row.id.codigo], {relativeTo: this.route}).then(r => {
+    })
   }
 
 
