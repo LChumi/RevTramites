@@ -4,7 +4,7 @@ export const recepcionAlmacenesRoutes: Routes = [
   {
     path: '',
     loadComponent: () => import('@features/recepcion-almacenes/recepcion-almacenes.component'),
-    children:[
+    children: [
       {
         path: '',
         redirectTo: 'dashboard',
@@ -23,7 +23,7 @@ export const recepcionAlmacenesRoutes: Routes = [
       },
       {
         path: 'registrados',
-        children:[
+        children: [
           {
             path: '',
             loadComponent: () =>
@@ -46,7 +46,7 @@ export const recepcionAlmacenesRoutes: Routes = [
               import('@features/recepcion-almacenes/recepcion-finalizados/recepcion-finalizados.component')
           },
           {
-            path:'editar/:id',
+            path: 'editar/:id',
             loadComponent: () =>
               import('@features/recepcion-almacenes/recepcion-finalizados/components/revision-edit/revision-edit.component')
           }

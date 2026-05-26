@@ -25,13 +25,14 @@ import {screenshotPdfUtil} from '@utils/screenshot-pdf-util';
   templateUrl: './revision-report.component.html',
   styles: ``
 })
-export class RevisionReportComponent implements OnInit{
+export class RevisionReportComponent implements OnInit {
 
-  @ViewChild('report', { static: false }) report!: ElementRef;
+  @ViewChild('report', {static: false}) report!: ElementRef;
   @Input() creposicion!: Creposicion;
   @Input() productos!: Dreposicion[];
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   getPorcentajeCompleto(): number {
     if (!this.productos || this.productos.length === 0) {

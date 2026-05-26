@@ -39,8 +39,8 @@ export default class RecepcionDashboardComponent implements OnInit {
   private usrId = sessionStorage.getItem('usrId') ?? '';
   private empresa = sessionStorage.getItem('idEmpresa') ?? '';
 
-  fecha: string = new Date().toLocaleDateString('es-EC', { dateStyle: 'long' });
-  hora: string = new Date().toLocaleTimeString('es-EC', { timeStyle: 'short' });
+  fecha: string = new Date().toLocaleDateString('es-EC', {dateStyle: 'long'});
+  hora: string = new Date().toLocaleTimeString('es-EC', {timeStyle: 'short'});
   nombre: string = sessionStorage.getItem('nombre') ?? '';
 
   procesados: Creposicion[] = [];
@@ -109,7 +109,7 @@ export default class RecepcionDashboardComponent implements OnInit {
     for (const c of todos) {
       const usr = c.usuario ?? 'DESCONOCIDO';
       if (!map[usr]) {
-        map[usr] = { usuario: usr, finalizados: 0, pendientes: 0, tiempoPromedio: 0 };
+        map[usr] = {usuario: usr, finalizados: 0, pendientes: 0, tiempoPromedio: 0};
       }
       if (c.finalizado === 1) map[usr].finalizados++;
       else map[usr].pendientes++;
@@ -151,8 +151,8 @@ export default class RecepcionDashboardComponent implements OnInit {
     };
     this.chartOptions = {
       responsive: true,
-      plugins: { legend: { position: 'top' } },
-      scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
+      plugins: {legend: {position: 'top'}},
+      scales: {y: {beginAtZero: true, ticks: {stepSize: 1}}},
     };
   }
 

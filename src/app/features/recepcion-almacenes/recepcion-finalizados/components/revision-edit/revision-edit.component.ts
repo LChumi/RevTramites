@@ -40,7 +40,7 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
   templateUrl: './revision-edit.component.html',
   styles: ``
 })
-export default class RevisionEditComponent implements OnInit{
+export default class RevisionEditComponent implements OnInit {
 
   private dreposicionService = inject(DreposicionService)
   private creposicionService = inject(CreposicionService)
@@ -56,7 +56,7 @@ export default class RevisionEditComponent implements OnInit{
   crepo!: any
   loading = false
   viewEdit = false
-  cantidad : number | null = null
+  cantidad: number | null = null
 
   ngOnInit(): void {
     this.cabecera = null
@@ -69,7 +69,7 @@ export default class RevisionEditComponent implements OnInit{
     this.getCabecera();
   }
 
-  getCabecera(){
+  getCabecera() {
     this.loading = true
     const empresa = Number(this.empresaSession);
     const codigo = Number(this.crepo);
@@ -92,20 +92,20 @@ export default class RevisionEditComponent implements OnInit{
     })
   }
 
-  getDreposicion(id: any){
+  getDreposicion(id: any) {
     this.dreposicionService.getListaDreposicion(id).subscribe({
       next: value => {
-       this.lista = value
-        this.loading= false
+        this.lista = value
+        this.loading = false
       }
     })
   }
 
-  updateProduct(){
+  updateProduct() {
 
     const empresa = Number(this.empresaSession);
 
-    if (this.producto){
+    if (this.producto) {
       const req: RevisionProductoRequest = {
         barra: this.producto.barra,
         usuario: this.usuariosessionStorage,
@@ -116,7 +116,7 @@ export default class RevisionEditComponent implements OnInit{
       };
       this.dreposicionService.quantityAdded(req).subscribe({
         next: value => {
-          if (value){
+          if (value) {
             this.lista = this.lista.filter(
               r => r.productoId !== value.productoId
             )
@@ -171,13 +171,13 @@ export default class RevisionEditComponent implements OnInit{
     this.viewEdit = true
   }
 
-  cerrarDialogo(){
+  cerrarDialogo() {
     this.viewEdit = false
     this.producto = null
     this.cantidad = null
   }
 
-  regresar(){
+  regresar() {
     this.router.navigate(['erp', 'recepcion-almacenes', 'finalizados']).then(r => {
     })
   }
