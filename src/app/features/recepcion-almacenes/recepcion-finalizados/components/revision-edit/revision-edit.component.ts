@@ -4,11 +4,39 @@ import {CreposicionService} from '@services/creposicion.service';
 import {Creposicion, CreposicionID} from '@dtos/creposicion';
 import {Dreposicion} from '@dtos/dreposicion';
 import {ActivatedRoute, Router} from '@angular/router';
+import {ConfirmationService, PrimeTemplate} from 'primeng/api';
+import {TableModule} from 'primeng/table';
+import {TagModule} from 'primeng/tag';
+import {getEstadoRecepcion, getSeverityRecepcion} from '@utils/recepcion-utils';
+import {NgStyle} from '@angular/common';
+import {Button, ButtonDirective} from 'primeng/button';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {DialogModule} from 'primeng/dialog';
+import {AvatarModule} from 'primeng/avatar';
+import {FormsModule} from '@angular/forms';
+import {InputTextModule} from 'primeng/inputtext';
+import {RevisionProductoRequest} from '@dtos/revision-producto-request';
+import {InputNumberModule} from 'primeng/inputnumber';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-revision-edit',
   standalone: true,
-  imports: [],
+  imports: [
+    PrimeTemplate,
+    TableModule,
+    TagModule,
+    NgStyle,
+    Button,
+    ProgressSpinnerModule,
+    DialogModule,
+    AvatarModule,
+    FormsModule,
+    InputTextModule,
+    ButtonDirective,
+    InputNumberModule,
+    ConfirmDialogModule
+  ],
   templateUrl: './revision-edit.component.html',
   styles: ``
 })
@@ -16,15 +44,19 @@ export default class RevisionEditComponent implements OnInit{
 
   private dreposicionService = inject(DreposicionService)
   private creposicionService = inject(CreposicionService)
+  private confirmationService = inject(ConfirmationService)
   private route = inject(ActivatedRoute)
   private router = inject(Router)
   private empresaSession = sessionStorage.getItem('idEmpresa') ?? '';
-  private usuarioSesion = sessionStorage.getItem('username') ?? '';
+  private usuariosessionStorage = sessionStorage.getItem('username') ?? '';
 
   cabecera: Creposicion | null = null;
   lista: Dreposicion[] = []
+  producto: Dreposicion | null = null;
   crepo!: any
   loading = false
+  viewEdit = false
+  cantidad : number | null = null
 
   ngOnInit(): void {
     this.cabecera = null
@@ -52,7 +84,7 @@ export default class RevisionEditComponent implements OnInit{
     this.creposicionService.getById(id).subscribe({
       next: value => {
         this.cabecera = value
-        this.getDreposicion(value.id)
+        this.getDreposicion(codigo)
       }, error: err => {
         console.error(err)
         this.loading = false
@@ -64,8 +96,92 @@ export default class RevisionEditComponent implements OnInit{
     this.dreposicionService.getListaDreposicion(id).subscribe({
       next: value => {
        this.lista = value
+        this.loading= false
       }
     })
   }
 
+  updateProduct(){
+
+    const empresa = Number(this.empresaSession);
+
+    if (this.producto){
+      const req: RevisionProductoRequest = {
+        barra: this.producto.barra,
+        usuario: this.usuariosessionStorage,
+        creposicion: Number(this.crepo),
+        empresa: Number(empresa),
+        cantidad: this.cantidad,
+        shouldAdd: true
+      };
+      this.dreposicionService.quantityAdded(req).subscribe({
+        next: value => {
+          if (value){
+            this.lista = this.lista.filter(
+              r => r.productoId !== value.productoId
+            )
+            this.lista.unshift(value);
+            this.cerrarDialogo()
+          }
+        }
+      })
+    }
+  }
+
+  confirmarValidacion() {
+    this.loading = true
+    this.confirmationService.confirm({
+      message: '¿Desea finalizar la validación?',
+      header: 'Finalizar revision',
+      icon: 'pi pi-check-circle',
+      defaultFocus: 'none',
+      accept: () => {
+        this.finalizarCreposicon()
+      },
+      reject: () => {
+        this.cantidad = null
+        this.loading = false
+      },
+      key: 'validateRecepcion'
+    })
+  }
+
+  private finalizarCreposicon() {
+    const empresa = Number(this.empresaSession);
+    const id: CreposicionID = {
+      codigo: this.crepo,
+      empresa: empresa
+    }
+
+    this.creposicionService.updateRecepcionFinalizado(id).subscribe({
+      next: value => {
+        if (value.finalizado === 1) {
+          this.router.navigate(['erp', 'recepcion-almacenes', 'finalizados']).then(r => {
+          })
+        }
+        this.loading = false
+      }, error: err => {
+        this.loading = false
+      }
+    })
+  }
+
+  editar(producto: Dreposicion) {
+    this.producto = producto
+    this.viewEdit = true
+  }
+
+  cerrarDialogo(){
+    this.viewEdit = false
+    this.producto = null
+    this.cantidad = null
+  }
+
+  regresar(){
+    this.router.navigate(['erp', 'recepcion-almacenes', 'finalizados']).then(r => {
+    })
+  }
+
+  protected readonly getSeverityRecepcion = getSeverityRecepcion;
+  protected readonly getEstadoRecepcion = getEstadoRecepcion;
 }

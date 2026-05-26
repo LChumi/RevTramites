@@ -1,1 +1,188 @@
-<p>revision-edit works!</p>
+<div class="min-h-screen surface-ground px-4 py-5">
+
+  <!-- Header -->
+  <div class="flex align-items-center justify-content-between mb-5">
+    <div class="flex align-items-center gap-3">
+      <div class="flex align-items-center justify-content-center border-circle bg-primary" style="width:2.5rem;height:2.5rem">
+        <i class="pi pi-check-circle text-white text-lg"></i>
+      </div>
+      <div>
+        <p class="text-500 text-xs font-medium uppercase tracking-widest m-0">Comprobante</p>
+        <h2 class="text-900 font-semibold text-xl m-0">Validar Finalizados <span class="text-primary">{{crepo}}</span></h2>
+      </div>
+    </div>
+    <div class="flex gap-2">
+      <p-button
+        label="Regresar"
+        icon="pi pi-arrow-left"
+        [outlined]="true"
+        severity="secondary"
+        size="small"
+        (onClick)="regresar()"/>
+      <p-button
+        label="Validar Recepción"
+        icon="pi pi-check"
+        size="small"
+        (onClick)="confirmarValidacion()"/>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  @if (loading) {
+    <div class="flex flex-column align-items-center justify-content-center py-8 gap-3">
+      <p-progressSpinner
+        strokeWidth="3"
+        [style]="{width: '48px', height: '48px'}">
+      </p-progressSpinner>
+
+      <span class="text-500 text-sm">Cargando productos...</span>
+    </div>
+  } @else {
+
+    <!-- Table Card -->
+    <div class="surface-card border-round-xl border-1 border-200 overflow-hidden shadow-1">
+      <p-table
+        [value]="lista"
+        styleClass="p-datatable-sm p-datatable-striped"
+        responsiveLayout="scroll">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="text-center surface-100" style="width:3.5rem">N°</th>
+            <th class="surface-100" pSortableColumn="barra">
+              <div class="flex align-items-center gap-1">
+                <i class="pi pi-barcode text-400 text-sm"></i> Barra
+                <p-sortIcon field="barra"/>
+              </div>
+            </th>
+            <th class="surface-100">Descripción</th>
+            <th class="text-center surface-100" pSortableColumn="cantApr">
+              <div class="flex align-items-center justify-content-center gap-1">
+                <i class="pi pi-qrcode text-400 text-sm"></i> Escaneada
+                <p-sortIcon field="cantApr"/>
+              </div>
+            </th>
+            <th class="text-center surface-100" pSortableColumn="cantSol">
+              <div class="flex align-items-center justify-content-center gap-1">
+                <i class="pi pi-list text-400 text-sm"></i> Solicitada
+                <p-sortIcon field="cantSol"/>
+              </div>
+            </th>
+            <th class="text-center surface-100">Estado</th>
+            <th class="text-center surface-100" style="width:9rem">Acciones</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-producto let-rowIndex="rowIndex">
+          <tr class="hover:surface-50 transition-colors transition-duration-150">
+            <td class="text-center text-500 text-sm">{{ rowIndex + 1 }}</td>
+            <td>
+              <span class="font-mono text-sm text-800 bg-primary-50 border-round px-2 py-1">
+                {{ producto.barra }}
+              </span>
+            </td>
+            <td class="text-800 text-sm font-medium">{{ producto.producto }}</td>
+            <td class="text-center">
+              <span class="font-semibold text-800">{{ producto.cantApr }}</span>
+            </td>
+            <td class="text-center">
+              <span class="text-600">{{ producto.cantSol }}</span>
+            </td>
+            <td class="text-center">
+              <p-tag
+                [value]="getEstadoRecepcion(producto)"
+                [severity]="getSeverityRecepcion(producto)"
+                [rounded]="true"/>
+            </td>
+            <td class="text-center">
+              <p-button
+                icon="pi pi-pencil"
+                label="Editar"
+                size="small"
+                severity="info"
+                [text]="true"
+                (onClick)="editar(producto)"/>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7">
+              <div class="flex flex-column align-items-center justify-content-center py-8 gap-3 text-500">
+                <i class="pi pi-inbox text-5xl text-300"></i>
+                <span class="text-sm">No hay revisiones finalizadas</span>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+      </p-table>
+    </div>
+  }
+
+</div>
+
+<!-- Dialog -->
+@if (producto) {
+  <p-dialog
+    [(visible)]="viewEdit"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{ width: '520px', maxWidth: '95vw' }"
+    (onHide)="cerrarDialogo()">
+
+    <ng-template pTemplate="header">
+      <div class="flex align-items-center gap-3">
+        <div class="flex align-items-center justify-content-center border-circle bg-blue-50 border-1 border-blue-200" style="width:2.2rem;height:2.2rem">
+          <i class="pi pi-pencil text-blue-500"></i>
+        </div>
+        <div>
+          <p class="text-400 text-xs uppercase tracking-widest m-0">Editar producto</p>
+          <span class="font-semibold text-900 text-base">Actualizar Cantidad Escaneada</span>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="pt-2 pb-4">
+      <div class="surface-50 border-round-lg border-1 border-200 px-4 py-3 mb-4 flex align-items-center gap-2">
+        <i class="pi pi-box text-400 text-sm"></i>
+        <span class="text-700 text-sm font-medium">{{ producto.producto }}</span>
+      </div>
+
+      <div class="flex flex-column gap-2">
+        <label for="cantidad" class="text-700 text-sm font-semibold">Cantidad validada</label>
+        <p-inputNumber
+          id="cantidad"
+          [(ngModel)]="cantidad"
+          [showButtons]="true"
+          buttonLayout="horizontal"
+          spinnerMode="horizontal"
+          decrementButtonClass="p-button-outlined p-button-secondary"
+          incrementButtonClass="p-button-outlined p-button-secondary"
+          incrementButtonIcon="pi pi-plus"
+          decrementButtonIcon="pi pi-minus"
+          [min]="0"
+          styleClass="w-full"/>
+      </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <div class="flex justify-content-end gap-2 pt-2">
+        <p-button
+          label="Cancelar"
+          [text]="true"
+          severity="secondary"
+          (onClick)="cerrarDialogo()"/>
+        <p-button
+          label="Actualizar"
+          icon="pi pi-check"
+          severity="info"
+          (onClick)="updateProduct()"/>
+      </div>
+    </ng-template>
+
+  </p-dialog>
+}
+<p-confirmDialog key="validateRecepcion"></p-confirmDialog>

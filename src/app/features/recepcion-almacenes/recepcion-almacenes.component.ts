@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {CheckboxModule} from 'primeng/checkbox';
 import {AvatarGroupModule} from 'primeng/avatargroup';
 import {AvatarModule} from 'primeng/avatar';

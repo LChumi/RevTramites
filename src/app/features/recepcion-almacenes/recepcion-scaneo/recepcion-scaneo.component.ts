@@ -75,7 +75,6 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
       })
     }
 
-
     const emp = Number(this.empresa);
     const idC = Number(this.id);
     if (isNaN(emp) || isNaN(idC)) {
@@ -86,7 +85,6 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
       codigo: idC,
       empresa: emp
     }
-
 
     this.creposicionService.getById(id).subscribe({
       next: (result) => {
@@ -199,6 +197,7 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
   }
 
   finalizarVerificacion() {
+    this.loading = true
     this.confirmationService.confirm({
       message: 'Al finalizar la revisión, los cambios se guardarán y esta acción no podrá ser revertida ni modificada.',
       header: 'Confirmación',
@@ -211,10 +210,10 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
         this.barra = '';
         this.cantidad = null
         this.focusInput();
+        this.loading = false
       },
       key: 'confirmProduct'
     })
-    this.loading = true
   }
 
   private getScaneados(crepo: number) {
