@@ -81,6 +81,12 @@ export default class RecepcionDashboardComponent implements OnInit {
         console.log('Pendientes', noFinalizados.length);
 
         const todos = [...finalizados, ...noFinalizados]
+          .sort(
+            (a, b) =>
+              new Date(b.creaFecha).getTime() -
+              new Date(a.creaFecha).getTime()
+          );
+
         this.procesados = todos;
         this.calcularKpis(finalizados.length, noFinalizados.length, todos);
         this.calcularResumenUsuarios(todos);
