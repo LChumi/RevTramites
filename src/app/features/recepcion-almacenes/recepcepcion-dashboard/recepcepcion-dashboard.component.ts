@@ -174,6 +174,17 @@ export default class RecepcepcionDashboardComponent implements OnInit {
     });
   }
 
+  getPorcentajeCompleto(productos: Dreposicion[]): number {
+    if (!productos || productos.length === 0) return 0;
+    const completos = productos.filter(p => p.observacion === 'COMPLETO').length;
+    return Math.round((completos / productos.length) * 100);
+  }
+
+  getTotalCantApr(productos: Dreposicion[]): number {
+    if (!productos || productos.length === 0) return 0;
+    return productos.reduce((sum, p) => sum + (p.cantApr || 0), 0);
+  }
+
   getDuracionMin(c: Creposicion): number {
     const inicio = new Date(c.creaFecha).getTime();
     const fin = new Date(c.modFecha).getTime();

@@ -203,12 +203,35 @@
                           (click)="cargarProductos(item)">
                   </button>
                 } @else {
-                  <p-tag
-                    [value]="productosMap[item.id.codigo].length + ' productos'"
-                    severity="info"
-                    icon="pi pi-box"
-                    [rounded]="true">
-                  </p-tag>
+                  <div class="flex flex-column gap-1 text-right">
+
+                    <!-- Barra de progreso con porcentaje -->
+                    <div class="flex align-items-center gap-2">
+                      <div class="border-round overflow-hidden bg-gray-200"
+                           style="height: 6px; width: 100px;">
+                        <div class="bg-green-500 h-full border-round transition-all"
+                             [style.width.%]="getPorcentajeCompleto(productosMap[item.id.codigo])">
+                        </div>
+                      </div>
+                      <span class="text-sm font-semibold text-green-600">
+                        {{ getPorcentajeCompleto(productosMap[item.id.codigo]) }}%
+                      </span>
+                    </div>
+                    <!-- Total cantidad aprobada -->
+                    <span class="text-xs text-500">
+                      <i class="pi pi-box mr-1"></i>
+                      Total apr.:
+                      <span class="font-semibold text-900">
+                        {{ getTotalCantApr(productosMap[item.id.codigo]) }}
+                      </span>
+                    </span>
+
+                    <!-- Cantidad de productos -->
+                    <span class="text-xs text-400">
+                      {{ productosMap[item.id.codigo].length }} productos
+                    </span>
+
+                  </div>
                 }
               </div>
 
@@ -218,5 +241,4 @@
       </ng-template>
     </p-dataView>
   </div>
-
 }
