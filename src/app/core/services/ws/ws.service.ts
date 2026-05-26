@@ -5,11 +5,14 @@ import {HttpClient} from '@angular/common/http';
 import {WsMessage} from '@models/ws-message';
 import {filter} from 'rxjs/operators';
 import {BroadcastRequest} from '@models/broadcast-request';
+import {MessageService} from 'primeng/api';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WsService implements OnDestroy {
+
+  private messageService = inject(MessageService)
 
   private socket$?: WebSocketSubject<WsMessage>;
 
@@ -74,6 +77,11 @@ export class WsService implements OnDestroy {
     this.socket$.subscribe({
       next: msg => {
         console.log("WS mensaje", msg);
+        this.messageService.add({
+          severity: 'info',
+          summary: `${msg.channel}`,
+          detail: msg.message.toLocaleUpperCase()
+        })
         this.messageSubject.next(msg);
       },
       error: err => console.error('WS error', err)

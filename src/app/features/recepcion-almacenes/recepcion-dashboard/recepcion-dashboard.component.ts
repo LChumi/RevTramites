@@ -77,9 +77,6 @@ export default class RecepcionDashboardComponent implements OnInit {
     ]).subscribe({
       next: ([finalizados, noFinalizados]) => {
 
-        console.log('Finalizados', finalizados.length);
-        console.log('Pendientes', noFinalizados.length);
-
         const todos = [...finalizados, ...noFinalizados]
           .sort(
             (a, b) =>
