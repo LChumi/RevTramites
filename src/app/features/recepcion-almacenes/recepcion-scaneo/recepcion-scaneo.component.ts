@@ -241,8 +241,6 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
 
     this.creposicionService.updateRecepcionFinalizado(id).subscribe({
       next: value => {
-        console.log(value)
-
         if (value.finalizado === 1) {
           this.messageService.add({
             severity: 'success', summary: 'Revision finalizado', detail: 'Revision guardada puede continuar'

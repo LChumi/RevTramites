@@ -37,7 +37,6 @@ export default class RecepcionFinalizadosComponent implements OnInit {
   private dreposicionService = inject(DreposicionService);
   private usrId = sessionStorage.getItem('usrId') ?? '';
   private empresa = sessionStorage.getItem('idEmpresa') ?? '';
-  private sidebarService = inject(SidebarService);
 
   @ViewChild('reporteRef') reporteRef!: RevisionReportComponent;
 
@@ -64,7 +63,6 @@ export default class RecepcionFinalizadosComponent implements OnInit {
       this.creposicionService.listFinalizados(8, 1).subscribe({
         next: (result) => {
           this.registrados = result;
-          this.sidebarService.update({finalizados: this.registrados.length});
         },
         error: (error) => console.log(error)
       });
@@ -72,7 +70,6 @@ export default class RecepcionFinalizadosComponent implements OnInit {
       this.creposicionService.getCreposicionByUser(8, this.usrId, 1).subscribe({
         next: (result) => {
           this.registrados = result;
-          this.sidebarService.update({finalizados: this.registrados.length});
         },
         error: (error) => console.log(error)
       });

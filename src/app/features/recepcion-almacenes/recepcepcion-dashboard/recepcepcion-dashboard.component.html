@@ -1,1 +1,222 @@
-<p>recepcepcion-dashboard works!</p>
+<!-- Header -->
+<div class="grid mb-4">
+  <div class="col-12">
+    <div class="flex align-items-center justify-content-between">
+      <div>
+        <span class="text-900 font-bold text-2xl uppercase">Bienvenido {{ nombre }}</span>
+        <p class="text-500 m-0 mt-1">{{ fecha }} · {{ hora }}</p>
+      </div>
+      <button pButton icon="pi pi-refresh" label="Actualizar"
+              class="p-button-outlined p-button-sm"
+              (click)="listarProcesados()"></button>
+    </div>
+  </div>
+</div>
+
+@if (loading) {
+  <div class="flex justify-content-center align-items-center" style="height: 300px;">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+} @else {
+
+  <!-- KPI Cards -->
+  <div class="grid mb-4">
+
+    <div class="col-12 md:col-4">
+      <div class="card surface-0 border-round-xl shadow-2 p-4
+                  border-left-3 border-green-500">
+        <div class="flex align-items-center justify-content-between">
+          <div>
+            <p class="text-500 text-sm font-semibold uppercase tracking-widest m-0">
+              Finalizados
+            </p>
+            <span class="text-900 font-bold text-4xl">{{ totalFinalizados }}</span>
+          </div>
+          <div class="w-3rem h-3rem border-circle bg-green-100
+                      flex align-items-center justify-content-center">
+            <i class="pi pi-check-circle text-green-500 text-xl"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 md:col-4">
+      <div class="card surface-0 border-round-xl shadow-2 p-4
+                  border-left-3 border-orange-400">
+        <div class="flex align-items-center justify-content-between">
+          <div>
+            <p class="text-500 text-sm font-semibold uppercase tracking-widest m-0">
+              Pendientes
+            </p>
+            <span class="text-900 font-bold text-4xl">{{ totalPendientes }}</span>
+          </div>
+          <div class="w-3rem h-3rem border-circle bg-orange-100
+                      flex align-items-center justify-content-center">
+            <i class="pi pi-clock text-orange-400 text-xl"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 md:col-4">
+      <div class="card surface-0 border-round-xl shadow-2 p-4
+                  border-left-3 border-blue-400">
+        <div class="flex align-items-center justify-content-between">
+          <div>
+            <p class="text-500 text-sm font-semibold uppercase tracking-widest m-0">
+              Tiempo promedio
+            </p>
+            <span class="text-900 font-bold text-4xl">
+              {{ formatDuracion(tiempoPromedioMin) }}
+            </span>
+          </div>
+          <div class="w-3rem h-3rem border-circle bg-blue-100
+                      flex align-items-center justify-content-center">
+            <i class="pi pi-stopwatch text-blue-400 text-xl"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Gráfico por usuario -->
+  @if (resumenUsuarios.length > 0) {
+    <div class="card shadow-2 border-round-xl mb-4">
+      <h5 class="text-900 font-semibold mb-3">
+        <i class="pi pi-chart-bar mr-2 text-primary"></i>Actividad por Usuario
+      </h5>
+      <p-chart type="bar"
+               [data]="chartData"
+               [options]="chartOptions"
+               style="height: 280px; width: 100%">
+      </p-chart>
+    </div>
+  }
+
+  <!-- Tabla resumen usuarios -->
+  <div class="card shadow-2 border-round-xl mb-4">
+    <h5 class="text-900 font-semibold mb-3">
+      <i class="pi pi-users mr-2 text-primary"></i>Resumen por Usuario
+    </h5>
+    <div class="overflow-x-auto">
+      <table class="w-full" style="border-collapse: collapse;">
+        <thead>
+        <tr class="surface-100">
+          <th class="text-left p-3 text-500 text-sm font-semibold uppercase">Usuario</th>
+          <th class="text-center p-3 text-500 text-sm font-semibold uppercase">Finalizados</th>
+          <th class="text-center p-3 text-500 text-sm font-semibold uppercase">Pendientes</th>
+          <th class="text-center p-3 text-500 text-sm font-semibold uppercase">T. Promedio</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (usr of resumenUsuarios; track usr.usuario) {
+            <tr class="border-top-1 surface-border hover:surface-50 transition-colors">
+              <td class="p-3">
+                <div class="flex align-items-center gap-2">
+                  <div class="w-2rem h-2rem border-circle bg-primary
+                              flex align-items-center justify-content-center
+                              text-white font-bold text-sm">
+                    {{ usr.usuario.charAt(0) }}
+                  </div>
+                  <span class="font-semibold text-900">{{ usr.usuario }}</span>
+                </div>
+              </td>
+              <td class="p-3 text-center">
+                <p-tag [value]="usr.finalizados.toString()"
+                       severity="success"
+                       [rounded]="true"></p-tag>
+              </td>
+              <td class="p-3 text-center">
+                <p-tag [value]="usr.pendientes.toString()"
+                       severity="warning"
+                       [rounded]="true"></p-tag>
+              </td>
+              <td class="p-3 text-center text-600">
+                <i class="pi pi-clock mr-1"></i>
+                {{ formatDuracion(usr.tiempoPromedio) }}
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- DataView con registros individuales -->
+  <div class="card shadow-2 border-round-xl">
+    <h5 class="text-900 font-semibold mb-3">
+      <i class="pi pi-list mr-2 text-primary"></i>Detalle de Registros
+    </h5>
+    <p-dataView [value]="procesados" [paginator]="true" [rows]="8" layout="list">
+      <ng-template pTemplate="list">
+        @for (item of procesados; track item.id.codigo) {
+          <div class="p-3 border-round border-1 surface-border mb-2
+                      hover:surface-50 transition-colors">
+            <div class="flex flex-column md:flex-row
+                        align-items-start md:align-items-center
+                        justify-content-between gap-3">
+
+              <!-- Info principal -->
+              <div class="flex-1">
+                <div class="flex align-items-center gap-2 mb-1">
+                  <span class="font-bold text-900">#{{ item.id.codigo }}</span>
+                  <p-tag
+                    [value]="item.finalizado === 1 ? 'Finalizado' : 'Pendiente'"
+                    [severity]="getSeverity(item.finalizado)"
+                    [rounded]="true">
+                  </p-tag>
+                </div>
+                <p class="text-500 text-sm m-0 mb-1">
+                  <i class="pi pi-user mr-1"></i>{{ item.usuario }}
+                </p>
+                <p class="text-500 text-sm m-0" style="max-width: 500px;">
+                  <i class="pi pi-info-circle mr-1"></i>
+                  {{ item.observacion }}
+                </p>
+              </div>
+
+              <!-- Fechas y tiempo -->
+              <div class="flex flex-column gap-1 text-sm text-right">
+                <span class="text-500">
+                  <i class="pi pi-calendar mr-1"></i>
+                  Inicio: {{ item.creaFecha | date: 'dd/MM/yy HH:mm' }}
+                </span>
+                <span class="text-500">
+                  <i class="pi pi-calendar-times mr-1"></i>
+                  Fin: {{ item.modFecha | date: 'dd/MM/yy HH:mm' }}
+                </span>
+                <span class="font-semibold text-primary">
+                  <i class="pi pi-stopwatch mr-1"></i>
+                  {{ formatDuracion(getDuracionMin(item)) }}
+                </span>
+              </div>
+
+              <!-- Botón cargar productos con caché -->
+              <div>
+                @if (!productosMap[item.id.codigo]) {
+                  <button pButton
+                          icon="pi pi-eye"
+                          label="Productos escaneados"
+                          class="p-button-sm p-button-outlined"
+                          [loading]="!!loadingDetalle[item.id.codigo]"
+                          (click)="cargarProductos(item)">
+                  </button>
+                } @else {
+                  <p-tag
+                    [value]="productosMap[item.id.codigo].length + ' productos'"
+                    severity="info"
+                    icon="pi pi-box"
+                    [rounded]="true">
+                  </p-tag>
+                }
+              </div>
+
+            </div>
+          </div>
+        }
+      </ng-template>
+    </p-dataView>
+  </div>
+
+}

@@ -7,7 +7,7 @@ export const recepcionAlmacenesRoutes: Routes = [
     children:[
       {
         path: '',
-        redirectTo: 'pendientes',
+        redirectTo: 'dashboard',
         pathMatch: 'full'
       },
 
@@ -16,7 +16,11 @@ export const recepcionAlmacenesRoutes: Routes = [
         loadComponent: () =>
           import('@features/recepcion-almacenes/recepcion-pendientes/recepcion-pendientes.component')
       },
-
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('@features/recepcion-almacenes/recepcepcion-dashboard/recepcepcion-dashboard.component')
+      },
       {
         path: 'registrados',
         children:[
