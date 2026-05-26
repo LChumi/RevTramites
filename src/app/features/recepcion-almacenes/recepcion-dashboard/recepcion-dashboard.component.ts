@@ -76,9 +76,11 @@ export default class RecepcionDashboardComponent implements OnInit {
       this.creposicionService.listFinalizados(8, 0),
     ]).subscribe({
       next: ([finalizados, noFinalizados]) => {
-        const todos = [...finalizados, ...noFinalizados].filter(
-          (c) => c.creaFecha && c.modFecha
-        );
+
+        console.log('Finalizados', finalizados.length);
+        console.log('Pendientes', noFinalizados.length);
+
+        const todos = [...finalizados, ...noFinalizados]
         this.procesados = todos;
         this.calcularKpis(finalizados.length, noFinalizados.length, todos);
         this.calcularResumenUsuarios(todos);
