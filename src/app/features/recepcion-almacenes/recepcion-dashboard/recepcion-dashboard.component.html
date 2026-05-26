@@ -148,8 +148,8 @@
     <h5 class="text-900 font-semibold mb-3">
       <i class="pi pi-list mr-2 text-primary"></i>Detalle de Registros
     </h5>
-    <p-dataView [value]="procesados" [paginator]="true" [rows]="8" layout="list">
-      <ng-template pTemplate="list">
+    <p-dataView #dv [value]="procesados" [paginator]="true" [rows]="5" layout="list">
+      <ng-template let-procesados pTemplate="listItem">
         @for (item of procesados; track item.id.codigo) {
           <div class="p-3 border-round border-1 surface-border mb-2
                       hover:surface-50 transition-colors">

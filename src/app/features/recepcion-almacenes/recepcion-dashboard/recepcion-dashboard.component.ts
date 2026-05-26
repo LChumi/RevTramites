@@ -7,9 +7,9 @@ import {forkJoin} from 'rxjs';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {ChartModule} from 'primeng/chart';
 import {TagModule} from 'primeng/tag';
-import {DataViewModule} from 'primeng/dataview';
 import {DatePipe} from '@angular/common';
 import {ButtonDirective} from 'primeng/button';
+import {DataViewModule} from 'primeng/dataview';
 
 interface ResumenUsuario {
   usuario: string;
@@ -25,9 +25,9 @@ interface ResumenUsuario {
     ProgressSpinnerModule,
     ChartModule,
     TagModule,
-    DataViewModule,
     DatePipe,
-    ButtonDirective
+    ButtonDirective,
+    DataViewModule
   ],
   templateUrl: './recepcion-dashboard.component.html',
   styles: ``
