@@ -7,6 +7,7 @@ import {DatePipe} from '@angular/common';
 import {AvatarModule} from 'primeng/avatar';
 import {TooltipModule} from 'primeng/tooltip';
 import {ConfiteriaService} from '@services/confiteria.service';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-pedidos-generados',
@@ -17,7 +18,8 @@ import {ConfiteriaService} from '@services/confiteria.service';
     TableModule,
     DatePipe,
     AvatarModule,
-    TooltipModule
+    TooltipModule,
+    ProgressSpinnerModule
   ],
   templateUrl: './pedidos-generados.component.html',
   styles: ``
@@ -31,14 +33,18 @@ export default class PedidosGeneradosComponent {
   fechaInicio: any;
   fechaFin: any;
 
+  loading = false
+
   find(){
     if (this.fechaInicio && this.fechaFin){
+      this.loading = true;
       const fechaApiInicio = this.fechaInicio.toISOString().split('T')[0];
       const fechaApiFin = this.fechaFin.toISOString().split('T')[0];
       this.confiteriaService.listarReposiciones(fechaApiInicio, fechaApiFin).subscribe({
         next: value => {
           this.reposiciones = value;
-        }
+          this.loading = false
+        }, error: (err) => {this.loading = false}
       })
     }
 
@@ -46,8 +52,10 @@ export default class PedidosGeneradosComponent {
   }
 
   decargarPDF(r: ReposicionConfiteria){
+    this.loading = true
     this.confiteriaService.descargarExcel(r.id, r.proveedor).subscribe({
-      error: (err) => console.error('Error al descargar:', err)
+      next: (blob) => this.loading = false,
+      error: (err) => this.loading= false
     });
   }
 
