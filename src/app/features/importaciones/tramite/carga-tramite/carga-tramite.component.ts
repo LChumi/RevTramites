@@ -82,6 +82,9 @@ export default class CargaTramiteComponent implements OnInit {
           this.message('success', 'Envio completo', 'archivo enviado exitosamente')
           this.listProductos(response.id);
           this.loading = false
+        }, error: err => {
+          console.error(err)
+          this.loading= false
         }
       })
     })
@@ -190,6 +193,7 @@ export default class CargaTramiteComponent implements OnInit {
             this.loading = false
             this.cargarNuevo();
           }, error: error => {
+            this.loading = false
             this.message('error', 'Error', `${error.message}`);
           }
         })

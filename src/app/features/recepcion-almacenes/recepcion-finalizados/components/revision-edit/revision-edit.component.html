@@ -51,26 +51,24 @@
         <ng-template pTemplate="header">
           <tr>
             <th class="text-center surface-100" style="width:3.5rem">N°</th>
-            <th class="surface-100" pSortableColumn="barra">
+            <th class="surface-100" >
               <div class="flex align-items-center gap-1">
                 <i class="pi pi-barcode text-400 text-sm"></i> Barra
-                <p-sortIcon field="barra"/>
               </div>
             </th>
             <th class="surface-100">Descripción</th>
-            <th class="text-center surface-100" pSortableColumn="cantApr">
+            <th class="text-center surface-100">
               <div class="flex align-items-center justify-content-center gap-1">
                 <i class="pi pi-qrcode text-400 text-sm"></i> Escaneada
-                <p-sortIcon field="cantApr"/>
               </div>
             </th>
-            <th class="text-center surface-100" pSortableColumn="cantSol">
+            <th class="text-center surface-100">
               <div class="flex align-items-center justify-content-center gap-1">
                 <i class="pi pi-list text-400 text-sm"></i> Solicitada
-                <p-sortIcon field="cantSol"/>
               </div>
             </th>
-            <th class="text-center surface-100">Estado</th>
+            <th class="text-center surface-100" pSortableColumn="observacion">Estado
+              <p-sortIcon field="observacion"/></th>
             <th class="text-center surface-100" style="width:9rem">Acciones</th>
           </tr>
         </ng-template>
