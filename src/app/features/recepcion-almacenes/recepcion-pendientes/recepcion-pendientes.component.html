@@ -1,78 +1,100 @@
-<h3>Pendientes</h3>
+<div class="flex flex-column gap-3">
 
-<p-dropdown
-  [options]="bodegas"
-  [(ngModel)]="selectedBodega"
-  optionLabel="bod_nombre"
-  placeholder="Seleccione bodega"
-  (onChange)="listarComprobantes()">
-</p-dropdown>
+  <!-- Header row -->
+  <div class="flex align-items-center justify-content-between flex-wrap gap-2">
+    <span class="text-xl font-semibold text-900 tracking-wide">Pendientes</span>
 
-@if (selectedBodega) {
-  <p-button
-    label="Listar Facturas"
-    icon="pi pi-"
-    (onClick)="listarFacturas()">
-  </p-button>
-}
+    <div class="flex align-items-center gap-2">
+      <p-dropdown
+        [options]="bodegas"
+        [(ngModel)]="selectedBodega"
+        optionLabel="bod_nombre"
+        placeholder="Seleccione bodega"
+        styleClass="w-14rem"
+        (onChange)="listarComprobantes()">
+      </p-dropdown>
 
-<br><br>
-@if (loading) {
-  <div class="flex justify-content-center py-6">
-
-    <p-progressSpinner></p-progressSpinner>
-
+      @if (selectedBodega) {
+        <p-button
+          icon="pi pi-file-import"
+          label="Facturas"
+          size="small"
+          severity="secondary"
+          [outlined]="true"
+          pTooltip="Listar facturas"
+          tooltipPosition="bottom"
+          (onClick)="listarFacturas()">
+        </p-button>
+      }
+    </div>
   </div>
-} @else {
-  <p-table
-    [value]="comprobantes"
-    [(selection)]="selectedComprobantes"
-    dataKey="ccoComproba"
-    [paginator]="true"
-    [rows]="10">
 
-    <ng-template pTemplate="header">
-      <tr>
-        <th style="width: 4rem">
-          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-        </th>
-        <th>Comprobante</th>
-        <th>Almacen</th>
-        <th>Tipo</th>
-        <th>Fecha</th>
-      </tr>
-    </ng-template>
+  <p-divider styleClass="my-0"></p-divider>
 
-    <ng-template pTemplate="body" let-cco>
-      <tr>
+  <!-- Tabla o spinner -->
+  @if (loading) {
+    <div class="flex justify-content-center py-6">
+      <p-progressSpinner strokeWidth="3" styleClass="w-3rem h-3rem"></p-progressSpinner>
+    </div>
+  } @else {
+    <p-table
+      [value]="comprobantes"
+      [(selection)]="selectedComprobantes"
+      dataKey="ccoComproba"
+      [paginator]="true"
+      [rows]="20"
+      responsiveLayout="scroll"
+      styleClass="p-datatable-sm p-datatable-gridlines"
+      [rowHover]="true">
 
-        <td>
-          <p-tableCheckbox [value]="cco"></p-tableCheckbox>
-        </td>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 3rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th>Comprobante</th>
+          <th>Almacén</th>
+          <th>Tipo</th>
+          <th>Fecha</th>
+        </tr>
+      </ng-template>
 
-        <td>{{ cco.comprobante }}</td>
-        <td>{{ cco.bodNombre }}</td>
-        <td>{{ cco.tipo }}</td>
-        <td>{{ cco.fechaFac | date:'mediumDate' }}</td>
-      </tr>
-    </ng-template>
+      <ng-template pTemplate="body" let-cco>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="cco"></p-tableCheckbox>
+          </td>
+          <td class="font-medium">{{ cco.comprobante }}</td>
+          <td>{{ cco.bodNombre }}</td>
+          <td>
+            <p-tag [value]="cco.tipo" severity="info" styleClass="text-xs"></p-tag>
+          </td>
+          <td class="text-color-secondary">{{ cco.fechaFac | date:'mediumDate' }}</td>
+        </tr>
+      </ng-template>
 
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="14" class="empty-state">
-          <i class="pi pi-inbox" style="font-size: 2.5rem; color: var(--text-color-secondary);"></i>
-          <p>No hay pedidos para mostrar</p>
-        </td>
-      </tr>
-    </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5">
+            <div class="flex flex-column align-items-center gap-2 py-5 text-color-secondary">
+              <i class="pi pi-inbox text-4xl"></i>
+              <span class="text-sm">No hay comprobantes pendientes</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
 
-  </p-table>
+    </p-table>
 
-  <br>
+    @if (selectedComprobantes?.length) {
+      <div class="flex justify-content-end">
+        <p-button
+          label="Procesar seleccionados"
+          icon="pi pi-check"
+          (onClick)="procesarSeleccionados()">
+        </p-button>
+      </div>
+    }
+  }
 
-  <p-button
-    label="Procesar seleccionados"
-    icon="pi pi-check"
-    (onClick)="procesarSeleccionados()">
-  </p-button>
-}
+</div>

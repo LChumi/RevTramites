@@ -11,6 +11,9 @@ import {ComprobantesCcoRequest} from '@dtos/recepcion-almacenes/comprobantes-cco
 import {MessageService} from 'primeng/api';
 import {Router} from '@angular/router';
 import {SidebarService} from '@services/state/sidebar.service';
+import {TooltipModule} from 'primeng/tooltip';
+import {TagModule} from 'primeng/tag';
+import {DividerModule} from 'primeng/divider';
 
 @Component({
   selector: 'app-recepcion-pendientes',
@@ -21,7 +24,10 @@ import {SidebarService} from '@services/state/sidebar.service';
     TableModule,
     Button,
     DatePipe,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    TooltipModule,
+    TagModule,
+    DividerModule
   ],
   templateUrl: './recepcion-pendientes.component.html',
   styles: ``
