@@ -9,7 +9,7 @@ import {Observable} from 'rxjs';
 })
 export class ConsignatarioService {
 
-  private baseUrl = environment.apiMongo + 'consignatario';
+  private baseUrl = environment.apiMongo + 'flete';
   private http = inject(HttpClient)
 
   constructor() { }

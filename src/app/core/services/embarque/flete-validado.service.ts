@@ -11,7 +11,7 @@ import {FleteAnularRequest} from '@models/embarque/flete-anular-request';
 })
 export class FleteValidadoService {
 
-  private baseUrl = environment.apiMongo + 'confiteria';
+  private baseUrl = environment.apiMongo + 'flete';
   private http = inject(HttpClient)
 
   validarFlete(request: FleteValidacionRequest):Observable<FleteValidado>{

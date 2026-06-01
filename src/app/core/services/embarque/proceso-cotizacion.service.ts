@@ -9,7 +9,7 @@ import {HttpClient} from '@angular/common/http';
 })
 export class ProcesoCotizacionService {
 
-  private baseUrl = environment.apiMongo + 'confiteria';
+  private baseUrl = environment.apiMongo + 'proceso-contizacion';
   private http = inject(HttpClient)
 
   crear(cotizacion:ProcesoCotizacion):Observable<ProcesoCotizacion>{

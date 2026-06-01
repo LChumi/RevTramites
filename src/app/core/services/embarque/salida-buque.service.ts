@@ -12,7 +12,7 @@ import {OpcionFlete} from '@models/embarque/opcion-flete';
 })
 export class SalidaBuqueService {
 
-  private baseUrl = environment.apiMongo + 'confiteria';
+  private baseUrl = environment.apiMongo + 'salida-buque';
   private http = inject(HttpClient)
 
   save(buque: SalidaBuque):Observable<SalidaBuque>{

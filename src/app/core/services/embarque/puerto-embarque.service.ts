@@ -9,7 +9,7 @@ import {Observable} from 'rxjs';
 })
 export class PuertoEmbarqueService {
 
-  private baseUrl = environment.apiMongo + 'confiteria';
+  private baseUrl = environment.apiMongo + 'puerto-embarque';
   private http = inject(HttpClient)
 
   save(puerto: PuertoEmbarque):Observable<PuertoEmbarque>{
