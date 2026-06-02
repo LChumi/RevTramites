@@ -1,0 +1,152 @@
+
+<p-card header="Referencias de Embarque">
+
+  <p-tabView>
+
+    <!-- PUERTOS -->
+    <p-tabPanel header="Puertos">
+
+      <div class="grid">
+
+        <div class="col-12 md:col-4">
+
+          <p-card header="Nuevo Puerto">
+
+            <div class="flex flex-column gap-3">
+
+                            <span class="p-float-label">
+                                <input
+                                  pInputText
+                                  id="nombrePuerto"
+                                  class="w-full uppercase"
+                                  autocomplete="off"
+                                  autocapitalize="characters"
+                                  [(ngModel)]="nombrePuerto"
+                                  (keydown.enter)="crearPuerto()">
+                                <label for="nombrePuerto">
+                                    Nombre del puerto
+                                </label>
+                            </span>
+
+              <button
+                pButton
+                type="button"
+                label="Guardar"
+                icon="pi pi-plus"
+                class="w-full"
+                (click)="crearPuerto()">
+              </button>
+
+            </div>
+
+          </p-card>
+
+        </div>
+
+        <div class="col-12 md:col-8">
+
+          <p-card header="Puertos Registrados">
+
+            <p-table
+              [value]="puertos"
+              [paginator]="true"
+              [rows]="10"
+              responsiveLayout="scroll">
+
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Puerto</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-puerto>
+                <tr>
+                  <td>{{ puerto.nombre }}</td>
+                </tr>
+              </ng-template>
+
+            </p-table>
+
+          </p-card>
+
+        </div>
+
+      </div>
+
+    </p-tabPanel>
+
+    <!-- CONSIGNATARIOS -->
+    <p-tabPanel header="Consignatarios">
+
+      <div class="grid">
+
+        <div class="col-12 md:col-4">
+
+          <p-card header="Nuevo Consignatario">
+
+            <div class="flex flex-column gap-3">
+
+                            <span class="p-float-label">
+                                <input
+                                  pInputText
+                                  id="nombreConsignatario"
+                                  class="w-full uppercase"
+                                  autocapitalize="characters"
+                                  autocomplete="off"
+                                  [(ngModel)]="nombreConsignatario"
+                                  (keydown.enter)="crearConsignatario()">
+                                <label for="nombreConsignatario">
+                                    Nombre del consignatario
+                                </label>
+                            </span>
+
+              <button
+                pButton
+                type="button"
+                label="Guardar"
+                icon="pi pi-plus"
+                class="w-full"
+                (click)="crearConsignatario()">
+              </button>
+
+            </div>
+
+          </p-card>
+
+        </div>
+
+        <div class="col-12 md:col-8">
+
+          <p-card header="Consignatarios Registrados">
+
+            <p-table
+              [value]="consignatarios"
+              [paginator]="true"
+              [rows]="10"
+              responsiveLayout="scroll">
+
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Consignatario</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-consignatario>
+                <tr>
+                  <td>{{ consignatario.nombre }}</td>
+                </tr>
+              </ng-template>
+
+            </p-table>
+
+          </p-card>
+
+        </div>
+
+      </div>
+
+    </p-tabPanel>
+
+  </p-tabView>
+
+</p-card>

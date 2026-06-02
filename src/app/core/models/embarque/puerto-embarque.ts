@@ -1,4 +1,4 @@
 export interface PuertoEmbarque {
-  id:     string;
+  id?:     any;
   nombre: string;
 }

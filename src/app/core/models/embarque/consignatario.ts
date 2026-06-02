@@ -1,4 +1,4 @@
 export interface Consignatario {
-  id:     string;
+  id?:    any;
   nombre: string;
 }
