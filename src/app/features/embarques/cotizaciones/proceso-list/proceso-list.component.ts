@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {ChartModule} from 'primeng/chart';
 import {MenuModule} from 'primeng/menu';
 import {TableModule} from 'primeng/table';
@@ -17,6 +17,7 @@ import {DropdownModule} from 'primeng/dropdown';
 import {TagModule} from 'primeng/tag';
 import {CardModule} from 'primeng/card';
 import {EMPRESA_MOCK, REFERENCIAS_MOCK} from '@mocks/embarque';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-proceso-list',
@@ -40,8 +41,10 @@ import {EMPRESA_MOCK, REFERENCIAS_MOCK} from '@mocks/embarque';
   templateUrl: './proceso-list.component.html',
   styles: ``
 })
-export default class ProcesoListComponent {
+export default class ProcesoListComponent implements OnInit{
 
+  private router = inject(Router)
+  private route = inject(ActivatedRoute)
   private procesoService = inject(ProcesoCotizacionService)
   private messageService = inject(MessageService)
 
@@ -53,16 +56,35 @@ export default class ProcesoListComponent {
   tiposReferencia = REFERENCIAS_MOCK
   empresas = EMPRESA_MOCK
 
-  nuevoProceso(){
-    this.cotizacionDialog = true
+  ngOnInit() {
+    this.listarCoptizaciones()
+  }
+
+  listarCoptizaciones(){
+    this.procesoService.list().subscribe({
+      next: value => {
+        this.cotizaciones = value
+      }
+    })
   }
 
   viewCotizacion(id: string){
-
+    this.router.navigate([id], {relativeTo: this.route}).then(r => {
+    })
   }
 
-  saveCotizacion(){
+  saveCotizacion() {
+    if (!this.validar()) {
+      return;
+    }
 
+    this.procesoService.crear(this.cotizacion).subscribe({
+      next: value => {
+        this.cotizacionDialog = false
+        this.limpiarFormulario();
+        this.cotizaciones.push(value)
+      }
+    })
   }
 
   getEstadoSeverity(estado: string) {
@@ -84,6 +106,58 @@ export default class ProcesoListComponent {
   getEmpresaNombre(code: number): string {
     const empresa = EMPRESA_MOCK.find(e => e.code === code);
     return empresa ? empresa.name : 'Desconocida';
+  }
+
+  nuevoProceso() {
+    this.limpiarFormulario();
+    this.cotizacionDialog = true;
+  }
+
+  private limpiarFormulario() {
+    this.cotizacion = {
+      numeroReferencia: null,
+      tipoReferencia: null,
+      empresaId: null,
+      proveedorId: null
+    } as ProcesoCotizacion;
+  }
+
+  private validar(): boolean {
+
+    this.cotizacion.numeroReferencia =
+      this.cotizacion.numeroReferencia?.trim().toUpperCase();
+
+    const campos = [
+      {
+        valor: this.cotizacion.numeroReferencia,
+        mensaje: 'Debe ingresar el número de referencia'
+      },
+      {
+        valor: this.cotizacion.tipoReferencia,
+        mensaje: 'Debe seleccionar el tipo de referencia'
+      },
+      {
+        valor: this.cotizacion.empresaId,
+        mensaje: 'Debe seleccionar una empresa'
+      },
+      {
+        valor: this.cotizacion.proveedorId?.trim(),
+        mensaje: 'Debe ingresar un proveedor'
+      }
+    ];
+
+    const error = campos.find(c => !c.valor);
+
+    if (error) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Validación',
+        detail: error.mensaje
+      });
+      return false;
+    }
+
+    return true;
   }
 
 }

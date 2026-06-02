@@ -1,9 +1,9 @@
 export interface ProcesoCotizacion {
   id?:               any;
-  numeroReferencia: string;
-  tipoReferencia:   string;
-  empresaId:        string;
-  proveedorId:      string;
-  estado?:           string;
-  creadoEn?:         Date;
+  numeroReferencia: any;
+  tipoReferencia:   any;
+  empresaId:        any;
+  proveedorId:      any;
+  estado?:           any;
+  creadoEn?:         any;
 }
