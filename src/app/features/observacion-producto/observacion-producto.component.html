@@ -69,25 +69,25 @@
           label="Todos"
           icon="pi pi-list"
           [styleClass]="colorSeleccionado === 'todos' ? 'chip-active chip-all' : 'chip-inactive'"
-          (click)="colorSeleccionado = 'todos'; seleccionarColor()"
+          (click)="colorSeleccionado = 'todos'"
         />
         <p-chip
           label="Corregidas"
           icon="pi pi-check"
           [styleClass]="colorSeleccionado === 'verde' ? 'chip-active chip-ok' : 'chip-inactive'"
-          (click)="colorSeleccionado = 'verde'; seleccionarColor()"
+          (click)="colorSeleccionado = 'verde'"
         />
         <p-chip
           label="Sin corrección (mes)"
           icon="pi pi-exclamation-triangle"
           [styleClass]="colorSeleccionado === 'tomate' ? 'chip-active chip-warn' : 'chip-inactive'"
-          (click)="colorSeleccionado = 'tomate'; seleccionarColor()"
+          (click)="colorSeleccionado = 'tomate'"
         />
         <p-chip
           label="Antiguas"
           icon="pi pi-exclamation-circle"
           [styleClass]="colorSeleccionado === 'rojo' ? 'chip-active chip-danger' : 'chip-inactive'"
-          (click)="colorSeleccionado = 'rojo'; seleccionarColor()"
+          (click)="colorSeleccionado = 'rojo'"
         />
       </div>
     </div>

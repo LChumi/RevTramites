@@ -67,17 +67,12 @@ export default class ObservacionProductoComponent implements OnInit {
   bodId = sessionStorage.getItem('bodId') ?? '';
   usuariosessionStorage = sessionStorage.getItem('username') ?? '';
 
-  imageUrl: string = '';
-
   ngOnInit() {
     if (this.bodId == '' || this.usuariosessionStorage == '') {
       this.messageService.add({severity: 'warn', summary: 'Usuario sin bodega', detail: 'Usuario si bodega ni sesión'})
       return;
     }
     this.listarObservaciones()
-  }
-
-  seleccionarColor() {
   }
 
   selecionarObservacion(obs: ProductoObservacion) {
