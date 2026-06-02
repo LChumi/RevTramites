@@ -12,7 +12,8 @@
       "@features/*": ["./src/app/features/*"],
       "@interceptors/*": ["./src/app/core/interceptors/*"],
       "@utils/*": ["./src/app/core/utils/*"],
-      "@shared/*": ["./src/app/shared/*"]
+      "@shared/*": ["./src/app/shared/*"],
+      "@mocks/*": ["./src/app/core/mocks/*"],
     },
     "outDir": "./dist/out-tsc",
     "strict": true,

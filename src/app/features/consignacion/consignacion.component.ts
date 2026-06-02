@@ -6,7 +6,7 @@ import {Button} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {ConsignacionService} from '@services/consignacion.service';
-import {BodegaConsignacion, RelacionConsignacion, RELACIONES_CONSIGNACION} from '../../core/mocks/bodega-consignacion';
+import {BodegaConsignacion, RelacionConsignacion, RELACIONES_CONSIGNACION} from '@mocks/bodega-consignacion';
 import {ConsignacionRequest} from '@dtos/consignacion-request';
 
 @Component({

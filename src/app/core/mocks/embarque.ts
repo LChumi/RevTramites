@@ -1,0 +1,9 @@
+export const REFERENCIAS_MOCK = [
+  {name: 'TRAMITE'},
+  {name: 'BL'}
+]
+export const EMPRESA_MOCK = [
+  {name: 'IMPORTADORA CUMPLEAÑOS PALACIOS CORDERO CIA LTDA', code: 2},
+  {name: 'PALACIOS NARANJO CORSINO EDUARDO', code: 3},
+  {name: 'IMPORTADORA EDUARDO PALACIOS NARANJO EPN CIA LTDA', code: 4},
+]

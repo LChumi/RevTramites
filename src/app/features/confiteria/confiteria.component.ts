@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {ProductoSisService} from '@services/producto-sis.service';
 import {ConfiteriaService} from '@services/confiteria.service';
-import {proveedor, PROVEEDORES_MOCK} from '../../core/mocks/proveedores';
+import {proveedor, PROVEEDORES_MOCK} from '@mocks/proveedores';
 import {ConfiteriaRepor} from '@dtos/confiteria-repor';
 import {ReposicionConfiteria} from '@dtos/reposicion-confiteria';
 import {ReposicionRequest} from '@dtos/reposicion-request';

@@ -1,1 +1,201 @@
-<p>proceso-list works!</p>
+<div class="surface-ground min-h-screen p-4">
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Header -->
+    <div class="flex align-items-center justify-content-between mb-5">
+      <div>
+        <h2 class="text-900 font-semibold text-2xl m-0 mb-1">Cotizaciones</h2>
+        <span class="text-500 text-sm">Gestión de cotizaciones registradas</span>
+      </div>
+      <button
+        pButton
+        label="Nueva Cotización"
+        icon="pi pi-plus"
+        severity="success"
+        (click)="nuevoProceso()">
+      </button>
+    </div>
+
+    <!-- Tabla -->
+    <div class="surface-card border-round-xl border-1 surface-border overflow-hidden">
+      <p-table
+        [value]="cotizaciones"
+        [paginator]="true"
+        [rows]="10"
+        [rowHover]="true"
+        responsiveLayout="scroll"
+        styleClass="p-datatable-sm p-datatable-gridlines">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="white-space-nowrap">Referencia</th>
+            <th class="white-space-nowrap">Tipo</th>
+            <th class="white-space-nowrap">Empresa</th>
+            <th class="white-space-nowrap" pSortableColumn="proveedorId">
+              Proveedor <p-sortIcon field="proveedorId" />
+            </th>
+            <th class="white-space-nowrap">Estado</th>
+            <th class="white-space-nowrap" pSortableColumn="creadoEn">
+              Creado <p-sortIcon field="creadoEn" />
+            </th>
+            <th style="width: 5rem" class="text-center">Acciones</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-cot>
+          <tr>
+            <td>
+              <span class="font-semibold text-primary">
+                {{ cot.numeroReferencia }}
+              </span>
+            </td>
+
+            <td>
+              <span class="text-xs border-round px-2 py-1 surface-200 text-700 font-medium">
+                {{ cot.tipoReferencia }}
+              </span>
+            </td>
+
+            <td class="text-600">{{ getEmpresaNombre(cot.empresaId) }}</td>
+
+            <td class="text-600">{{ cot.proveedorId }}</td>
+
+            <td>
+              <p-tag
+                [value]="cot.estado"
+                [severity]="getEstadoSeverity(cot.estado)"
+                styleClass="text-xs font-medium" />
+            </td>
+
+            <td class="text-600 white-space-nowrap">
+              {{ cot.creadoEn | date:'dd/MM/yyyy' }}
+            </td>
+
+            <td class="text-center">
+              <button
+                pButton
+                pRipple
+                icon="pi pi-eye"
+                severity="info"
+                [rounded]="true"
+                [outlined]="true"
+                size="small"
+                (click)="viewCotizacion(cot.id)"
+                pTooltip="Ver detalle"
+                tooltipPosition="left">
+              </button>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7" class="text-center py-6 text-500">
+              <i class="pi pi-inbox text-4xl block mb-2 text-300"></i>
+              No hay cotizaciones registradas
+            </td>
+          </tr>
+        </ng-template>
+
+      </p-table>
+    </div>
+
+  </div>
+</div>
+
+<!-- ───────────────────── Dialog ───────────────────── -->
+<p-dialog
+  [(visible)]="cotizacionDialog"
+  header="Nueva Cotización"
+  [modal]="true"
+  [style]="{ width: '36rem' }"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="p-dialog-rounded">
+
+  <ng-template pTemplate="content">
+    <div class="flex flex-column gap-4 pt-2">
+
+      <!-- Número de Referencia -->
+      <div class="flex flex-column gap-1">
+        <label class="text-sm font-semibold text-700">
+          Número de Referencia
+        </label>
+        <input
+          pInputText
+          autocomplete="off"
+          autocapitalize="characters"
+          placeholder="Ej. COT-2024-001"
+          class="w-full"
+          [(ngModel)]="cotizacion.numeroReferencia" />
+      </div>
+
+      <!-- Tipo Referencia -->
+      <div class="flex flex-column gap-1">
+        <label class="text-sm font-semibold text-700">
+          Tipo de Referencia
+        </label>
+        <p-dropdown
+          [options]="tiposReferencia"
+          optionLabel="name"
+          optionValue="name"
+          [(ngModel)]="cotizacion.tipoReferencia"
+          placeholder="Seleccione un tipo"
+          appendTo="body"
+          styleClass="w-full" />
+      </div>
+
+      <!-- Empresa + Proveedor -->
+      <div class="grid">
+        <div class="col-12 md:col-6 flex flex-column gap-1">
+          <label class="text-sm font-semibold text-700">
+            Empresa
+          </label>
+          <p-dropdown
+            [options]="empresas"
+            optionLabel="name"
+            optionValue="code"
+            [(ngModel)]="cotizacion.empresaId"
+            placeholder="Seleccione"
+            appendTo="body"
+            styleClass="w-full" />
+          <!-- ↑ appendTo="body" resuelve el bug de opciones ocultas -->
+        </div>
+
+        <div class="col-12 md:col-6 flex flex-column gap-1">
+          <label class="text-sm font-semibold text-700">
+            Proveedor
+          </label>
+          <input
+            pInputText
+            placeholder="ID o nombre"
+            class="w-full"
+            [(ngModel)]="cotizacion.proveedorId" />
+        </div>
+      </div>
+
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-end gap-2">
+      <button
+        pButton
+        label="Cancelar"
+        icon="pi pi-times"
+        severity="secondary"
+        [text]="true"
+        (click)="cotizacionDialog = false">
+      </button>
+
+      <button
+        pButton
+        label="Guardar"
+        icon="pi pi-check"
+        severity="success"
+        (click)="saveCotizacion()">
+      </button>
+    </div>
+  </ng-template>
+
+</p-dialog>
