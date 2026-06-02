@@ -1,17 +1,12 @@
-
 <p-card header="Referencias de Embarque">
 
   <p-tabView>
-
     <!-- PUERTOS -->
     <p-tabPanel header="Puertos">
-
       <div class="grid">
-
         <div class="col-12 md:col-4">
 
           <p-card header="Nuevo Puerto">
-
             <div class="flex flex-column gap-3">
 
                             <span class="p-float-label">
@@ -38,15 +33,12 @@
               </button>
 
             </div>
-
           </p-card>
 
         </div>
 
         <div class="col-12 md:col-8">
-
           <p-card header="Puertos Registrados">
-
             <p-table
               [value]="puertos"
               [paginator]="true"
@@ -77,13 +69,9 @@
 
     <!-- CONSIGNATARIOS -->
     <p-tabPanel header="Consignatarios">
-
       <div class="grid">
-
         <div class="col-12 md:col-4">
-
           <p-card header="Nuevo Consignatario">
-
             <div class="flex flex-column gap-3">
 
                             <span class="p-float-label">
@@ -118,7 +106,6 @@
         <div class="col-12 md:col-8">
 
           <p-card header="Consignatarios Registrados">
-
             <p-table
               [value]="consignatarios"
               [paginator]="true"
@@ -144,9 +131,6 @@
         </div>
 
       </div>
-
     </p-tabPanel>
-
   </p-tabView>
-
 </p-card>

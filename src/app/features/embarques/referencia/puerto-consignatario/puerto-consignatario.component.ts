@@ -25,7 +25,7 @@ import {TabViewModule} from 'primeng/tabview';
   templateUrl: './puerto-consignatario.component.html',
   styles: ``
 })
-export default class PuertoConsignatarioComponent implements OnInit{
+export default class PuertoConsignatarioComponent implements OnInit {
 
   private puertoService = inject(PuertoEmbarqueService)
   private consignatarioService = inject(ConsignatarioService)
@@ -42,7 +42,7 @@ export default class PuertoConsignatarioComponent implements OnInit{
     this.listarConsignatarios();
   }
 
-  listarPuerto(){
+  listarPuerto() {
     this.puertoService.list().subscribe({
       next: value => this.puertos = value
     })
@@ -54,8 +54,8 @@ export default class PuertoConsignatarioComponent implements OnInit{
     })
   }
 
-  crearPuerto(){
-    if (this.nombrePuerto === ''){
+  crearPuerto() {
+    if (this.nombrePuerto === '') {
       this.messageService.add({severity: 'warn', detail: 'Nombre puerto vacío'})
       return;
     }
@@ -75,8 +75,8 @@ export default class PuertoConsignatarioComponent implements OnInit{
     })
   }
 
-  crearConsignatario(){
-    if (this.nombreConsignatario === ''){
+  crearConsignatario() {
+    if (this.nombreConsignatario === '') {
       this.messageService.add({severity: 'warn', detail: 'Nombre consignatario vacío'})
       return;
     }

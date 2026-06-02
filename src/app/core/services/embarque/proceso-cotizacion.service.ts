@@ -20,4 +20,8 @@ export class ProcesoCotizacionService {
     return this.http.get<ProcesoCotizacion[]>(`${this.baseUrl}/list`);
   }
 
+  getById(id: string):Observable<ProcesoCotizacion>{
+    return this.http.get<ProcesoCotizacion>(`${this.baseUrl}/${id}`)
+  }
+
 }
