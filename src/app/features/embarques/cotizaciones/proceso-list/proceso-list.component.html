@@ -32,11 +32,13 @@
             <th class="white-space-nowrap">Tipo</th>
             <th class="white-space-nowrap">Empresa</th>
             <th class="white-space-nowrap" pSortableColumn="proveedorId">
-              Proveedor <p-sortIcon field="proveedorId" />
+              Proveedor
+              <p-sortIcon field="proveedorId"/>
             </th>
             <th class="white-space-nowrap">Estado</th>
             <th class="white-space-nowrap" pSortableColumn="creadoEn">
-              Creado <p-sortIcon field="creadoEn" />
+              Creado
+              <p-sortIcon field="creadoEn"/>
             </th>
             <th style="width: 5rem" class="text-center">Acciones</th>
           </tr>
@@ -64,7 +66,7 @@
               <p-tag
                 [value]="cot.estado"
                 [severity]="getEstadoSeverity(cot.estado)"
-                styleClass="text-xs font-medium" />
+                styleClass="text-xs font-medium"/>
             </td>
 
             <td class="text-600 white-space-nowrap">
@@ -127,7 +129,7 @@
           autocapitalize="characters"
           placeholder="Ej. COT-2024-001"
           class="w-full uppercase"
-          [(ngModel)]="cotizacion.numeroReferencia" />
+          [(ngModel)]="cotizacion.numeroReferencia"/>
       </div>
 
       <!-- Tipo Referencia -->
@@ -142,7 +144,7 @@
           [(ngModel)]="cotizacion.tipoReferencia"
           placeholder="Seleccione un tipo"
           appendTo="body"
-          styleClass="w-full" />
+          styleClass="w-full"/>
       </div>
 
       <!-- Empresa + Proveedor -->
@@ -158,7 +160,7 @@
             [(ngModel)]="cotizacion.empresaId"
             placeholder="Seleccione"
             appendTo="body"
-            styleClass="w-full" />
+            styleClass="w-full"/>
           <!-- ↑ appendTo="body" resuelve el bug de opciones ocultas -->
         </div>
 
@@ -172,7 +174,7 @@
             autocomplete="off"
             autocapitalize="characters"
             class="w-full uppercase"
-            [(ngModel)]="cotizacion.proveedorId" />
+            [(ngModel)]="cotizacion.proveedorId"/>
         </div>
       </div>
 

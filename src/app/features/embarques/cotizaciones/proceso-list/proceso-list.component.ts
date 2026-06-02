@@ -41,7 +41,7 @@ import {ActivatedRoute, Router} from '@angular/router';
   templateUrl: './proceso-list.component.html',
   styles: ``
 })
-export default class ProcesoListComponent implements OnInit{
+export default class ProcesoListComponent implements OnInit {
 
   private router = inject(Router)
   private route = inject(ActivatedRoute)
@@ -60,7 +60,7 @@ export default class ProcesoListComponent implements OnInit{
     this.listarCoptizaciones()
   }
 
-  listarCoptizaciones(){
+  listarCoptizaciones() {
     this.procesoService.list().subscribe({
       next: value => {
         this.cotizaciones = value
@@ -68,7 +68,7 @@ export default class ProcesoListComponent implements OnInit{
     })
   }
 
-  viewCotizacion(id: string){
+  viewCotizacion(id: string) {
     this.router.navigate([id], {relativeTo: this.route}).then(r => {
     })
   }
