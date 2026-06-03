@@ -6,7 +6,7 @@ import {OpcionFlete} from '@models/embarque/opcion-flete';
 export interface FleteValidacionRequest {
   proceso:       ProcesoCotizacion;
   salida:        SalidaBuque;
-  consignatario: Consignatario;
+  consignatario: string;
   opcion:        OpcionFlete;
   usuario:       string;
 }

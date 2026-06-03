@@ -1,4 +1,5 @@
 export interface OpcionFlete {
+  id?:                any;
   tipoContenedor:     string;
   espacioM3:          number;
   puertoDestino:      string;

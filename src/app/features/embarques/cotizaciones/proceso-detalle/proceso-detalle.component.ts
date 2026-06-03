@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProcesoCotizacionService} from '@services/embarque/proceso-cotizacion.service';
 import {ProcesoCotizacion} from '@models/embarque/proceso-cotizacion';
@@ -18,6 +18,10 @@ import {TagModule} from 'primeng/tag';
 import {TooltipModule} from 'primeng/tooltip';
 import {CardModule} from 'primeng/card';
 import {BadgeModule} from 'primeng/badge';
+import {FleteValidado} from '@models/embarque/flete-validado';
+import {
+  OpcionFleteComponent
+} from '@features/embarques/cotizaciones/proceso-detalle/components/opcion-flete/opcion-flete.component';
 
 @Component({
   selector: 'app-proceso-detalle',
@@ -32,7 +36,8 @@ import {BadgeModule} from 'primeng/badge';
     TagModule,
     TooltipModule,
     CardModule,
-    BadgeModule
+    BadgeModule,
+    OpcionFleteComponent
   ],
   templateUrl: './proceso-detalle.component.html',
   styles: ``
@@ -46,6 +51,9 @@ export default class ProcesoDetalleComponent implements OnInit{
   private messageService = inject(MessageService)
   private route = inject(ActivatedRoute)
   private router = inject(Router)
+
+  buqueSeleccionado = signal<SalidaBuque | null>(null);
+  drawerVisible     = signal(false);
 
   salidaBuques: SalidaBuque[] =[]
   puertos: PuertoEmbarque[] = [];
@@ -101,7 +109,9 @@ export default class ProcesoDetalleComponent implements OnInit{
   }
 
   viewBuque(id: string){
-
+    const buque = this.salidaBuques.find(b => b.id === id) ?? null;
+    this.buqueSeleccionado.set(buque);
+    this.drawerVisible.set(true);
   }
 
   return(){
@@ -120,6 +130,16 @@ export default class ProcesoDetalleComponent implements OnInit{
 
   get inactivosCount(): number {
     return this.salidaBuques.filter(b => !b.activo).length;
+  }
+
+  onFleteValidado(flete: FleteValidado): void {
+    // maneja el resultado: toast, refresh, etc.
+  }
+
+  cerrarDrawer() {
+    console.log('evento recibido');
+    this.drawerVisible.set(false);
+    this.buqueSeleccionado.set(null);
   }
 
 }

@@ -35,7 +35,7 @@ export class SalidaBuqueService {
     return this.http.put<SalidaBuque>(`${this.baseUrl}/add-cotizacion/${idBuque}`, cotizacion);
   }
 
-  addOpcion(idBuque: string, idCotizacion: string , opcion: OpcionBarataResponse): Observable<SalidaBuque>{
+  addOpcion(idBuque: string, idCotizacion: string , opcion: OpcionFlete): Observable<SalidaBuque>{
     return this.http.put<SalidaBuque>(`${this.baseUrl}/add-opcion/${idBuque}/${idCotizacion}`, opcion);
   }
 
