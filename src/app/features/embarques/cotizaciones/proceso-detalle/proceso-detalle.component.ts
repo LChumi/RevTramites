@@ -18,10 +18,8 @@ import {TagModule} from 'primeng/tag';
 import {TooltipModule} from 'primeng/tooltip';
 import {CardModule} from 'primeng/card';
 import {BadgeModule} from 'primeng/badge';
-import {FleteValidado} from '@models/embarque/flete-validado';
-import {
-  OpcionFleteComponent
-} from '@features/embarques/cotizaciones/proceso-detalle/components/opcion-flete/opcion-flete.component';
+import {OpcionBarataResponse} from '@models/embarque/opcion-barata-response';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-proceso-detalle',
@@ -31,13 +29,12 @@ import {
     ButtonDirective,
     DatePipe,
     PrimeTemplate,
-    Ripple,
     TableModule,
     TagModule,
     TooltipModule,
     CardModule,
     BadgeModule,
-    OpcionFleteComponent
+    ProgressSpinnerModule
   ],
   templateUrl: './proceso-detalle.component.html',
   styles: ``
@@ -52,16 +49,14 @@ export default class ProcesoDetalleComponent implements OnInit{
   private route = inject(ActivatedRoute)
   private router = inject(Router)
 
-  buqueSeleccionado = signal<SalidaBuque | null>(null);
-  drawerVisible     = signal(false);
-
   salidaBuques: SalidaBuque[] =[]
   puertos: PuertoEmbarque[] = [];
   consignatarios: Consignatario[] = [];
-
+  mejorOpcion: OpcionBarataResponse | null = null
   cotizacion: ProcesoCotizacion | null = null
 
   idProcesoCotizacion : any
+  cargandoMejor = false
 
   ngOnInit(): void {
     this.idProcesoCotizacion = this.route.snapshot.paramMap.get('id') ?? null
@@ -79,6 +74,7 @@ export default class ProcesoDetalleComponent implements OnInit{
         if (value){
           this.cotizacion= value
           this.getSalidas(id)
+          this.cargarMejorOpcion(id)
         }else {
           this.return()
         }
@@ -89,6 +85,23 @@ export default class ProcesoDetalleComponent implements OnInit{
   getSalidas(idCotizacion: string){
     this.salidaBuque.listByCotizacion(idCotizacion).subscribe({
       next: value => this.salidaBuques = value
+    })
+  }
+
+  cargarMejorOpcion(idProceso: string){
+    this.cargandoMejor = true
+    this.salidaBuque.bestOption(idProceso).subscribe({
+      next: value => {
+        if (value){
+          this.mejorOpcion = value
+          this.cargandoMejor = false
+        }else{
+          this.cargandoMejor = false
+        }
+      },
+      error: error => {
+        this.cargandoMejor = false
+      }
     })
   }
 
@@ -109,9 +122,12 @@ export default class ProcesoDetalleComponent implements OnInit{
   }
 
   viewBuque(id: string){
-    const buque = this.salidaBuques.find(b => b.id === id) ?? null;
-    this.buqueSeleccionado.set(buque);
-    this.drawerVisible.set(true);
+    this.router.navigate(['buque', id], {relativeTo: this.route}).then(r => {
+    })
+  }
+
+  editarBuque(sal:any){
+
   }
 
   return(){
@@ -123,23 +139,7 @@ export default class ProcesoDetalleComponent implements OnInit{
     })
   }
 
-  // salida-buque.component.ts
-  get activosCount(): number {
-    return this.salidaBuques.filter(b => b.activo).length;
+  formatCurrency(value: number): string {
+    return new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' }).format(value);
   }
-
-  get inactivosCount(): number {
-    return this.salidaBuques.filter(b => !b.activo).length;
-  }
-
-  onFleteValidado(flete: FleteValidado): void {
-    // maneja el resultado: toast, refresh, etc.
-  }
-
-  cerrarDrawer() {
-    console.log('evento recibido');
-    this.drawerVisible.set(false);
-    this.buqueSeleccionado.set(null);
-  }
-
 }

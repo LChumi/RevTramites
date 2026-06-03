@@ -15,6 +15,10 @@ export const embarquesRoutes: Routes = [
     loadComponent: () => import('@features/embarques/cotizaciones/proceso-detalle/proceso-detalle.component')
   },
   {
+    path: 'cotizaciones/:id/buque/:idBuque',
+    loadComponent: () => import('@features/embarques/cotizaciones/proceso-detalle/components/opcion-flete/opcion-flete.component')
+  },
+  {
     path: 'tramites',
     loadComponent: () => import('@features/embarques/tramites/lista-tramites/lista-tramites.component')
   },

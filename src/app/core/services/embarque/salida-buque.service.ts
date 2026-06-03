@@ -27,8 +27,8 @@ export class SalidaBuqueService {
     return this.http.put<SalidaBuque>(`${this.baseUrl}/update-buque/${id}`, buque);
   }
 
-  bestOption(cotizacionId: string): Observable<OpcionBarataResponse>{
-    return this.http.get<OpcionBarataResponse>(`${this.baseUrl}/mejor-opcion/${cotizacionId}`);
+  bestOption(procesoCotizacionId: string): Observable<OpcionBarataResponse>{
+    return this.http.get<OpcionBarataResponse>(`${this.baseUrl}/mejor-opcion/${procesoCotizacionId}`);
   }
 
   addCotizacion(idBuque: string, cotizacion: CotizacionConsignatario): Observable<SalidaBuque>{

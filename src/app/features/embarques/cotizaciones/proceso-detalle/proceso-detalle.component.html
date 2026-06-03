@@ -6,13 +6,9 @@
     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center gap-3 mb-5">
 
       <div>
-        <h2 class="m-0 text-3xl font-bold">
-          Salidas de Buques
-        </h2>
+        <h2 class="m-0 text-3xl font-bold">Salidas de Buques</h2>
 
-        <span class="text-500">
-          Gestión de salidas y cotizaciones registradas
-        </span>
+        <span class="text-500">Gestión de salidas y cotizaciones registradas</span>
       </div>
 
       <app-salida-buque-form
@@ -24,54 +20,31 @@
 
     </div>
 
-    <!-- Resumen -->
-    <div class="grid mb-4">
-
-      <div class="col-12 md:col-4">
-        <div class="surface-card border-round-xl p-4 shadow-1">
-
-          <div class="text-500 mb-2">
-            Total registros
-          </div>
-
-          <div class="text-3xl font-bold">
-            {{ salidaBuques.length }}
-          </div>
-
+    @if (cargandoMejor) {
+      <div class="flex align-items-center gap-2 p-3 mb-4
+                    surface-50 border-round-lg border-1 border-300">
+        <p-progressSpinner styleClass="w-1rem h-1rem" strokeWidth="4"/>
+        <span class="text-500 text-sm">Calculando mejor opción...</span>
+      </div>
+    }
+    @if (mejorOpcion) {
+      <div class="mb-4 p-3 border-round-lg border-1 border-green-300
+                    bg-green-50 flex align-items-start gap-3">
+        <i class="pi pi-star-fill text-green-500 mt-1"></i>
+        <div class="flex-1">
+          <p class="m-0 font-semibold text-green-800 text-sm">
+            Mejor opción disponible
+          </p>
+          <p class="m-0 text-green-700 text-xs mt-1">
+            {{ mejorOpcion.consignatario }} · {{ mejorOpcion.puerto }} ·
+            {{ mejorOpcion.opcion.tipoContenedor }}
+          </p>
+        </div>
+        <div class="font-bold text-green-700 text-lg">
+          {{ formatCurrency(mejorOpcion.total) }}
         </div>
       </div>
-
-      <div class="col-12 md:col-4">
-        <div class="surface-card border-round-xl p-4 shadow-1">
-
-          <div class="text-500 mb-2">
-            Activos
-          </div>
-
-          <div class="text-3xl font-bold text-green-500">
-            {{ activosCount }}
-          </div>
-
-
-        </div>
-      </div>
-
-      <div class="col-12 md:col-4">
-        <div class="surface-card border-round-xl p-4 shadow-1">
-
-          <div class="text-500 mb-2">
-            Inactivos
-          </div>
-
-          <div class="text-3xl font-bold text-red-500">
-            {{ inactivosCount }}
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-
+    }
     <!-- Tabla -->
     <p-card styleClass="shadow-2 border-round-xl">
 
@@ -168,17 +141,28 @@
 
             <!-- Acciones -->
             <td>
-              <div class="flex justify-content-center">
+              <div class="flex gap-2 justify-content-center">
+
                 <button
                   pButton
-                  pRipple
+                  icon="pi pi-pencil"
+                  severity="warning"
+                  [rounded]="true"
+                  [text]="true"
+                  pTooltip="Editar salida"
+                  (click)="editarBuque(sal)">
+                </button>
+
+                <button
+                  pButton
                   icon="pi pi-eye"
                   severity="info"
                   [rounded]="true"
                   [text]="true"
-                  pTooltip="Ver detalle"
+                  pTooltip="Gestionar cotizaciones"
                   (click)="viewBuque(sal.id)">
                 </button>
+
               </div>
             </td>
 
