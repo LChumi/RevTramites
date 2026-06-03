@@ -93,10 +93,6 @@ export class SalidaBuqueFormComponent implements OnInit{
     this.cotizacionAt(index).patchValue({ nombreConsignatario: c?.nombre ?? '' });
   }
 
-  agregarCotizacion(): void {
-    this.cotizaciones.push(this.buildCotizacion());
-  }
-
   eliminarCotizacion(index: number): void {
     if (this.cotizaciones.length > 1) {
       this.cotizaciones.removeAt(index);

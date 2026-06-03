@@ -1,7 +1,216 @@
-<!-- proceso-detalle.component.html -->
-<app-salida-buque-form
-  [procesoCotizacionId]="idProcesoCotizacion!"
-  [puertos]="puertos"
-  [consignatarios]="consignatarios"
-  (guardado)="onBuqueGuardado($event)">
-</app-salida-buque-form>
+<div class="surface-ground min-h-screen p-4">
+
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Header -->
+    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center gap-3 mb-5">
+
+      <div>
+        <h2 class="m-0 text-3xl font-bold">
+          Salidas de Buques
+        </h2>
+
+        <span class="text-500">
+          Gestión de salidas y cotizaciones registradas
+        </span>
+      </div>
+
+      <app-salida-buque-form
+        [procesoCotizacionId]="idProcesoCotizacion!"
+        [puertos]="puertos"
+        [consignatarios]="consignatarios"
+        (guardado)="onBuqueGuardado($event)">
+      </app-salida-buque-form>
+
+    </div>
+
+    <!-- Resumen -->
+    <div class="grid mb-4">
+
+      <div class="col-12 md:col-4">
+        <div class="surface-card border-round-xl p-4 shadow-1">
+
+          <div class="text-500 mb-2">
+            Total registros
+          </div>
+
+          <div class="text-3xl font-bold">
+            {{ salidaBuques.length }}
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-12 md:col-4">
+        <div class="surface-card border-round-xl p-4 shadow-1">
+
+          <div class="text-500 mb-2">
+            Activos
+          </div>
+
+          <div class="text-3xl font-bold text-green-500">
+            {{ activosCount }}
+          </div>
+
+
+        </div>
+      </div>
+
+      <div class="col-12 md:col-4">
+        <div class="surface-card border-round-xl p-4 shadow-1">
+
+          <div class="text-500 mb-2">
+            Inactivos
+          </div>
+
+          <div class="text-3xl font-bold text-red-500">
+            {{ inactivosCount }}
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Tabla -->
+    <p-card styleClass="shadow-2 border-round-xl">
+
+      <p-table
+        [value]="salidaBuques"
+        [rows]="10"
+        [paginator]="true"
+        [rowHover]="true"
+        responsiveLayout="scroll"
+        styleClass="p-datatable-sm">
+
+        <ng-template pTemplate="header">
+
+          <tr>
+            <th>Puerto</th>
+            <th>Desde</th>
+            <th>Hasta</th>
+            <th>Días Libres</th>
+            <th>Consignatarios</th>
+            <th>Estado</th>
+            <th>Creado</th>
+            <th>Actualizado</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+
+        </ng-template>
+
+        <ng-template pTemplate="body" let-sal>
+
+          <tr>
+
+            <!-- Puerto -->
+            <td>
+              <div class="flex align-items-center gap-2">
+                <i class="pi pi-ship text-primary"></i>
+                <span class="font-semibold">
+                  {{ sal.puertoEmbarqueNombre }}
+                </span>
+              </div>
+            </td>
+
+            <!-- Fecha Desde -->
+            <td>
+              <p-tag
+                severity="info"
+                [value]="(sal.fechaDesde | date:'dd/MM/yyyy') ?? ''">
+              </p-tag>
+            </td>
+
+            <!-- Fecha Hasta -->
+            <td>
+              <span class="text-600">
+                {{ sal.fechaHasta | date:'dd/MM/yyyy' }}
+              </span>
+            </td>
+
+            <!-- Días -->
+            <td>
+              <p-badge
+                [value]="sal.diasLibres"
+                severity="contrast">
+              </p-badge>
+            </td>
+
+            <!-- Cotizaciones -->
+            <td>
+              <p-badge
+                [value]="sal.cotizaciones.length"
+                severity="success">
+              </p-badge>
+            </td>
+
+            <!-- Estado -->
+            <td>
+              <p-tag
+                [value]="sal.activo ? 'Activo' : 'Inactivo'"
+                [severity]="sal.activo ? 'success' : 'danger'">
+              </p-tag>
+            </td>
+
+            <!-- Creado -->
+            <td>
+              <small class="text-600">
+                {{ sal.creadoEn | date:'dd/MM/yyyy' }}
+              </small>
+            </td>
+
+            <!-- Actualizado -->
+            <td>
+              <small class="text-600">
+                {{ sal.actualizadoEn | date:'dd/MM/yyyy' }}
+              </small>
+            </td>
+
+            <!-- Acciones -->
+            <td>
+              <div class="flex justify-content-center">
+                <button
+                  pButton
+                  pRipple
+                  icon="pi pi-eye"
+                  severity="info"
+                  [rounded]="true"
+                  [text]="true"
+                  pTooltip="Ver detalle"
+                  (click)="viewBuque(sal.id)">
+                </button>
+              </div>
+            </td>
+
+          </tr>
+
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+
+          <tr>
+
+            <td colspan="9">
+              <div
+                class="flex flex-column align-items-center justify-content-center py-8">
+                <i class="pi pi-ship text-5xl text-300 mb-3"></i>
+                <span class="text-600 text-lg">
+                  No existen salidas registradas
+                </span>
+                <small class="text-400 mt-2">
+                  Agregue una nueva salida de buque para comenzar
+                </small>
+              </div>
+            </td>
+
+          </tr>
+
+        </ng-template>
+
+      </p-table>
+
+    </p-card>
+
+  </div>
+
+</div>
