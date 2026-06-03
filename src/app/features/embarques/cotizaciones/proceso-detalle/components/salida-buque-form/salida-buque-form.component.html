@@ -1,1 +1,234 @@
-<p>salida-buque-form works!</p>
+<!-- Botón abrir -->
+<p-button
+  icon="pi pi-plus"
+  label="Nueva salida de buque"
+  severity="contrast"
+  outlined="true"
+  size="small"
+  (onClick)="abrir()">
+</p-button>
+
+@if (abierto()) {
+
+  <p-dialog
+    [visible]="abierto()"
+    [modal]="true"
+    [closable]="false"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{ width: '850px' }"
+    (onHide)="cerrarDialog()">
+
+    <ng-template pTemplate="header">
+      <div>
+        <div class="text-500 text-xs uppercase mb-1">
+          Nuevo registro
+        </div>
+        <div class="font-semibold text-xl">
+          Salida de buque
+        </div>
+      </div>
+    </ng-template>
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="submit()"
+      class="flex flex-column gap-5">
+
+      <!-- DATOS BUQUE -->
+      <div>
+        <div class="text-500 text-sm font-semibold mb-3">
+          Datos del buque
+        </div>
+
+        <div class="grid">
+
+          <!-- Puerto -->
+          <div class="col-12">
+            <label class="block mb-2 font-medium">
+              Puerto de embarque
+            </label>
+
+            <p-dropdown
+              formControlName="puertoEmbarqueId"
+              [options]="puertos()"
+              optionLabel="nombre"
+              optionValue="id"
+              placeholder="Seleccione un puerto"
+              (onChange)="onPuertoChange($event.value)"
+              styleClass="w-full">
+            </p-dropdown>
+
+            @if (isInvalid('puertoEmbarqueId')) {
+              <small class="p-error">
+                Campo requerido
+              </small>
+            }
+          </div>
+
+          <!-- Fecha Desde -->
+          <div class="col-12 md:col-4">
+            <label class="block mb-2 font-medium">
+              Fecha desde
+            </label>
+
+            <p-calendar
+              formControlName="fechaDesde"
+              dateFormat="dd/mm/yy"
+              appendTo="body"
+              [showIcon]="true"
+              styleClass="w-full">
+            </p-calendar>
+
+            @if (isInvalid('fechaDesde')) {
+              <small class="p-error">
+                Requerido
+              </small>
+            }
+          </div>
+
+          <!-- Fecha Hasta -->
+          <div class="col-12 md:col-4">
+            <label class="block mb-2 font-medium">
+              Fecha hasta
+            </label>
+
+            <p-calendar
+              formControlName="fechaHasta"
+              dateFormat="dd/mm/yy"
+              appendTo="body"
+              [showIcon]="true"
+              styleClass="w-full">
+            </p-calendar>
+
+            @if (isInvalid('fechaHasta')) {
+              <small class="p-error">
+                Requerido
+              </small>
+            }
+          </div>
+
+          <!-- Dias libres -->
+          <div class="col-12 md:col-4">
+            <label class="block mb-2 font-medium">
+              Días libres
+            </label>
+
+            <p-inputNumber
+              formControlName="diasLibres"
+              [min]="0"
+              class="w-full">
+            </p-inputNumber>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CONSIGNATARIOS -->
+      <div>
+
+        <div class="flex justify-content-between align-items-center mb-3">
+          <div class="text-500 text-sm font-semibold">
+            Consignatarios
+          </div>
+
+          <p-button
+            icon="pi pi-plus"
+            label="Agregar"
+            severity="success"
+            text="true"
+            size="small"
+            (onClick)="agregarCotizacion()">
+          </p-button>
+        </div>
+
+        <div
+          formArrayName="cotizaciones"
+          class="flex flex-column gap-3">
+
+          @for (cot of cotizaciones.controls; track $index) {
+
+            <p-card>
+
+              <div
+                [formGroupName]="$index"
+                class="flex align-items-center gap-3">
+
+                <p-badge
+                  [value]="$index + 1"
+                  severity="info">
+                </p-badge>
+
+                <div class="flex-1">
+
+                  <p-dropdown
+                    formControlName="consignatarioId"
+                    [options]="consignatarios()"
+                    optionLabel="nombre"
+                    optionValue="id"
+                    placeholder="Seleccione consignatario"
+                    styleClass="w-full"
+                    (onChange)="onConsignatarioChange($index, $event.value)">
+                  </p-dropdown>
+
+                  @if (isInvalidInCotizacion($index,'consignatarioId')) {
+                    <small class="p-error">
+                      Campo requerido
+                    </small>
+                  }
+
+                </div>
+
+                @if (cotizaciones.length > 1) {
+
+                  <p-button
+                    icon="pi pi-trash"
+                    severity="danger"
+                    text="true"
+                    (onClick)="eliminarCotizacion($index)">
+                  </p-button>
+
+                }
+
+              </div>
+
+            </p-card>
+
+          }
+
+        </div>
+
+      </div>
+
+      <!-- ERROR -->
+      @if (error(); as errorMsg) {
+        <p-message
+          severity="error"
+          [text]="errorMsg">
+        </p-message>
+      }
+
+      <!-- FOOTER -->
+      <div
+        class="flex justify-content-end gap-2 pt-3 border-top-1 surface-border">
+
+        <p-button
+          label="Cancelar"
+          severity="secondary"
+          text="true"
+          (onClick)="cerrarDialog()">
+        </p-button>
+
+        <p-button
+          type="submit"
+          [loading]="guardando()"
+          label="Guardar buque">
+        </p-button>
+
+      </div>
+
+    </form>
+
+  </p-dialog>
+
+}
