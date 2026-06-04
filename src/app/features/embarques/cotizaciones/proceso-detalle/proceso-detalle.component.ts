@@ -3,16 +3,17 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ProcesoCotizacionService} from '@services/embarque/proceso-cotizacion.service';
 import {ProcesoCotizacion} from '@models/embarque/proceso-cotizacion';
 import {MessageService, PrimeTemplate} from 'primeng/api';
-import { SalidaBuqueFormComponent } from '@features/embarques/cotizaciones/proceso-detalle/components/salida-buque-form/salida-buque-form.component';
+import {
+  SalidaBuqueFormComponent
+} from '@features/embarques/cotizaciones/proceso-detalle/components/salida-buque-form/salida-buque-form.component';
 import {PuertoEmbarque} from '@models/embarque/puerto-embarque';
 import {Consignatario} from '@models/embarque/consignatario';
 import {PuertoEmbarqueService} from '@services/embarque/puerto-embarque.service';
 import {ConsignatarioService} from '@services/embarque/consignatario.service';
 import {SalidaBuque} from '@models/embarque/salida-buque';
 import {SalidaBuqueService} from '@services/embarque/salida-buque.service';
-import {Button, ButtonDirective} from 'primeng/button';
+import {Button} from 'primeng/button';
 import {DatePipe} from '@angular/common';
-import {Ripple} from 'primeng/ripple';
 import {TableModule} from 'primeng/table';
 import {TagModule} from 'primeng/tag';
 import {TooltipModule} from 'primeng/tooltip';
@@ -28,7 +29,6 @@ import {FleteValidadoService} from '@services/embarque/flete-validado.service';
   standalone: true,
   imports: [
     SalidaBuqueFormComponent,
-    ButtonDirective,
     DatePipe,
     PrimeTemplate,
     TableModule,
@@ -42,7 +42,7 @@ import {FleteValidadoService} from '@services/embarque/flete-validado.service';
   templateUrl: './proceso-detalle.component.html',
   styles: ``
 })
-export default class ProcesoDetalleComponent implements OnInit{
+export default class ProcesoDetalleComponent implements OnInit {
 
   @ViewChild('formEditar') formEditar!: SalidaBuqueFormComponent;
 
@@ -56,7 +56,7 @@ export default class ProcesoDetalleComponent implements OnInit{
   private router = inject(Router)
 
   private usrId = sessionStorage.getItem('username') ?? '';
-  salidaBuques: SalidaBuque[] =[]
+  salidaBuques: SalidaBuque[] = []
   puertos: PuertoEmbarque[] = [];
   consignatarios: Consignatario[] = [];
   mejorOpcion: OpcionBarataResponse | null = null
@@ -64,13 +64,13 @@ export default class ProcesoDetalleComponent implements OnInit{
   buqueSeleccionado: SalidaBuque | null = null;
 
 
-  idProcesoCotizacion : any
+  idProcesoCotizacion: any
   cargandoMejor = false
   validando = false
 
   ngOnInit(): void {
     this.idProcesoCotizacion = this.route.snapshot.paramMap.get('id') ?? null
-    if (this.idProcesoCotizacion == null){
+    if (this.idProcesoCotizacion == null) {
       this.return()
     }
     this.getCotizacion(this.idProcesoCotizacion);
@@ -78,34 +78,34 @@ export default class ProcesoDetalleComponent implements OnInit{
     this.listarConsignatarios();
   }
 
-  getCotizacion(id:string){
+  getCotizacion(id: string) {
     this.procesoService.getById(id).subscribe({
       next: value => {
-        if (value){
-          this.cotizacion= value
+        if (value) {
+          this.cotizacion = value
           this.getSalidas(id)
           this.cargarMejorOpcion(id)
-        }else {
+        } else {
           this.return()
         }
       }
     })
   }
 
-  getSalidas(idCotizacion: string){
+  getSalidas(idCotizacion: string) {
     this.salidaBuque.listByProcesoCotizacion(idCotizacion).subscribe({
       next: value => this.salidaBuques = value
     })
   }
 
-  cargarMejorOpcion(idProceso: string){
+  cargarMejorOpcion(idProceso: string) {
     this.cargandoMejor = true
     this.salidaBuque.bestOption(idProceso).subscribe({
       next: value => {
-        if (value){
+        if (value) {
           this.mejorOpcion = value
           this.cargandoMejor = false
-        }else{
+        } else {
           this.cargandoMejor = false
         }
       },
@@ -138,7 +138,7 @@ export default class ProcesoDetalleComponent implements OnInit{
     })
   }
 
-  viewBuque(id: string){
+  viewBuque(id: string) {
     this.router.navigate(['buque', id], {relativeTo: this.route}).then(r => {
     })
   }
@@ -159,11 +159,11 @@ export default class ProcesoDetalleComponent implements OnInit{
     }
 
     const request: FleteValidacionRequest = {
-      proceso:       this.cotizacion,
-      salida:        salida,
+      proceso: this.cotizacion,
+      salida: salida,
       consignatario: this.mejorOpcion!.consignatario,
-      opcion:        this.mejorOpcion!.opcion,
-      usuario:       this.usrId
+      opcion: this.mejorOpcion!.opcion,
+      usuario: this.usrId
     };
 
     this.validando = true;
@@ -178,16 +178,16 @@ export default class ProcesoDetalleComponent implements OnInit{
     });
   }
 
-  return(){
+  return() {
     this.router.navigate(['erp/embarques/cotizaciones']).then(r => {
       this.messageService.addAll([
-        {severity: 'error', summary:'Error', detail:'Valor no identificado'},
-        {severity: 'warn', summary:'Advertencia', detail:'El identificador no se encuentra disponible '}
+        {severity: 'error', summary: 'Error', detail: 'Valor no identificado'},
+        {severity: 'warn', summary: 'Advertencia', detail: 'El identificador no se encuentra disponible '}
       ])
     })
   }
 
   formatCurrency(value: number): string {
-    return new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' }).format(value);
+    return new Intl.NumberFormat('es-EC', {style: 'currency', currency: 'USD'}).format(value);
   }
 }
