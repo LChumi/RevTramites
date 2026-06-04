@@ -20,6 +20,8 @@ import {CardModule} from 'primeng/card';
 import {BadgeModule} from 'primeng/badge';
 import {OpcionBarataResponse} from '@models/embarque/opcion-barata-response';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {FleteValidacionRequest} from '@models/embarque/flete-validacion-request';
+import {FleteValidadoService} from '@services/embarque/flete-validado.service';
 
 @Component({
   selector: 'app-proceso-detalle',
@@ -50,8 +52,10 @@ export default class ProcesoDetalleComponent implements OnInit{
   private salidaBuque = inject(SalidaBuqueService)
   private messageService = inject(MessageService)
   private route = inject(ActivatedRoute)
+  private fleteService = inject(FleteValidadoService)
   private router = inject(Router)
 
+  private usrId = sessionStorage.getItem('username') ?? '';
   salidaBuques: SalidaBuque[] =[]
   puertos: PuertoEmbarque[] = [];
   consignatarios: Consignatario[] = [];
@@ -59,8 +63,10 @@ export default class ProcesoDetalleComponent implements OnInit{
   cotizacion: ProcesoCotizacion | null = null
   buqueSeleccionado: SalidaBuque | null = null;
 
+
   idProcesoCotizacion : any
   cargandoMejor = false
+  validando = false
 
   ngOnInit(): void {
     this.idProcesoCotizacion = this.route.snapshot.paramMap.get('id') ?? null
@@ -141,6 +147,35 @@ export default class ProcesoDetalleComponent implements OnInit{
     this.buqueSeleccionado = sal;
     // necesitas un tick para que el input se actualice antes de abrir
     setTimeout(() => this.formEditar.abrir(), 0);
+  }
+
+  validarMejorOpcion(): void {
+    if (!this.mejorOpcion || !this.cotizacion) return;
+
+    const salida = this.salidaBuques.find(s => s.id === this.mejorOpcion!.idBuque);
+    if (!salida) {
+      // manejar error: no se encontró la salida
+      return;
+    }
+
+    const request: FleteValidacionRequest = {
+      proceso:       this.cotizacion,
+      salida:        salida,
+      consignatario: this.mejorOpcion!.consignatario,
+      opcion:        this.mejorOpcion!.opcion,
+      usuario:       this.usrId
+    };
+
+    this.validando = true;
+    this.fleteService.validarFlete(request).subscribe({
+      next: (resultado) => {
+        this.validando = false;
+        // manejar resultado: FleteValidado
+      },
+      error: () => {
+        this.validando = false;
+      }
+    });
   }
 
   return(){

@@ -65,7 +65,7 @@
     }
     @if (mejorOpcion) {
       <div class="mb-4 p-3 border-round-lg border-1 border-green-300
-                    bg-green-50 flex align-items-start gap-3">
+              bg-green-50 flex align-items-start gap-3">
         <i class="pi pi-star-fill text-green-500 mt-1"></i>
         <div class="flex-1">
           <p class="m-0 font-semibold text-green-800 text-sm">
@@ -76,8 +76,17 @@
             {{ mejorOpcion.opcion.tipoContenedor }}
           </p>
         </div>
-        <div class="font-bold text-green-700 text-lg">
-          {{ formatCurrency(mejorOpcion.total) }}
+        <div class="flex align-items-center gap-3">
+          <div class="font-bold text-green-700 text-lg">
+            {{ formatCurrency(mejorOpcion.total) }}
+          </div>
+          <p-button
+            label="Validar"
+            icon="pi pi-check"
+            severity="success"
+            size="small"
+            [loading]="validando"
+            (onClick)="validarMejorOpcion()"/>
         </div>
       </div>
     }
