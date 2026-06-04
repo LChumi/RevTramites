@@ -1,4 +1,4 @@
-import {Component, inject, input, OnInit, output, signal} from '@angular/core';
+import {Component, inject, input, OnInit, output, signal, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {SalidaBuqueService} from '@services/embarque/salida-buque.service';
 import {PuertoEmbarque} from '@models/embarque/puerto-embarque';
@@ -41,6 +41,8 @@ export class SalidaBuqueFormComponent implements OnInit{
   procesoCotizacionId = input.required<string>();
   puertos             = input<PuertoEmbarque[]>([]);
   consignatarios      = input<Consignatario[]>([]);
+  buqueEditar = input<SalidaBuque | null>(null);
+  modoEdicion = input<boolean>(false);
 
   guardado  = output<SalidaBuque>();
   cerrar    = output<void>();
@@ -92,6 +94,20 @@ export class SalidaBuqueFormComponent implements OnInit{
   abrir(): void {
     this.buildForm();
     this.error.set(null);
+
+    const buque = this.buqueEditar();
+    if (buque) {
+      // Deshabilitar campos que no se editan
+      this.form.get('puertoEmbarqueId')?.disable();
+      this.cotizacion.get('consignatarioId')?.disable();
+
+      this.form.patchValue({
+        fechaDesde: new Date(buque.fechaDesde),
+        fechaHasta: new Date(buque.fechaHasta),
+        diasLibres: buque.diasLibres,
+      });
+    }
+
     this.abierto.set(true);
   }
 
@@ -110,8 +126,16 @@ export class SalidaBuqueFormComponent implements OnInit{
     this.error.set(null);
 
     const raw = this.form.getRawValue();
+    const buque = this.buqueEditar();
 
-    const payload: SalidaBuque = {
+    const payload: SalidaBuque = buque
+      ? {
+        ...buque,
+        fechaDesde:    new Date(raw.fechaDesde),
+        fechaHasta:    new Date(raw.fechaHasta),
+        diasLibres:    raw.diasLibres,
+      }
+      : {
       procesoCotizacionId:  this.procesoCotizacionId(),
       puertoEmbarqueNombre: raw.puertoEmbarqueNombre,
       fechaDesde:           new Date(raw.fechaDesde),
@@ -124,10 +148,14 @@ export class SalidaBuqueFormComponent implements OnInit{
       id:                   null,
     };
 
-    this.service.save(payload).subscribe({
-      next: (buque) => {
+    const request$ = buque
+      ? this.service.updateBuque(buque.id, payload)
+      : this.service.save(payload);
+
+    request$.subscribe({
+      next: (result) => {
         this.guardando.set(false);
-        this.guardado.emit(buque);
+        this.guardado.emit(result);
         this.cerrarDialog();
       },
       error: (err) => {

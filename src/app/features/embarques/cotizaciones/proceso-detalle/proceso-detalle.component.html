@@ -170,7 +170,7 @@
 
                 <button
                   pButton
-                  icon="pi pi-eye"
+                  icon="pi pi-angle-right"
                   severity="info"
                   [rounded]="true"
                   [text]="true"
@@ -206,6 +206,16 @@
         </ng-template>
 
       </p-table>
+
+      <app-salida-buque-form
+        #formEditar
+        [procesoCotizacionId]="idProcesoCotizacion!"
+        [puertos]="puertos"
+        [consignatarios]="consignatarios"
+        [buqueEditar]="buqueSeleccionado"
+        [modoEdicion]="true"
+        (guardado)="onBuqueActualizado($event)">
+      </app-salida-buque-form>
 
     </p-card>
 

@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, inject, OnInit, signal, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProcesoCotizacionService} from '@services/embarque/proceso-cotizacion.service';
 import {ProcesoCotizacion} from '@models/embarque/proceso-cotizacion';
@@ -41,6 +41,8 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
 })
 export default class ProcesoDetalleComponent implements OnInit{
 
+  @ViewChild('formEditar') formEditar!: SalidaBuqueFormComponent;
+
   private puertoService = inject(PuertoEmbarqueService);
   private consignatarioService = inject(ConsignatarioService)
   private procesoService = inject(ProcesoCotizacionService)
@@ -54,6 +56,7 @@ export default class ProcesoDetalleComponent implements OnInit{
   consignatarios: Consignatario[] = [];
   mejorOpcion: OpcionBarataResponse | null = null
   cotizacion: ProcesoCotizacion | null = null
+  buqueSeleccionado: SalidaBuque | null = null;
 
   idProcesoCotizacion : any
   cargandoMejor = false
@@ -109,6 +112,13 @@ export default class ProcesoDetalleComponent implements OnInit{
     this.salidaBuques.push(buque); // o recarga la lista
   }
 
+  onBuqueActualizado(buque: SalidaBuque): void {
+    const index = this.salidaBuques.findIndex(b => b.id === buque.id);
+    if (index !== -1) {
+      this.salidaBuques[index] = buque;
+    }
+  }
+
   listarPuerto() {
     this.puertoService.list().subscribe({
       next: value => this.puertos = value
@@ -126,8 +136,10 @@ export default class ProcesoDetalleComponent implements OnInit{
     })
   }
 
-  editarBuque(sal:any){
-
+  editarBuque(sal: SalidaBuque): void {
+    this.buqueSeleccionado = sal;
+    // necesitas un tick para que el input se actualice antes de abrir
+    setTimeout(() => this.formEditar.abrir(), 0);
   }
 
   return(){

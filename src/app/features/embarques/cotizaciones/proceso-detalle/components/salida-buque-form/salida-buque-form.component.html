@@ -1,12 +1,13 @@
-<!-- Botón abrir -->
-<p-button
-  icon="pi pi-plus"
-  label="Nueva salida de buque"
-  severity="contrast"
-  outlined="true"
-  size="small"
-  (onClick)="abrir()">
-</p-button>
+@if (!modoEdicion()) {
+  <p-button
+    icon="pi pi-plus"
+    label="Nueva salida de buque"
+    severity="contrast"
+    outlined="true"
+    size="small"
+    (onClick)="abrir()">
+  </p-button>
+}
 
 @if (abierto()) {
 
@@ -21,11 +22,8 @@
 
     <ng-template pTemplate="header">
       <div>
-        <div class="text-500 text-xs uppercase mb-1">
-          Nuevo registro
-        </div>
         <div class="font-semibold text-xl">
-          Salida de buque
+          {{ buqueEditar() ? 'Editar salida de buque' : 'Salida de buque' }}
         </div>
       </div>
     </ng-template>
@@ -43,28 +41,30 @@
 
         <div class="grid">
 
-          <!-- Puerto -->
-          <div class="col-12">
-            <label class="block mb-2 font-medium">
-              Puerto de embarque
-            </label>
+          @if (!buqueEditar()) {
+            <!-- Puerto -->
+            <div class="col-12">
+              <label class="block mb-2 font-medium">
+                Puerto de embarque
+              </label>
 
-            <p-dropdown
-              formControlName="puertoEmbarqueId"
-              [options]="puertos()"
-              optionLabel="nombre"
-              optionValue="id"
-              placeholder="Seleccione un puerto"
-              (onChange)="onPuertoChange($event.value)"
-              styleClass="w-full">
-            </p-dropdown>
+              <p-dropdown
+                formControlName="puertoEmbarqueId"
+                [options]="puertos()"
+                optionLabel="nombre"
+                optionValue="id"
+                placeholder="Seleccione un puerto"
+                (onChange)="onPuertoChange($event.value)"
+                styleClass="w-full">
+              </p-dropdown>
 
-            @if (isInvalid('puertoEmbarqueId')) {
-              <small class="p-error">
-                Campo requerido
-              </small>
-            }
-          </div>
+              @if (isInvalid('puertoEmbarqueId')) {
+                <small class="p-error">
+                  Campo requerido
+                </small>
+              }
+            </div>
+          }
 
           <!-- Fecha Desde -->
           <div class="col-12 md:col-4">
@@ -124,49 +124,44 @@
         </div>
       </div>
 
-      <!-- CONSIGNATARIOS -->
-      <div>
-
+      @if (!buqueEditar()) {
+        <!-- CONSIGNATARIOS -->
+        <div>
         <div class="flex justify-content-between align-items-center mb-3">
           <div class="text-500 text-sm font-semibold">
             Cotización
           </div>
         </div>
-
         <!-- Ya no es formArrayName -->
         <div [formGroupName]="'cotizacion'" class="flex flex-column gap-3">
 
-          <p-card>
-            <div class="flex align-items-center gap-3">
+          <div class="flex align-items-center gap-3">
+            <div class="flex-1">
+              <p-dropdown
+                formControlName="consignatarioId"
+                [options]="consignatarios()"
+                optionLabel="nombre"
+                optionValue="id"
+                placeholder="Seleccione consignatario"
+                styleClass="w-full"
+                appendTo="body"
+                (onChange)="onConsignatarioChange($event.value)">
+              </p-dropdown>
 
-              <div class="flex-1">
-                <p-dropdown
-                  formControlName="consignatarioId"
-                  [options]="consignatarios()"
-                  optionLabel="nombre"
-                  optionValue="id"
-                  placeholder="Seleccione consignatario"
-                  styleClass="w-full"
-                  appendTo="body"
-                  (onChange)="onConsignatarioChange($event.value)">
-                </p-dropdown>
-
-                @if (isInvalidInCotizacion('consignatarioId')){
-                  <small class="p-error">
-                    Campo requerido
-                  </small>
-                }
-
-              </div>
+              @if (isInvalidInCotizacion('consignatarioId')){
+                <small class="p-error">
+                  Campo requerido
+                </small>
+              }
 
             </div>
-          </p-card>
+
+          </div>
 
         </div>
 
       </div>
-
-
+      }
       <!-- ERROR -->
       @if (error(); as errorMsg) {
         <p-message
@@ -189,7 +184,7 @@
         <p-button
           type="submit"
           [loading]="guardando()"
-          label="Guardar buque">
+          [label]="buqueEditar() ? 'Actualizar' : 'Guardar buque'">
         </p-button>
 
       </div>
