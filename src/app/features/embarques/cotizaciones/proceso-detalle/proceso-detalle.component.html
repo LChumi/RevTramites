@@ -83,129 +83,109 @@
     }
     <!-- Tabla -->
     <p-card styleClass="shadow-2 border-round-xl">
+       <p-table
+          [value]="salidaBuques"
+          [rows]="10"
+          [paginator]="true"
+          [rowHover]="true"
+          responsiveLayout="scroll"
+          styleClass="p-datatable-gridlines p-datatable-striped"
+          [showCurrentPageReport]="true"
+          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+          [rowsPerPageOptions]="[10, 25, 50]">
 
-      <p-table
-        [value]="salidaBuques"
-        [rows]="10"
-        [paginator]="true"
-        [rowHover]="true"
-        responsiveLayout="scroll"
-        styleClass="p-datatable-sm">
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="bg-gray-50 text-800 font-bold" pSortableColumn="puertoEmbarqueNombre">Puerto <p-sortIcon field="puertoEmbarqueNombre"></p-sortIcon></th>
+              <th class="bg-gray-50 text-800 font-bold">Cronograma</th>
+              <th class="bg-gray-50 text-800 font-bold text-center">Días Libres</th>
+              <th class="bg-gray-50 text-800 font-bold">Consignatario</th>
+              <th class="bg-gray-50 text-800 font-bold">Estado</th>
+              <th class="bg-gray-50 text-800 font-bold">Seguimiento</th>
+              <th class="bg-gray-50 text-800 font-bold text-center">Acciones</th>
+            </tr>
+          </ng-template>
 
-        <ng-template pTemplate="header">
+          <ng-template pTemplate="body" let-sal>
+            <tr>
+              <!-- Puerto: Identificador principal -->
+              <td>
+                <div class="flex flex-column">
+                  <span class="font-bold text-900 line-height-2">{{ sal.puertoEmbarqueNombre }}</span>
+                  <small class="text-500"><i class="pi pi-map-marker text-xs"></i> Terminal Principal</small>
+                </div>
+              </td>
 
-          <tr>
-            <th>Puerto</th>
-            <th>Desde</th>
-            <th>Hasta</th>
-            <th>Días Libres</th>
-            <th>Consignatarios</th>
-            <th>Estado</th>
-            <th>Creado</th>
-            <th>Actualizado</th>
-            <th class="text-center">Acciones</th>
-          </tr>
+              <!-- Cronograma: Combinamos fechas para reducir columnas -->
+              <td>
+                <div class="flex flex-column gap-1">
+                  <span class="text-sm font-medium"><i class="pi pi-calendar-plus text-primary mr-1 text-xs"></i>Desde {{ sal.fechaDesde | date:'dd MMM, yyyy' }}</span>
+                  <span class="text-sm text-500"><i class="pi pi-calendar-minus mr-1 text-xs"></i>Hasta {{ sal.fechaHasta | date:'dd MMM, yyyy' }}</span>
+                </div>
+              </td>
 
-        </ng-template>
+              <!-- Días Libres con diseño minimalista -->
+              <td class="text-center">
+          <span class="inline-flex align-items-center justify-content-center bg-bluegray-50 text-bluegray-700 border-round px-2 py-1" style="min-width: 2.5rem">
+            {{ sal.diasLibres }}
+          </span>
+              </td>
 
-        <ng-template pTemplate="body" let-sal>
+              <!-- Consignatarios: Texto truncado si es muy largo -->
+              <td>
+          <span class="text-700 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="max-width: 150px" [pTooltip]="sal.cotizacion.nombreConsignatario">
+            {{ sal.cotizacion.nombreConsignatario }}
+          </span>
+              </td>
 
-          <tr>
+              <!-- Estado con Tag estilizado -->
+              <td>
+                <p-tag
+                  [value]="sal.activo ? 'ACTIVO' : 'INACTIVO'"
+                  [severity]="sal.activo ? 'info' : 'danger'"
+                  styleClass="text-xs font-bold px-3">
+                </p-tag>
+              </td>
 
-            <!-- Puerto -->
-            <td>
-              <div class="flex align-items-center gap-2">
-                <i class="pi pi-ship text-primary"></i>
-                <span class="font-semibold">
-                  {{ sal.puertoEmbarqueNombre }}
-                </span>
-              </div>
-            </td>
+              <!-- Seguimiento (Fechas de sistema) -->
+              <td>
+                <div class="flex flex-column">
+                  <small class="text-500">Act: {{ sal.actualizadoEn | date:'dd/MM/yy HH:mm' }}</small>
+                </div>
+              </td>
 
-            <!-- Fecha Desde -->
-            <td>
-              <p-tag severity="info" [value]="(sal.fechaDesde | date:'dd/MM/yyyy') ?? ''"></p-tag>
-            </td>
-            <!-- Fecha Hasta -->
-            <td>
-              <span class="text-600">{{ sal.fechaHasta | date:'dd/MM/yyyy' }}</span>
-            </td>
-            <!-- Días -->
-            <td>
-              <p-badge [value]="sal.diasLibres" severity="contrast"></p-badge>
-            </td>
+              <!-- Acciones con botones de superficie -->
+              <td>
+                <div class="flex gap-1 justify-content-center">
+                  <p-button
+                    icon="pi pi-pencil"
+                    [rounded]="true"
+                    [text]="true"
+                    severity="secondary"
+                    (click)="editarBuque(sal)"
+                    pTooltip="Editar">
+                  </p-button>
+                  <p-button
+                    icon="pi pi-external-link"
+                    [rounded]="true"
+                    [text]="true"
+                    severity="primary"
+                    (click)="viewBuque(sal.id)"
+                    pTooltip="Detalles">
+                  </p-button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
 
-            <!-- Cotizaciones -->
-            <td>
-              {{sal.cotizacion.nombreConsignatario}}
-            </td>
-
-            <!-- Estado -->
-            <td>
-              <p-tag [value]="sal.activo ? 'Activo' : 'Inactivo'" [severity]="sal.activo ? 'success' : 'danger'"></p-tag>
-            </td>
-
-            <!-- Creado -->
-            <td>
-              <small class="text-600">{{ sal.creadoEn | date:'dd/MM/yyyy' }}</small>
-            </td>
-
-            <!-- Actualizado -->
-            <td>
-              <small class="text-600">{{ sal.actualizadoEn | date:'dd/MM/yyyy' }}</small>
-            </td>
-
-            <!-- Acciones -->
-            <td>
-              <div class="flex gap-2 justify-content-center">
-                <button
-                  pButton
-                  icon="pi pi-pencil"
-                  severity="warning"
-                  [rounded]="true"
-                  [text]="true"
-                  pTooltip="Editar salida"
-                  (click)="editarBuque(sal)">
-                </button>
-
-                <button
-                  pButton
-                  icon="pi pi-angle-right"
-                  severity="info"
-                  [rounded]="true"
-                  [text]="true"
-                  pTooltip="Gestionar cotizaciones"
-                  (click)="viewBuque(sal.id)">
-                </button>
-              </div>
-            </td>
-
-          </tr>
-
-        </ng-template>
-
-        <ng-template pTemplate="emptymessage">
-
-          <tr>
-
-            <td colspan="9">
-              <div
-                class="flex flex-column align-items-center justify-content-center py-8">
-                <i class="pi pi-ship text-5xl text-300 mb-3"></i>
-                <span class="text-600 text-lg">
-                  No existen salidas registradas
-                </span>
-                <small class="text-400 mt-2">
-                  Agregue una nueva salida de buque para comenzar
-                </small>
-              </div>
-            </td>
-
-          </tr>
-
-        </ng-template>
-
-      </p-table>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7" class="text-center p-8">
+                <p class="text-600 font-medium">No se encontraron registros de salidas.</p>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
 
       <app-salida-buque-form
         #formEditar

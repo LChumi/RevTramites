@@ -10,7 +10,7 @@ import {PuertoEmbarqueService} from '@services/embarque/puerto-embarque.service'
 import {ConsignatarioService} from '@services/embarque/consignatario.service';
 import {SalidaBuque} from '@models/embarque/salida-buque';
 import {SalidaBuqueService} from '@services/embarque/salida-buque.service';
-import {ButtonDirective} from 'primeng/button';
+import {Button, ButtonDirective} from 'primeng/button';
 import {DatePipe} from '@angular/common';
 import {Ripple} from 'primeng/ripple';
 import {TableModule} from 'primeng/table';
@@ -34,7 +34,8 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
     TooltipModule,
     CardModule,
     BadgeModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    Button
   ],
   templateUrl: './proceso-detalle.component.html',
   styles: ``
