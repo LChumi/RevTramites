@@ -2,7 +2,7 @@ import {Component, inject, OnInit, signal, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProcesoCotizacionService} from '@services/embarque/proceso-cotizacion.service';
 import {ProcesoCotizacion} from '@models/embarque/proceso-cotizacion';
-import {MessageService, PrimeTemplate} from 'primeng/api';
+import {ConfirmationService, MessageService, PrimeTemplate} from 'primeng/api';
 import {
   SalidaBuqueFormComponent
 } from '@features/embarques/cotizaciones/proceso-detalle/components/salida-buque-form/salida-buque-form.component';
@@ -23,6 +23,7 @@ import {OpcionBarataResponse} from '@models/embarque/opcion-barata-response';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {FleteValidacionRequest} from '@models/embarque/flete-validacion-request';
 import {FleteValidadoService} from '@services/embarque/flete-validado.service';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-proceso-detalle',
@@ -37,7 +38,8 @@ import {FleteValidadoService} from '@services/embarque/flete-validado.service';
     CardModule,
     BadgeModule,
     ProgressSpinnerModule,
-    Button
+    Button,
+    ConfirmDialogModule
   ],
   templateUrl: './proceso-detalle.component.html',
   styles: ``
@@ -54,6 +56,7 @@ export default class ProcesoDetalleComponent implements OnInit {
   private route = inject(ActivatedRoute)
   private fleteService = inject(FleteValidadoService)
   private router = inject(Router)
+  private confirmationService = inject(ConfirmationService)
 
   private usrId = sessionStorage.getItem('username') ?? '';
   salidaBuques: SalidaBuque[] = []
@@ -149,12 +152,55 @@ export default class ProcesoDetalleComponent implements OnInit {
     setTimeout(() => this.formEditar.abrir(), 0);
   }
 
+  return() {
+    this.router.navigate(['erp/embarques/cotizaciones']).then(r => {
+      this.messageService.addAll([
+        {severity: 'error', summary: 'Error', detail: 'Valor no identificado'},
+        {severity: 'warn', summary: 'Advertencia', detail: 'El identificador no se encuentra disponible '}
+      ])
+    })
+  }
+
+  formatCurrency(value: number): string {
+    return new Intl.NumberFormat('es-EC', {style: 'currency', currency: 'USD'}).format(value);
+  }
+
+  confirmarValidacion(){
+    if (!this.mejorOpcion) return;
+    if (this.mejorOpcion.opcion.numeroBl == ''){
+      this.messageService.add({severity: 'warn', summary: 'Flete sin Numero de Bl'})
+      this.confirmacionBl(this.mejorOpcion.idBuque)
+    } else {
+      this.confirmationService.confirm({
+        key:'validarFlete',
+        header: 'Confirmar Flete',
+        message: '¡Desea validar la mejor opción de Flete!',
+        icon: 'pi pi-exclamation-circle',
+        acceptLabel:'Validar',
+        rejectLabel:'Cancelar',
+        accept:() => this.validarMejorOpcion()
+      })
+    }
+  }
+
+  confirmacionBl(idBuque: string){
+    this.confirmationService.confirm({
+      key:'agregarBl',
+      message: '¿Desea agregar el Bl ahora al flete o le puede agregar después en embarques?',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel:'Agregar',
+      rejectLabel:'Guardar sin BL',
+      accept:() => this.viewBuque(idBuque),
+      reject: () => this.validarMejorOpcion()
+    })
+  }
+
   validarMejorOpcion(): void {
-    if (!this.mejorOpcion || !this.cotizacion) return;
+    if (!this.cotizacion) return;
 
     const salida = this.salidaBuques.find(s => s.id === this.mejorOpcion!.idBuque);
     if (!salida) {
-      // manejar error: no se encontró la salida
+      this.messageService.add({severity: 'warn', summary: 'Advertencia datos sin valores'})
       return;
     }
 
@@ -170,7 +216,8 @@ export default class ProcesoDetalleComponent implements OnInit {
     this.fleteService.validarFlete(request).subscribe({
       next: (resultado) => {
         this.validando = false;
-        // manejar resultado: FleteValidado
+        this.messageService.add({severity: 'info', summary: 'FleteValidado', detail: `${resultado.nombreConsignatario}`})
+        this.goToTramites();
       },
       error: () => {
         this.validando = false;
@@ -178,16 +225,8 @@ export default class ProcesoDetalleComponent implements OnInit {
     });
   }
 
-  return() {
-    this.router.navigate(['erp/embarques/cotizaciones']).then(r => {
-      this.messageService.addAll([
-        {severity: 'error', summary: 'Error', detail: 'Valor no identificado'},
-        {severity: 'warn', summary: 'Advertencia', detail: 'El identificador no se encuentra disponible '}
-      ])
-    })
+  goToTramites(){
+    this.router.navigate(['erp', 'embarques', 'tramites']).then(r => {});
   }
 
-  formatCurrency(value: number): string {
-    return new Intl.NumberFormat('es-EC', {style: 'currency', currency: 'USD'}).format(value);
-  }
 }
