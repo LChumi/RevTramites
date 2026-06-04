@@ -1,74 +1,172 @@
 <p-toast />
 <p-confirmDialog />
+<div class="surface-ground min-h-screen p-4">
+  <div class="max-w-7xl mx-auto">
 
-<div class="p-4">
-  <div class="flex justify-between items-center mb-4">
-    <div>
-      <h2 class="text-xl font-medium mt-1">Opciones de flete</h2>
-    </div>
-    <p-button
-      label="Agregar opción"
-      icon="pi pi-plus"
-      (onClick)="abrirDialog()">
-    </p-button>
-  </div>
+    @if (buque) {
 
-  <p-table
-    [value]="opciones"
-    [loading]="loading"
-    [tableStyle]="{'min-width': '60rem'}"
-    styleClass="p-datatable-sm">
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Contenedor</th>
-        <th>Puerto destino</th>
-        <th class="text-right">Espacio m³</th>
-        <th class="text-right">Flete</th>
-        <th class="text-right">THC</th>
-        <th class="text-right">% IVA</th>
-        <th class="text-right">Total</th>
-        <th class="text-center" style="width:80px"></th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-op>
-      <tr>
-        <td>{{ op.tipoContenedor }}</td>
-        <td>{{ op.puertoDestino }}</td>
-        <td class="text-right">{{ op.espacioM3 }}</td>
-        <td class="text-right">{{ op.flete | currency }}</td>
-        <td class="text-right">{{ op.thc | currency }}</td>
-        <td class="text-right">{{ op.porcentajeIva }}%</td>
-        <td class="text-right font-medium">{{ op.total | currency }}</td>
-        <td class="text-center">
-          <div class="flex gap-1 justify-center">
-            <p-button
-              icon="pi pi-pencil"
-              [text]="true"
-              severity="secondary"
-              size="small"
-              (onClick)="abrirDialog(op)"
-              pTooltip="Editar">
-            </p-button>
-            <p-button
-              icon="pi pi-trash"
-              [text]="true"
-              severity="danger"
-              size="small"
-              (onClick)="confirmarEliminar(op)"
-              pTooltip="Eliminar">
-            </p-button>
+      <!-- Header -->
+      <p-card styleClass="mb-5 border-round-2xl shadow-1">
+        <div class="flex flex-column lg:flex-row justify-content-between align-items-start lg:align-items-center gap-4">
+
+          <div>
+            <div class="text-3xl font-bold mb-2">
+              Salidas de Buque
+            </div>
+
+            <div class="text-600">
+              {{ buque.fechaDesde | date:'mediumDate' }}
+              -
+              {{ buque.fechaHasta | date:'mediumDate' }}
+            </div>
           </div>
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="8" class="text-center text-color-secondary py-4">
-          Sin opciones de flete registradas
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
+
+          <p-button
+            icon="pi pi-plus"
+            label="Agregar opción"
+            severity="primary"
+            (onClick)="abrirDialog()">
+          </p-button>
+
+        </div>
+      </p-card>
+
+      <!-- Resumen -->
+      <div class="grid mb-4">
+
+        <div class="col-12 md:col-4">
+          <div class="surface-card p-4 border-round-xl shadow-1 h-full">
+            <div class="text-500 text-sm mb-2">
+              Opciones Registradas
+            </div>
+            <div class="text-3xl font-bold">
+              {{ opciones.length }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-4">
+          <div class="surface-card p-4 border-round-xl shadow-1 h-full">
+            <div class="text-500 text-sm mb-2">
+              Puerto Embarque
+            </div>
+            <div class="text-xl font-semibold">
+              {{ buque.puertoEmbarqueNombre }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-4">
+          <div class="surface-card p-4 border-round-xl shadow-1 h-full">
+            <div class="text-500 text-sm mb-2">
+              Consignatario
+            </div>
+            <div class="text-xl font-semibold">
+              {{ buque.cotizacion.nombreConsignatario }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Titulo Tabla -->
+      <div class="flex justify-content-between align-items-center mb-3">
+        <div>
+          <h3 class="m-0 text-xl font-semibold">
+            Opciones de Flete
+          </h3>
+
+          <small class="text-500">
+            Costos y condiciones disponibles para este embarque
+          </small>
+        </div>
+
+        <p-tag
+          [value]="opciones.length + ' registros'"
+          severity="info">
+        </p-tag>
+      </div>
+
+      <!-- Tabla -->
+      <p-card styleClass="border-round-2xl shadow-2 overflow-hidden">
+
+        <p-table
+          [value]="opciones"
+          [loading]="loading"
+          responsiveLayout="scroll"
+          styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Contenedor</th>
+              <th>Puerto destino</th>
+              <th class="text-right">Espacio m³</th>
+              <th class="text-right">Flete</th>
+              <th class="text-right">THC</th>
+              <th class="text-right">% IVA</th>
+              <th class="text-right">Total</th>
+              <th class="text-center" style="width: 100px">
+                Acciones
+              </th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-op>
+            <tr>
+              <td>
+                <p-tag
+                  [value]="op.tipoContenedor"
+                  severity="contrast">
+                </p-tag>
+              </td>
+              <td>{{ op.puertoDestino }}</td>
+              <td class="text-right">{{ op.espacioM3 }}</td>
+              <td class="text-right">{{ op.flete | currency }}</td>
+              <td class="text-right">{{ op.thc | currency }}</td>
+              <td class="text-right">{{ op.porcentajeIva }}%</td>
+              <td class="text-right">
+                <span class="font-bold text-primary text-lg">{{ op.total | currency }}</span>
+              </td>
+
+              <td>
+                <div class="flex justify-content-center gap-2">
+                  <p-button
+                    icon="pi pi-pencil"
+                    rounded
+                    text
+                    severity="secondary"
+                    size="small"
+                    pTooltip="Editar"
+                    (onClick)="abrirDialog(op)">
+                  </p-button>
+                  <p-button
+                    icon="pi pi-trash"
+                    rounded
+                    text
+                    severity="danger"
+                    size="small"
+                    pTooltip="Eliminar"
+                    (onClick)="confirmarEliminar(op)">
+                  </p-button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="8">
+                <div class="flex flex-column align-items-center justify-content-center py-6">
+                  <i class="pi pi-inbox text-5xl text-400 mb-3"></i>
+                  <div class="text-xl font-medium text-700 mb-2">No existen opciones registradas</div>
+                </div>
+
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-card>
+    }
+  </div>
 </div>
 
 <!-- Dialog agregar/editar -->

@@ -3,22 +3,58 @@
   <div class="max-w-7xl mx-auto">
 
     <!-- Header -->
-    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center gap-3 mb-5">
+    <p-card styleClass="mb-5 border-round-2xl shadow-1">
 
-      <div>
-        <h2 class="m-0 text-3xl font-bold">Salidas de Buques</h2>
+      <div class="grid align-items-center">
 
-        <span class="text-500">Gestión de salidas y cotizaciones registradas</span>
+        <div class="col-12 lg:col-8">
+
+          <h2 class="m-0 text-3xl font-bold mb-2">Salidas de Buques</h2>
+
+          @if (cotizacion) {
+
+            <div class="text-600 mb-4">Gestión de salidas y cotizaciones registradas del Tramite {{ cotizacion.numeroReferencia }}</div>
+
+            <div class="grid">
+              <div class="col-12 md:col-6">
+                <div class="surface-100 border-round p-3">
+                  <div class="text-500 text-sm">
+                    Proveedor
+                  </div>
+                  <div class="font-semibold">
+                    {{ cotizacion.proveedorId }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 md:col-4">
+                <div class="surface-100 border-round p-3">
+                  <div class="text-500 text-sm">
+                    Fecha
+                  </div>
+                  <div class="font-semibold">
+                    {{ cotizacion.creadoEn | date:'mediumDate' }}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          }
+
+        </div>
+
+        <div class="col-12 lg:col-4 flex justify-content-end">
+          <app-salida-buque-form
+            [procesoCotizacionId]="idProcesoCotizacion!"
+            [puertos]="puertos"
+            [consignatarios]="consignatarios"
+            (guardado)="onBuqueGuardado($event)">
+          </app-salida-buque-form>
+        </div>
+
       </div>
 
-      <app-salida-buque-form
-        [procesoCotizacionId]="idProcesoCotizacion!"
-        [puertos]="puertos"
-        [consignatarios]="consignatarios"
-        (guardado)="onBuqueGuardado($event)">
-      </app-salida-buque-form>
-
-    </div>
+    </p-card>
 
     @if (cargandoMejor) {
       <div class="flex align-items-center gap-2 p-3 mb-4

@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {MessageModule} from 'primeng/message';
-import {CurrencyPipe} from '@angular/common';
+import {CurrencyPipe, DatePipe} from '@angular/common';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {DividerModule} from 'primeng/divider';
 import {BadgeModule} from 'primeng/badge';
@@ -22,6 +22,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {OpcionFlete} from '@models/embarque/opcion-flete';
 import {DropdownModule} from 'primeng/dropdown';
 import {PUERTOS_DESTINO_MOCK, TIPOS_CONTENEDOR_MOCK} from '@mocks/embarque';
+import {CardModule} from 'primeng/card';
 
 @Component({
   selector: 'app-opcion-flete',
@@ -42,7 +43,9 @@ import {PUERTOS_DESTINO_MOCK, TIPOS_CONTENEDOR_MOCK} from '@mocks/embarque';
     ReactiveFormsModule,
     InputNumberModule,
     InputTextModule,
-    DropdownModule
+    DropdownModule,
+    DatePipe,
+    CardModule
   ],
   templateUrl: './opcion-flete.component.html',
   styles: ``
@@ -61,6 +64,7 @@ export default class OpcionFleteComponent implements OnInit{
   idBuque: string | null = null
   idCotizacionConsignatario: string = ''
   opciones: OpcionFlete[] = []
+  buque: SalidaBuque | null = null
   loading = false
   dialogVisible = false
   guardando = false
@@ -107,6 +111,7 @@ export default class OpcionFleteComponent implements OnInit{
       next: (value: SalidaBuque[]) => {
         const salida = value.find(s => s.id === this.idBuque)
         if (!salida) { this.return(); return }
+        this.buque = salida
         this.opciones = salida.cotizacion?.opciones ?? []
         this.idCotizacionConsignatario = salida.cotizacion.id;
         this.loading = false
