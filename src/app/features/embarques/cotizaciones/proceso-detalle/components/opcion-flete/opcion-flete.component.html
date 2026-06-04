@@ -104,6 +104,7 @@
               <th class="text-right">THC</th>
               <th class="text-right">% IVA</th>
               <th class="text-right">Total</th>
+              <th class="text-right">Numero BL</th>
               <th class="text-center" style="width: 100px">
                 Acciones
               </th>
@@ -126,7 +127,7 @@
               <td class="text-right">
                 <span class="font-bold text-primary text-lg">{{ op.total | currency }}</span>
               </td>
-
+              <td class="text-right">{{ op.numeroBl || '-' }}</td>
               <td>
                 <div class="flex justify-content-center gap-2">
                   <p-button
@@ -273,6 +274,13 @@
           styleClass="w-full"
           (onInput)="calcular()" />
         <small class="text-color-secondary">Ej: 0.15 = 15%</small>
+      </div>
+      <div class="field col-4">
+        <label class="text-sm text-color-secondary block mb-1">Numero BL</label>
+        <input
+          pInputText
+          formControlName="numeroBl"
+        />
       </div>
     </div>
 

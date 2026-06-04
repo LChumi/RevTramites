@@ -8,6 +8,7 @@ export interface OpcionFlete {
   imo:                number;
   gastosBl:           number;
   handlingContenedor: number;
+  numeroBl:           string;
   porcentajeIva:      number;
   ivaBl:              number;
   subtotalFlete:      number;

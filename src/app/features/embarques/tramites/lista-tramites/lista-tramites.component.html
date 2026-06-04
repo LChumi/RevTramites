@@ -1,1 +1,85 @@
-<p>lista-tramites works!</p>
+<div class="surface-ground min-h-screen p-4">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex align-items-center justify-content-between mb-5">
+      <div>
+        <h2 class="text-900 font-semibold text-2xl m-0 mb-1">Tramite Embarque</h2>
+        <span class="text-500 text-sm">Lista de Tramites embarques</span>
+      </div>
+    </div>
+
+    <div class="surface-card border-round-xl border-1 surface-border overflow-hidden">
+      <p-table
+        [value]="tramites"
+        [paginator]="true"
+        [rows]="10"
+        [rowHover]="true"
+        responsiveLayout="scroll"
+        styleClass="p-datatable-sm p-datatable-gridlines">
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="white-space-nowrap">Orden Llegada</th>
+            <th class="white-space-nowrap">Empresa</th>
+            <th class="white-space-nowrap">N° Tramite</th>
+            <th class="white-space-nowrap" pSortableColumn="proveedorId">
+              Proveedor<p-sortIcon field="proveedorId"/>
+            </th>
+            <th class="white-space-nowrap">N° B/L</th>
+            <th class="white-space-nowrap" pSortableColumn="fechaEmbarque">
+              Fecha Embarque<p-sortIcon field="fechaEmbarque"/>
+            </th>
+            <th class="white-space-nowrap" pSortableColumn="fechaArribo">
+              Fecha Arribo<p-sortIcon field="fechaArribo"/>
+            </th>
+            <th class="white-space-nowrap">Dias Libres</th>
+            <th class="white-space-nowrap">Puerto Salida</th>
+            <th class="white-space-nowrap">Puerto Llegada</th>
+            <th class="white-space-nowrap">Solicitud N° Ecuapass</th>
+            <th class="white-space-nowrap">Fecha Solicitud Ecuapass</th>
+            <th class="white-space-nowrap">Identificador</th>
+            <th class="white-space-nowrap">Solicitud N° Intertek</th>
+            <th class="white-space-nowrap">Preliquidacion</th>
+            <th class="white-space-nowrap">Poliza N° Chub</th>
+            <th class="white-space-nowrap">Creado En</th>
+            <th class="white-space-nowrap">Actualizado En</th>
+            <th class="white-space-nowrap">Estado</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-cot>
+          <tr>
+            <td>
+              <span class="font-semibold text-primary">
+                {{ cot.ordenLlegada }}
+              </span>
+            </td>
+            <td>{{ cot.empresaId }}</td>
+            <td>{{ cot.numeroTramite }}</td>
+            <td>{{ cot.proveedorId }}</td>
+            <td>{{ cot.numeroBL }}</td>
+            <td>{{ cot.fechaEmbarque | date:'dd/MM/yyyy' }}</td>
+            <td>{{ cot.fechaArribo | date:'dd/MM/yyyy' }}</td>
+            <td>{{ cot.diasLibres }}</td>
+            <td>{{ cot.puertoSalida }}</td>
+            <td>{{ cot.puertoLlegada }}</td>
+            <td>{{ cot.solicitudNEcuapass }}</td>
+            <td>{{ cot.fechaSolicitudEcuapass | date:'dd/MM/yyyy' }}</td>
+            <td>{{ cot.identificador }}</td>
+            <td>{{ cot.solicitudNIntertek }}</td>
+            <td>{{ cot.preliquidacion }}</td>
+            <td>{{ cot.polizaNChub }}</td>
+            <td>{{ cot.creadoEn | date:'dd/MM/yyyy' }}</td>
+            <td>{{ cot.actualizadoEn | date:'dd/MM/yyyy' }}</td>
+            <td>{{ cot.estado }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7" class="text-center py-6 text-500">
+              <i class="pi pi-inbox text-4xl block mb-2 text-300"></i>
+              No hay cotizaciones registradas
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
