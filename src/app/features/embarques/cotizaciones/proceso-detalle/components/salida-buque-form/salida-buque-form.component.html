@@ -129,67 +129,43 @@
 
         <div class="flex justify-content-between align-items-center mb-3">
           <div class="text-500 text-sm font-semibold">
-            Consignatarios
+            Cotización
           </div>
         </div>
 
-        <div
-          formArrayName="cotizaciones"
-          class="flex flex-column gap-3">
+        <!-- Ya no es formArrayName -->
+        <div [formGroupName]="'cotizacion'" class="flex flex-column gap-3">
 
-          @for (cot of cotizaciones.controls; track $index) {
+          <p-card>
+            <div class="flex align-items-center gap-3">
 
-            <p-card>
+              <div class="flex-1">
+                <p-dropdown
+                  formControlName="consignatarioId"
+                  [options]="consignatarios()"
+                  optionLabel="nombre"
+                  optionValue="id"
+                  placeholder="Seleccione consignatario"
+                  styleClass="w-full"
+                  appendTo="body"
+                  (onChange)="onConsignatarioChange($event.value)">
+                </p-dropdown>
 
-              <div
-                [formGroupName]="$index"
-                class="flex align-items-center gap-3">
-
-                <p-badge
-                  [value]="$index + 1"
-                  severity="info">
-                </p-badge>
-
-                <div class="flex-1">
-
-                  <p-dropdown
-                    formControlName="consignatarioId"
-                    [options]="consignatarios()"
-                    optionLabel="nombre"
-                    optionValue="id"
-                    placeholder="Seleccione consignatario"
-                    styleClass="w-full"
-                    (onChange)="onConsignatarioChange($index, $event.value)">
-                  </p-dropdown>
-
-                  @if (isInvalidInCotizacion($index,'consignatarioId')) {
-                    <small class="p-error">
-                      Campo requerido
-                    </small>
-                  }
-
-                </div>
-
-                @if (cotizaciones.length > 1) {
-
-                  <p-button
-                    icon="pi pi-trash"
-                    severity="danger"
-                    text="true"
-                    (onClick)="eliminarCotizacion($index)">
-                  </p-button>
-
+                @if (isInvalidInCotizacion('consignatarioId')){
+                  <small class="p-error">
+                    Campo requerido
+                  </small>
                 }
 
               </div>
 
-            </p-card>
-
-          }
+            </div>
+          </p-card>
 
         </div>
 
       </div>
+
 
       <!-- ERROR -->
       @if (error(); as errorMsg) {

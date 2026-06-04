@@ -19,8 +19,8 @@ export class SalidaBuqueService {
     return this.http.post<SalidaBuque>(`${this.baseUrl}/save`, buque);
   }
 
-  listByCotizacion(idCotizacion: string): Observable<SalidaBuque[]>{
-    return this.http.get<SalidaBuque[]>(`${this.baseUrl}/list-by-cotizacion/${idCotizacion}`);
+  listByProcesoCotizacion(idCotizacionConsignatario: string): Observable<SalidaBuque[]>{
+    return this.http.get<SalidaBuque[]>(`${this.baseUrl}/list-by-cotizacion/${idCotizacionConsignatario}`);
   }
 
   updateBuque(id: string, buque: SalidaBuque): Observable<SalidaBuque>{
@@ -31,24 +31,16 @@ export class SalidaBuqueService {
     return this.http.get<OpcionBarataResponse>(`${this.baseUrl}/mejor-opcion/${procesoCotizacionId}`);
   }
 
-  addCotizacion(idBuque: string, cotizacion: CotizacionConsignatario): Observable<SalidaBuque>{
-    return this.http.put<SalidaBuque>(`${this.baseUrl}/add-cotizacion/${idBuque}`, cotizacion);
+  addOpcion(idBuque: string, idCotizacionConsignatario: string , opcion: OpcionFlete): Observable<SalidaBuque>{
+    return this.http.put<SalidaBuque>(`${this.baseUrl}/add-opcion/${idBuque}/${idCotizacionConsignatario}`, opcion);
   }
 
-  addOpcion(idBuque: string, idCotizacion: string , opcion: OpcionFlete): Observable<SalidaBuque>{
-    return this.http.put<SalidaBuque>(`${this.baseUrl}/add-opcion/${idBuque}/${idCotizacion}`, opcion);
+  actualizarOpcion(idBuque: string, idCotizacionConsignatario: string , idOpcion: string, opcion:OpcionFlete): Observable<SalidaBuque>{
+    return this.http.put<SalidaBuque>(`${this.baseUrl}/${idBuque}/cotizaciones/${idCotizacionConsignatario}/opciones/${idOpcion}`, opcion);
   }
 
-  actualizarOpcion(idBuque: string, idCotizacion: string , idOpcion: string, opcion:OpcionFlete): Observable<SalidaBuque>{
-    return this.http.put<SalidaBuque>(`${this.baseUrl}/${idBuque}/cotizaciones/${idCotizacion}/opciones/${idOpcion}`, opcion);
-  }
-
-  eliminarOpcion(idBuque: string, idCotizacion: string , idOpcion: string): Observable<SalidaBuque>{
-    return this.http.delete<SalidaBuque>(`${this.baseUrl}/${idBuque}/cotizaciones/${idCotizacion}/opciones/${idOpcion}`);
-  }
-
-  eliminarCotizacion(idBuque: string, cotizacionId: string): Observable<SalidaBuque>{
-    return this.http.delete<SalidaBuque>(`${this.baseUrl}/${idBuque}/cotizaciones/${cotizacionId}`);
+  eliminarOpcion(idBuque: string, idCotizacionConsignatario: string , idOpcion: string): Observable<SalidaBuque>{
+    return this.http.delete<SalidaBuque>(`${this.baseUrl}/${idBuque}/cotizaciones/${idCotizacionConsignatario}/opciones/${idOpcion}`);
   }
 
 }

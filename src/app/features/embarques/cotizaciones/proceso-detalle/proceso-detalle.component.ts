@@ -83,7 +83,7 @@ export default class ProcesoDetalleComponent implements OnInit{
   }
 
   getSalidas(idCotizacion: string){
-    this.salidaBuque.listByCotizacion(idCotizacion).subscribe({
+    this.salidaBuque.listByProcesoCotizacion(idCotizacion).subscribe({
       next: value => this.salidaBuques = value
     })
   }

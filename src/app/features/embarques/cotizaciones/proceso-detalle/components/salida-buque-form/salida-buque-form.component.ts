@@ -63,7 +63,7 @@ export class SalidaBuqueFormComponent implements OnInit{
       fechaHasta:           ['', Validators.required],
       diasLibres:           [0, [Validators.required, Validators.min(0)]],
       activo:               [true],
-      cotizaciones:         this.fb.array([this.buildCotizacion()]),
+      cotizacion:         this.buildCotizacion()
     });
   }
 
@@ -75,12 +75,8 @@ export class SalidaBuqueFormComponent implements OnInit{
     });
   }
 
-  get cotizaciones(): FormArray {
-    return this.form.get('cotizaciones') as FormArray;
-  }
-
-  cotizacionAt(i: number): FormGroup {
-    return this.cotizaciones.at(i) as FormGroup;
+  get cotizacion(): FormGroup {
+    return this.form.get('cotizacion') as FormGroup;
   }
 
   onPuertoChange(id: string): void {
@@ -88,15 +84,9 @@ export class SalidaBuqueFormComponent implements OnInit{
     this.form.patchValue({ puertoEmbarqueNombre: puerto?.nombre ?? '' });
   }
 
-  onConsignatarioChange(index: number, id: string): void {
+  onConsignatarioChange(id: string): void {
     const c = this.consignatarios().find(c => c.id === id);
-    this.cotizacionAt(index).patchValue({ nombreConsignatario: c?.nombre ?? '' });
-  }
-
-  eliminarCotizacion(index: number): void {
-    if (this.cotizaciones.length > 1) {
-      this.cotizaciones.removeAt(index);
-    }
+    this.cotizacion.patchValue({ nombreConsignatario: c?.nombre ?? '' });
   }
 
   abrir(): void {
@@ -128,7 +118,7 @@ export class SalidaBuqueFormComponent implements OnInit{
       fechaHasta:           new Date(raw.fechaHasta),
       diasLibres:           raw.diasLibres,
       activo:               raw.activo,
-      cotizaciones:         raw.cotizaciones as CotizacionConsignatario[],
+      cotizacion:           raw.cotizacion as CotizacionConsignatario,
       creadoEn:             new Date(),
       actualizadoEn:        new Date(),
       id:                   null,
@@ -153,8 +143,8 @@ export class SalidaBuqueFormComponent implements OnInit{
     return !!(ctrl?.invalid && ctrl?.touched);
   }
 
-  isInvalidInCotizacion(i: number, field: string): boolean {
-    const ctrl = this.cotizacionAt(i).get(field);
+  isInvalidInCotizacion(field: string): boolean {
+    const ctrl = this.cotizacion.get(field);
     return !!(ctrl?.invalid && ctrl?.touched);
   }
 

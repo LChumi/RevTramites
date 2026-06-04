@@ -88,61 +88,40 @@
 
             <!-- Fecha Desde -->
             <td>
-              <p-tag
-                severity="info"
-                [value]="(sal.fechaDesde | date:'dd/MM/yyyy') ?? ''">
-              </p-tag>
+              <p-tag severity="info" [value]="(sal.fechaDesde | date:'dd/MM/yyyy') ?? ''"></p-tag>
             </td>
-
             <!-- Fecha Hasta -->
             <td>
-              <span class="text-600">
-                {{ sal.fechaHasta | date:'dd/MM/yyyy' }}
-              </span>
+              <span class="text-600">{{ sal.fechaHasta | date:'dd/MM/yyyy' }}</span>
             </td>
-
             <!-- Días -->
             <td>
-              <p-badge
-                [value]="sal.diasLibres"
-                severity="contrast">
-              </p-badge>
+              <p-badge [value]="sal.diasLibres" severity="contrast"></p-badge>
             </td>
 
             <!-- Cotizaciones -->
             <td>
-              <p-badge
-                [value]="sal.cotizaciones.length"
-                severity="success">
-              </p-badge>
+              {{sal.cotizacion.nombreConsignatario}}
             </td>
 
             <!-- Estado -->
             <td>
-              <p-tag
-                [value]="sal.activo ? 'Activo' : 'Inactivo'"
-                [severity]="sal.activo ? 'success' : 'danger'">
-              </p-tag>
+              <p-tag [value]="sal.activo ? 'Activo' : 'Inactivo'" [severity]="sal.activo ? 'success' : 'danger'"></p-tag>
             </td>
 
             <!-- Creado -->
             <td>
-              <small class="text-600">
-                {{ sal.creadoEn | date:'dd/MM/yyyy' }}
-              </small>
+              <small class="text-600">{{ sal.creadoEn | date:'dd/MM/yyyy' }}</small>
             </td>
 
             <!-- Actualizado -->
             <td>
-              <small class="text-600">
-                {{ sal.actualizadoEn | date:'dd/MM/yyyy' }}
-              </small>
+              <small class="text-600">{{ sal.actualizadoEn | date:'dd/MM/yyyy' }}</small>
             </td>
 
             <!-- Acciones -->
             <td>
               <div class="flex gap-2 justify-content-center">
-
                 <button
                   pButton
                   icon="pi pi-pencil"
@@ -162,7 +141,6 @@
                   pTooltip="Gestionar cotizaciones"
                   (click)="viewBuque(sal.id)">
                 </button>
-
               </div>
             </td>
 

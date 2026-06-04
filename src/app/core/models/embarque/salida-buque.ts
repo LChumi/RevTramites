@@ -7,7 +7,7 @@ export interface SalidaBuque {
   fechaDesde:           Date;
   fechaHasta:           Date;
   diasLibres:           number;
-  cotizaciones:         CotizacionConsignatario[];
+  cotizacion:         CotizacionConsignatario;
   activo:               boolean;
   creadoEn:             Date;
   actualizadoEn:        Date;

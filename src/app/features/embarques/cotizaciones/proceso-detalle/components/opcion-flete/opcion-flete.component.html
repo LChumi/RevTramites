@@ -1,1 +1,214 @@
+<p-toast />
+<p-confirmDialog />
 
+<div class="p-4">
+  <div class="flex justify-between items-center mb-4">
+    <div>
+      <h2 class="text-xl font-medium mt-1">Opciones de flete</h2>
+    </div>
+    <p-button
+      label="Agregar opción"
+      icon="pi pi-plus"
+      (onClick)="abrirDialog()">
+    </p-button>
+  </div>
+
+  <p-table
+    [value]="opciones"
+    [loading]="loading"
+    [tableStyle]="{'min-width': '60rem'}"
+    styleClass="p-datatable-sm">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Contenedor</th>
+        <th>Puerto destino</th>
+        <th class="text-right">Espacio m³</th>
+        <th class="text-right">Flete</th>
+        <th class="text-right">THC</th>
+        <th class="text-right">% IVA</th>
+        <th class="text-right">Total</th>
+        <th class="text-center" style="width:80px"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-op>
+      <tr>
+        <td>{{ op.tipoContenedor }}</td>
+        <td>{{ op.puertoDestino }}</td>
+        <td class="text-right">{{ op.espacioM3 }}</td>
+        <td class="text-right">{{ op.flete | currency }}</td>
+        <td class="text-right">{{ op.thc | currency }}</td>
+        <td class="text-right">{{ op.porcentajeIva }}%</td>
+        <td class="text-right font-medium">{{ op.total | currency }}</td>
+        <td class="text-center">
+          <div class="flex gap-1 justify-center">
+            <p-button
+              icon="pi pi-pencil"
+              [text]="true"
+              severity="secondary"
+              size="small"
+              (onClick)="abrirDialog(op)"
+              pTooltip="Editar">
+            </p-button>
+            <p-button
+              icon="pi pi-trash"
+              [text]="true"
+              severity="danger"
+              size="small"
+              (onClick)="confirmarEliminar(op)"
+              pTooltip="Eliminar">
+            </p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8" class="text-center text-color-secondary py-4">
+          Sin opciones de flete registradas
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Dialog agregar/editar -->
+<p-dialog
+  [(visible)]="dialogVisible"
+  [header]="opcionEditando?.id ? 'Editar opción' : 'Agregar opción'"
+  [modal]="true"
+  [style]="{ width: '760px', 'max-width': '95vw' }"
+  [closable]="!guardando">
+
+  <form [formGroup]="form">
+
+    <!-- Fila 1: Contenedor / Espacio / Puerto -->
+    <div class="formgrid grid">
+      <div class="field col-4">
+        <label class="text-sm text-color-secondary block mb-1">Tipo contenedor</label>
+        <p-dropdown
+          formControlName="tipoContenedor"
+          [options]="tiposContenedor"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Seleccionar"
+          styleClass="w-full"
+          (onChange)="onTipoContenedorChange($event)">
+        </p-dropdown>
+      </div>
+      <div class="field col-4">
+        <label class="text-sm text-color-secondary block mb-1">Espacio m³</label>
+        <p-inputNumber
+          formControlName="espacioM3"
+          [minFractionDigits]="0"
+          styleClass="w-full" />
+      </div>
+      <div class="field col-4">
+        <label class="text-sm text-color-secondary block mb-1">Puerto destino</label>
+        <p-dropdown
+          formControlName="puertoDestino"
+          [options]="puertosDestinos"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Seleccionar"
+          styleClass="w-full">
+        </p-dropdown>
+      </div>
+    </div>
+
+    <p-divider />
+
+    <!-- Fila 2: Componentes de flete -->
+    <p class="text-sm font-medium text-color-secondary mb-2">Componentes de flete</p>
+    <div class="formgrid grid">
+      <div class="field col-4">
+        <label class="text-sm text-color-secondary block mb-1">Flete</label>
+        <p-inputNumber
+          formControlName="flete"
+          mode="currency" currency="USD" locale="en-US"
+          styleClass="w-full"
+          (onInput)="calcular()" />
+      </div>
+      <div class="field col-4">
+        <label class="text-sm text-color-secondary block mb-1">THC</label>
+        <p-inputNumber
+          formControlName="thc"
+          mode="currency" currency="USD" locale="en-US"
+          styleClass="w-full"
+          (onInput)="calcular()" />
+      </div>
+      <div class="field col-4">
+        <label class="text-sm text-color-secondary block mb-1">IMO</label>
+        <p-inputNumber
+          formControlName="imo"
+          mode="currency" currency="USD" locale="en-US"
+          styleClass="w-full"
+          (onInput)="calcular()" />
+      </div>
+    </div>
+
+    <p-divider />
+
+    <!-- Fila 3: Gastos locales -->
+    <p class="text-sm font-medium text-color-secondary mb-2">Gastos locales</p>
+    <div class="formgrid grid">
+      <div class="field col-4">
+        <label class="text-sm text-color-secondary block mb-1">Gastos BL</label>
+        <p-inputNumber
+          formControlName="gastosBl"
+          mode="currency" currency="USD" locale="en-US"
+          styleClass="w-full"
+          (onInput)="calcular()" />
+      </div>
+      <div class="field col-4">
+        <label class="text-sm text-color-secondary block mb-1">Handling contenedor</label>
+        <p-inputNumber
+          formControlName="handlingContenedor"
+          mode="currency" currency="USD" locale="en-US"
+          styleClass="w-full"
+          (onInput)="calcular()" />
+      </div>
+      <div class="field col-4">
+        <label class="text-sm text-color-secondary block mb-1">% IVA</label>
+        <p-inputNumber
+          formControlName="porcentajeIva"
+          [minFractionDigits]="0" [maxFractionDigits]="2"
+          styleClass="w-full"
+          (onInput)="calcular()" />
+        <small class="text-color-secondary">Ej: 0.15 = 15%</small>
+      </div>
+    </div>
+
+  </form>
+
+  <!-- Totales calculados -->
+  <p-divider />
+  <div class="grid">
+    <div class="col-2 flex flex-column gap-1">
+      <span class="text-xs text-color-secondary uppercase">Subtotal flete</span>
+      <span class="text-base font-medium">{{ totales.subtotalFlete | currency:'USD' }}</span>
+    </div>
+    <div class="col-2 flex flex-column gap-1">
+      <span class="text-xs text-color-secondary uppercase">Subtotal gastos</span>
+      <span class="text-base font-medium">{{ totales.subtotalGastos | currency:'USD' }}</span>
+    </div>
+    <div class="col-2 flex flex-column gap-1">
+      <span class="text-xs text-color-secondary uppercase">IVA BL</span>
+      <span class="text-base font-medium">{{ totales.ivaBl | currency:'USD' }}</span>
+    </div>
+    <div class="col-2 flex flex-column gap-1">
+      <span class="text-xs text-color-secondary uppercase">IVA Handling</span>
+      <span class="text-base font-medium">{{ totales.ivaHandling | currency:'USD' }}</span>
+    </div>
+    <div class="col-2 flex flex-column gap-1 border-left-1 surface-border pl-3">
+      <span class="text-xs text-color-secondary uppercase">Total</span>
+      <span class="text-xl font-semibold text-primary">{{ totales.total | currency:'USD' }}</span>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button label="Cancelar" [text]="true" severity="secondary"
+              (onClick)="cerrarDialog()" [disabled]="guardando" />
+    <p-button label="Guardar" icon="pi pi-check" [loading]="guardando"
+              [disabled]="form.invalid" (onClick)="guardar()" />
+  </ng-template>
+</p-dialog>
