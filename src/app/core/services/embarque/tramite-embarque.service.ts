@@ -24,4 +24,8 @@ export class TramiteEmbarqueService {
     return this.http.get<void>(`${this.baseUrl}/reemplazar/${tramite}/${fleteNuevo}`)
   }
 
+  update(id:string , t:TramiteEmbarque):Observable<TramiteEmbarque>{
+    return this.http.put<TramiteEmbarque>(`${this.baseUrl}/update/${id}`, t);
+  }
+
 }

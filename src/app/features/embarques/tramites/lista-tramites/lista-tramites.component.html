@@ -1,85 +1,345 @@
-<div class="surface-ground min-h-screen p-4">
-  <div class="max-w-7xl mx-auto">
-    <div class="flex align-items-center justify-content-between mb-5">
-      <div>
-        <h2 class="text-900 font-semibold text-2xl m-0 mb-1">Tramite Embarque</h2>
-        <span class="text-500 text-sm">Lista de Tramites embarques</span>
+<div class="surface-ground p-4">
+
+  <!-- Header -->
+  <div class="surface-card border-round-xl p-4 mb-4 shadow-1">
+    <div class="flex justify-content-between align-items-center">
+      <div class="flex align-items-center gap-3">
+        <div class="bg-primary border-round" style="width:5px; height:48px"></div>
+        <div>
+          <h2 class="m-0 text-900 text-2xl font-bold">Trámite de Embarque</h2>
+          <div class="flex align-items-center text-500 text-sm mt-1">
+            <i class="pi pi-list mr-2"></i>
+            <span>Gestión y seguimiento de trámites de embarque</span>
+          </div>
+        </div>
       </div>
     </div>
-
-    <div class="surface-card border-round-xl border-1 surface-border overflow-hidden">
-      <p-table
-        [value]="tramites"
-        [paginator]="true"
-        [rows]="10"
-        [rowHover]="true"
-        responsiveLayout="scroll"
-        styleClass="p-datatable-sm p-datatable-gridlines">
-        <ng-template pTemplate="header">
-          <tr>
-            <th class="white-space-nowrap">Orden Llegada</th>
-            <th class="white-space-nowrap">Empresa</th>
-            <th class="white-space-nowrap">N° Tramite</th>
-            <th class="white-space-nowrap" pSortableColumn="proveedorId">
-              Proveedor<p-sortIcon field="proveedorId"/>
-            </th>
-            <th class="white-space-nowrap">N° B/L</th>
-            <th class="white-space-nowrap" pSortableColumn="fechaEmbarque">
-              Fecha Embarque<p-sortIcon field="fechaEmbarque"/>
-            </th>
-            <th class="white-space-nowrap" pSortableColumn="fechaArribo">
-              Fecha Arribo<p-sortIcon field="fechaArribo"/>
-            </th>
-            <th class="white-space-nowrap">Dias Libres</th>
-            <th class="white-space-nowrap">Puerto Salida</th>
-            <th class="white-space-nowrap">Puerto Llegada</th>
-            <th class="white-space-nowrap">Solicitud N° Ecuapass</th>
-            <th class="white-space-nowrap">Fecha Solicitud Ecuapass</th>
-            <th class="white-space-nowrap">Identificador</th>
-            <th class="white-space-nowrap">Solicitud N° Intertek</th>
-            <th class="white-space-nowrap">Preliquidacion</th>
-            <th class="white-space-nowrap">Poliza N° Chub</th>
-            <th class="white-space-nowrap">Creado En</th>
-            <th class="white-space-nowrap">Actualizado En</th>
-            <th class="white-space-nowrap">Estado</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-cot>
-          <tr>
-            <td>
-              <span class="font-semibold text-primary">
-                {{ cot.ordenLlegada }}
-              </span>
-            </td>
-            <td>{{ cot.empresaId }}</td>
-            <td>{{ cot.numeroTramite }}</td>
-            <td>{{ cot.proveedorId }}</td>
-            <td>{{ cot.numeroBL }}</td>
-            <td>{{ cot.fechaEmbarque | date:'dd/MM/yyyy' }}</td>
-            <td>{{ cot.fechaArribo | date:'dd/MM/yyyy' }}</td>
-            <td>{{ cot.diasLibres }}</td>
-            <td>{{ cot.puertoSalida }}</td>
-            <td>{{ cot.puertoLlegada }}</td>
-            <td>{{ cot.solicitudNEcuapass }}</td>
-            <td>{{ cot.fechaSolicitudEcuapass | date:'dd/MM/yyyy' }}</td>
-            <td>{{ cot.identificador }}</td>
-            <td>{{ cot.solicitudNIntertek }}</td>
-            <td>{{ cot.preliquidacion }}</td>
-            <td>{{ cot.polizaNChub }}</td>
-            <td>{{ cot.creadoEn | date:'dd/MM/yyyy' }}</td>
-            <td>{{ cot.actualizadoEn | date:'dd/MM/yyyy' }}</td>
-            <td>{{ cot.estado }}</td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-          <tr>
-            <td colspan="7" class="text-center py-6 text-500">
-              <i class="pi pi-inbox text-4xl block mb-2 text-300"></i>
-              No hay cotizaciones registradas
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
   </div>
+
+  <!-- Tabla -->
+  <div class="surface-card border-round-xl shadow-1 overflow-hidden">
+    <p-table
+      [value]="tramites"
+      [paginator]="true"
+      [rows]="10"
+      [rowHover]="true"
+      [scrollable]="true"
+      scrollHeight="flex"
+      styleClass="p-datatable-sm p-datatable-gridlines">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="min-width:80px" class="text-center white-space-nowrap text-xs font-bold">Orden<br>Llegada</th>
+          <th style="min-width:140px" class="white-space-nowrap text-xs font-bold">Empresa</th>
+          <th style="min-width:110px" class="text-center white-space-nowrap text-xs font-bold">N° Trámite</th>
+          <th style="min-width:260px" class="white-space-nowrap text-xs font-bold" pSortableColumn="proveedorId">
+            Proveedor <p-sortIcon field="proveedorId"/>
+          </th>
+          <th style="min-width:110px" class="white-space-nowrap text-xs font-bold">N° B/L</th>
+          <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold" pSortableColumn="fechaEmbarque">
+            Fecha Embarque <p-sortIcon field="fechaEmbarque"/>
+          </th>
+          <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold" pSortableColumn="fechaArribo">
+            Fecha Arribo <p-sortIcon field="fechaArribo"/>
+          </th>
+          <th style="min-width:75px" class="text-center white-space-nowrap text-xs font-bold">Días Libres</th>
+          <th style="min-width:140px" class="white-space-nowrap text-xs font-bold">Puerto Salida</th>
+          <th style="min-width:140px" class="white-space-nowrap text-xs font-bold">Puerto Llegada</th>
+          <th style="min-width:130px" class="text-center white-space-nowrap text-xs font-bold">Sol. N° Ecuapass</th>
+          <th style="min-width:130px" class="text-center white-space-nowrap text-xs font-bold">Fecha Sol. Ecuapass</th>
+          <th style="min-width:130px" class="white-space-nowrap text-xs font-bold">Identificador</th>
+          <th style="min-width:130px" class="text-center white-space-nowrap text-xs font-bold">Sol. N° Intertek</th>
+          <th style="min-width:130px" class="white-space-nowrap text-xs font-bold">Preliquidación</th>
+          <th style="min-width:130px" class="white-space-nowrap text-xs font-bold">Póliza N° Chub</th>
+          <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold">Creado En</th>
+          <th style="min-width:110px" class="text-center white-space-nowrap text-xs font-bold">Actualizado En</th>
+          <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold">Estado</th>
+          <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold">Acciones</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-cot>
+        <tr>
+          <td style="min-width:80px" class="text-center white-space-nowrap">
+            <p-tag [value]="cot.ordenLlegada?.toString()" severity="info"/>
+          </td>
+          <td style="min-width:140px" class="white-space-nowrap font-medium text-900">
+            {{ cot.empresaId }}
+          </td>
+          <td style="min-width:110px" class="text-center white-space-nowrap">
+            <span class="font-semibold text-primary">{{ cot.numeroTramite }}</span>
+          </td>
+          <td style="min-width:260px" class="white-space-nowrap font-medium">
+            {{ cot.proveedorId }}
+          </td>
+          <td style="min-width:110px" class="white-space-nowrap">{{ cot.numeroBL }}</td>
+          <td style="min-width:100px" class="text-center white-space-nowrap">
+            {{ cot.fechaEmbarque | date:'dd/MM/yyyy' }}
+          </td>
+          <td style="min-width:100px" class="text-center white-space-nowrap">
+            {{ cot.fechaArribo | date:'dd/MM/yyyy' }}
+          </td>
+          <td style="min-width:75px" class="text-center white-space-nowrap font-bold text-primary">
+            {{ cot.diasLibres }}
+          </td>
+          <td style="min-width:140px" class="white-space-nowrap">{{ cot.puertoSalida }}</td>
+          <td style="min-width:140px" class="white-space-nowrap">{{ cot.puertoLlegada }}</td>
+          <td style="min-width:130px" class="text-center white-space-nowrap">{{ cot.solicitudNEcuapass }}</td>
+          <td style="min-width:130px" class="text-center white-space-nowrap">
+            {{ cot.fechaSolicitudEcuapass | date:'dd/MM/yyyy' }}
+          </td>
+          <td style="min-width:130px" class="white-space-nowrap">{{ cot.identificador }}</td>
+          <td style="min-width:130px" class="text-center white-space-nowrap">{{ cot.solicitudNIntertek }}</td>
+          <td style="min-width:130px" class="white-space-nowrap">{{ cot.preliquidacion }}</td>
+          <td style="min-width:130px" class="white-space-nowrap">{{ cot.polizaNChub }}</td>
+          <td style="min-width:100px" class="text-center white-space-nowrap text-600">
+            {{ cot.creadoEn | date:'dd/MM/yyyy' }}
+          </td>
+          <td style="min-width:110px" class="text-center white-space-nowrap text-600">
+            {{ cot.actualizadoEn | date:'dd/MM/yyyy' }}
+          </td>
+          <td style="min-width:100px" class="text-center white-space-nowrap">
+            <p-tag [value]="cot.estado" [severity]="getEstadoSeverity(cot.estado)"/>
+          </td>
+          <td class="text-center">
+            <button
+              pButton
+              pRipple
+              icon="pi pi-pencil"
+              severity="info"
+              [rounded]="true"
+              [outlined]="true"
+              size="small"
+              (click)="editarTramite(cot)"
+              pTooltip="Ver detalle"
+              tooltipPosition="left">
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="19">
+            <div class="flex flex-column align-items-center py-8 text-500 gap-3">
+              <i class="pi pi-inbox text-4xl"></i>
+              <span>No hay trámites de embarque registrados</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </div>
+
 </div>
+
+<!-- Dialog Editar Trámite -->
+<p-dialog
+  [(visible)]="dialogVisible"
+  [header]="'Editar Trámite — ' + (tramiteSeleccionado?.numeroTramite || '')"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '900px' }"
+  [breakpoints]="{ '960px': '95vw' }"
+  styleClass="tramite-dialog">
+
+  @if (tramiteSeleccionado) {
+    <ng-container>
+      <form [formGroup]="tramiteForm">
+
+        <!-- Fila 1 -->
+        <div class="grid mt-2">
+
+          <div class="col-12 md:col-4">
+            <label class="block text-sm font-semibold text-700 mb-1">Orden de Llegada</label>
+            <input pInputText formControlName="ordenLlegada" class="w-full p-inputtext-sm"/>
+          </div>
+
+          <div class="col-12 md:col-4">
+            <label class="block text-sm font-semibold text-700 mb-1">Empresa</label>
+            <input pInputText formControlName="empresaId" class="w-full p-inputtext-sm"/>
+          </div>
+
+          <div class="col-12 md:col-4">
+            <label class="block text-sm font-semibold text-700 mb-1">N° Trámite</label>
+            <input pInputText formControlName="numeroTramite" class="w-full p-inputtext-sm"/>
+          </div>
+
+        </div>
+
+        <!-- Fila 2 -->
+        <div class="grid">
+
+          <div class="col-12 md:col-6">
+            <label class="block text-sm font-semibold text-700 mb-1">Proveedor</label>
+            <input pInputText formControlName="proveedorId" class="w-full p-inputtext-sm"/>
+          </div>
+
+          <div class="col-12 md:col-3">
+            <label class="block text-sm font-semibold text-700 mb-1">N° B/L</label>
+            <input pInputText formControlName="numeroBl" class="w-full p-inputtext-sm"/>
+          </div>
+
+          <div class="col-12 md:col-3">
+            <label class="block text-sm font-semibold text-700 mb-1">Cantidad Contenedores</label>
+            <p-inputNumber
+              formControlName="cantidadContenedores"
+              [min]="0"
+              [showButtons]="false"
+              inputStyleClass="w-full p-inputtext-sm"
+              styleClass="w-full"/>
+          </div>
+
+        </div>
+
+        <!-- Fila 3 — Fechas -->
+        <div class="grid">
+
+          <div class="col-12 md:col-4">
+            <label class="block text-sm font-semibold text-700 mb-1">Fecha Embarque</label>
+            <p-calendar
+              formControlName="fechaEmbarque"
+              dateFormat="dd/mm/yy"
+              [showIcon]="true"
+              [iconDisplay]="'input'"
+              styleClass="w-full"
+              inputStyleClass="w-full p-inputtext-sm"/>
+          </div>
+
+          <div class="col-12 md:col-4">
+            <label class="block text-sm font-semibold text-700 mb-1">Fecha Arribo</label>
+            <p-calendar
+              formControlName="fechaArribo"
+              dateFormat="dd/mm/yy"
+              [showIcon]="true"
+              [iconDisplay]="'input'"
+              styleClass="w-full"
+              inputStyleClass="w-full p-inputtext-sm"/>
+          </div>
+
+          <div class="col-12 md:col-4">
+            <label class="block text-sm font-semibold text-700 mb-1">Días Libres</label>
+            <p-inputNumber
+              formControlName="diasLibres"
+              [min]="0"
+              [showButtons]="true"
+              buttonLayout="horizontal"
+              incrementButtonIcon="pi pi-plus"
+              decrementButtonIcon="pi pi-minus"
+              inputStyleClass="w-full p-inputtext-sm text-center"
+              styleClass="w-full"/>
+          </div>
+
+        </div>
+
+        <!-- Fila 4 — Puertos -->
+        <div class="grid">
+
+          <div class="col-12 md:col-6">
+            <label class="block text-sm font-semibold text-700 mb-1">Puerto de Salida</label>
+            <input pInputText formControlName="puertoSalida" class="w-full p-inputtext-sm"/>
+          </div>
+
+          <div class="col-12 md:col-6">
+            <label class="block text-sm font-semibold text-700 mb-1">Puerto de Llegada</label>
+            <input pInputText formControlName="puertoLlegada" class="w-full p-inputtext-sm"/>
+          </div>
+
+        </div>
+
+        <!-- Fila 5 — Ecuapass -->
+        <div class="grid">
+
+          <div class="col-12 md:col-4">
+            <label class="block text-sm font-semibold text-700 mb-1">Sol. N° Ecuapass</label>
+            <input pInputText formControlName="solicitudNEcuapass" class="w-full p-inputtext-sm"/>
+          </div>
+
+          <div class="col-12 md:col-4">
+            <label class="block text-sm font-semibold text-700 mb-1">Fecha Sol. Ecuapass</label>
+            <p-calendar
+              formControlName="fechaSolicitudEcuapass"
+              dateFormat="dd/mm/yy"
+              [showIcon]="true"
+              [iconDisplay]="'input'"
+              styleClass="w-full"
+              inputStyleClass="w-full p-inputtext-sm"/>
+          </div>
+
+          <div class="col-12 md:col-4">
+            <label class="block text-sm font-semibold text-700 mb-1">Identificador</label>
+            <input pInputText formControlName="identificar" class="w-full p-inputtext-sm"/>
+          </div>
+
+        </div>
+
+        <!-- Fila 6 -->
+        <div class="grid">
+
+          <div class="col-12 md:col-4">
+            <label class="block text-sm font-semibold text-700 mb-1">Sol. N° Intertek</label>
+            <input pInputText formControlName="solicitudNIntertek" class="w-full p-inputtext-sm"/>
+          </div>
+
+          <div class="col-12 md:col-4">
+            <label class="block text-sm font-semibold text-700 mb-1">Preliquidación</label>
+            <input pInputText formControlName="preLiquidacion" class="w-full p-inputtext-sm"/>
+          </div>
+
+          <div class="col-12 md:col-4">
+            <label class="block text-sm font-semibold text-700 mb-1">Póliza N° Chub</label>
+            <input pInputText formControlName="polizaNChub" class="w-full p-inputtext-sm"/>
+          </div>
+
+        </div>
+
+        <!-- Fila 7 — Estado + Flete -->
+        <div class="grid">
+
+          <div class="col-12 md:col-4">
+            <label class="block text-sm font-semibold text-700 mb-1">Flete Validado ID</label>
+            <input pInputText formControlName="fleteValidadoId" class="w-full p-inputtext-sm"/>
+          </div>
+
+          <div class="col-12 md:col-4">
+            <label class="block text-sm font-semibold text-700 mb-1">Estado</label>
+            <p-dropdown
+              formControlName="estado"
+              [options]="estadoOpciones"
+              optionLabel="label"
+              optionValue="value"
+              styleClass="w-full"
+              appendTo="body"/>
+          </div>
+
+        </div>
+
+      </form>
+    </ng-container>
+  }
+
+
+  <!-- Footer -->
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-end gap-2">
+      <button
+        pButton pRipple
+        label="Cancelar"
+        icon="pi pi-times"
+        severity="secondary"
+        [outlined]="true"
+        size="small"
+        (click)="cerrarDialog()"></button>
+      <button
+        pButton pRipple
+        label="Guardar Cambios"
+        icon="pi pi-check"
+        size="small"
+        [loading]="guardando"
+        (click)="guardarTramite()"></button>
+    </div>
+  </ng-template>
+
+</p-dialog>

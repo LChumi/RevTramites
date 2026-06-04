@@ -19,3 +19,12 @@ export const PUERTOS_DESTINO_MOCK = [
   { label: 'GUAYAQUIL', value: 'GYE'},
   { label: 'POSORJA', value: 'POSORJA'}
 ]
+
+export const ESTADOS_EMBARQUE_MOCK = [
+  { label:'Borrador', value:'BORRADOR'},
+  { label:'En proceso', value:'EN_PROCESO'},
+  { label:'Embarcado', value:'EMBARCADO'},
+  { label:'Arribado', value:'ARRIBADO'},
+  { label:'Finalizado', value:'FINALIZADO'},
+  { label:'Cancelado', value:'CANCELADO'},
+]
