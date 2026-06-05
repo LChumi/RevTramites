@@ -165,32 +165,32 @@ export default class ProcesoDetalleComponent implements OnInit {
     return new Intl.NumberFormat('es-EC', {style: 'currency', currency: 'USD'}).format(value);
   }
 
-  confirmarValidacion(){
+  confirmarValidacion() {
     if (!this.mejorOpcion) return;
-    if (this.mejorOpcion.opcion.numeroBl == ''){
+    if (this.mejorOpcion.opcion.numeroBl == '') {
       this.messageService.add({severity: 'warn', summary: 'Flete sin Numero de Bl'})
       this.confirmacionBl(this.mejorOpcion.idBuque)
     } else {
       this.confirmationService.confirm({
-        key:'validarFlete',
+        key: 'validarFlete',
         header: 'Confirmar Flete',
         message: '¡Desea validar la mejor opción de Flete!',
         icon: 'pi pi-exclamation-circle',
-        acceptLabel:'Validar',
-        rejectLabel:'Cancelar',
-        accept:() => this.validarMejorOpcion()
+        acceptLabel: 'Validar',
+        rejectLabel: 'Cancelar',
+        accept: () => this.validarMejorOpcion()
       })
     }
   }
 
-  confirmacionBl(idBuque: string){
+  confirmacionBl(idBuque: string) {
     this.confirmationService.confirm({
-      key:'agregarBl',
+      key: 'agregarBl',
       message: '¿Desea agregar el Bl ahora al flete o le puede agregar después en embarques?',
       icon: 'pi pi-exclamation-triangle',
-      acceptLabel:'Agregar',
-      rejectLabel:'Guardar sin BL',
-      accept:() => this.viewBuque(idBuque),
+      acceptLabel: 'Agregar',
+      rejectLabel: 'Guardar sin BL',
+      accept: () => this.viewBuque(idBuque),
       reject: () => this.validarMejorOpcion()
     })
   }
@@ -216,7 +216,11 @@ export default class ProcesoDetalleComponent implements OnInit {
     this.fleteService.validarFlete(request).subscribe({
       next: (resultado) => {
         this.validando = false;
-        this.messageService.add({severity: 'info', summary: 'FleteValidado', detail: `${resultado.nombreConsignatario}`})
+        this.messageService.add({
+          severity: 'info',
+          summary: 'FleteValidado',
+          detail: `${resultado.nombreConsignatario}`
+        })
         this.goToTramites();
       },
       error: () => {
@@ -225,8 +229,9 @@ export default class ProcesoDetalleComponent implements OnInit {
     });
   }
 
-  goToTramites(){
-    this.router.navigate(['erp', 'embarques', 'tramites']).then(r => {});
+  goToTramites() {
+    this.router.navigate(['erp', 'embarques', 'tramites']).then(r => {
+    });
   }
 
 }

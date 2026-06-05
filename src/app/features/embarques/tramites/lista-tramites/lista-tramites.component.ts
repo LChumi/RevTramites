@@ -36,7 +36,7 @@ import {MessageService} from 'primeng/api';
   templateUrl: './lista-tramites.component.html',
   styles: ``
 })
-export default class ListaTramitesComponent implements OnInit{
+export default class ListaTramitesComponent implements OnInit {
 
   private embarquesService = inject(TramiteEmbarqueService);
   private messageService = inject(MessageService)
@@ -60,25 +60,25 @@ export default class ListaTramitesComponent implements OnInit{
 
   private initForm() {
     this.tramiteForm = this.fb.group({
-      ordenLlegada:          ['', Validators.required],
-      empresaId:             ['', Validators.required],
-      numeroTramite:         ['', Validators.required],
-      proveedorId:           ['', Validators.required],
-      numeroBl:              [''],
-      cantidadContenedores:  [null],
-      fleteValidadoId:       [''],
-      fechaEmbarque:         [null],
-      fechaArribo:           [null],
-      diasLibres:            [0],
-      puertoSalida:          [''],
-      puertoLlegada:         [''],
-      solicitudNEcuapass:    [''],
-      fechaSolicitudEcuapass:[null],
-      identificar:           [''],
-      solicitudNIntertek:    [''],
-      preLiquidacion:        [''],
-      polizaNChub:           [''],
-      estado:                ['ACTIVO', Validators.required],
+      ordenLlegada: ['', Validators.required],
+      empresaId: ['', Validators.required],
+      numeroTramite: ['', Validators.required],
+      proveedorId: ['', Validators.required],
+      numeroBl: [''],
+      cantidadContenedores: [null],
+      fleteValidadoId: [''],
+      fechaEmbarque: [null],
+      fechaArribo: [null],
+      diasLibres: [0],
+      puertoSalida: [''],
+      puertoLlegada: [''],
+      solicitudNEcuapass: [''],
+      fechaSolicitudEcuapass: [null],
+      identificar: [''],
+      solicitudNIntertek: [''],
+      preLiquidacion: [''],
+      polizaNChub: [''],
+      estado: ['ACTIVO', Validators.required],
     });
   }
 
@@ -87,8 +87,8 @@ export default class ListaTramitesComponent implements OnInit{
     // patchValue convierte strings de fecha a objetos Date para p-calendar
     this.tramiteForm.patchValue({
       ...tramite,
-      fechaEmbarque:          tramite.fechaEmbarque ? new Date(tramite.fechaEmbarque) : null,
-      fechaArribo:            tramite.fechaArribo   ? new Date(tramite.fechaArribo)   : null,
+      fechaEmbarque: tramite.fechaEmbarque ? new Date(tramite.fechaEmbarque) : null,
+      fechaArribo: tramite.fechaArribo ? new Date(tramite.fechaArribo) : null,
       fechaSolicitudEcuapass: tramite.fechaSolicitudEcuapass ? new Date(tramite.fechaSolicitudEcuapass) : null,
     });
     this.dialogVisible = true;
@@ -110,7 +110,7 @@ export default class ListaTramitesComponent implements OnInit{
       ...this.tramiteSeleccionado!,
       ...this.tramiteForm.value,
     };
-    if (this.tramiteSeleccionado){
+    if (this.tramiteSeleccionado) {
       this.embarquesService.update(this.tramiteSeleccionado.id, payload).subscribe({
         next: value => {
           console.log(value)
@@ -128,9 +128,9 @@ export default class ListaTramitesComponent implements OnInit{
 
   }
 
-  onTramiteActualizado(tramite: TramiteEmbarque){
+  onTramiteActualizado(tramite: TramiteEmbarque) {
     const index = this.tramites.findIndex(t => t.id === tramite.id);
-    if (index !== -1){
+    if (index !== -1) {
       this.tramites[index] = tramite
     }
   }

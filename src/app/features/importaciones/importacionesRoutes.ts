@@ -9,21 +9,36 @@ export const importacionesRoutes: Routes = [
   {
     path: 'tramite',
     children: [
-      {path: 'carga-contenedores', loadComponent: () => import('@features/importaciones/tramite/carga-tramite/carga-tramite.component')},
-      {path: 'consultas', loadComponent: () => import('@features/importaciones/tramite/consultas-tramite/consultas-tramite.component')}
+      {
+        path: 'carga-contenedores',
+        loadComponent: () => import('@features/importaciones/tramite/carga-tramite/carga-tramite.component')
+      },
+      {
+        path: 'consultas',
+        loadComponent: () => import('@features/importaciones/tramite/consultas-tramite/consultas-tramite.component')
+      }
     ]
   },
   {
     path: 'revision',
     children: [
-      {path: 'contenedor', loadComponent: () => import('@features/importaciones/revision/revision-tramite/revision-tramite.component')},
-      {path: 'validar', loadComponent: () => import('@features/importaciones/validar/validacion-tramite/validacion-tramite.component')}
+      {
+        path: 'contenedor',
+        loadComponent: () => import('@features/importaciones/revision/revision-tramite/revision-tramite.component')
+      },
+      {
+        path: 'validar',
+        loadComponent: () => import('@features/importaciones/validar/validacion-tramite/validacion-tramite.component')
+      }
     ]
   },
   {
     path: 'muestra',
     children: [
-      {path: 'envio-muestras', loadComponent: () => import('@features/importaciones/muestras/muestra/muestra.component')}
+      {
+        path: 'envio-muestras',
+        loadComponent: () => import('@features/importaciones/muestras/muestra/muestra.component')
+      }
     ]
   },
   {path: '', redirectTo: 'dashboard', pathMatch: "full"},

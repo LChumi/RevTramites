@@ -33,23 +33,23 @@ import {CalendarModule} from 'primeng/calendar';
   templateUrl: './salida-buque-form.component.html',
   styles: ``
 })
-export class SalidaBuqueFormComponent implements OnInit{
+export class SalidaBuqueFormComponent implements OnInit {
 
-  private fb        = inject(FormBuilder);
-  private service   = inject(SalidaBuqueService);
+  private fb = inject(FormBuilder);
+  private service = inject(SalidaBuqueService);
 
   procesoCotizacionId = input.required<string>();
-  puertos             = input<PuertoEmbarque[]>([]);
-  consignatarios      = input<Consignatario[]>([]);
+  puertos = input<PuertoEmbarque[]>([]);
+  consignatarios = input<Consignatario[]>([]);
   buqueEditar = input<SalidaBuque | null>(null);
   modoEdicion = input<boolean>(false);
 
-  guardado  = output<SalidaBuque>();
-  cerrar    = output<void>();
+  guardado = output<SalidaBuque>();
+  cerrar = output<void>();
 
-  abierto   = signal(false);
+  abierto = signal(false);
   guardando = signal(false);
-  error     = signal<string | null>(null);
+  error = signal<string | null>(null);
 
   form!: FormGroup;
 
@@ -59,21 +59,21 @@ export class SalidaBuqueFormComponent implements OnInit{
 
   buildForm(): void {
     this.form = this.fb.group({
-      puertoEmbarqueId:     ['', Validators.required],
+      puertoEmbarqueId: ['', Validators.required],
       puertoEmbarqueNombre: [''],           // se rellena automáticamente
-      fechaDesde:           ['', Validators.required],
-      fechaHasta:           ['', Validators.required],
-      diasLibres:           [0, [Validators.required, Validators.min(0)]],
-      activo:               [true],
-      cotizacion:         this.buildCotizacion()
+      fechaDesde: ['', Validators.required],
+      fechaHasta: ['', Validators.required],
+      diasLibres: [0, [Validators.required, Validators.min(0)]],
+      activo: [true],
+      cotizacion: this.buildCotizacion()
     });
   }
 
   buildCotizacion(): FormGroup {
     return this.fb.group({
-      consignatarioId:     ['', Validators.required],
+      consignatarioId: ['', Validators.required],
       nombreConsignatario: [''],
-      opciones:            this.fb.array([]),
+      opciones: this.fb.array([]),
     });
   }
 
@@ -83,12 +83,12 @@ export class SalidaBuqueFormComponent implements OnInit{
 
   onPuertoChange(id: string): void {
     const puerto = this.puertos().find(p => p.id === id);
-    this.form.patchValue({ puertoEmbarqueNombre: puerto?.nombre ?? '' });
+    this.form.patchValue({puertoEmbarqueNombre: puerto?.nombre ?? ''});
   }
 
   onConsignatarioChange(id: string): void {
     const c = this.consignatarios().find(c => c.id === id);
-    this.cotizacion.patchValue({ nombreConsignatario: c?.nombre ?? '' });
+    this.cotizacion.patchValue({nombreConsignatario: c?.nombre ?? ''});
   }
 
   abrir(): void {
@@ -131,22 +131,22 @@ export class SalidaBuqueFormComponent implements OnInit{
     const payload: SalidaBuque = buque
       ? {
         ...buque,
-        fechaDesde:    new Date(raw.fechaDesde),
-        fechaHasta:    new Date(raw.fechaHasta),
-        diasLibres:    raw.diasLibres,
+        fechaDesde: new Date(raw.fechaDesde),
+        fechaHasta: new Date(raw.fechaHasta),
+        diasLibres: raw.diasLibres,
       }
       : {
-      procesoCotizacionId:  this.procesoCotizacionId(),
-      puertoEmbarqueNombre: raw.puertoEmbarqueNombre,
-      fechaDesde:           new Date(raw.fechaDesde),
-      fechaHasta:           new Date(raw.fechaHasta),
-      diasLibres:           raw.diasLibres,
-      activo:               raw.activo,
-      cotizacion:           raw.cotizacion as CotizacionConsignatario,
-      creadoEn:             new Date(),
-      actualizadoEn:        new Date(),
-      id:                   null,
-    };
+        procesoCotizacionId: this.procesoCotizacionId(),
+        puertoEmbarqueNombre: raw.puertoEmbarqueNombre,
+        fechaDesde: new Date(raw.fechaDesde),
+        fechaHasta: new Date(raw.fechaHasta),
+        diasLibres: raw.diasLibres,
+        activo: raw.activo,
+        cotizacion: raw.cotizacion as CotizacionConsignatario,
+        creadoEn: new Date(),
+        actualizadoEn: new Date(),
+        id: null,
+      };
 
     const request$ = buque
       ? this.service.updateBuque(buque.id, payload)

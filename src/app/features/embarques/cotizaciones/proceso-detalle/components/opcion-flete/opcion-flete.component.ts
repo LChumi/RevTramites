@@ -54,7 +54,7 @@ import {FleteValidadoService} from '@services/embarque/flete-validado.service';
   templateUrl: './opcion-flete.component.html',
   styles: ``
 })
-export default class OpcionFleteComponent implements OnInit{
+export default class OpcionFleteComponent implements OnInit {
 
   private route = inject(ActivatedRoute)
   private router = inject(Router)
@@ -87,7 +87,7 @@ export default class OpcionFleteComponent implements OnInit{
 
   form!: FormGroup;
 
-  totales = { subtotalFlete: 0, subtotalGastos: 0, ivaBl: 0, ivaHandling: 0, total: 0 }
+  totales = {subtotalFlete: 0, subtotalGastos: 0, ivaBl: 0, ivaHandling: 0, total: 0}
 
   ngOnInit() {
     this.idProcesoCotizacion = this.route.snapshot.paramMap.get('id')
@@ -116,7 +116,7 @@ export default class OpcionFleteComponent implements OnInit{
   getData(id: string) {
     this.procesoService.getById(id).subscribe({
       next: value => {
-        if (value){
+        if (value) {
           this.cotizacion = value
           this.getSalidas(id)
         }
@@ -129,13 +129,19 @@ export default class OpcionFleteComponent implements OnInit{
     this.salidaBuque.listByProcesoCotizacion(idProceso).subscribe({
       next: (value: SalidaBuque[]) => {
         const salida = value.find(s => s.id === this.idBuque)
-        if (!salida) { this.return(); return }
+        if (!salida) {
+          this.return();
+          return
+        }
         this.buque = salida
         this.opciones = salida.cotizacion?.opciones ?? []
         this.idCotizacionConsignatario = salida.cotizacion.id;
         this.loading = false
       },
-      error: () => { this.loading = false; this.return() }
+      error: () => {
+        this.loading = false;
+        this.return()
+      }
     })
   }
 
@@ -146,7 +152,7 @@ export default class OpcionFleteComponent implements OnInit{
       this.calcular()
     } else {
       this.buildForm()
-      this.totales = { subtotalFlete: 0, subtotalGastos: 0, ivaBl: 0, ivaHandling: 0, total: 0 }
+      this.totales = {subtotalFlete: 0, subtotalGastos: 0, ivaBl: 0, ivaHandling: 0, total: 0}
     }
     this.dialogVisible = true
   }
@@ -183,7 +189,7 @@ export default class OpcionFleteComponent implements OnInit{
     const subtotalGastos = gastosBl + ivaBl + handling + ivaHandling
     const total = subtotalFlete + subtotalGastos
 
-    this.totales = { subtotalFlete, subtotalGastos, ivaBl, ivaHandling, total }
+    this.totales = {subtotalFlete, subtotalGastos, ivaBl, ivaHandling, total}
   }
 
   guardar() {
@@ -202,12 +208,12 @@ export default class OpcionFleteComponent implements OnInit{
     request$.subscribe({
       next: (salidaActualizada: SalidaBuque) => {
         this.opciones = salidaActualizada?.cotizacion.opciones ?? []
-        this.messageService.add({ severity: 'success', summary: 'Guardado', detail: 'Opción guardada correctamente' })
+        this.messageService.add({severity: 'success', summary: 'Guardado', detail: 'Opción guardada correctamente'})
         this.cerrarDialog()
         this.guardando = false
       },
       error: () => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo guardar la opción' })
+        this.messageService.add({severity: 'error', summary: 'Error', detail: 'No se pudo guardar la opción'})
         this.guardando = false
       }
     })
@@ -231,17 +237,21 @@ export default class OpcionFleteComponent implements OnInit{
     this.salidaBuque.eliminarOpcion(this.idBuque, this.idCotizacionConsignatario, opcion.id).subscribe({
       next: (salidaActualizada: SalidaBuque) => {
         this.opciones = salidaActualizada?.cotizacion.opciones ?? []
-        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Opción eliminada' })
+        this.messageService.add({severity: 'success', summary: 'Eliminado', detail: 'Opción eliminada'})
       },
       error: () => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar la opción' })
+        this.messageService.add({severity: 'error', summary: 'Error', detail: 'No se pudo eliminar la opción'})
       }
     })
   }
 
   return() {
     this.router.navigate(['erp/embarques/cotizaciones']).then(() => {
-      this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'El identificador no se encuentra disponible' })
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Advertencia',
+        detail: 'El identificador no se encuentra disponible'
+      })
     })
   }
 
@@ -281,7 +291,8 @@ export default class OpcionFleteComponent implements OnInit{
       next: (resultado) => {
         this.validando = false;
         this.messageService.add({severity: 'info', summary: 'Validado', detail: `${resultado.nombreConsignatario}`})
-        this.router.navigate(['erp', 'embarques', 'tramites']).then(r => {});
+        this.router.navigate(['erp', 'embarques', 'tramites']).then(r => {
+        });
       },
       error: () => {
         this.validando = false;

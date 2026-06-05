@@ -8,20 +8,19 @@
 
           <p-card header="Nuevo Puerto">
             <div class="flex flex-column gap-3">
-
-                            <span class="p-float-label">
-                                <input
-                                  pInputText
-                                  id="nombrePuerto"
-                                  class="w-full uppercase"
-                                  autocomplete="off"
-                                  autocapitalize="characters"
-                                  [(ngModel)]="nombrePuerto"
-                                  (keydown.enter)="crearPuerto()">
-                                <label for="nombrePuerto">
-                                    Nombre del puerto
-                                </label>
-                            </span>
+              <span class="p-float-label">
+                  <input
+                    pInputText
+                    id="nombrePuerto"
+                    class="w-full uppercase"
+                    autocomplete="off"
+                    autocapitalize="characters"
+                    [(ngModel)]="nombrePuerto"
+                    (keydown.enter)="crearPuerto()">
+                  <label for="nombrePuerto">
+                      Nombre del puerto
+                  </label>
+              </span>
 
               <button
                 pButton
@@ -73,20 +72,19 @@
         <div class="col-12 md:col-4">
           <p-card header="Nuevo Consignatario">
             <div class="flex flex-column gap-3">
-
-                            <span class="p-float-label">
-                                <input
-                                  pInputText
-                                  id="nombreConsignatario"
-                                  class="w-full uppercase"
-                                  autocapitalize="characters"
-                                  autocomplete="off"
-                                  [(ngModel)]="nombreConsignatario"
-                                  (keydown.enter)="crearConsignatario()">
-                                <label for="nombreConsignatario">
-                                    Nombre del consignatario
-                                </label>
-                            </span>
+              <span class="p-float-label">
+                  <input
+                    pInputText
+                    id="nombreConsignatario"
+                    class="w-full uppercase"
+                    autocapitalize="characters"
+                    autocomplete="off"
+                    [(ngModel)]="nombreConsignatario"
+                    (keydown.enter)="crearConsignatario()">
+                  <label for="nombreConsignatario">
+                      Nombre del consignatario
+                  </label>
+              </span>
 
               <button
                 pButton

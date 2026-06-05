@@ -1,4 +1,4 @@
-<p-toast />
+<p-toast/>
 <p-confirmDialog key="eliminarDialog"/>
 <p-confirmDialog key="validacionDialog"/>
 <div class="surface-ground min-h-screen p-4">
@@ -157,7 +157,7 @@
                     size="small"
                     pTooltip="Validar"
                     [loading]="validando"
-                    (onClick)="confirmarValidacion(op)" />
+                    (onClick)="confirmarValidacion(op)"/>
                 </div>
               </td>
             </tr>
@@ -209,7 +209,7 @@
         <p-inputNumber
           formControlName="espacioM3"
           [minFractionDigits]="0"
-          styleClass="w-full" />
+          styleClass="w-full"/>
       </div>
       <div class="field col-4">
         <label class="text-sm text-color-secondary block mb-1">Puerto destino</label>
@@ -224,7 +224,7 @@
       </div>
     </div>
 
-    <p-divider />
+    <p-divider/>
 
     <!-- Fila 2: Componentes de flete -->
     <p class="text-sm font-medium text-color-secondary mb-2">Componentes de flete</p>
@@ -235,7 +235,7 @@
           formControlName="flete"
           mode="currency" currency="USD" locale="en-US"
           styleClass="w-full"
-          (onInput)="calcular()" />
+          (onInput)="calcular()"/>
       </div>
       <div class="field col-4">
         <label class="text-sm text-color-secondary block mb-1">THC</label>
@@ -243,7 +243,7 @@
           formControlName="thc"
           mode="currency" currency="USD" locale="en-US"
           styleClass="w-full"
-          (onInput)="calcular()" />
+          (onInput)="calcular()"/>
       </div>
       <div class="field col-4">
         <label class="text-sm text-color-secondary block mb-1">IMO</label>
@@ -251,11 +251,11 @@
           formControlName="imo"
           mode="currency" currency="USD" locale="en-US"
           styleClass="w-full"
-          (onInput)="calcular()" />
+          (onInput)="calcular()"/>
       </div>
     </div>
 
-    <p-divider />
+    <p-divider/>
 
     <!-- Fila 3: Gastos locales -->
     <p class="text-sm font-medium text-color-secondary mb-2">Gastos locales</p>
@@ -266,7 +266,7 @@
           formControlName="gastosBl"
           mode="currency" currency="USD" locale="en-US"
           styleClass="w-full"
-          (onInput)="calcular()" />
+          (onInput)="calcular()"/>
       </div>
       <div class="field col-4">
         <label class="text-sm text-color-secondary block mb-1">Handling contenedor</label>
@@ -274,7 +274,7 @@
           formControlName="handlingContenedor"
           mode="currency" currency="USD" locale="en-US"
           styleClass="w-full"
-          (onInput)="calcular()" />
+          (onInput)="calcular()"/>
       </div>
       <div class="field col-4">
         <label class="text-sm text-color-secondary block mb-1">% IVA</label>
@@ -282,7 +282,7 @@
           formControlName="porcentajeIva"
           [minFractionDigits]="0" [maxFractionDigits]="2"
           styleClass="w-full"
-          (onInput)="calcular()" />
+          (onInput)="calcular()"/>
         <small class="text-color-secondary">Ej: 0.15 = 15%</small>
       </div>
       <div class="field col-4">
@@ -297,7 +297,7 @@
   </form>
 
   <!-- Totales calculados -->
-  <p-divider />
+  <p-divider/>
   <div class="grid">
     <div class="col-2 flex flex-column gap-1">
       <span class="text-xs text-color-secondary uppercase">Subtotal flete</span>
@@ -323,9 +323,9 @@
 
   <ng-template pTemplate="footer">
     <p-button label="Cancelar" [text]="true" severity="secondary"
-              (onClick)="cerrarDialog()" [disabled]="guardando" />
+              (onClick)="cerrarDialog()" [disabled]="guardando"/>
     <p-button label="Guardar" icon="pi pi-check" [loading]="guardando"
-              [disabled]="form.invalid" (onClick)="guardar()" />
+              [disabled]="form.invalid" (onClick)="guardar()"/>
   </ng-template>
 </p-dialog>
 
@@ -340,7 +340,7 @@
     <div class="flex align-items-center gap-2">
       <i class="pi pi-check text-green-500 text-2xl"></i>
       <span>¿Está seguro de validar el Flete por un valor de
-        <strong>${{opcionSeleccionada?.total}}</strong>?
+        <strong>${{ opcionSeleccionada?.total }}</strong>?
       </span>
     </div>
 

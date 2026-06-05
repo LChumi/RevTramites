@@ -26,12 +26,12 @@ import {finalize} from 'rxjs';
 })
 export default class ReportesArchivosComponent {
 
-  codigo: string ='';
-  downloading=false;
+  codigo: string = '';
+  downloading = false;
 
-  private readonly reportService      = inject(ReportService);
+  private readonly reportService = inject(ReportService);
   private readonly fileHandlerService = inject(FileHandlerService);
-  private readonly messageService     = inject(MessageService);
+  private readonly messageService = inject(MessageService);
 
   descargarPdf(): void {
     this.descargar('pdf');
