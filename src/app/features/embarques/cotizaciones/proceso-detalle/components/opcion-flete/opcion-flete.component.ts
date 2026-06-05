@@ -16,13 +16,16 @@ import {ToastModule} from 'primeng/toast';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {TableModule} from 'primeng/table';
 import {TooltipModule} from 'primeng/tooltip';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {InputTextModule} from 'primeng/inputtext';
 import {OpcionFlete} from '@models/embarque/opcion-flete';
 import {DropdownModule} from 'primeng/dropdown';
 import {PUERTOS_DESTINO_MOCK, TIPOS_CONTENEDOR_MOCK} from '@mocks/embarque';
 import {CardModule} from 'primeng/card';
+import {ProcesoCotizacion} from '@models/embarque/proceso-cotizacion';
+import {FleteValidacionRequest} from '@models/embarque/flete-validacion-request';
+import {FleteValidadoService} from '@services/embarque/flete-validado.service';
 
 @Component({
   selector: 'app-opcion-flete',
@@ -45,7 +48,8 @@ import {CardModule} from 'primeng/card';
     InputTextModule,
     DropdownModule,
     DatePipe,
-    CardModule
+    CardModule,
+    FormsModule
   ],
   templateUrl: './opcion-flete.component.html',
   styles: ``
@@ -59,16 +63,25 @@ export default class OpcionFleteComponent implements OnInit{
   private procesoService = inject(ProcesoCotizacionService)
   private salidaBuque = inject(SalidaBuqueService)
   private fb = inject(FormBuilder)
+  private fleteService = inject(FleteValidadoService)
+
+  private usrId = sessionStorage.getItem('username') ?? '';
+
+  cotizacion: ProcesoCotizacion | null = null
+  buque: SalidaBuque | null = null
+  opcionEditando: OpcionFlete | null = null
+  opciones: OpcionFlete[] = []
+  opcionSeleccionada: OpcionFlete | null = null;
 
   idProcesoCotizacion: string | null = null
   idBuque: string | null = null
   idCotizacionConsignatario: string = ''
-  opciones: OpcionFlete[] = []
-  buque: SalidaBuque | null = null
   loading = false
   dialogVisible = false
   guardando = false
-  opcionEditando: OpcionFlete | null = null
+  validando = false
+  mostrarDialogValidacion: boolean = false;
+  motivoValidacion: string = '';
   tiposContenedor = TIPOS_CONTENEDOR_MOCK
   puertosDestinos = PUERTOS_DESTINO_MOCK
 
@@ -102,7 +115,12 @@ export default class OpcionFleteComponent implements OnInit{
 
   getData(id: string) {
     this.procesoService.getById(id).subscribe({
-      next: value => value ? this.getSalidas(id) : this.return()
+      next: value => {
+        if (value){
+          this.cotizacion = value
+          this.getSalidas(id)
+        }
+      }
     })
   }
 
@@ -199,6 +217,7 @@ export default class OpcionFleteComponent implements OnInit{
     this.confirmationService.confirm({
       message: `¿Eliminar la opción "${opcion.tipoContenedor} - ${opcion.puertoDestino}"?`,
       header: 'Confirmar eliminación',
+      key: 'eliminarDialog',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Eliminar',
       rejectLabel: 'Cancelar',
@@ -224,5 +243,49 @@ export default class OpcionFleteComponent implements OnInit{
     this.router.navigate(['erp/embarques/cotizaciones']).then(() => {
       this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'El identificador no se encuentra disponible' })
     })
+  }
+
+  confirmarValidacion(opcion: OpcionFlete) {
+    this.opcionSeleccionada = opcion;
+    this.motivoValidacion = '';       // limpia el input cada vez
+    this.mostrarDialogValidacion = true;
+  }
+
+  confirmarYValidar() {
+    if (this.opcionSeleccionada) {
+      this.validarOpcion(this.opcionSeleccionada, this.motivoValidacion || '');
+    }
+    this.mostrarDialogValidacion = false;
+  }
+
+  cancelarValidacion() {
+    this.mostrarDialogValidacion = false;
+    this.opcionSeleccionada = null;
+    this.motivoValidacion = '';
+  }
+
+  validarOpcion(opcion: OpcionFlete, motivo?: string) {
+    if (!this.cotizacion || !this.buque) return;
+
+    const request: FleteValidacionRequest = {
+      proceso: this.cotizacion,
+      salida: this.buque,
+      consignatario: this.buque.cotizacion.nombreConsignatario,
+      opcion: opcion,
+      usuario: this.usrId,
+      observacion: motivo
+    };
+
+    this.validando = true;
+    this.fleteService.validarFlete(request).subscribe({
+      next: (resultado) => {
+        this.validando = false;
+        this.messageService.add({severity: 'info', summary: 'Validado', detail: `${resultado.nombreConsignatario}`})
+        this.router.navigate(['erp', 'embarques', 'tramites']).then(r => {});
+      },
+      error: () => {
+        this.validando = false;
+      }
+    });
   }
 }

@@ -9,4 +9,5 @@ export interface FleteValidacionRequest {
   consignatario: string;
   opcion:        OpcionFlete;
   usuario:       string;
+  observacion?:   string;
 }

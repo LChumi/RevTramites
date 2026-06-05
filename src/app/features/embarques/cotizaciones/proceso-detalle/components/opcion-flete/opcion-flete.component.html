@@ -1,5 +1,6 @@
 <p-toast />
-<p-confirmDialog />
+<p-confirmDialog key="eliminarDialog"/>
+<p-confirmDialog key="validacionDialog"/>
 <div class="surface-ground min-h-screen p-4">
   <div class="max-w-7xl mx-auto">
 
@@ -148,6 +149,15 @@
                     pTooltip="Eliminar"
                     (onClick)="confirmarEliminar(op)">
                   </p-button>
+                  <p-button
+                    icon="pi pi-check"
+                    rounded
+                    text
+                    severity="success"
+                    size="small"
+                    pTooltip="Validar"
+                    [loading]="validando"
+                    (onClick)="confirmarValidacion(op)" />
                 </div>
               </td>
             </tr>
@@ -316,5 +326,47 @@
               (onClick)="cerrarDialog()" [disabled]="guardando" />
     <p-button label="Guardar" icon="pi pi-check" [loading]="guardando"
               [disabled]="form.invalid" (onClick)="guardar()" />
+  </ng-template>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="mostrarDialogValidacion"
+  [modal]="true"
+  header="Validar Flete"
+  [style]="{width: '450px'}"
+  [closable]="false">
+
+  <div class="flex flex-column gap-3">
+    <div class="flex align-items-center gap-2">
+      <i class="pi pi-check text-green-500 text-2xl"></i>
+      <span>¿Está seguro de validar el Flete por un valor de
+        <strong>${{opcionSeleccionada?.total}}</strong>?
+      </span>
+    </div>
+
+    <div class="flex flex-column gap-1">
+      <label for="motivo" class="font-medium">
+        Motivo <span class="text-400 font-normal">(opcional)</span>
+      </label>
+      <input
+        id="motivo"
+        type="text"
+        pInputText
+        [(ngModel)]="motivoValidacion"
+        placeholder="Ingrese un motivo si lo desea..."
+        class="w-full"/>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Cancelar"
+      icon="pi pi-times"
+      severity="secondary"
+      (onClick)="cancelarValidacion()"/>
+    <p-button
+      label="Validar"
+      icon="pi pi-check"
+      (onClick)="confirmarYValidar()"/>
   </ng-template>
 </p-dialog>
