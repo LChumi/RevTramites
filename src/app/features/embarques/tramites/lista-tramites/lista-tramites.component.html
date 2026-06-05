@@ -36,6 +36,7 @@
             Proveedor <p-sortIcon field="proveedorId"/>
           </th>
           <th style="min-width:110px" class="white-space-nowrap text-xs font-bold">N° B/L</th>
+          <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold">Consignatario</th>
           <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold" pSortableColumn="fechaEmbarque">
             Fecha Embarque <p-sortIcon field="fechaEmbarque"/>
           </th>
@@ -73,6 +74,7 @@
             {{ cot.proveedorId }}
           </td>
           <td style="min-width:110px" class="white-space-nowrap">{{ cot.numeroBL }}</td>
+          <td style="min-width:110px" class="white-space-nowrap">{{ cot.consignatario }}</td>
           <td style="min-width:100px" class="text-center white-space-nowrap">
             {{ cot.fechaEmbarque | date:'dd/MM/yyyy' }}
           </td>

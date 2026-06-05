@@ -21,4 +21,8 @@ export class FleteValidadoService {
   anularFlete(request: FleteAnularRequest): Observable<void>{
     return this.http.put<void>(`${this.baseUrl}/anular`, request);
   }
+
+  getAll(){
+    return this.http.get<FleteValidado[]>(`${this.baseUrl}/list`);
+  }
 }

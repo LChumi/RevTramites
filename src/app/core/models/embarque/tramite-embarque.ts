@@ -7,6 +7,7 @@ export interface TramiteEmbarque {
   numeroBl:               string;
   cantidadContenedores:   string;
   fleteValidadoId:        string;
+  consignatario:          string;
   fechaEmbarque:          Date;
   fechaArribo:            Date;
   diasLibres:             number;
