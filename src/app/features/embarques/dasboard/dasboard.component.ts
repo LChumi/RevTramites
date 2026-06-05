@@ -11,6 +11,9 @@ import {TramiteEmbarque} from '@models/embarque/tramite-embarque';
 import {TramiteEmbarqueService} from '@services/embarque/tramite-embarque.service';
 import {FleteValidadoService} from '@services/embarque/flete-validado.service';
 import {FormsModule} from '@angular/forms';
+import {forkJoin} from 'rxjs';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {SkeletonModule} from 'primeng/skeleton';
 
 export interface TramiteConFlete {
   tramite: TramiteEmbarque;
@@ -29,7 +32,9 @@ export interface TramiteConFlete {
     CurrencyPipe,
     DatePipe,
     BadgeModule,
-    FormsModule
+    FormsModule,
+    ProgressSpinnerModule,
+    SkeletonModule
   ],
   templateUrl: './dasboard.component.html',
   styles: ``
@@ -39,15 +44,16 @@ export default class DasboardComponent implements OnInit {
   private tramiteService = inject(TramiteEmbarqueService)
   private fleteService = inject(FleteValidadoService)
 
-  private tramites : TramiteEmbarque[] =[]
-  private fletesValidados: FleteValidado[] =[]
+  private tramites: TramiteEmbarque[] = []
+  private fletesValidados: FleteValidado[] = []
+  loading = false
 
   kpis = [
-    { label: 'Trámites totales',      value: '0',      sub: 'registrados' },
-    { label: 'Fletes vigentes',        value: '0',      sub: 'activos' },
-    { label: 'Total flete promedio',   value: '$0',     sub: 'USD por BL' },
-    { label: 'Contenedores',           value: '0',      sub: 'embarcados' },
-    { label: 'Días libres prom.',      value: '0',      sub: 'días en puerto' },
+    {label: 'Trámites totales', value: '0', sub: 'registrados'},
+    {label: 'Fletes vigentes', value: '0', sub: 'activos'},
+    {label: 'Total flete promedio', value: '$0', sub: 'USD por BL'},
+    {label: 'Contenedores', value: '0', sub: 'embarcados'},
+    {label: 'Días libres prom.', value: '0', sub: 'días en puerto'},
   ];
   rutas: any[] = []
   tramitesConFlete: TramiteConFlete[] = [];
@@ -64,21 +70,27 @@ export default class DasboardComponent implements OnInit {
     this.getData()
   }
 
-  getData(){
-    this.tramiteService.list().subscribe({
-      next: value => {
-        this.tramites = value
-        this.fleteService.getAll().subscribe({
-          next: value => {
-            this.fletesValidados = value
-            this.buildDashboard()
-          }
-        })
+  getData() {
+    this.loading = true;
+
+    forkJoin({
+      tramites: this.tramiteService.list(),
+      fletes: this.fleteService.getAll()
+    }).subscribe({
+      next: ({tramites, fletes}) => {
+        this.tramites = tramites;
+        this.fletesValidados = fletes;
+
+        this.buildDashboard();
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
       }
-    })
+    });
   }
 
-  buildDashboard(){
+  buildDashboard() {
     this.buildRutas()
     this.buildTramitesConFlete();
     this.buildKPIs();
@@ -140,7 +152,7 @@ export default class DasboardComponent implements OnInit {
 
   private buildKPIs(): void {
     const vigentes = this.fletesValidados.filter(f => f.estado === 'VIGENTE');
-    const totales  = vigentes.map(f => f.total);
+    const totales = vigentes.map(f => f.total);
     const promedio = totales.length
       ? totales.reduce((a, b) => a + b, 0) / totales.length
       : 0;
@@ -156,11 +168,15 @@ export default class DasboardComponent implements OnInit {
     );
 
     this.kpis = [
-      { label: 'Trámites totales',    value: String(this.tramites.length),     sub: 'registrados' },
-      { label: 'Fletes vigentes',      value: String(vigentes.length),          sub: 'activos' },
-      { label: 'Total flete promedio', value: '$' + promedio.toLocaleString('en', { maximumFractionDigits: 0 }), sub: 'USD por BL' },
-      { label: 'Contenedores',         value: String(contenedores),             sub: 'embarcados' },
-      { label: 'Días libres prom.',    value: String(diasProm),                 sub: 'días en puerto' },
+      {label: 'Trámites totales', value: String(this.tramites.length), sub: 'registrados'},
+      {label: 'Fletes vigentes', value: String(vigentes.length), sub: 'activos'},
+      {
+        label: 'Total flete promedio',
+        value: '$' + promedio.toLocaleString('en', {maximumFractionDigits: 0}),
+        sub: 'USD por BL'
+      },
+      {label: 'Contenedores', value: String(contenedores), sub: 'embarcados'},
+      {label: 'Días libres prom.', value: String(diasProm), sub: 'días en puerto'},
     ];
   }
 
@@ -187,16 +203,16 @@ export default class DasboardComponent implements OnInit {
     this.barOptions = {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
+      plugins: {legend: {display: false}},
       scales: {
-        x: { ticks: { font: { size: 10 } } },
-        y: { ticks: { callback: (v: number) => '$' + v.toLocaleString(), font: { size: 10 } } },
+        x: {ticks: {font: {size: 10}}},
+        y: {ticks: {callback: (v: number) => '$' + v.toLocaleString(), font: {size: 10}}},
       },
     };
 
     // ── Doughnut: estados ────────────────────────────────────
-    const vigentes  = this.fletesValidados.filter(f => f.estado === 'VIGENTE').length;
-    const anulados  = this.fletesValidados.filter(f => f.estado === 'ANULADO').length;
+    const vigentes = this.fletesValidados.filter(f => f.estado === 'VIGENTE').length;
+    const anulados = this.fletesValidados.filter(f => f.estado === 'ANULADO').length;
     const pendientes = this.fletesValidados.length - vigentes - anulados;
 
     this.doughnutData = {
@@ -212,16 +228,16 @@ export default class DasboardComponent implements OnInit {
       responsive: true,
       maintainAspectRatio: false,
       cutout: '62%',
-      plugins: { legend: { display: false } },
+      plugins: {legend: {display: false}},
     };
 
     // ── Polar: componentes de costo ──────────────────────────
-    const sumaFlete    = this.fletesValidados.filter(f => f.estado === 'VIGENTE')
-      .reduce((a, f) => a + f.flete,                0);
-    const sumaThc      = this.fletesValidados.filter(f => f.estado === 'VIGENTE')
-      .reduce((a, f) => a + f.thc,                  0);
-    const sumaGastos   = this.fletesValidados.filter(f => f.estado === 'VIGENTE')
-      .reduce((a, f) => a + f.gastosBlTotal,        0);
+    const sumaFlete = this.fletesValidados.filter(f => f.estado === 'VIGENTE')
+      .reduce((a, f) => a + f.flete, 0);
+    const sumaThc = this.fletesValidados.filter(f => f.estado === 'VIGENTE')
+      .reduce((a, f) => a + f.thc, 0);
+    const sumaGastos = this.fletesValidados.filter(f => f.estado === 'VIGENTE')
+      .reduce((a, f) => a + f.gastosBlTotal, 0);
     const sumaHandling = this.fletesValidados.filter(f => f.estado === 'VIGENTE')
       .reduce((a, f) => a + f.handlingContenedorTotal, 0);
 
@@ -230,25 +246,25 @@ export default class DasboardComponent implements OnInit {
       datasets: [{
         data: [sumaFlete, sumaThc, sumaGastos, sumaHandling],
         backgroundColor: ['#7F77DD99', '#EF9F2799', '#1D9E7599', '#D4537E99'],
-        borderColor:     ['#7F77DD',   '#EF9F27',   '#1D9E75',   '#D4537E'],
+        borderColor: ['#7F77DD', '#EF9F27', '#1D9E75', '#D4537E'],
         borderWidth: 1,
       }],
     };
     this.polarOptions = {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: { r: { ticks: { display: false } } },
+      plugins: {legend: {display: false}},
+      scales: {r: {ticks: {display: false}}},
     };
   }
 
   /** Devuelve la severidad de p-tag según estado del trámite */
   getEstadoSeverity(estado: string): 'success' | 'info' | 'warning' | 'danger' | 'secondary' {
     const map: Record<string, 'success' | 'info' | 'warning' | 'danger' | 'secondary'> = {
-      VIGENTE:    'success',
-      EMBARCADO:  'info',
-      PENDIENTE:  'warning',
-      ANULADO:    'danger',
+      VIGENTE: 'success',
+      EMBARCADO: 'info',
+      PENDIENTE: 'warning',
+      ANULADO: 'danger',
     };
     return map[estado] ?? 'secondary';
   }
