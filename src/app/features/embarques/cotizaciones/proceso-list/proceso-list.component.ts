@@ -18,6 +18,7 @@ import {TagModule} from 'primeng/tag';
 import {CardModule} from 'primeng/card';
 import {EMPRESA_MOCK, REFERENCIAS_MOCK} from '@mocks/embarque';
 import {ActivatedRoute, Router} from '@angular/router';
+import {getEmpresaNombre} from '@utils/embarque-utils';
 
 @Component({
   selector: 'app-proceso-list',
@@ -64,6 +65,7 @@ export default class ProcesoListComponent implements OnInit {
     this.procesoService.list().subscribe({
       next: value => {
         this.cotizaciones = value
+        console.log(this.cotizaciones)
       }
     })
   }
@@ -101,11 +103,6 @@ export default class ProcesoListComponent implements OnInit {
       default:
         return 'contrast';
     }
-  }
-
-  getEmpresaNombre(code: number): string {
-    const empresa = EMPRESA_MOCK.find(e => e.code === code);
-    return empresa ? empresa.name : 'Desconocida';
   }
 
   nuevoProceso() {
@@ -160,4 +157,5 @@ export default class ProcesoListComponent implements OnInit {
     return true;
   }
 
+  protected readonly getEmpresaNombre = getEmpresaNombre;
 }

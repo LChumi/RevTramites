@@ -15,6 +15,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {DialogModule} from 'primeng/dialog';
 import {MessageService} from 'primeng/api';
+import {getEmpresaNombre} from '@utils/embarque-utils';
 
 @Component({
   selector: 'app-lista-tramites',
@@ -148,4 +149,5 @@ export default class ListaTramitesComponent implements OnInit {
     return map[estado?.toUpperCase()] ?? 'info';
   }
 
+  protected readonly getEmpresaNombre = getEmpresaNombre;
 }

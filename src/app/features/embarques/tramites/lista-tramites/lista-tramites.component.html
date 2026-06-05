@@ -70,7 +70,7 @@
             <p-tag [value]="cot.ordenLlegada?.toString()" severity="info"/>
           </td>
           <td style="min-width:140px" class="white-space-nowrap font-medium text-900">
-            {{ cot.empresaId }}
+            {{ getEmpresaNombre(cot.empresaId) }}
           </td>
           <td style="min-width:110px" class="text-center white-space-nowrap">
             <span class="font-semibold text-primary">{{ cot.numeroTramite }}</span>
