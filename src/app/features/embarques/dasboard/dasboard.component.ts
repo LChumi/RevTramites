@@ -14,11 +14,7 @@ import {FormsModule} from '@angular/forms';
 import {forkJoin} from 'rxjs';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {SkeletonModule} from 'primeng/skeleton';
-
-export interface TramiteConFlete {
-  tramite: TramiteEmbarque;
-  flete: FleteValidado;
-}
+import {TramiteConFlete} from '@mocks/embarque';
 
 @Component({
   selector: 'app-dasboard',

@@ -1,3 +1,6 @@
+import {FleteValidado} from '@models/embarque/flete-validado';
+import {TramiteEmbarque} from '@models/embarque/tramite-embarque';
+
 export const REFERENCIAS_MOCK = [
   {name: 'TRAMITE'},
   {name: 'BL'}
@@ -28,3 +31,8 @@ export const ESTADOS_EMBARQUE_MOCK = [
   { label:'Finalizado', value:'FINALIZADO'},
   { label:'Cancelado', value:'CANCELADO'},
 ]
+
+export interface TramiteConFlete {
+  tramite: TramiteEmbarque;
+  flete: FleteValidado;
+}
