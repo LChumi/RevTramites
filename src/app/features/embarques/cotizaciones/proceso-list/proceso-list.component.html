@@ -79,20 +79,22 @@
             <td class="text-center">
               <div class="flex justify-content-center gap-1">
                 <button
-                  pButton pRipple
+                  pButton
+                  pRipple
                   icon="pi pi-pencil"
-                  severity="warning"
-                  [rounded]="true"
-                  [outlined]="true"
+                  [outlined]="false"
+                  [rounded]="false"
+                  class="p-button-text p-button-plain"
                   size="small"
                   (click)="editarCotizacion(cot)"
                   pTooltip="Editar"
                   tooltipPosition="left">
                 </button>
+
                 <button
                   pButton pRipple
-                  icon="pi pi-eye"
-                  severity="info"
+                  icon="pi pi-chevron-right"
+                  severity="help"
                   [rounded]="true"
                   [outlined]="true"
                   size="small"
