@@ -17,7 +17,7 @@
     <!-- KPI CARDS -->
     <div class="grid mb-4">
       @for (kpi of kpis; track $index) {
-        <div class="col-12 md:col-6 lg:col-2">
+        <div class="col-6 sm:col-4 md:col-4 lg:col-2">
           <div class="surface-card border-1 border-round-lg border-200 p-3 text-center">
             <div class="text-xs text-color-secondary uppercase mb-2">{{ kpi.label }}</div>
             <div class="text-3xl font-medium text-color">{{ kpi.value }}</div>
@@ -114,41 +114,41 @@
       </div>
     </div>
 
-    <!-- KNOBS + RATINGS ROW -->
+    <!-- KNOBS + PRÓXIMOS A LLEGAR -->
     <div class="grid mb-4">
 
-      <!-- P-KNOB: eficiencia por ruta -->
-      <div class="col-12 md:col-6">
+      <!-- Knobs -->
+      <div class="col-12 md:col-5">
         <div class="surface-card border-1 border-round-lg border-200 p-3">
-          <h3 class="text-sm font-medium text-color mb-3">Eficiencia de rutas (días libres usados)</h3>
-          <div class="flex justify-content-around align-items-center flex-wrap gap-3">
-            @for (r of rutas; track $index) {
-              <div class="flex flex-column align-items-center gap-2">
-                <p-knob
-                  [(ngModel)]="r.valor"
-                  [size]="90"
-                  [strokeWidth]="10"
-                  [valueColor]="r.color"
-                  rangeColor="var(--surface-300)"
-                  valueTemplate="{value}%"
-                  [readonly]="true">
-                </p-knob>
-                <span class="text-xs text-color-secondary">{{ r.ruta }}</span>
-              </div>
-            }
-          </div>
+          <h3 class="text-sm font-medium text-color mb-3">Eficiencia de rutas</h3>
+          <!-- ...knobs... -->
+          @for (r of rutas; track $index) {
+            <div class="flex flex-column align-items-center gap-2">
+              <p-knob
+                [(ngModel)]="r.valor"
+                [size]="90"
+                [strokeWidth]="10"
+                [valueColor]="r.color"
+                rangeColor="var(--surface-300)"
+                valueTemplate="{value}%"
+                [readonly]="true">
+              </p-knob>
+              <span class="text-xs text-color-secondary">{{ r.ruta }}</span>
+            </div>
+          }
         </div>
       </div>
 
+      <!-- Próximos a llegar -->
       @if (proximosALlegar.length > 0) {
-        <div class="surface-card border-1 border-round-lg border-orange-300 p-3 mb-4">
-          <div class="flex align-items-center gap-2 mb-3">
-            <i class="pi pi-bell text-orange-500"></i>
-            <h3 class="text-sm font-medium text-color m-0">Próximos a llegar — siguientes 10 días</h3>
-            <p-badge [value]="proximosALlegar.length.toString()" severity="warning"></p-badge>
-          </div>
-
-          <div class="flex flex-column gap-2">
+        <div class="col-12 md:col-7">   <!-- ← este wrapper faltaba -->
+          <div class="surface-card border-1 border-round-lg border-orange-300 p-3 h-full">
+            <div class="flex align-items-center gap-2 mb-3">
+              <i class="pi pi-bell text-orange-500"></i>
+              <h3 class="text-sm font-medium text-color m-0">Próximos a llegar</h3>
+              <p-badge [value]="proximosALlegar.length.toString()" severity="warning"></p-badge>
+            </div>
+            <!-- ...filas... -->
             @for (r of proximosALlegar; track r.tramite.id) {
               <div class="flex align-items-center justify-content-between
                     surface-ground border-round p-2 border-1 border-200">
@@ -189,8 +189,8 @@
       <p-table
         [value]="tramitesConFlete"
         [paginator]="true"
-        [rows]="5"
-        [rowsPerPageOptions]="[5, 10, 20]"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 30, 50]"
         styleClass="p-datatable-sm p-datatable-gridlines"
         [tableStyle]="{'min-width': '900px'}"
         [scrollable]="true">
@@ -232,11 +232,10 @@
           <tr>
             <td class="text-xs font-medium">{{ row.tramite.numeroTramite }}</td>
             <td class="text-xs">
-            <span
-              class="inline-block max-w-8rem overflow-hidden text-overflow-ellipsis white-space-nowrap"
-              [title]="row.tramite.proveedorId">
-              {{ row.tramite.proveedorId }}
-            </span>
+              <span style="display:inline-block;max-width:8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
+                    [title]="row.tramite.proveedorId">
+                {{ row.tramite.proveedorId }}
+              </span>
             </td>
             <td class="text-xs">{{ row.tramite.numeroBl }}</td>
             <td class="text-xs">
