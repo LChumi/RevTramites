@@ -74,6 +74,7 @@
             Certificado Origen
             <p-columnFilter type="boolean" field="certificadoOrigen" display="menu"/>
           </th>
+          <th style="min-width:110px" class="white-space-nowrap text-xs font-bold">Cantidad Contenedores</th>
           <th style="min-width:110px" class="white-space-nowrap text-xs font-bold">N° B/L</th>
           <th style="min-width:130px" class="text-center white-space-nowrap text-xs font-bold">Sol. N° Ecuapass</th>
           <th style="min-width:130px" class="text-center white-space-nowrap text-xs font-bold">Fecha Sol. Ecuapass</th>
@@ -116,6 +117,7 @@
           <td class="text-center">
             <i class="pi" [ngClass]="{'true-icon pi-check-circle text-green-500': cot.certificadoOrigen, 'false-icon pi-times-circle text-pink-500': !cot.certificadoOrigen}"></i>
           </td>
+          <td style="min-width:110px" class="white-space-nowrap">{{ cot.cantidadContenedores || 1}}</td>
           <td style="min-width:110px" class="white-space-nowrap">{{ cot.numeroBL }}</td>
           <td style="min-width:130px" class="text-center white-space-nowrap">{{ cot.solicitudNEcuapass }}</td>
           <td style="min-width:130px" class="text-center white-space-nowrap">

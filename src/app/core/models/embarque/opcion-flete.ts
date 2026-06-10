@@ -3,6 +3,7 @@ export interface OpcionFlete {
   tipoContenedor:     string;
   espacioM3:          number;
   puertoDestino:      string;
+  contenedores:      number;
   flete:              number;
   thc:                number;
   imo:                number;
@@ -15,5 +16,4 @@ export interface OpcionFlete {
   ivaHandling:        number;
   total:              number;
   subtotalGastos:     number;
-  nContenedores:      number;
 }

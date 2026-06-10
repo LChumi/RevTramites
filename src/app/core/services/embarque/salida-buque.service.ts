@@ -36,6 +36,7 @@ export class SalidaBuqueService {
   }
 
   actualizarOpcion(idBuque: string, idCotizacionConsignatario: string , idOpcion: string, opcion:OpcionFlete): Observable<SalidaBuque>{
+    console.log(JSON.stringify(opcion, null, 2));
     return this.http.put<SalidaBuque>(`${this.baseUrl}/${idBuque}/cotizaciones/${idCotizacionConsignatario}/opciones/${idOpcion}`, opcion);
   }
 

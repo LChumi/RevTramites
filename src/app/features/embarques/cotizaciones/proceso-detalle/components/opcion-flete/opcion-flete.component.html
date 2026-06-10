@@ -227,10 +227,11 @@
       <div class="field col-4">
         <label class="text-sm text-color-secondary block mb-1">N° Contenedores</label>
         <p-inputNumber
-          formControlName="nContenedores"
+          formControlName="contenedores"
           [minFractionDigits]="0"
           [maxFractionDigits]="0"
           [useGrouping]="false"
+          [min]="1"
           styleClass="w-full">
         </p-inputNumber>
       </div>

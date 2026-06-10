@@ -110,7 +110,7 @@ export default class OpcionFleteComponent implements OnInit {
       handlingContenedor: [null],
       porcentajeIva: [0.15],
       numeroBl: [''],
-      nContenedores: [1]
+      contenedores: [1]
     })
   }
 
@@ -200,6 +200,8 @@ export default class OpcionFleteComponent implements OnInit {
       ...this.form.getRawValue() as OpcionFlete,
       ...this.totales
     }
+
+    console.log(payload)
 
     this.guardando = true
     const request$ = this.opcionEditando?.id
