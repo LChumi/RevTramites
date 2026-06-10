@@ -109,7 +109,8 @@ export default class OpcionFleteComponent implements OnInit {
       gastosBl: [null],
       handlingContenedor: [null],
       porcentajeIva: [0.15],
-      numeroBl: ['']
+      numeroBl: [''],
+      nContenedores: [1]
     })
   }
 

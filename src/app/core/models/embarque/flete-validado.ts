@@ -6,6 +6,7 @@ export interface FleteValidado {
   nombreConsignatario:     string;
   puertoEmbarqueNombre:    string;
   tipoContenedor:          string;
+  nContenedores:           number;
   puertoDestino:           string;
   espacioM3:               number;
   flete:                   number;

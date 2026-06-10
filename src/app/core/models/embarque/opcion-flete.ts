@@ -15,4 +15,5 @@ export interface OpcionFlete {
   ivaHandling:        number;
   total:              number;
   subtotalGastos:     number;
+  nContenedores:      number;
 }
