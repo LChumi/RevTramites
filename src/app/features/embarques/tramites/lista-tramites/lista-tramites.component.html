@@ -24,7 +24,7 @@
       [rows]="10"
       [rowHover]="true"
       [scrollable]="true"
-      scrollHeight="flex"
+      scrollHeight="400px"
       styleClass="p-datatable-sm p-datatable-gridlines">
 
       <ng-template pTemplate="header">
@@ -60,7 +60,9 @@
           <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold">Creado En</th>
           <th style="min-width:110px" class="text-center white-space-nowrap text-xs font-bold">Actualizado En</th>
           <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold">Estado</th>
-          <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold">Acciones</th>
+          <th class="text-center text-xs font-bold whitespace-nowrap min-w-[100px] sticky right-0 bg-white border-l surface-border shadow-sm">
+            Acciones
+          </th>
         </tr>
       </ng-template>
 
@@ -108,7 +110,7 @@
           <td style="min-width:100px" class="text-center white-space-nowrap">
             <p-tag [value]="cot.estado" [severity]="getEstadoSeverity(cot.estado)"/>
           </td>
-          <td class="text-center">
+          <td class="text-center sticky right-0 bg-white border-l surface-border shadow-sm">
             <button
               pButton
               pRipple

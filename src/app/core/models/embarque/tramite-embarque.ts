@@ -22,5 +22,6 @@ export interface TramiteEmbarque {
   creadoEn:               Date;
   actualizadoEn:          Date;
   estado:                 string;
+  certificadoOrigen:      boolean;
 }
 
