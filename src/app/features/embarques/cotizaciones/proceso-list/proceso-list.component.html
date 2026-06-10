@@ -77,18 +77,30 @@
             </td>
 
             <td class="text-center">
-              <button
-                pButton
-                pRipple
-                icon="pi pi-eye"
-                severity="info"
-                [rounded]="true"
-                [outlined]="true"
-                size="small"
-                (click)="viewCotizacion(cot.id)"
-                pTooltip="Ver detalle"
-                tooltipPosition="left">
-              </button>
+              <div class="flex justify-content-center gap-1">
+                <button
+                  pButton pRipple
+                  icon="pi pi-pencil"
+                  severity="warning"
+                  [rounded]="true"
+                  [outlined]="true"
+                  size="small"
+                  (click)="editarCotizacion(cot)"
+                  pTooltip="Editar"
+                  tooltipPosition="left">
+                </button>
+                <button
+                  pButton pRipple
+                  icon="pi pi-eye"
+                  severity="info"
+                  [rounded]="true"
+                  [outlined]="true"
+                  size="small"
+                  (click)="viewCotizacion(cot.id)"
+                  pTooltip="Ver detalle"
+                  tooltipPosition="left">
+                </button>
+              </div>
             </td>
           </tr>
         </ng-template>
@@ -111,7 +123,7 @@
 <!-- ───────────────────── Dialog ───────────────────── -->
 <p-dialog
   [(visible)]="cotizacionDialog"
-  header="Nueva Cotización"
+  [header]="modoEdicion ? 'Editar Cotización' : 'Nueva Cotización'"
   [modal]="true"
   [style]="{ width: '36rem' }"
   [draggable]="false"
@@ -198,7 +210,7 @@
 
       <button
         pButton
-        label="Guardar"
+        [label]="modoEdicion ? 'Actualizar' : 'Guardar'"
         icon="pi pi-check"
         severity="success"
         (click)="saveCotizacion()">

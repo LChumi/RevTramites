@@ -24,4 +24,8 @@ export class ProcesoCotizacionService {
     return this.http.get<ProcesoCotizacion>(`${this.baseUrl}/${id}`)
   }
 
+  update(id: string, p: ProcesoCotizacion):Observable<ProcesoCotizacion>{
+    return this.http.put<ProcesoCotizacion>(`${this.baseUrl}/update/${id}`, p);
+  }
+
 }

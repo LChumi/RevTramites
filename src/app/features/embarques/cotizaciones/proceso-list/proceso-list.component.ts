@@ -50,7 +50,8 @@ export default class ProcesoListComponent implements OnInit {
   private messageService = inject(MessageService)
 
   cotizacionDialog: boolean = false
-
+  modoEdicion: boolean = false;
+  cotizacionIdEditar: string | null = null;
   cotizaciones: ProcesoCotizacion[] = []
   cotizacion: ProcesoCotizacion = {} as ProcesoCotizacion
 
@@ -70,23 +71,39 @@ export default class ProcesoListComponent implements OnInit {
     })
   }
 
+  editarCotizacion(cot: ProcesoCotizacion) {
+    this.cotizacion = { ...cot };
+    this.cotizacionIdEditar = cot.id;
+    this.modoEdicion = true;
+    this.cotizacionDialog = true;
+  }
+
   viewCotizacion(id: string) {
     this.router.navigate([id], {relativeTo: this.route}).then(r => {
     })
   }
 
   saveCotizacion() {
-    if (!this.validar()) {
-      return;
-    }
+    if (!this.validar()) return;
 
-    this.procesoService.crear(this.cotizacion).subscribe({
-      next: value => {
-        this.cotizacionDialog = false
-        this.limpiarFormulario();
-        this.cotizaciones.push(value)
-      }
-    })
+    if (this.modoEdicion && this.cotizacionIdEditar) {
+      this.procesoService.update(this.cotizacionIdEditar, this.cotizacion).subscribe({
+        next: value => {
+          const idx = this.cotizaciones.findIndex(c => c.id === this.cotizacionIdEditar);
+          if (idx !== -1) this.cotizaciones[idx] = value;
+          this.cotizacionDialog = false;
+          this.limpiarFormulario();
+        }
+      });
+    } else {
+      this.procesoService.crear(this.cotizacion).subscribe({
+        next: value => {
+          this.cotizaciones.push(value);
+          this.cotizacionDialog = false;
+          this.limpiarFormulario();
+        }
+      });
+    }
   }
 
   getEstadoSeverity(estado: string) {
@@ -107,6 +124,8 @@ export default class ProcesoListComponent implements OnInit {
 
   nuevoProceso() {
     this.limpiarFormulario();
+    this.modoEdicion = false;
+    this.cotizacionIdEditar = null;
     this.cotizacionDialog = true;
   }
 
