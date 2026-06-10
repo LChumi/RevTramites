@@ -11,12 +11,12 @@
 
         <div class="col-12 lg:col-8">
 
-          <h2 class="m-0 text-3xl font-bold mb-2">Salidas de Buques</h2>
-
           @if (cotizacion) {
 
+            <h2 class="m-0 text-3xl font-bold mb-2">Salidas de Buques {{ cotizacion.numeroReferencia }}</h2>
+
             <div class="text-600 mb-4">Gestión de salidas y cotizaciones registradas del
-              Tramite {{ cotizacion.numeroReferencia }}
+              Tramite
             </div>
 
             <div class="grid">

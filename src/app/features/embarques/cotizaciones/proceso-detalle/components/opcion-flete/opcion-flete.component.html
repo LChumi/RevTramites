@@ -12,7 +12,9 @@
 
           <div>
             <div class="text-3xl font-bold mb-2">
-              Salidas de Buque
+              Salidas de Buque @if (cotizacion) {
+              {{cotizacion.numeroReferencia}}
+            }
             </div>
 
             <div class="text-600">
