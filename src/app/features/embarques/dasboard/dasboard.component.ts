@@ -89,6 +89,7 @@ export default class DasboardComponent implements OnInit {
   buildDashboard() {
     this.buildRutas()
     this.buildTramitesConFlete();
+    this.buildProximosALlegar()
     this.buildKPIs();
     this.buildCharts();
   }
@@ -143,6 +144,21 @@ export default class DasboardComponent implements OnInit {
 
     this.totalGeneral = this.tramitesConFlete.reduce(
       (acc, r) => acc + r.flete.total, 0
+    );
+  }
+
+  private buildProximosALlegar(): void {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    const limite = new Date(hoy);
+    limite.setDate(limite.getDate() + 10);
+
+    this.proximosALlegar = this.tramitesConFlete.filter(r => {
+      const arribo = new Date(r.tramite.fechaArribo);
+      arribo.setHours(0, 0, 0, 0);
+      return arribo >= hoy && arribo <= limite;
+    }).sort((a, b) =>
+      new Date(a.tramite.fechaArribo).getTime() - new Date(b.tramite.fechaArribo).getTime()
     );
   }
 
@@ -257,11 +273,45 @@ export default class DasboardComponent implements OnInit {
   /** Devuelve la severidad de p-tag según estado del trámite */
   getEstadoSeverity(estado: string): 'success' | 'info' | 'warning' | 'danger' | 'secondary' {
     const map: Record<string, 'success' | 'info' | 'warning' | 'danger' | 'secondary'> = {
-      VIGENTE: 'success',
-      EMBARCADO: 'info',
+      VIGENTE: 'info',
+      EMBARCADO: 'success',
       PENDIENTE: 'warning',
       ANULADO: 'danger',
     };
     return map[estado] ?? 'secondary';
+  }
+
+  proximosALlegar: TramiteConFlete[] = [];
+
+  getEstadoProceso(t: TramiteEmbarque): 'POR_ZARPAR' | 'EN_TRANSITO' | 'LLEGADO' {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    const embarque = new Date(t.fechaEmbarque);
+    embarque.setHours(0, 0, 0, 0);
+    const arribo = new Date(t.fechaArribo);
+    arribo.setHours(0, 0, 0, 0);
+
+    if (embarque > hoy) return 'POR_ZARPAR';
+    if (arribo > hoy) return 'EN_TRANSITO';
+    return 'LLEGADO';
+  }
+
+  getEstadoProcesoLabel(t: TramiteEmbarque): string {
+    const map = { POR_ZARPAR: 'Por zarpar', EN_TRANSITO: 'En tránsito', LLEGADO: 'Llegado' };
+    return map[this.getEstadoProceso(t)];
+  }
+
+  getEstadoProcesoSeverity(t: TramiteEmbarque): 'contrast' | 'info' | 'success' {
+    const map = { POR_ZARPAR: 'contrast', EN_TRANSITO: 'info', LLEGADO: 'success' } as const;
+    return map[this.getEstadoProceso(t)];
+  }
+
+  getDiasRestantes(fechaArribo: Date): number {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    const arribo = new Date(fechaArribo);
+    arribo.setHours(0, 0, 0, 0);
+    const diff = arribo.getTime() - hoy.getTime();
+    return Math.max(0, Math.round(diff / (1000 * 60 * 60 * 24)));
   }
 }

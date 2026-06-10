@@ -139,6 +139,44 @@
           </div>
         </div>
       </div>
+
+      @if (proximosALlegar.length > 0) {
+        <div class="surface-card border-1 border-round-lg border-orange-300 p-3 mb-4">
+          <div class="flex align-items-center gap-2 mb-3">
+            <i class="pi pi-bell text-orange-500"></i>
+            <h3 class="text-sm font-medium text-color m-0">Próximos a llegar — siguientes 10 días</h3>
+            <p-badge [value]="proximosALlegar.length.toString()" severity="warning"></p-badge>
+          </div>
+
+          <div class="flex flex-column gap-2">
+            @for (r of proximosALlegar; track r.tramite.id) {
+              <div class="flex align-items-center justify-content-between
+                    surface-ground border-round p-2 border-1 border-200">
+                <div class="flex align-items-center gap-3">
+                  <p-tag value="En tránsito" severity="info" icon="pi pi-send"></p-tag>
+                  <span class="text-sm font-medium">{{ r.tramite.numeroTramite }}</span>
+                  <span class="text-xs text-color-secondary">{{ r.tramite.numeroBl }}</span>
+                  <span class="text-xs">
+              <span class="font-medium">{{ r.flete.puertoEmbarqueNombre }}</span>
+              <i class="pi pi-arrow-right text-xs mx-1 text-color-secondary"></i>
+              <span class="font-medium">{{ r.flete.puertoDestino }}</span>
+            </span>
+                </div>
+                <div class="flex align-items-center gap-3">
+                  <span class="text-xs text-color-secondary">Arribo:</span>
+                  <span class="text-sm font-medium text-orange-600">
+              {{ r.tramite.fechaArribo | date:'dd/MM/yyyy' }}
+            </span>
+                  <p-badge
+                    [value]="getDiasRestantes(r.tramite.fechaArribo) + ' días'"
+                    severity="warning">
+                  </p-badge>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
     </div>
 
     <!-- TABLE: trámites + fletes vigentes -->
@@ -176,10 +214,17 @@
               Total USD
               <p-sortIcon field="flete.total"></p-sortIcon>
             </th>
-            <th class="text-xs">F. Embarque</th>
-            <th class="text-xs">F. Arribo</th>
+            <th pSortableColumn="tramite.fechaEmbarque" class="text-xs">
+              F. Embarque
+              <p-sortIcon field="tramite.fechaEmbarque"></p-sortIcon>
+            </th>
+            <th pSortableColumn="tramite.fechaArribo" class="text-xs">
+              F. Arribo
+              <p-sortIcon field="tramite.fechaArribo"></p-sortIcon>
+            </th>
             <th class="text-xs">Días libres</th>
             <th class="text-xs">Estado</th>
+            <th class="text-xs">Proceso</th>
           </tr>
         </ng-template>
 
@@ -216,6 +261,14 @@
               <p-tag
                 [value]="row.tramite.estado"
                 [severity]="getEstadoSeverity(row.tramite.estado)">
+              </p-tag>
+            </td>
+            <td class="text-xs">
+              <p-tag
+                [value]="getEstadoProcesoLabel(row.tramite)"
+                [severity]="getEstadoProcesoSeverity(row.tramite)"
+                [icon]="getEstadoProceso(row.tramite) === 'EN_TRANSITO' ? 'pi pi-send' :
+            getEstadoProceso(row.tramite) === 'LLEGADO' ? 'pi pi-check' : 'pi pi-clock'">
               </p-tag>
             </td>
           </tr>

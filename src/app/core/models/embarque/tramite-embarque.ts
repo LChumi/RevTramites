@@ -23,5 +23,7 @@ export interface TramiteEmbarque {
   actualizadoEn:          Date;
   estado:                 string;
   certificadoOrigen:      boolean;
+  estadoProceso?: 'POR_ZARPAR' | 'EN_TRANSITO' | 'LLEGADO'; // campo calculado
+  proximoALlegar?: boolean; // true si arribo ≤ hoy + 10 días
 }
 
