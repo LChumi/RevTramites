@@ -29,6 +29,7 @@
              [scrollable]="true"
              [globalFilterFields]="['numeroTramite','proveedorId', 'consignatario']"
              scrollHeight="flex"
+             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
              styleClass="p-datatable-sm p-datatable-gridlines">
 
       <ng-template pTemplate="caption">
@@ -46,9 +47,12 @@
           <th style="min-width:110px" class="text-center white-space-nowrap text-xs font-bold">N° Trámite</th>
           <th style="min-width:260px" class="white-space-nowrap text-xs font-bold" pSortableColumn="proveedorId">
             Proveedor
-            <p-sortIcon field="proveedorId"/>
+            <p-columnFilter type="text" field="proveedorId" display="menu"/>
           </th>
-          <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold">Consignatario</th>
+          <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold">
+            Consignatario
+            <p-columnFilter type="text" field="consignatario" display="menu"/>
+          </th>
           <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold"
               pSortableColumn="fechaEmbarque">
             Fecha Embarque
@@ -60,7 +64,10 @@
             <p-sortIcon field="fechaArribo"/>
           </th>
           <th style="min-width:75px" class="text-center white-space-nowrap text-xs font-bold">Días Libres</th>
-          <th style="min-width:140px" class="white-space-nowrap text-xs font-bold">Puerto Salida</th>
+          <th style="min-width:140px" class="white-space-nowrap text-xs font-bold">
+            Puerto Salida
+            <p-columnFilter type="text" field="puertoSalida" display="menu"/>
+          </th>
           <th style="min-width:140px" class="white-space-nowrap text-xs font-bold">Puerto Llegada</th>
           <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold">Estado</th>
           <th style="min-width:100px" class="flex justify-content-between align-items-center">
