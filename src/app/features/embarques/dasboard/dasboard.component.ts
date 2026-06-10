@@ -61,6 +61,10 @@ export default class DasboardComponent implements OnInit {
   pieOptions: any;
   polarData: any;
   polarOptions: any;
+  lineData: any;
+  lineOptions: any;
+  barProvData: any;
+  barProvOptions: any;
 
   ngOnInit(): void {
     this.getData()
@@ -268,6 +272,83 @@ export default class DasboardComponent implements OnInit {
       plugins: {legend: {display: false}},
       scales: {r: {ticks: {display: false}}},
     };
+
+    // ── Line: evolución de costos por mes ───────────────────────
+    const mesMap = new Map<string, number>();
+
+    this.tramitesConFlete.forEach(r => {
+      const fecha = new Date(r.tramite.fechaEmbarque);
+      const key = `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}`;
+      mesMap.set(key, (mesMap.get(key) ?? 0) + r.flete.total);
+    });
+
+    const mesesOrdenados = [...mesMap.entries()].sort(([a], [b]) => a.localeCompare(b));
+
+    this.lineData = {
+      labels: mesesOrdenados.map(([k]) => {
+        const [y, m] = k.split('-');
+        return new Date(+y, +m - 1).toLocaleDateString('es', { month: 'short', year: '2-digit' });
+      }),
+      datasets: [{
+        label: 'Total USD',
+        data: mesesOrdenados.map(([, v]) => v),
+        borderColor: '#378ADD',
+        backgroundColor: '#378ADD22',
+        fill: true,
+        tension: 0.35,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+      }]
+    };
+
+    this.lineOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { font: { size: 10 } } },
+        y: { ticks: { callback: (v: number) => '$' + v.toLocaleString(), font: { size: 10 } } }
+      }
+    };
+
+    // ── Bar horizontal: costo promedio por proveedor ─────────────
+    const provMap = new Map<string, number[]>();
+
+    this.tramitesConFlete.forEach(r => {
+      const prov = r.tramite.proveedorId;
+      if (!provMap.has(prov)) provMap.set(prov, []);
+      provMap.get(prov)!.push(r.flete.total);
+    });
+
+    const provPromedio = [...provMap.entries()]
+      .map(([prov, totales]) => ({
+        prov,
+        promedio: Math.round(totales.reduce((a, b) => a + b, 0) / totales.length)
+      }))
+      .sort((a, b) => b.promedio - a.promedio);
+
+    this.barProvData = {
+      labels: provPromedio.map(p => p.prov),
+      datasets: [{
+        label: 'Promedio USD',
+        data: provPromedio.map(p => p.promedio),
+        backgroundColor: '#7F77DD',
+        borderRadius: 4,
+        borderSkipped: false,
+      }]
+    };
+
+    this.barProvOptions = {
+      indexAxis: 'y' as const,   // ← esto lo vuelve horizontal
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { callback: (v: number) => '$' + v.toLocaleString(), font: { size: 10 } } },
+        y: { ticks: { font: { size: 10 } } }
+      }
+    };
+
   }
 
   /** Devuelve la severidad de p-tag según estado del trámite */
@@ -314,4 +395,6 @@ export default class DasboardComponent implements OnInit {
     const diff = arribo.getTime() - hoy.getTime();
     return Math.max(0, Math.round(diff / (1000 * 60 * 60 * 24)));
   }
+
+
 }

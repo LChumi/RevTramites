@@ -114,6 +114,30 @@
       </div>
     </div>
 
+    <div class="grid mb-4">
+      <div class="col-12 md:col-7">
+        <div class="surface-card border-1 border-round-lg border-200 p-3">
+          <h3 class="text-sm font-medium text-color mb-3">Evolución de costos por mes</h3>
+          @defer {
+            <p-chart type="line" [data]="lineData" [options]="lineOptions" height="220px"/>
+          } @placeholder (minimum 1000ms) {
+            <p-skeleton height="220px" width="100%"/>
+          }
+        </div>
+      </div>
+
+      <div class="col-12 md:col-5">
+        <div class="surface-card border-1 border-round-lg border-200 p-3">
+          <h3 class="text-sm font-medium text-color mb-3">Costo promedio por proveedor</h3>
+          @defer {
+            <p-chart type="bar" [data]="barProvData" [options]="barProvOptions" height="220px"/>
+          } @placeholder (minimum 1000ms) {
+            <p-skeleton height="220px" width="100%"/>
+          }
+        </div>
+      </div>
+    </div>
+
     <!-- KNOBS + PRÓXIMOS A LLEGAR -->
     <div class="grid mb-4">
 
