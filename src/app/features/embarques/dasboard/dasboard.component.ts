@@ -174,11 +174,11 @@ export default class DasboardComponent implements OnInit {
       ? Math.round(diasArr.reduce((a, b) => a + b, 0) / diasArr.length)
       : 0;
 
-    const contenedores = this.tramitesConFlete.reduce(
-      (acc, r) => acc + (r.tramite.cantidadContenedores
-        ? +r.tramite.cantidadContenedores : 1), 0
-    );
+    const contenedores = this.tramitesConFlete.reduce((acc, r) => {
+      const cantidad = r.flete?.contenedores;
 
+      return acc + (cantidad && cantidad > 0 ? cantidad : 1);
+    }, 0);
     this.kpis = [
       {label: 'Trámites totales', value: String(this.tramites.length), sub: 'registrados'},
       {label: 'Fletes vigentes', value: String(vigentes.length), sub: 'activos'},
