@@ -1,7 +1,7 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import {TramiteEmbarque} from '@models/embarque/tramite-embarque';
-import {TableModule} from 'primeng/table';
-import {DatePipe} from '@angular/common';
+import {Table, TableModule} from 'primeng/table';
+import {DatePipe, NgClass} from '@angular/common';
 import {TramiteEmbarqueService} from '@services/embarque/tramite-embarque.service';
 import {Tag, TagModule} from 'primeng/tag';
 import {ButtonDirective} from 'primeng/button';
@@ -16,6 +16,7 @@ import {InputNumberModule} from 'primeng/inputnumber';
 import {DialogModule} from 'primeng/dialog';
 import {MessageService} from 'primeng/api';
 import {getEmpresaNombre} from '@utils/embarque-utils';
+import {CheckboxModule} from 'primeng/checkbox';
 
 @Component({
   selector: 'app-lista-tramites',
@@ -32,13 +33,15 @@ import {getEmpresaNombre} from '@utils/embarque-utils';
     ReactiveFormsModule,
     InputTextModule,
     InputNumberModule,
-    DialogModule
+    DialogModule,
+    NgClass,
+    CheckboxModule
   ],
   templateUrl: './lista-tramites.component.html',
   styles: ``
 })
 export default class ListaTramitesComponent implements OnInit {
-
+  @ViewChild('filter') filter!: ElementRef;
   private embarquesService = inject(TramiteEmbarqueService);
   private messageService = inject(MessageService)
   private fb = inject(FormBuilder)
@@ -47,6 +50,7 @@ export default class ListaTramitesComponent implements OnInit {
   tramiteSeleccionado: TramiteEmbarque | null = null;
   dialogVisible = false;
   guardando = false;
+  loading: boolean = true
   tramiteForm!: FormGroup;
   estadoOpciones = ESTADOS_EMBARQUE_MOCK
 
@@ -54,6 +58,7 @@ export default class ListaTramitesComponent implements OnInit {
     this.embarquesService.list().subscribe({
       next: result => {
         this.tramites = result;
+        this.loading = false
         this.initForm();
       }
     })
@@ -80,6 +85,7 @@ export default class ListaTramitesComponent implements OnInit {
       preLiquidacion: [''],
       polizaNChub: [''],
       estado: ['ACTIVO', Validators.required],
+      certificadoOrigen: [false]
     });
   }
 
@@ -147,6 +153,15 @@ export default class ListaTramitesComponent implements OnInit {
     };
 
     return map[estado?.toUpperCase()] ?? 'info';
+  }
+
+  onGlobalFilter(table: Table, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  }
+
+  clear(table: Table) {
+    table.clear();
+    this.filter.nativeElement.value = '';
   }
 
   protected readonly getEmpresaNombre = getEmpresaNombre;

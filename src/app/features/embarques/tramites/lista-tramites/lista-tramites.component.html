@@ -18,25 +18,36 @@
 
   <!-- Tabla -->
   <div class="surface-card border-round-xl shadow-1 overflow-hidden">
-    <p-table
-      [value]="tramites"
-      [paginator]="true"
-      [rows]="10"
-      [rowHover]="true"
-      [scrollable]="true"
-      scrollHeight="400px"
-      styleClass="p-datatable-sm p-datatable-gridlines">
+    <p-table #dt1
+             [value]="tramites"
+             datakey="id"
+             [paginator]="true"
+             [loading]="loading"
+             [rows]="20"
+             [rowsPerPageOptions]="[20,50,100]"
+             [rowHover]="true"
+             [scrollable]="true"
+             [globalFilterFields]="['numeroTramite','proveedorId', 'consignatario']"
+             scrollHeight="flex"
+             styleClass="p-datatable-sm p-datatable-gridlines">
+
+      <ng-template pTemplate="caption">
+        <div class="flex justify-content-between flex-column sm:flex-row">
+          <button pButton label="Clear" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+          <span class="p-input-icon-left mb-2">
+							<i class="pi pi-search"></i>
+							<input pInputText type="text" autocomplete="off" autocapitalize="characters" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Buscar Tramite" class="w-full upercase"/>
+						</span>
+        </div>
+      </ng-template>
 
       <ng-template pTemplate="header">
         <tr>
-          <th style="min-width:80px" class="text-center white-space-nowrap text-xs font-bold">Orden<br>Llegada</th>
-          <th style="min-width:140px" class="white-space-nowrap text-xs font-bold">Empresa</th>
           <th style="min-width:110px" class="text-center white-space-nowrap text-xs font-bold">N° Trámite</th>
           <th style="min-width:260px" class="white-space-nowrap text-xs font-bold" pSortableColumn="proveedorId">
             Proveedor
             <p-sortIcon field="proveedorId"/>
           </th>
-          <th style="min-width:110px" class="white-space-nowrap text-xs font-bold">N° B/L</th>
           <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold">Consignatario</th>
           <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold"
               pSortableColumn="fechaEmbarque">
@@ -51,15 +62,21 @@
           <th style="min-width:75px" class="text-center white-space-nowrap text-xs font-bold">Días Libres</th>
           <th style="min-width:140px" class="white-space-nowrap text-xs font-bold">Puerto Salida</th>
           <th style="min-width:140px" class="white-space-nowrap text-xs font-bold">Puerto Llegada</th>
+          <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold">Estado</th>
+          <th style="min-width:100px" class="flex justify-content-between align-items-center">
+            Certificado Origen
+            <p-columnFilter type="boolean" field="certificadoOrigen" display="menu"/>
+          </th>
+          <th style="min-width:110px" class="white-space-nowrap text-xs font-bold">N° B/L</th>
           <th style="min-width:130px" class="text-center white-space-nowrap text-xs font-bold">Sol. N° Ecuapass</th>
           <th style="min-width:130px" class="text-center white-space-nowrap text-xs font-bold">Fecha Sol. Ecuapass</th>
           <th style="min-width:130px" class="white-space-nowrap text-xs font-bold">Identificador</th>
           <th style="min-width:130px" class="text-center white-space-nowrap text-xs font-bold">Sol. N° Intertek</th>
           <th style="min-width:130px" class="white-space-nowrap text-xs font-bold">Preliquidación</th>
           <th style="min-width:130px" class="white-space-nowrap text-xs font-bold">Póliza N° Chub</th>
+          <th style="min-width:140px" class="white-space-nowrap text-xs font-bold">Empresa</th>
           <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold">Creado En</th>
           <th style="min-width:110px" class="text-center white-space-nowrap text-xs font-bold">Actualizado En</th>
-          <th style="min-width:100px" class="text-center white-space-nowrap text-xs font-bold">Estado</th>
           <th class="text-center text-xs font-bold whitespace-nowrap min-w-[100px] sticky right-0 bg-white border-l surface-border shadow-sm">
             Acciones
           </th>
@@ -68,19 +85,12 @@
 
       <ng-template pTemplate="body" let-cot>
         <tr>
-          <td style="min-width:80px" class="text-center white-space-nowrap">
-            <p-tag [value]="cot.ordenLlegada?.toString()" severity="info"/>
-          </td>
-          <td style="min-width:140px" class="white-space-nowrap font-medium text-900">
-            {{ getEmpresaNombre(cot.empresaId) }}
-          </td>
           <td style="min-width:110px" class="text-center white-space-nowrap">
             <span class="font-semibold text-primary">{{ cot.numeroTramite }}</span>
           </td>
           <td style="min-width:260px" class="white-space-nowrap font-medium">
             {{ cot.proveedorId }}
           </td>
-          <td style="min-width:110px" class="white-space-nowrap">{{ cot.numeroBL }}</td>
           <td style="min-width:110px" class="white-space-nowrap">{{ cot.consignatario }}</td>
           <td style="min-width:100px" class="text-center white-space-nowrap">
             {{ cot.fechaEmbarque | date:'dd/MM/yyyy' }}
@@ -93,6 +103,13 @@
           </td>
           <td style="min-width:140px" class="white-space-nowrap">{{ cot.puertoSalida }}</td>
           <td style="min-width:140px" class="white-space-nowrap">{{ cot.puertoLlegada }}</td>
+          <td style="min-width:100px" class="text-center white-space-nowrap">
+            <p-tag [value]="cot.estado" [severity]="getEstadoSeverity(cot.estado)"/>
+          </td>
+          <td class="text-center">
+            <i class="pi" [ngClass]="{'true-icon pi-check-circle text-green-500': cot.certificadoOrigen, 'false-icon pi-times-circle text-pink-500': !cot.certificadoOrigen}"></i>
+          </td>
+          <td style="min-width:110px" class="white-space-nowrap">{{ cot.numeroBL }}</td>
           <td style="min-width:130px" class="text-center white-space-nowrap">{{ cot.solicitudNEcuapass }}</td>
           <td style="min-width:130px" class="text-center white-space-nowrap">
             {{ cot.fechaSolicitudEcuapass | date:'dd/MM/yyyy' }}
@@ -101,14 +118,14 @@
           <td style="min-width:130px" class="text-center white-space-nowrap">{{ cot.solicitudNIntertek }}</td>
           <td style="min-width:130px" class="white-space-nowrap">{{ cot.preliquidacion }}</td>
           <td style="min-width:130px" class="white-space-nowrap">{{ cot.polizaNChub }}</td>
+          <td style="min-width:140px" class="white-space-nowrap font-medium text-900">
+            {{ getEmpresaNombre(cot.empresaId) }}
+          </td>
           <td style="min-width:100px" class="text-center white-space-nowrap text-600">
             {{ cot.creadoEn | date:'dd/MM/yyyy' }}
           </td>
           <td style="min-width:110px" class="text-center white-space-nowrap text-600">
             {{ cot.actualizadoEn | date:'dd/MM/yyyy' }}
-          </td>
-          <td style="min-width:100px" class="text-center white-space-nowrap">
-            <p-tag [value]="cot.estado" [severity]="getEstadoSeverity(cot.estado)"/>
           </td>
           <td class="text-center sticky right-0 bg-white border-l surface-border shadow-sm">
             <button
@@ -323,6 +340,10 @@
               appendTo="body"/>
           </div>
 
+          <div class="col-12 md:col-4">
+            <label class="block text-sm font-semibold text-700 mb-1">Certificado Origen</label>
+            <p-checkbox formControlName="certificadoOrigen" binary="true" class="w-full"/>
+          </div>
         </div>
 
       </form>
