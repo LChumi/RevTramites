@@ -7,6 +7,7 @@ export interface DashboardResumen {
 
 export interface ObservacionPorBodega {
   idBodega: number;
+  nombreBodega?: string;
   total: number;
   corregidos: number;
   pendientes: number;

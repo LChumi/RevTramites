@@ -43,7 +43,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-b>
             <tr>
-              <td class="font-medium">{{ b.idBodega }}</td>
+              <td class="font-medium">{{ b.nombreBodega || 'BODEGA' }}</td>
               <td class="text-center">{{ b.total }}</td>
               <td class="text-center text-green-500 font-medium">{{ b.corregidos }}</td>
               <td class="text-center text-red-500 font-medium">{{ b.pendientes }}</td>

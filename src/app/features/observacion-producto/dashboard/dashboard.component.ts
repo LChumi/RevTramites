@@ -43,6 +43,7 @@ export default class DashboardComponent implements OnInit {
   bodegaSeleccionada: number | null = null;
   anio = 2026;
 
+  bodegasMap = new Map<number, string>();
   resumen: DashboardResumen | null = null;
   porBodega: ObservacionPorBodega[] = [];
   porMes: ObservacionPorMes[] = [];
@@ -66,13 +67,17 @@ export default class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarBodegas();
-    this.cargarPorBodega();
   }
 
   listarBodegas() {
     this.bodegaService.getBodegas(this.id_usuario, this.id_empresa).subscribe({
       next: (result) => {
         this.bodegas = result;
+        this.bodegasMap.clear();
+        result.forEach(b =>
+          this.bodegasMap.set(b.bod_codigo, b.bod_nombre)
+        );
+        this.cargarPorBodega();
       }
     });
   }
@@ -97,7 +102,10 @@ export default class DashboardComponent implements OnInit {
 
   cargarPorBodega(): void {
     this.dashboardService.getPorBodega().subscribe(data => {
-      this.porBodega = data;
+      this.porBodega = data.map(item => ({
+        ...item,
+        nombreBodega: this.bodegasMap.get(item.idBodega)
+      }));
     });
   }
 
