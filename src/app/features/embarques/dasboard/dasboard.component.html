@@ -6,12 +6,68 @@
   <div class="p-3">
 
     <!-- HEADER -->
-    <div class="flex align-items-center justify-content-between mb-4">
-      <div>
-        <h2 class="text-xl font-medium text-color m-0">Dashboard de embarques</h2>
-        <span class="text-sm text-color-secondary">Módulo de importación — fletes validados y trámites activos</span>
+    <div class="flex align-items-center justify-content-between mb-4 surface-card border-round-xl p-4 shadow-1">
+
+      <div class="flex align-items-center gap-3">
+
+        <!-- Icono -->
+        <div
+          class="flex align-items-center justify-content-center border-circle bg-primary"
+          style="width:4rem;height:4rem">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+               width="22" height="22"
+               fill="none" stroke="white" stroke-width="1.75"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 17l1.5-5h15L21 17"/>
+            <path d="M6 12V8h3v4"/>
+            <path d="M15 12V7h3v5"/>
+            <path d="M10 12V9h4v3"/>
+            <path d="M2 20c1.5 0 2.5-1 4-1s2.5 1 4 1 2.5-1 4-1 2.5 1 4 1"/>
+            <line x1="12" y1="4" x2="12" y2="7"/>
+            <circle cx="12" cy="3" r="1" fill="white" stroke="none"/>
+          </svg>
+
+
+        </div>
+
+        <!-- Texto -->
+        <div>
+          <h2 class="m-0 text-2xl font-semibold">
+            Dashboard de Embarques
+          </h2>
+
+          <span class="text-color-secondary">
+        Control de fletes validados y trámites de importación
+      </span>
+        </div>
+
       </div>
-      <p-tag value="Junio 2026" severity="info" icon="pi pi-ship"></p-tag>
+
+      <div
+        class="flex align-items-center justify-content-center border-circle bg-primary"
+        style="width:4rem;height:4rem">
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="white"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+
+          <!-- barco -->
+          <path d="M3 15h18l-2 4H5l-2-4z"/>
+          <path d="M7 15V7h4v8"/>
+          <path d="M13 15V5h4v10"/>
+          <path d="M2 20c2 0 2-1 4-1s2 1 4 1 2-1 4-1 2 1 4 1 2-1 4-1"/>
+        </svg>
+
+      </div>
+
     </div>
 
     <!-- KPI CARDS -->
