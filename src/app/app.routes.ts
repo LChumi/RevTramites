@@ -35,9 +35,12 @@ export const routes: Routes = [
       {path: 'consignacion', loadComponent: () => import('@features/consignacion/consignacion.component')},
       {
         path: 'observaciones',
-        children:[
+        children: [
           {path: '', loadComponent: () => import('@features/observacion-producto/observacion-producto.component')},
-          {path: 'dashboard', loadComponent: () => import('@features/observacion-producto/dashboard/dashboard.component')}
+          {
+            path: 'dashboard',
+            loadComponent: () => import('@features/observacion-producto/dashboard/dashboard.component')
+          }
         ]
       },
       {

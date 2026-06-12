@@ -1,7 +1,6 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {CreposicionService} from '@services/creposicion.service';
 import {Creposicion} from '@dtos/creposicion';
-import {SidebarService} from '@services/state/sidebar.service';
 import {TableModule} from 'primeng/table';
 import {Button} from 'primeng/button';
 import {DatePipe} from '@angular/common';
