@@ -52,7 +52,7 @@ export default class RecepcionFinalizadosComponent implements OnInit {
   pdfLoading = false;
   loading = false;
 
-  usuariosPermitidos = ['NCERON', 'CMERCHAN', 'LCHUMI'];
+  usuariosPermitidos = ['NCERON', 'CMERCHAN', 'LCHUMI', 'DHEREDIA'];
 
 
   ngOnInit(): void {
@@ -130,6 +130,4 @@ export default class RecepcionFinalizadosComponent implements OnInit {
     this.router.navigate(['editar', row.id.codigo], {relativeTo: this.route}).then(r => {
     })
   }
-
-
 }
