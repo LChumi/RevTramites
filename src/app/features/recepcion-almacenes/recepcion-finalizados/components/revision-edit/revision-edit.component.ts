@@ -110,7 +110,7 @@ export default class RevisionEditComponent implements OnInit {
         barra: this.producto.barra,
         usuario: this.usuariosessionStorage,
         creposicion: Number(this.crepo),
-        empresa: Number(empresa),
+        empresa: Number(this.producto.empresa),
         cantidad: this.cantidad,
         shouldAdd: true
       };
