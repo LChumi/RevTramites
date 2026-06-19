@@ -1,7 +1,7 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import {ChartModule} from 'primeng/chart';
 import {MenuModule} from 'primeng/menu';
-import {TableModule} from 'primeng/table';
+import {Table, TableModule} from 'primeng/table';
 import {ToastModule} from 'primeng/toast';
 import {ToolbarModule} from 'primeng/toolbar';
 import {ButtonDirective} from 'primeng/button';
@@ -43,6 +43,7 @@ import {getEmpresaNombre} from '@utils/embarque-utils';
   styles: ``
 })
 export default class ProcesoListComponent implements OnInit {
+  @ViewChild('filter') filter!: ElementRef;
 
   private router = inject(Router)
   private route = inject(ActivatedRoute)
@@ -50,6 +51,7 @@ export default class ProcesoListComponent implements OnInit {
   private messageService = inject(MessageService)
 
   cotizacionDialog: boolean = false
+  loading: boolean = false
   modoEdicion: boolean = false;
   cotizacionIdEditar: string | null = null;
   cotizaciones: ProcesoCotizacion[] = []
@@ -63,10 +65,11 @@ export default class ProcesoListComponent implements OnInit {
   }
 
   listarCoptizaciones() {
+    this.loading= true
     this.procesoService.list().subscribe({
       next: value => {
         this.cotizaciones = value
-        console.log(this.cotizaciones)
+        this.loading= false
       }
     })
   }
@@ -136,6 +139,15 @@ export default class ProcesoListComponent implements OnInit {
       empresaId: null,
       proveedorId: null
     } as ProcesoCotizacion;
+  }
+
+  onGlobalFilter(table: Table, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  }
+
+  clear(table: Table) {
+    table.clear();
+    this.filter.nativeElement.value = '';
   }
 
   private validar(): boolean {
