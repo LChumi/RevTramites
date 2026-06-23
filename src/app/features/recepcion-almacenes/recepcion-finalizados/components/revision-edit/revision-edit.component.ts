@@ -4,7 +4,7 @@ import {CreposicionService} from '@services/creposicion.service';
 import {Creposicion, CreposicionID} from '@dtos/creposicion';
 import {Dreposicion} from '@dtos/dreposicion';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ConfirmationService, PrimeTemplate} from 'primeng/api';
+import {ConfirmationService, MessageService, PrimeTemplate} from 'primeng/api';
 import {TableModule} from 'primeng/table';
 import {TagModule} from 'primeng/tag';
 import {getEstadoRecepcion, getSeverityRecepcion} from '@utils/recepcion-utils';
@@ -45,6 +45,7 @@ export default class RevisionEditComponent implements OnInit {
   private dreposicionService = inject(DreposicionService)
   private creposicionService = inject(CreposicionService)
   private confirmationService = inject(ConfirmationService)
+  private messageService = inject(MessageService)
   private route = inject(ActivatedRoute)
   private router = inject(Router)
   private empresaSession = sessionStorage.getItem('idEmpresa') ?? '';
@@ -102,9 +103,6 @@ export default class RevisionEditComponent implements OnInit {
   }
 
   updateProduct() {
-
-    const empresa = Number(this.empresaSession);
-
     if (this.producto) {
       const req: RevisionProductoRequest = {
         barra: this.producto.barra,
@@ -157,6 +155,26 @@ export default class RevisionEditComponent implements OnInit {
       next: value => {
         if (value.finalizado === 1) {
           this.router.navigate(['erp', 'recepcion-almacenes', 'finalizados']).then(r => {
+            this.creposicionService.validarRecepcion(value.id.empresa, value.id.codigo).subscribe({
+              next: resp => {
+                if (resp.error === 0){
+                  this.messageService.add({
+                    severity: 'success',
+                    summary: 'Validado',
+                    detail: `Recepción validada correctamente ${resp.respuesta}`,
+                    icon: 'pi pi-check'
+                  });
+                } else {
+                  this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: `Código de error: ${resp.respuesta}`,
+                    icon: 'pi pi-times'
+                  });
+                }
+              }
+            });
+
           })
         }
         this.loading = false
