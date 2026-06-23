@@ -126,7 +126,10 @@ export default class RecepcionFinalizadosComponent implements OnInit {
   }
 
   editarReposicion(row: Creposicion): void {
-    this.router.navigate(['editar', row.id.codigo], {relativeTo: this.route}).then(r => {
-    })
+    this.router.navigate(
+      ['editar', row.id.codigo, row.id.empresa],
+      {relativeTo: this.route}
+    ).then(r =>{});
   }
+
 }

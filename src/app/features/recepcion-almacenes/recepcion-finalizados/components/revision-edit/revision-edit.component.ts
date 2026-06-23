@@ -26,14 +26,12 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
     PrimeTemplate,
     TableModule,
     TagModule,
-    NgStyle,
     Button,
     ProgressSpinnerModule,
     DialogModule,
     AvatarModule,
     FormsModule,
     InputTextModule,
-    ButtonDirective,
     InputNumberModule,
     ConfirmDialogModule
   ],
@@ -48,13 +46,13 @@ export default class RevisionEditComponent implements OnInit {
   private messageService = inject(MessageService)
   private route = inject(ActivatedRoute)
   private router = inject(Router)
-  private empresaSession = sessionStorage.getItem('idEmpresa') ?? '';
   private usuariosessionStorage = sessionStorage.getItem('username') ?? '';
 
   cabecera: Creposicion | null = null;
   lista: Dreposicion[] = []
   producto: Dreposicion | null = null;
   crepo!: any
+  empresa!: any
   loading = false
   viewEdit = false
   cantidad: number | null = null
@@ -62,7 +60,8 @@ export default class RevisionEditComponent implements OnInit {
   ngOnInit(): void {
     this.cabecera = null
     this.crepo = this.route.snapshot.paramMap.get('id') ?? '';
-    if (this.crepo === '' || this.empresaSession === '') {
+    this.empresa = this.route.snapshot.paramMap.get('empresa') ?? '';
+    if (this.crepo === '' || this.empresa === '') {
       this.router.navigate(['auth', 'login']).then(r => {
         return
       })
@@ -72,7 +71,7 @@ export default class RevisionEditComponent implements OnInit {
 
   getCabecera() {
     this.loading = true
-    const empresa = Number(this.empresaSession);
+    const empresa = Number(this.empresa);
     const codigo = Number(this.crepo);
     if (isNaN(empresa) || isNaN(codigo)) {
       console.error("El valor no es numérico");
@@ -145,7 +144,7 @@ export default class RevisionEditComponent implements OnInit {
   }
 
   private finalizarCreposicon() {
-    const empresa = Number(this.empresaSession);
+    const empresa = Number(this.empresa);
     const id: CreposicionID = {
       codigo: this.crepo,
       empresa: empresa

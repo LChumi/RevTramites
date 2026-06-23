@@ -31,7 +31,7 @@ export class CreposicionService {
   }
 
   validarRecepcion(empresa: number, creposicion: number): Observable<ValidarRecepcionResult>{
-    return this.http.get<ValidarRecepcionResult>(`${this.baseOracle}/fuction/validar/recepcion/${empresa}/${creposicion}`)
+    return this.http.get<ValidarRecepcionResult>(`${this.baseOracle}fuction/validar/recepcion/${empresa}/${creposicion}`)
   }
 
 }

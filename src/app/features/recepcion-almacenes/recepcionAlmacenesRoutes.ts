@@ -46,7 +46,7 @@ export const recepcionAlmacenesRoutes: Routes = [
               import('@features/recepcion-almacenes/recepcion-finalizados/recepcion-finalizados.component')
           },
           {
-            path: 'editar/:id',
+            path: 'editar/:id/:empresa',
             loadComponent: () =>
               import('@features/recepcion-almacenes/recepcion-finalizados/components/revision-edit/revision-edit.component')
           }
