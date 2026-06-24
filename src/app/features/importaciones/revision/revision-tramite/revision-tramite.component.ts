@@ -261,6 +261,7 @@ export default class RevisionTramiteComponent implements OnInit {
         //Combinar los resultados en una sola lista
         this.tramites = results.flat(); //Usamos flat() para aplanar los arrays
       }, error: (err) => {
+        console.error(err)
         this.messageService.add({
           severity: 'warn',
           summary: 'No existen Tramites',
@@ -279,7 +280,7 @@ export default class RevisionTramiteComponent implements OnInit {
           this.prodSelect = exist.info
           this.getCantidades()
         } else {
-          playAlert()
+          playAlert('alert')
           this.confirmationService.confirm({
             message: 'Producto no encontrado en el registro ¿Desea agregar?',
             header: 'Confirmación',
@@ -317,7 +318,7 @@ export default class RevisionTramiteComponent implements OnInit {
 
     if (this.productCantView) {
       if (this.barra != this.barraSelected) {
-        playAlert()
+        playAlert('alert')
         this.showMessage('warn', 'Barra no pertenece', 'La barra seleccionada no pertenece al bulto seleccionado cierre la venta y registre la barra nuevamente')
         this.barra = ''
         return;
@@ -347,7 +348,7 @@ export default class RevisionTramiteComponent implements OnInit {
       switchMap(revision => {
         this.revision = revision;
         if (revision.estadoRevision === 'SIN REGISTRO' && revision.cantidadRevision === 1) {
-          playAlert()
+          playAlert('alert')
           this.messageService.add({
             severity: 'warn',
             summary: 'Barra no registrada',
