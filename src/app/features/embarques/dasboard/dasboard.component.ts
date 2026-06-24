@@ -15,6 +15,8 @@ import {forkJoin} from 'rxjs';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {SkeletonModule} from 'primeng/skeleton';
 import {TramiteConFlete} from '@mocks/embarque';
+import {MessageService} from 'primeng/api';
+import {playAlert} from '@utils/audio-utils';
 
 @Component({
   selector: 'app-dasboard',
@@ -39,6 +41,7 @@ export default class DasboardComponent implements OnInit {
 
   private tramiteService = inject(TramiteEmbarqueService)
   private fleteService = inject(FleteValidadoService)
+  private messageService = inject(MessageService)
 
   private tramites: TramiteEmbarque[] = []
   private fletesValidados: FleteValidado[] = []
@@ -164,6 +167,17 @@ export default class DasboardComponent implements OnInit {
     }).sort((a, b) =>
       new Date(a.tramite.fechaArribo).getTime() - new Date(b.tramite.fechaArribo).getTime()
     );
+
+    if (this.proximosALlegar?.length > 0) {
+      playAlert("popup");
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Próximos a llegar',
+        icon: 'pi pi-check',
+        detail: `Contenedores próximos a llegar: ${this.proximosALlegar.length}`
+      });
+    }
+
   }
 
   private buildKPIs(): void {
