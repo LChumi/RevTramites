@@ -171,7 +171,7 @@ export default class RecepcionScaneoComponent implements OnInit, AfterViewInit {
             this.cantidad = null
             this.focusInput();
           } else {
-            playAlert()
+            playAlert('alert')
             this.confirmationService.confirm({
               message: 'Producto no encontrado en el registro ¿Desea agregar?',
               header: 'Confirmación',
