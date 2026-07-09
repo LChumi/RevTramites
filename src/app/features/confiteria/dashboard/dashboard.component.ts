@@ -35,7 +35,7 @@ export default class DashboardComponent implements OnInit{
   loading = true;
   data!: DashboardConfiteriaDTO;
 
-  rangoFechas: Date[] = [];
+  rangoFechas: Date[] | null = null;
   filtroActivo = false;
 
   // Chart data
