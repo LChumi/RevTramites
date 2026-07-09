@@ -29,6 +29,10 @@ export const routes: Routes = [
           {
             path: 'consulta',
             loadComponent: () => import('@features/confiteria/pedidos-generados/pedidos-generados.component')
+          },
+          {
+            path: 'dashboard',
+            loadComponent: () => import('@features/confiteria/dashboard/dashboard.component')
           }
         ]
       },

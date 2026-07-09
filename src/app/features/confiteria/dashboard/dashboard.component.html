@@ -1,0 +1,219 @@
+<!-- reposiciones-dashboard.component.html -->
+@if (loading) {
+  <div class="p-3">
+    <div class="grid">
+      @for (i of [1,2,3,4]; track $index) {
+        <div class="col-12 md:col-3">
+          <p-skeleton height="110px" styleClass="border-round-xl" />
+        </div>
+      }
+    </div>
+    <div class="grid mt-2">
+      <div class="col-12 lg:col-8">
+        <p-skeleton height="320px" styleClass="border-round-xl" />
+      </div>
+      <div class="col-12 lg:col-4">
+        <p-skeleton height="320px" styleClass="border-round-xl" />
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="p-3">
+
+    <!-- HEADER -->
+    <div class="surface-card border-round-xl p-4 shadow-1 mb-4">
+      <div class="flex align-items-center justify-content-between flex-wrap gap-3 mb-3">
+        <div class="flex align-items-center gap-3">
+          <div
+            class="flex align-items-center justify-content-center border-circle bg-primary"
+            style="width:4rem;height:4rem">
+            <i class="pi pi-truck text-white text-2xl"></i>
+          </div>
+          <div>
+            <span class="block text-2xl font-bold text-900">Reposiciones</span>
+            <span class="block text-500">Resumen general de proveedores y productos</span>
+          </div>
+        </div>
+
+        <p-tag severity="info" [value]="data.totalReposiciones + ' reposiciones registradas'" icon="pi pi-refresh" styleClass="text-sm" />
+      </div>
+
+      <!-- FILTRO DE FECHAS -->
+      <div class="border-top-1 surface-border pt-3 flex align-items-end justify-content-between flex-wrap gap-3">
+        <div class="flex align-items-end gap-2 flex-wrap">
+          <div class="flex flex-column gap-1">
+            <label class="text-sm text-500 font-medium">Rango de fechas</label>
+            <p-calendar
+              [(ngModel)]="rangoFechas"
+              selectionMode="range"
+              [readonlyInput]="true"
+              dateFormat="dd/mm/yy"
+              placeholder="Selecciona un rango"
+              [showIcon]="true"
+              styleClass="w-18rem" />
+          </div>
+
+          <p-button
+            label="Buscar"
+            icon="pi pi-search"
+            severity="primary"
+            [disabled]="!rangoFechas?.[0] || !rangoFechas?.[1]"
+            (onClick)="aplicarFiltro()" />
+        </div>
+
+        <p-button
+          label="Mes actual"
+          icon="pi pi-calendar"
+          [outlined]="filtroActivo"
+          [severity]="filtroActivo ? 'secondary' : 'success'"
+          (onClick)="cargarMesActual()" />
+      </div>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="grid">
+      <div class="col-12 md:col-6 lg:col-3">
+        <div class="surface-card border-round-xl p-4 shadow-1 h-full">
+          <div class="flex align-items-center justify-content-between mb-3">
+            <span class="text-500 font-medium">Total Reposiciones</span>
+            <div class="flex align-items-center justify-content-center bg-blue-100 border-round-lg" style="width:2.5rem;height:2.5rem">
+              <i class="pi pi-refresh text-blue-600"></i>
+            </div>
+          </div>
+          <span class="text-3xl font-bold text-900">{{ data.totalReposiciones }}</span>
+        </div>
+      </div>
+
+      <div class="col-12 md:col-6 lg:col-3">
+        <div class="surface-card border-round-xl p-4 shadow-1 h-full">
+          <div class="flex align-items-center justify-content-between mb-3">
+            <span class="text-500 font-medium">Total Productos</span>
+            <div class="flex align-items-center justify-content-center bg-green-100 border-round-lg" style="width:2.5rem;height:2.5rem">
+              <i class="pi pi-box text-green-600"></i>
+            </div>
+          </div>
+          <span class="text-3xl font-bold text-900">{{ data.totalProductos | number }}</span>
+        </div>
+      </div>
+
+      <div class="col-12 md:col-6 lg:col-3">
+        <div class="surface-card border-round-xl p-4 shadow-1 h-full">
+          <div class="flex align-items-center justify-content-between mb-3">
+            <span class="text-500 font-medium">Valor Total</span>
+            <div class="flex align-items-center justify-content-center bg-orange-100 border-round-lg" style="width:2.5rem;height:2.5rem">
+              <i class="pi pi-dollar text-orange-600"></i>
+            </div>
+          </div>
+          <span class="text-3xl font-bold text-900">{{ data.valorTotal | currency }}</span>
+        </div>
+      </div>
+
+      <div class="col-12 md:col-6 lg:col-3">
+        <div class="surface-card border-round-xl p-4 shadow-1 h-full">
+          <div class="flex align-items-center justify-content-between mb-3">
+            <span class="text-500 font-medium">Prom. x Reposición</span>
+            <div class="flex align-items-center justify-content-center bg-purple-100 border-round-lg" style="width:2.5rem;height:2.5rem">
+              <i class="pi pi-chart-line text-purple-600"></i>
+            </div>
+          </div>
+          <span class="text-3xl font-bold text-900">{{ promedioValorReposicion | currency }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW: BAR + DOUGHNUT -->
+    <div class="grid mt-2">
+      <div class="col-12 lg:col-8">
+        <div class="surface-card border-round-xl p-4 shadow-1 h-full">
+          <span class="block text-lg font-semibold text-900 mb-3">Valor por proveedor</span>
+          <p-chart type="bar" [data]="barProveedoresData" [options]="barProveedoresOptions" height="320px" />
+        </div>
+      </div>
+
+      <div class="col-12 lg:col-4">
+        <div class="surface-card border-round-xl p-4 shadow-1 h-full">
+          <span class="block text-lg font-semibold text-900 mb-3">Top 5 productos</span>
+          <p-chart type="doughnut" [data]="doughnutTop5Data" [options]="doughnutTop5Options" height="320px" />
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW: LINE + POLAR -->
+    <div class="grid mt-2">
+      <div class="col-12 lg:col-7">
+        <div class="surface-card border-round-xl p-4 shadow-1 h-full">
+          <span class="block text-lg font-semibold text-900 mb-3">Evolución diaria</span>
+          <p-chart type="line" [data]="lineHistorialData" [options]="lineHistorialOptions" height="300px" />
+        </div>
+      </div>
+
+      <div class="col-12 lg:col-5">
+        <div class="surface-card border-round-xl p-4 shadow-1 h-full">
+          <span class="block text-lg font-semibold text-900 mb-3">Productos por proveedor</span>
+          <p-chart type="polarArea" [data]="polarProveedoresData" [options]="polarProveedoresOptions" height="300px" />
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE: proveedores -->
+    <div class="grid mt-2">
+      <div class="col-12">
+        <div class="surface-card border-round-xl p-4 shadow-1">
+          <div class="flex align-items-center justify-content-between mb-3">
+            <span class="text-lg font-semibold text-900">Detalle por proveedor</span>
+            <p-badge [value]="data.proveedores.length + ' proveedores'" severity="info" />
+          </div>
+
+          <p-table [value]="data.proveedores" [rows]="10" [paginator]="data.proveedores.length > 10"
+                   styleClass="p-datatable-sm">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Proveedor</th>
+                <th class="text-right">Reposiciones</th>
+                <th class="text-right">Productos</th>
+                <th class="text-right">Valor Total</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-p>
+              <tr>
+                <td>{{ p.proveedor }}</td>
+                <td class="text-right">{{ p.cantidadReposiciones }}</td>
+                <td class="text-right">{{ p.totalProductos | number }}</td>
+                <td class="text-right font-semibold">{{ p.valorTotal | currency }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE: top productos -->
+    <div class="grid mt-2 mb-4">
+      <div class="col-12">
+        <div class="surface-card border-round-xl p-4 shadow-1">
+          <span class="text-lg font-semibold text-900 block mb-3">Top productos pedidos</span>
+
+          <p-table [value]="data.topProductos" styleClass="p-datatable-sm">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Código</th>
+                <th>Producto</th>
+                <th class="text-right">Cant. Pedida</th>
+                <th class="text-right">Valor</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-p>
+              <tr>
+                <td>{{ p.item }}</td>
+                <td>{{ p.producto }}</td>
+                <td class="text-right">{{ p.cantidadPedida }}</td>
+                <td class="text-right font-semibold">{{ p.valorTotal | currency }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+}

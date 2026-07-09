@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {ReposicionRequest} from '@dtos/reposicion-request';
 import {ConfiteriaRepor} from '@dtos/confiteria-repor';
 import {ReposicionConfiteria} from '@dtos/reposicion-confiteria';
+import {DashboardConfiteriaDTO} from '@dtos/confiteria/dashboard-confiteria-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,10 @@ export class ConfiteriaService {
         error: (err) => observer.error(err)
       });
     });
+  }
+
+  dashboard(fechaIni: any , fechaFin: any): Observable<DashboardConfiteriaDTO>{
+    return this.http.get<DashboardConfiteriaDTO>(`${this.baseUrl}?fechaInicio=${fechaIni}&fechaFin=${fechaFin}`)
   }
 
 }
