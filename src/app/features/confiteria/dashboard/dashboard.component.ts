@@ -10,6 +10,8 @@ import {ChartModule} from 'primeng/chart';
 import {BadgeModule} from 'primeng/badge';
 import {CalendarModule} from 'primeng/calendar';
 import {FormsModule} from '@angular/forms';
+import {RefreshIcon} from 'primeng/icons/refresh';
+import {TooltipModule} from 'primeng/tooltip';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,7 +25,9 @@ import {FormsModule} from '@angular/forms';
     ChartModule,
     BadgeModule,
     CalendarModule,
-    FormsModule
+    FormsModule,
+    RefreshIcon,
+    TooltipModule
   ],
   templateUrl: './dashboard.component.html',
   styles: ``
@@ -239,7 +243,7 @@ export default class DashboardComponent implements OnInit{
     };
   }
 
-  private acortar(texto: string, max: number): string {
+  protected acortar(texto: string, max: number): string {
     return texto.length > max ? texto.substring(0, max - 1) + '…' : texto;
   }
 

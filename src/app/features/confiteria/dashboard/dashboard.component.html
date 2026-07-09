@@ -72,7 +72,7 @@
 
     <!-- KPI CARDS -->
     <div class="grid">
-      <div class="col-12 md:col-6 lg:col-3">
+      <div class="col-12 md:col-6 lg:col-4">
         <div class="surface-card border-round-xl p-4 shadow-1 h-full">
           <div class="flex align-items-center justify-content-between mb-3">
             <span class="text-500 font-medium">Total Reposiciones</span>
@@ -84,7 +84,7 @@
         </div>
       </div>
 
-      <div class="col-12 md:col-6 lg:col-3">
+      <div class="col-12 md:col-6 lg:col-4">
         <div class="surface-card border-round-xl p-4 shadow-1 h-full">
           <div class="flex align-items-center justify-content-between mb-3">
             <span class="text-500 font-medium">Total Productos</span>
@@ -96,7 +96,7 @@
         </div>
       </div>
 
-      <div class="col-12 md:col-6 lg:col-3">
+      <div class="col-12 md:col-6 lg:col-4">
         <div class="surface-card border-round-xl p-4 shadow-1 h-full">
           <div class="flex align-items-center justify-content-between mb-3">
             <span class="text-500 font-medium">Valor Total</span>
@@ -108,7 +108,7 @@
         </div>
       </div>
 
-      <div class="col-12 md:col-6 lg:col-3">
+      <div class="col-12 md:col-6 lg:col-4">
         <div class="surface-card border-round-xl p-4 shadow-1 h-full">
           <div class="flex align-items-center justify-content-between mb-3">
             <span class="text-500 font-medium">Prom. x Reposición</span>
@@ -117,6 +117,40 @@
             </div>
           </div>
           <span class="text-3xl font-bold text-900">{{ promedioValorReposicion | currency }}</span>
+        </div>
+      </div>
+
+      <div class="col-12 md:col-6 lg:col-4">
+        <div class="surface-card border-round-xl p-4 shadow-1 h-full">
+          <div class="flex align-items-center justify-content-between mb-3">
+            <span class="text-500 font-medium">Prom. Producto x Reposición</span>
+            <div class="flex align-items-center justify-content-center bg-cyan-100 border-round-lg" style="width:2.5rem;height:2.5rem">
+              <i class="pi pi-chart-bar text-cyan-600"></i>
+            </div>
+          </div>
+          <span class="text-3xl font-bold text-900">{{ promedioProductosReposicion | number:'1.0-0' }}</span>
+        </div>
+      </div>
+
+      <div class="col-12 md:col-6 lg:col-4">
+        <div class="surface-card border-round-xl p-4 shadow-1 h-full">
+          <div class="flex align-items-center justify-content-between mb-3">
+            <span class="text-500 font-medium">Top Proveedor</span>
+            <div class="flex align-items-center justify-content-center bg-pink-100 border-round-lg" style="width:2.5rem;height:2.5rem">
+              <i class="pi pi-star-fill text-pink-600"></i>
+            </div>
+          </div>
+          @if (topProveedor) {
+            <span
+              class="block text-2xl font-bold text-900 white-space-nowrap overflow-hidden text-overflow-ellipsis"
+              [pTooltip]="topProveedor.proveedor"
+              tooltipPosition="top">
+          {{ acortar(topProveedor.proveedor, 20) }}
+        </span>
+            <span class="block text-500 text-sm mt-1">{{ topProveedor.valorTotal | currency }}</span>
+          } @else {
+            <span class="text-3xl font-bold text-400">—</span>
+          }
         </div>
       </div>
     </div>
