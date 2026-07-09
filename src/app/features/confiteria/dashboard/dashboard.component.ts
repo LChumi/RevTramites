@@ -10,7 +10,6 @@ import {ChartModule} from 'primeng/chart';
 import {BadgeModule} from 'primeng/badge';
 import {CalendarModule} from 'primeng/calendar';
 import {FormsModule} from '@angular/forms';
-import {RefreshIcon} from 'primeng/icons/refresh';
 import {TooltipModule} from 'primeng/tooltip';
 
 @Component({
@@ -26,7 +25,6 @@ import {TooltipModule} from 'primeng/tooltip';
     BadgeModule,
     CalendarModule,
     FormsModule,
-    RefreshIcon,
     TooltipModule
   ],
   templateUrl: './dashboard.component.html',
