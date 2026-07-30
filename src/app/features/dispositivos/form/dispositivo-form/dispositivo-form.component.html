@@ -1,0 +1,148 @@
+<form [formGroup]="form" (ngSubmit)="guardar()">
+
+  <div class="grid">
+
+    <!-- Serial -->
+    <div class="col-12 md:col-6">
+      <div class="flex flex-column gap-2">
+        <label for="serial">Serial</label>
+        <input pInputText id="serial" formControlName="serial" class="w-full"/>
+
+        @if (f.serial.invalid && f.serial.touched) {
+          <small class="p-error">
+            El serial es requerido (mín. 3 caracteres)
+          </small>
+        }
+      </div>
+    </div>
+
+    <!-- Marca -->
+    <div class="col-12 md:col-6">
+      <div class="flex flex-column gap-2">
+        <label for="marca">Marca</label>
+        <input pInputText id="marca" formControlName="marca" class="w-full"/>
+
+        @if (f.marca.invalid && f.marca.touched) {
+          <small class="p-error">La marca es requerida</small>
+        }
+      </div>
+    </div>
+
+    <!-- Modelo -->
+    <div class="col-12 md:col-6">
+      <div class="flex flex-column gap-2">
+        <label for="modelo">Modelo</label>
+        <input pInputText id="modelo" formControlName="modelo" class="w-full"/>
+
+        @if (f.modelo.invalid && f.modelo.touched) {
+          <small class="p-error">El modelo es requerido</small>
+        }
+      </div>
+    </div>
+
+    <!-- Categoría -->
+    <div class="col-12 md:col-6">
+      <div class="flex flex-column gap-2">
+        <label for="categoria">Categoría</label>
+
+        <p-dropdown
+          id="categoria"
+          class="w-full"
+          [style]="{ width:'100%' }"
+          [options]="categorias"
+          formControlName="categoria"
+          placeholder="Seleccione">
+        </p-dropdown>
+
+        @if (f.categoria.invalid && f.categoria.touched) {
+          <small class="p-error">La categoría es requerida</small>
+        }
+      </div>
+    </div>
+
+    <!-- Fecha -->
+    <div class="col-12 md:col-6">
+      <div class="flex flex-column gap-2">
+        <label for="fechaCompra">Fecha de compra</label>
+
+        <p-calendar
+          id="fechaCompra"
+          class="w-full"
+          [style]="{ width:'100%' }"
+          formControlName="fechaCompra"
+          [showIcon]="true">
+        </p-calendar>
+
+        @if (f.fechaCompra.invalid && f.fechaCompra.touched) {
+          <small class="p-error">La fecha es requerida</small>
+        }
+      </div>
+    </div>
+
+    <!-- Estado -->
+    <div class="col-12 md:col-6">
+      <div class="flex flex-column gap-2">
+        <label for="estadoActual">Estado</label>
+
+        <p-dropdown
+          id="estadoActual"
+          class="w-full"
+          [style]="{ width:'100%' }"
+          [options]="estados"
+          optionLabel="label"
+          optionValue="value"
+          formControlName="estadoActual">
+        </p-dropdown>
+      </div>
+    </div>
+
+    <!-- Ubicación -->
+    <div class="col-12">
+      <div class="flex flex-column gap-2">
+        <label for="ubicacion">Ubicación</label>
+
+        <input
+          pInputText
+          id="ubicacion"
+          class="w-full"
+          formControlName="ubicacion"/>
+
+        @if (f.ubicacion.invalid && f.ubicacion.touched) {
+          <small class="p-error">La ubicación es requerida</small>
+        }
+      </div>
+    </div>
+
+    <!-- Activo -->
+    <div class="col-12">
+      <div class="flex align-items-center gap-2">
+        <p-checkbox
+          formControlName="activo"
+          [binary]="true"
+          inputId="activo">
+        </p-checkbox>
+
+        <label for="activo">Activo</label>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="col-12">
+      <div class="flex justify-content-end gap-2 pt-3">
+        <p-button
+          label="Cancelar"
+          severity="secondary"
+          [text]="true"
+          type="button"
+          (onClick)="cancelar()"/>
+
+        <p-button
+          [label]="editMode() ? 'Actualizar' : 'Registrar'"
+          type="submit"
+          [loading]="saving()"/>
+      </div>
+    </div>
+
+  </div>
+
+</form>

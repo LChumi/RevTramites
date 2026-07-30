@@ -1,0 +1,181 @@
+<!-- src/app/features/dispositivos/lista/lista.component.html -->
+
+<p-confirmDialog key="dispo-dialog"/>
+
+<p-toolbar styleClass="mb-4 border-round-lg shadow-1 surface-card">
+  <ng-template pTemplate="start">
+    <div>
+      <h2 class="m-0 text-900">Equipos</h2>
+      <small class="text-600">
+        Administración de dispositivos
+      </small>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="end">
+    <p-button
+      label="Nuevo equipo"
+      icon="pi pi-plus"
+      (onClick)="abrirNuevo()" />
+  </ng-template>
+</p-toolbar>
+
+<p-table
+  #dt
+  [value]="dispositivos()"
+  [loading]="loading()"
+  [paginator]="true"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="{first}-{last} de {totalRecords}"
+  [rowHover]="true"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  [globalFilterFields]="['serial', 'marca', 'modelo', 'ubicacion']"
+  dataKey="id"
+  styleClass="p-datatable-striped"
+  responsiveLayout="scroll"
+>
+  <ng-template pTemplate="caption">
+    <div
+      class="flex flex-column md:flex-row md:justify-content-between md:align-items-center gap-3">
+
+      <div class="flex align-items-center gap-2">
+        <i class="pi pi-desktop text-primary text-xl"></i>
+
+        <span class="font-semibold">
+                {{ dispositivos().length }} equipos registrados
+            </span>
+      </div>
+
+      <p-iconField iconPosition="left" class="w-full md:w-20rem">
+        <p-inputIcon styleClass="pi pi-search" />
+
+        <input
+          pInputText
+          class="w-full"
+          placeholder="Buscar..."
+          (input)="dt.filterGlobal($any($event.target).value,'contains')" />
+      </p-iconField>
+
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="serial"><i class="pi pi-hashtag mr-2"></i> Serial<p-sortIcon field="serial" /></th>
+      <th pSortableColumn="marca"><i class="pi pi-building mr-2"></i> Marca <p-sortIcon field="marca" /></th>
+      <th pSortableColumn="modelo"><i class="pi pi-box mr-2"></i> Modelo <p-sortIcon field="modelo" /></th>
+      <th pSortableColumn="categoria">Categoría <p-sortIcon field="categoria" /></th>
+      <th pSortableColumn="ubicacion"><i class="pi pi-map-marker mr-2"></i> Ubicación <p-sortIcon field="ubicacion" /></th>
+      <th pSortableColumn="estadoActual" style="min-width: 10rem">
+        Estado <p-sortIcon field="estadoActual" />
+      </th>
+      <th style="width: 12rem">Acciones</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-dispositivo>
+    <tr>
+      <td>{{ dispositivo.serial }}</td>
+      <td>{{ dispositivo.marca }}</td>
+      <td>{{ dispositivo.modelo }}</td>
+      <td>
+        <p-tag
+          [value]="dispositivo.categoria"
+          severity="info">
+        </p-tag>
+      </td>
+      <td>
+        <p-tag
+          [value]="dispositivo.ubicacion"
+          severity="secondary">
+        </p-tag>
+      </td>
+      <td>
+        <p-dropdown
+          [options]="estados"
+          optionLabel="label"
+          optionValue="value"
+          [ngModel]="dispositivo.estadoActual"
+          (onChange)="cambiarEstado(dispositivo, $event.value)"
+          styleClass="w-full"
+          [appendTo]="'body'"
+        >
+          <ng-template pTemplate="selectedItem">
+            <p-tag
+              [value]="estadoLabel(dispositivo.estadoActual)"
+              [severity]="estadoSeverity(dispositivo.estadoActual)"
+            />
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            <p-tag [value]="item.label" [severity]="item.severity" />
+          </ng-template>
+        </p-dropdown>
+      </td>
+      <td class="text-center">
+
+        <p-menu
+          #menu
+          [popup]="true"
+          [model]="accionesMenu"
+          appendTo="body">
+        </p-menu>
+
+        <p-button
+          icon="pi pi-ellipsis-v"
+          severity="secondary"
+          [text]="true"
+          [rounded]="true"
+          (click)="abrirMenu(menu, $event, dispositivo)">
+        </p-button>
+
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="7">
+
+        <div
+          class="flex flex-column align-items-center justify-content-center py-6">
+
+          <i
+            class="pi pi-inbox text-5xl text-400 mb-3">
+          </i>
+
+          <span class="text-700 font-semibold">
+                    No existen equipos registrados
+                </span>
+
+          <small class="text-500">
+            Presiona "Nuevo equipo" para comenzar.
+          </small>
+
+        </div>
+
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog
+  [(visible)]="mostrarDialog"
+  [modal]="true"
+  [header]="dispositivoEditandoId() ? 'Editar equipo' : 'Nuevo equipo'"
+  [style]="{
+    width:'70rem',
+    maxWidth:'95vw'
+    }"
+  [breakpoints]="{
+        '960px': '80vw',
+        '640px': '95vw'
+    }">
+
+  <app-dispositivo-form
+    [dispositivoId]="dispositivoEditandoId()"
+    (guardado)="onGuardado()"
+    (cancelado)="mostrarDialog.set(false)">
+  </app-dispositivo-form>
+
+</p-dialog>

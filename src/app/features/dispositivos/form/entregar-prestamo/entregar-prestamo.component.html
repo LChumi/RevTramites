@@ -1,0 +1,60 @@
+<form [formGroup]="form" (ngSubmit)="guardar()" class="flex flex-column gap-3">
+
+  <div class="flex flex-column gap-2">
+    <label for="dispositivoId">Equipo</label>
+    <p-dropdown
+      id="dispositivoId"
+      formControlName="dispositivoId"
+      [options]="disponibles()"
+      optionLabel="serial"
+      optionValue="id"
+      [filter]="true"
+      filterBy="serial,marca,modelo"
+      [loading]="loadingDisponibles()"
+      placeholder="Selecciona un equipo disponible"
+      [class.ng-invalid]="f.dispositivoId.invalid && f.dispositivoId.touched"
+    >
+      <ng-template pTemplate="selectedItem" let-item>
+        {{ item.serial }} — {{ item.marca }} {{ item.modelo }}
+      </ng-template>
+      <ng-template pTemplate="item" let-item>
+        {{ item.serial }} — {{ item.marca }} {{ item.modelo }}
+      </ng-template>
+    </p-dropdown>
+    @if (f.dispositivoId.invalid && f.dispositivoId.touched) {
+      <small class="p-error">Selecciona un equipo</small>
+    }
+    @if (!loadingDisponibles() && disponibles().length === 0) {
+      <small class="p-error">No hay equipos disponibles en este momento</small>
+    }
+  </div>
+
+  <div class="flex flex-column gap-2">
+    <label for="responsable">Responsable</label>
+    <input pInputText id="responsable" formControlName="responsable" [class.ng-invalid]="f.responsable.invalid && f.responsable.touched" />
+    @if (f.responsable.invalid && f.responsable.touched) {
+      <small class="p-error">El responsable es requerido</small>
+    }
+  </div>
+
+  <div class="flex flex-column gap-2">
+    <label for="fechaEntrega">Fecha de entrega</label>
+    <p-calendar id="fechaEntrega" formControlName="fechaEntrega" dateFormat="dd/mm/yy" [showIcon]="true" />
+  </div>
+
+  <div class="flex flex-column gap-2">
+    <label for="fechaEsperadaDevolucion">Devolución esperada (opcional)</label>
+    <p-calendar id="fechaEsperadaDevolucion" formControlName="fechaEsperadaDevolucion" dateFormat="dd/mm/yy" [showIcon]="true" />
+  </div>
+
+  <div class="flex flex-column gap-2">
+    <label for="observaciones">Observaciones</label>
+    <textarea pInputTextarea id="observaciones" formControlName="observaciones" rows="3"></textarea>
+  </div>
+
+  <div class="flex justify-content-end gap-2 mt-3">
+    <p-button label="Cancelar" severity="secondary" [text]="true" type="button" (onClick)="cancelar()" />
+    <p-button label="Entregar" type="submit" [loading]="saving()" />
+  </div>
+
+</form>

@@ -1,0 +1,32 @@
+@if (prestamo) {
+  <div class="mb-3">
+    <p class="m-0"><strong>Equipo:</strong> {{ prestamo.serialDispositivo }}</p>
+    <p class="m-0"><strong>Responsable:</strong> {{ prestamo.responsable }}</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()" class="flex flex-column gap-3">
+
+    <div class="flex flex-column gap-2">
+      <label for="estadoFinal">Estado final del equipo</label>
+      <p-dropdown
+        id="estadoFinal"
+        formControlName="estadoFinal"
+        [options]="estadosDevolucion"
+        optionLabel="label"
+        optionValue="value"
+      />
+    </div>
+
+    <div class="flex flex-column gap-2">
+      <label for="observaciones">Observaciones (opcional)</label>
+      <textarea pInputTextarea id="observaciones" formControlName="observaciones" rows="3"
+                placeholder="Ej: golpe en la carcasa, batería en mal estado..."></textarea>
+    </div>
+
+    <div class="flex justify-content-end gap-2 mt-3">
+      <p-button label="Cancelar" severity="secondary" [text]="true" type="button" (onClick)="cancelar()" />
+      <p-button label="Confirmar devolución" type="submit" [loading]="saving()" />
+    </div>
+
+  </form>
+}

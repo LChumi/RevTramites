@@ -1,0 +1,63 @@
+<p-toolbar styleClass="mb-3">
+  <ng-template pTemplate="start"><h2 class="m-0">Préstamos activos</h2></ng-template>
+  <ng-template pTemplate="end">
+    <p-button label="Nuevo préstamo" icon="pi pi-plus" (onClick)="abrirNuevoPrestamo()" />
+  </ng-template>
+</p-toolbar>
+
+<p-table
+  [value]="prestamos()"
+  [loading]="loading()"
+  [paginator]="true"
+  [rows]="10"
+  dataKey="id"
+  styleClass="p-datatable-sm p-datatable-gridlines"
+  responsiveLayout="scroll"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Serial</th>
+      <th>Responsable</th>
+      <th>Cédula</th>
+      <th>Entrega</th>
+      <th>Acciones</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-prestamo>
+    <tr>
+      <td>
+        <a [routerLink]="['/prestamos/historial', prestamo.serialDispositivo]">
+          {{ prestamo.serialDispositivo }}
+        </a>
+      </td>
+      <td>{{ prestamo.responsable }}</td>
+      <td>{{ prestamo.cedulaEmpleado }}</td>
+      <td>{{ prestamo.fechaEntrega | date: 'dd/MM/yyyy' }}</td>
+      <td>
+        <p-button
+          label="Devolver"
+          icon="pi pi-replay"
+          styleClass="p-button-sm p-button-outlined"
+          (onClick)="abrirDevolver(prestamo)"
+        />
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr><td colspan="6" class="text-center py-4">No hay préstamos activos</td></tr>
+  </ng-template>
+</p-table>
+
+<p-dialog [(visible)]="mostrarEntregar" [modal]="true" [style]="{ width: '28rem' }" header="Nuevo préstamo">
+  <app-entregar-prestamo (guardado)="onEntregado()" (cancelado)="mostrarEntregar.set(false)" />
+</p-dialog>
+
+<p-dialog [(visible)]="mostrarDevolver" [modal]="true" [style]="{ width: '25rem' }" header="Registrar devolución">
+  <app-devolver-prestamo
+    [prestamo]="prestamoSeleccionado()"
+    (guardado)="onDevuelto()"
+    (cancelado)="mostrarDevolver.set(false)"
+  />
+</p-dialog>
