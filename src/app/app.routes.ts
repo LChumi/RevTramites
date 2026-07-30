@@ -6,7 +6,6 @@ import {HomeComponent} from '@features/dashboard/home/home.component';
 import LoginComponent from '@features/auth/login/login.component';
 import {recepcionAlmacenesRoutes} from '@features/recepcion-almacenes/recepcionAlmacenesRoutes';
 import {embarquesRoutes} from '@features/embarques/embarques.routes';
-import {dispositivosRoutes} from '@features/dispositivos/dispositivos.routes';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'auth', pathMatch: 'full'},

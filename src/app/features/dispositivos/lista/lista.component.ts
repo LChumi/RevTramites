@@ -13,7 +13,7 @@ import {DropdownModule} from 'primeng/dropdown';
 import {FormsModule} from '@angular/forms';
 import {TagModule} from 'primeng/tag';
 import {TooltipModule} from 'primeng/tooltip';
-import {Router, RouterLink} from '@angular/router';
+import {Router} from '@angular/router';
 import {DialogModule} from 'primeng/dialog';
 import {DispositivoFormComponent} from '@features/dispositivos/form/dispositivo-form/dispositivo-form.component';
 import {Menu, MenuModule} from 'primeng/menu';
@@ -32,7 +32,6 @@ import {Menu, MenuModule} from 'primeng/menu';
     FormsModule,
     TagModule,
     TooltipModule,
-    RouterLink,
     DialogModule,
     DispositivoFormComponent,
     MenuModule
