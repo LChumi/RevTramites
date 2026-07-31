@@ -9,9 +9,12 @@
   [value]="prestamos()"
   [loading]="loading()"
   [paginator]="true"
-  [rows]="10"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="{first}-{last} de {totalRecords}"
+  [rows]="20"
+  [rowsPerPageOptions]="[20, 50, 100]"
   dataKey="id"
-  styleClass="p-datatable-sm p-datatable-gridlines"
+  styleClass="p-datatable-sm p-datatable-striped"
   responsiveLayout="scroll"
 >
   <ng-template pTemplate="header">
