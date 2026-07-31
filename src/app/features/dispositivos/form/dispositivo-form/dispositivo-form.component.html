@@ -6,7 +6,11 @@
     <div class="col-12 md:col-6">
       <div class="flex flex-column gap-2">
         <label for="serial">Serial</label>
-        <input pInputText id="serial" formControlName="serial" class="w-full"/>
+        <input pInputText id="serial"
+               autocomplete="off"
+               autocapitalize="characters"
+               formControlName="serial"
+               class="w-full uppercase"/>
 
         @if (f.serial.invalid && f.serial.touched) {
           <small class="p-error">
@@ -20,7 +24,11 @@
     <div class="col-12 md:col-6">
       <div class="flex flex-column gap-2">
         <label for="marca">Marca</label>
-        <input pInputText id="marca" formControlName="marca" class="w-full"/>
+        <input pInputText id="marca"
+               autocomplete="off"
+               autocapitalize="characters"
+               formControlName="marca"
+               class="w-full uppercase"/>
 
         @if (f.marca.invalid && f.marca.touched) {
           <small class="p-error">La marca es requerida</small>
@@ -32,7 +40,11 @@
     <div class="col-12 md:col-6">
       <div class="flex flex-column gap-2">
         <label for="modelo">Modelo</label>
-        <input pInputText id="modelo" formControlName="modelo" class="w-full"/>
+        <input pInputText id="modelo"
+               autocomplete="off"
+               autocapitalize="characters"
+               formControlName="modelo"
+               class="w-full uppercase"/>
 
         @if (f.modelo.invalid && f.modelo.touched) {
           <small class="p-error">El modelo es requerido</small>
@@ -104,7 +116,9 @@
         <input
           pInputText
           id="ubicacion"
-          class="w-full"
+          class="w-full uppercase"
+          autocomplete="off"
+          autocapitalize="characters"
           formControlName="ubicacion"/>
 
         @if (f.ubicacion.invalid && f.ubicacion.touched) {

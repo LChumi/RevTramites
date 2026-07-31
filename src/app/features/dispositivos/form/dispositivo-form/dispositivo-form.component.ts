@@ -114,7 +114,15 @@ export class DispositivoFormComponent {
 
     this.saving.set(true);
 
-    const payload = this.form.getRawValue() as Dispositivo;
+    const raw = this.form.getRawValue() as Dispositivo;
+
+    const payload: Dispositivo = {
+      ...raw,
+      serial: raw.serial?.toUpperCase(),
+      marca: raw.marca?.toUpperCase(),
+      modelo: raw.modelo?.toUpperCase(),
+      ubicacion: raw.ubicacion?.toUpperCase(),
+    };
 
     const request$ = this.editMode()
       ? this.dispositivoService.actualizar(this.dispositivoId()!, {
@@ -135,7 +143,7 @@ export class DispositivoFormComponent {
             ? 'Equipo actualizado'
             : 'Equipo registrado',
         });
-
+        this.form.reset()
         this.guardado.emit();
       },
       error: () => {
