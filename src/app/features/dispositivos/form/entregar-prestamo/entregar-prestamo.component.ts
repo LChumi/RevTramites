@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, Input, OnInit, Output, signal} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, signal, SimpleChanges} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {PrestamoService} from '@services/dispositivos/perstamo.service';
 import {DispositivoService} from '@services/dispositivos/dispositivo.service';
@@ -22,9 +22,8 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
   templateUrl: './entregar-prestamo.component.html',
   styles: ``
 })
-export class EntregarPrestamoComponent implements OnInit {
+export class EntregarPrestamoComponent implements OnInit, OnChanges{
 
-  // Si viene preseleccionado desde dispositivos/lista
   @Input() dispositivoIdPreseleccionado: string | null = null;
   @Output() guardado = new EventEmitter<void>();
   @Output() cancelado = new EventEmitter<void>();
@@ -51,17 +50,27 @@ export class EntregarPrestamoComponent implements OnInit {
       next: (data) => {
         this.disponibles.set(data);
         this.loadingDisponibles.set(false);
-
-        if (this.dispositivoIdPreseleccionado) {
-          this.form.patchValue({ dispositivoId: this.dispositivoIdPreseleccionado });
-          this.form.get('dispositivoId')?.disable();
-        }
+        this.aplicarPreseleccion();
       },
       error: () => {
         this.loadingDisponibles.set(false);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar los equipos disponibles' });
       },
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['dispositivoIdPreseleccionado'] && !changes['dispositivoIdPreseleccionado'].firstChange) {
+      this.aplicarPreseleccion();
+    }
+  }
+
+  private aplicarPreseleccion(): void {
+    if (this.dispositivoIdPreseleccionado) {
+      this.form.patchValue({ dispositivoId: this.dispositivoIdPreseleccionado });
+      this.form.get('dispositivoId')?.disable();
+    } else {
+      this.form.get('dispositivoId')?.enable();
+    }
   }
 
   guardar(): void {

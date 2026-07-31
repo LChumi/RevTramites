@@ -179,3 +179,11 @@
   </app-dispositivo-form>
 
 </p-dialog>
+
+<p-dialog [(visible)]="mostrarEntregar" [modal]="true" [style]="{ width: '28rem' }" header="Nuevo préstamo">
+  <app-entregar-prestamo
+    [dispositivoIdPreseleccionado]="dispositivoAPrestar()"
+    (guardado)="onEntregado()"
+    (cancelado)="mostrarEntregar.set(false)"
+  />
+</p-dialog>

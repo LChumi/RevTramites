@@ -1,0 +1,51 @@
+<div class="flex align-items-center gap-2 mb-4">
+  <p-button icon="pi pi-arrow-left" [text]="true" routerLink="/erp/dispositivos/lista" />
+  <h2 class="m-0">Historial de préstamos — {{ serial() }}</h2>
+</div>
+
+<p-card>
+  <p-table
+    [value]="historial()"
+    [loading]="loading()"
+    [paginator]="true"
+    [rows]="10"
+    dataKey="id"
+    styleClass="p-datatable-sm p-datatable-gridlines"
+    responsiveLayout="scroll"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Responsable</th>
+        <th>Cédula</th>
+        <th>Entrega</th>
+        <th>Devolución esperada</th>
+        <th>Devolución real</th>
+        <th>Días</th>
+        <th>Estado</th>
+        <th>Observaciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-p>
+      <tr>
+        <td>{{ p.responsable }}</td>
+        <td>{{ p.cedulaEmpleado }}</td>
+        <td>{{ p.fechaEntrega | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ p.fechaEsperadaDevolucion ? (p.fechaEsperadaDevolucion | date: 'dd/MM/yyyy') : '—' }}</td>
+        <td>{{ p.fechaDevolucion ? (p.fechaDevolucion | date: 'dd/MM/yyyy') : '—' }}</td>
+        <td>{{ diasPrestado(p) }}</td>
+        <td>
+          <p-tag
+            [value]="p.estado === 'DEVUELTO' ? 'Devuelto' : 'Entregado'"
+            [severity]="p.estado === 'DEVUELTO' ? 'success' : 'info'"
+          />
+        </td>
+        <td>{{ p.observaciones || '—' }}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr><td colspan="8" class="text-center py-4">Este equipo no tiene historial de préstamos</td></tr>
+    </ng-template>
+  </p-table>
+</p-card>

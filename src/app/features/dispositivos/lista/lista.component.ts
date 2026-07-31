@@ -13,10 +13,10 @@ import {DropdownModule} from 'primeng/dropdown';
 import {FormsModule} from '@angular/forms';
 import {TagModule} from 'primeng/tag';
 import {TooltipModule} from 'primeng/tooltip';
-import {Router} from '@angular/router';
 import {DialogModule} from 'primeng/dialog';
 import {DispositivoFormComponent} from '@features/dispositivos/form/dispositivo-form/dispositivo-form.component';
 import {Menu, MenuModule} from 'primeng/menu';
+import {EntregarPrestamoComponent} from '@features/dispositivos/form/entregar-prestamo/entregar-prestamo.component';
 
 @Component({
   selector: 'app-lista',
@@ -34,7 +34,8 @@ import {Menu, MenuModule} from 'primeng/menu';
     TooltipModule,
     DialogModule,
     DispositivoFormComponent,
-    MenuModule
+    MenuModule,
+    EntregarPrestamoComponent
   ],
   templateUrl: './lista.component.html',
   styles: ``
@@ -44,7 +45,6 @@ export class ListaComponent implements OnInit {
   private readonly dispositivoService = inject(DispositivoService);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly messageService = inject(MessageService);
-  private readonly router = inject(Router);
 
   dispositivos = signal<Dispositivo[]>([]);
   loading = signal(true);
@@ -55,6 +55,9 @@ export class ListaComponent implements OnInit {
 
   mostrarDialog = signal(false);
   dispositivoEditandoId = signal<string | null>(null);
+
+  mostrarEntregar = signal(false);
+  dispositivoAPrestar = signal<string | null>(null);
 
   ngOnInit(): void {
     this.cargar();
@@ -129,7 +132,13 @@ export class ListaComponent implements OnInit {
   }
 
   irAPrestar(dispositivo: Dispositivo): void {
-    this.router.navigate(['/prestamos/entregar'], { queryParams: { dispositivoId: dispositivo.id } });
+    this.dispositivoAPrestar.set(dispositivo.id);
+    this.mostrarEntregar.set(true);
+  }
+
+  onEntregado(): void {
+    this.mostrarEntregar.set(false);
+    this.cargar(); // refresca estados en la tabla
   }
 
   readonly EstadoDispositivo = EstadoDispositivo;
@@ -156,7 +165,7 @@ export class ListaComponent implements OnInit {
       {
         label: 'Historial',
         icon: 'pi pi-history',
-        routerLink: ['/prestamos/historial', dispositivo.serial]
+        routerLink: ['/erp/dispositivos/historial', dispositivo.serial]
       },
 
       {
