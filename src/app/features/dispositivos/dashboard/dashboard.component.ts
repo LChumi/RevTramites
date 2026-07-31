@@ -100,4 +100,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  totalPrestamosActivos = computed(() => this.prestamosActivos().length);
+
 }

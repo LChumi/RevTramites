@@ -16,10 +16,8 @@
     <ng-template pTemplate="header">
       <tr>
         <th>Responsable</th>
-        <th>Cédula</th>
         <th>Entrega</th>
-        <th>Devolución esperada</th>
-        <th>Devolución real</th>
+        <th>Devolución</th>
         <th>Días</th>
         <th>Estado</th>
         <th>Observaciones</th>
@@ -29,9 +27,7 @@
     <ng-template pTemplate="body" let-p>
       <tr>
         <td>{{ p.responsable }}</td>
-        <td>{{ p.cedulaEmpleado }}</td>
         <td>{{ p.fechaEntrega | date: 'dd/MM/yyyy' }}</td>
-        <td>{{ p.fechaEsperadaDevolucion ? (p.fechaEsperadaDevolucion | date: 'dd/MM/yyyy') : '—' }}</td>
         <td>{{ p.fechaDevolucion ? (p.fechaDevolucion | date: 'dd/MM/yyyy') : '—' }}</td>
         <td>{{ diasPrestado(p) }}</td>
         <td>
