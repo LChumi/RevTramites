@@ -69,7 +69,7 @@
             <tr>
               <td>{{ p.serialDispositivo }}</td>
               <td>{{ p.responsable }}</td>
-              <td>{{ p.fechaEntrega | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ p.fechaEntrega | date: 'medium' }}</td>
               <td>
                 <p-tag
                   [value]="p.estado === 'DEVUELTO' ? 'Devuelto' : 'Entregado'"
