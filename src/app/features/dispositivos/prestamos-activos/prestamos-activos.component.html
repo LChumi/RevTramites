@@ -6,10 +6,12 @@
 </p-toolbar>
 
 <p-table
+  #tp
   [value]="prestamos()"
   [loading]="loading()"
   [paginator]="true"
   [showCurrentPageReport]="true"
+  [globalFilterFields]="['serialDispositivo', 'responsable']"
   currentPageReportTemplate="{first}-{last} de {totalRecords}"
   [rows]="20"
   [rowsPerPageOptions]="[20, 50, 100]"
@@ -17,6 +19,28 @@
   styleClass="p-datatable-sm p-datatable-striped"
   responsiveLayout="scroll"
 >
+  <ng-template pTemplate="caption">
+    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center gap-3">
+
+      <div class="flex align-items-center gap-2">
+        <i class="pi pi-share-alt text-primary text-xl"></i>
+        <span class="font-semibold">
+        Prestamos activos: {{ prestamos().length }} equipos prestados
+      </span>
+      </div>
+
+      <p-iconField iconPosition="left" class="w-full md:w-20rem">
+        <p-inputIcon styleClass="pi pi-search" />
+        <input
+          pInputText
+          class="w-full"
+          placeholder="Buscar..."
+          (input)="tp.filterGlobal($any($event.target).value,'contains')" />
+      </p-iconField>
+
+    </div>
+  </ng-template>
+
   <ng-template pTemplate="header">
     <tr>
       <th>Serial</th>

@@ -11,6 +11,9 @@ import {TagModule} from 'primeng/tag';
 import {DialogModule} from 'primeng/dialog';
 import {EntregarPrestamoComponent} from '@features/dispositivos/form/entregar-prestamo/entregar-prestamo.component';
 import {DevolverPrestamoComponent} from '@features/dispositivos/form/devolver-prestamo/devolver-prestamo.component';
+import {IconFieldModule} from 'primeng/iconfield';
+import {InputIconModule} from 'primeng/inputicon';
+import {InputTextModule} from 'primeng/inputtext';
 
 @Component({
   selector: 'app-prestamos-activos',
@@ -24,7 +27,10 @@ import {DevolverPrestamoComponent} from '@features/dispositivos/form/devolver-pr
     TagModule,
     DialogModule,
     EntregarPrestamoComponent,
-    DevolverPrestamoComponent
+    DevolverPrestamoComponent,
+    IconFieldModule,
+    InputIconModule,
+    InputTextModule
   ],
   templateUrl: './prestamos-activos.component.html',
   styles: ``
