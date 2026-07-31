@@ -10,7 +10,7 @@
     [paginator]="true"
     [rows]="10"
     dataKey="id"
-    styleClass="p-datatable-sm p-datatable-gridlines"
+    styleClass="p-datatable-sm p-datatable-striped"
     responsiveLayout="scroll"
   >
     <ng-template pTemplate="header">
@@ -27,8 +27,8 @@
     <ng-template pTemplate="body" let-p>
       <tr>
         <td>{{ p.responsable }}</td>
-        <td>{{ p.fechaEntrega | date: 'dd/MM/yyyy' }}</td>
-        <td>{{ p.fechaDevolucion ? (p.fechaDevolucion | date: 'dd/MM/yyyy') : '—' }}</td>
+        <td>{{ p.fechaEntrega | date: 'medium' }}</td>
+        <td>{{ p.fechaDevolucion ? (p.fechaDevolucion | date: 'medium') : '—' }}</td>
         <td>{{ diasPrestado(p) }}</td>
         <td>
           <p-tag
