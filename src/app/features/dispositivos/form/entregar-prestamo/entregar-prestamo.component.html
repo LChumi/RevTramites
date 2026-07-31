@@ -31,7 +31,7 @@
 
   <div class="flex flex-column gap-2">
     <label for="responsable">Responsable</label>
-    <input pInputText id="responsable" formControlName="responsable" [class.ng-invalid]="f.responsable.invalid && f.responsable.touched" />
+    <input pInputText id="responsable" class="uppercase" autocomplete="off" autocapitalize="characters" formControlName="responsable" [class.ng-invalid]="f.responsable.invalid && f.responsable.touched" />
     @if (f.responsable.invalid && f.responsable.touched) {
       <small class="p-error">El responsable es requerido</small>
     }
@@ -43,13 +43,8 @@
   </div>
 
   <div class="flex flex-column gap-2">
-    <label for="fechaEsperadaDevolucion">Devolución esperada (opcional)</label>
-    <p-calendar id="fechaEsperadaDevolucion" formControlName="fechaEsperadaDevolucion" dateFormat="dd/mm/yy" [showIcon]="true" />
-  </div>
-
-  <div class="flex flex-column gap-2">
     <label for="observaciones">Observaciones</label>
-    <textarea pInputTextarea id="observaciones" formControlName="observaciones" rows="3"></textarea>
+    <textarea pInputTextarea id="observaciones" class="uppercase" autocomplete="off" autocapitalize="characters" formControlName="observaciones" rows="3"></textarea>
   </div>
 
   <div class="flex justify-content-end gap-2 mt-3">

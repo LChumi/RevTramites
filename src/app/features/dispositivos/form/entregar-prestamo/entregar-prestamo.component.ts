@@ -41,7 +41,6 @@ export class EntregarPrestamoComponent implements OnInit, OnChanges{
     dispositivoId: [null as string | null, Validators.required],
     responsable: ['', Validators.required],
     fechaEntrega: [new Date(), Validators.required],
-    fechaEsperadaDevolucion: [null as Date | null],
     observaciones: [''],
   });
 
@@ -84,10 +83,9 @@ export class EntregarPrestamoComponent implements OnInit, OnChanges{
 
     const payload = {
       dispositivoId: raw.dispositivoId,
-      responsable: raw.responsable,
+      responsable: raw.responsable?.toUpperCase(),
       fechaEntrega: raw.fechaEntrega,
-      fechaEsperadaDevolucion: raw.fechaEsperadaDevolucion,
-      observaciones: raw.observaciones,
+      observaciones: raw.observaciones?.toUpperCase(),
     };
 
     this.prestamoService.entregar(payload as any).subscribe({
