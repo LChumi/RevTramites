@@ -1,5 +1,3 @@
-// src/app/features/prestamos/devolver/devolver-prestamo.component.ts
-
 import { Component, EventEmitter, Input, Output, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';

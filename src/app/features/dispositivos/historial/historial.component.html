@@ -21,6 +21,8 @@
         <th>Días</th>
         <th>Estado</th>
         <th>Observaciones</th>
+        <th>Observaciones Devolucion</th>
+        <th>Responsables (Entrega / Devolución)</th>
       </tr>
     </ng-template>
 
@@ -37,6 +39,13 @@
           />
         </td>
         <td>{{ p.observaciones || '—' }}</td>
+        <td>{{ p.observacionDevolucion || '—' }}</td>
+        <td>
+          <div class="flex flex-column gap-1">
+            <span class="text-sm text-success">Entrega: {{ p.creadoPor }}</span>
+            <span class="text-sm text-info">Recibe: {{ p.modificadoPor }}</span>
+          </div>
+        </td>
       </tr>
     </ng-template>
 

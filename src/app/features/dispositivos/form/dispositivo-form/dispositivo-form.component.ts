@@ -11,7 +11,7 @@ import {CalendarModule} from 'primeng/calendar';
 import {CheckboxModule} from 'primeng/checkbox';
 
 const CATEGORIAS = [
-  'Laptop', 'Monitor', 'Teclado', 'Mouse', 'Diadema',
+  'Laptop', 'Monitor', 'Teclado', 'Mouse', 'Pistola-barra',
   'Proyector', 'Tablet', 'Celular', 'Lector-barra', 'Otro',
 ];
 

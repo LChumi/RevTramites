@@ -44,6 +44,14 @@ export class EntregarPrestamoComponent implements OnInit, OnChanges{
     observaciones: [''],
   });
 
+  private readonly username: string;
+
+  constructor() {
+    const stored = sessionStorage.getItem('username');
+    this.username = stored ?? ''; // usa '' si es null
+  }
+
+
   ngOnInit(): void {
     this.dispositivoService.disponibles().subscribe({
       next: (data) => {
@@ -86,6 +94,7 @@ export class EntregarPrestamoComponent implements OnInit, OnChanges{
       responsable: raw.responsable?.toUpperCase(),
       fechaEntrega: raw.fechaEntrega,
       observaciones: raw.observaciones?.toUpperCase(),
+      creadoPor: this.username
     };
 
     this.prestamoService.entregar(payload as any).subscribe({

@@ -7,6 +7,7 @@ export interface Prestamo {
   fechaDevolucion:         any;
   estado:                  string;
   observaciones:           string;
+  observacionDevolucion:   string;
   creadoPor:               string;
   modificadoPor:           string;
   createdAt:               any;

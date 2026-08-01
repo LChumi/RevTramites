@@ -16,11 +16,16 @@ export class PrestamoService {
     return this.http.post<Prestamo>(`${this.api}/entregar`, prestamo);
   }
 
-  devolver(id: string, estadoFinal: string, observaciones?: string) {
+  devolver(id: string, estadoFinal: string, observaciones?: string,) {
     const params: Record<string, string> = {estadoFinal};
 
     if (observaciones) {
       params['observaciones'] = observaciones;
+    }
+
+    const username = sessionStorage.getItem('username');
+    if (username) {
+      params['username'] = username;
     }
 
     return this.http.patch<Prestamo>(`${this.api}/${id}/devolver`, null, {params});
