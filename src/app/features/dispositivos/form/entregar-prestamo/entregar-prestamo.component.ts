@@ -40,7 +40,6 @@ export class EntregarPrestamoComponent implements OnInit, OnChanges{
   form = this.fb.group({
     dispositivoId: [null as string | null, Validators.required],
     responsable: ['', Validators.required],
-    fechaEntrega: [new Date(), Validators.required],
     observaciones: [''],
   });
 
@@ -92,7 +91,6 @@ export class EntregarPrestamoComponent implements OnInit, OnChanges{
     const payload = {
       dispositivoId: raw.dispositivoId,
       responsable: raw.responsable?.toUpperCase(),
-      fechaEntrega: raw.fechaEntrega,
       observaciones: raw.observaciones?.toUpperCase(),
       creadoPor: this.username
     };

@@ -74,7 +74,11 @@
 
   <ng-template pTemplate="body" let-dispositivo>
     <tr>
-      <td>{{ dispositivo.serial }}</td>
+      <td>
+        <a [routerLink]="['/erp/dispositivos/historial', dispositivo.serial]">
+          {{ dispositivo.serial }}
+        </a>
+      </td>
       <td>{{ dispositivo.marca }}</td>
       <td>{{ dispositivo.modelo }}</td>
       <td>
