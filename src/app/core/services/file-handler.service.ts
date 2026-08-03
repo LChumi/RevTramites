@@ -14,8 +14,6 @@ export class FileHandlerService {
       console.warn('[FileHandlerService] Popup bloqueado por el navegador');
       return;
     }
-
-    setTimeout(() => URL.revokeObjectURL(objectUrl), 2000);
   }
 
   downloadFile(blob: Blob, filename: string): void {
